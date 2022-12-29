@@ -1,0 +1,21 @@
+{
+    "scope": "/",
+    "start_url": "/",
+    "display": "standalone",
+    "icons": [
+        {
+            "sizes": "192x192",
+            "type": "image/png",
+            "src": "//img1.wsimg.com/isteam/ip/84e67726-d5dd-4591-ba17-0d8628d44ded/e-Hospital%20(1).png/:/rs=w:192,h:192,m"
+        },
+        {
+            "sizes": "512x512",
+            "type": "image/png",
+            "src": "//img1.wsimg.com/isteam/ip/84e67726-d5dd-4591-ba17-0d8628d44ded/e-Hospital%20(1).png/:/rs=w:512,h:512,m"
+        }
+    ],
+    "name": "E-Hospital",
+    "short_name": "E-Hospital",
+    "theme_color": "#ccd3d9",
+    "background_color": "#ccd3d9"
+}

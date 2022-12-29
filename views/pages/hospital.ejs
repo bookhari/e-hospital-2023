@@ -1,0 +1,77 @@
+<%- include('../partials/header1') -%>
+
+    <div class="container">
+        <div class="title">Hospital Admin Registration From</div>
+        <div class="content">
+            <form action="/Hospital" method="post">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">Hospital Name</span>
+                        <input type="text" name="Hospital_Name" placeholder="Enter Hospital Name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Email Id</span>
+                        <input type="text" name="EmailId" placeholder="Enter Your Email Id" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Confirm Email</span>
+                        <input type="text" name="ConfirmEmail" placeholder="Enter Your Email ID" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Location 1</span>
+                        <input type="text" name="Location1" placeholder="Your Location 1" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Location 2</span>
+                        <input type="text" name="Location2" placeholder="Your Location 2" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Postal Code</span>
+                        <input type="text" name="PostalCode" placeholder="Your Postal Code" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">City</span>
+                        <input type="text" name="city" placeholder="Your City" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="details">Province</span>
+                        <input type="text" name="province" placeholder="Your Province" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Country</span>
+                        <input type="text" name="Country" placeholder="Your Country" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Facilities-  No. Of departments​</span>
+                        <input type="text" name="Facilities_departments" placeholder="Enter Total Facilities Departments​">
+                    </div>                    
+                    <div class="input-box">
+                        <span class="details">Number of Doctors</span>
+                        <input type="text" name="DoctorNo" placeholder="Enter Numbers of Doctors" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">No. of Nurses​</span>
+                        <input type="text" name="N_Nureses" placeholder="Number of Nurses​" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">No. of admins</span>
+                        <input type="text" name="No_Admin" placeholder="Number of Admin" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">No. of patients per year</span>
+                        <input type="text" name="PatientsPerYear" placeholder="Number of patients/Yr" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">​Tax registration number​</span>
+                        <input type="text" name="TaxRegNo" placeholder="​Tax registration number​" required>
+                    </div>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Register">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    

@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "cwe1u6tjijexv3r6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "username": "mxoscy1pyrqkpc04",
+            "password": "qhqcut72vwxyl8k9",
+            "database": "evjygdytdp2ev0d",
+            "name": "Mysql"
+        }
+    ]
+}

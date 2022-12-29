@@ -1,0 +1,1 @@
+SELECT * FROM `e-hospital`.patients_registration;-_

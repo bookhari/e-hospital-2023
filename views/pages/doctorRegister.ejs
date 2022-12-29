@@ -1,0 +1,92 @@
+
+<%- include('../partials/header1') -%>
+
+    <div class="container">
+        <div class="title">Doctors Registration From</div>
+        <div class="content">
+            <form action="/get_doctorInfo" method="post">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">First Name</span>
+                        <input type="text" name="Fname" placeholder="Enter your name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Middle Name</span>
+                        <input type="text" name="Mname" placeholder="Enter your Middle Name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Last Name</span>
+                        <input type="text" name="LName" placeholder="Enter Last Name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Gender</span>
+                        <input type="text" name="gender" placeholder="Male or Female" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Age</span>
+                        <input type="text" name="age" placeholder="Enter your age" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Blood Group</span>
+                        <input type="text" name="bloodGroup" placeholder="Enter blood group" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="details">Mobile Number</span>
+                        <input type="text" name="MobileNo" placeholder="Enter Your Number">
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Email Id</span>
+                        <input type="text" name="EmailId" placeholder="Enter Your Email ID" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Confirm Email</span>
+                        <input type="text" name="ConfirmEmail" placeholder="Enter Your Email ID" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Location 1</span>
+                        <input type="text" name="Location1" placeholder="Your Location 1" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Location 2</span>
+                        <input type="text" name="Location2" placeholder="Your Location 2" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Postal Code</span>
+                        <input type="text" name="PostalCode" placeholder="Your Postal Code" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">City</span>
+                        <input type="text" name="city" placeholder="Your City" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Country</span>
+                        <input type="text" name="Country" placeholder="Your Country" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Province</span>
+                        <input type="text" name="province" placeholder="Your Province" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Medical LICENSE Number</span>
+                        <input type="text" name="MLno" placeholder="Enter Medical License Number" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Driving License Number</span>
+                        <input type="text" name="DLNo" placeholder="Driving License Number" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Specialization</span>
+                        <input type="text" name="Specialization" placeholder="Your Specialization" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Practicing Hospital</span>
+                        <input type="text" name="PractincingHospital" placeholder="" required>
+                    </div>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Register">
+                </div>
+            </form>
+        </div>
+    </div>
