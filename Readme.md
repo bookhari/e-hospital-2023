@@ -15,3 +15,4 @@ Below are the steps, how you can run this project on your computer:
 3: It should give you a message like: Server running on the port : 5000 Connected to the MySQL server.
 
 4: You can access this project through website by going to http://localhost:5000/
+*******************
