@@ -439,7 +439,7 @@ app.get('/sendEmail', (req, res) => {
               });
             }
         }
-        // main().catch(console.error); // its working now.
+        // main().catch(console.error); // its
     })
 
 app.listen(port, () => console.log(`Server running on the port : ${port}`))
