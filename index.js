@@ -1,4 +1,3 @@
-//syed
 const express = require('express');
 const conn = require('./dbConnection/dbConnection')
 const body_parse = require('body-parser');
@@ -440,7 +439,7 @@ app.get('/sendEmail', (req, res) => {
               });
             }
         }
-        // main().catch(console.error); // its
+        // main().catch(console.error);
     })
 
 app.listen(port, () => console.log(`Server running on the port : ${port}`))
