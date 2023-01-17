@@ -24,6 +24,7 @@ Tutorial:
 3. Running E-Hospital on Local Host: https://drive.google.com/file/d/1-TAb4lTv510KaQID7pFQGdWwhcyN4Oh2/view?usp=sharing_eil_m&invite=CNTBsvML&ts=63be5431
 4. Git & Project Integration: https://drive.google.com/file/d/1g4O8zr8aYuzxzRX7ehKZPOjSSWByOI5a/view?usp=sharing_eil_m&invite=CL3jofYG&ts=63be5431
 
+For more information please contact your relevant TA.
 
 *******************
 *******************
