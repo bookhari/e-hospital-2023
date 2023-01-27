@@ -116,6 +116,10 @@ app.get('/hospital', (req, res) => {
     res.render("pages/hospital");
 })
 
+app.get('/contact-us', (req, res) => {
+  res.render("pages/contact-us");
+})
+
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
 
   const uuid = req.body.email;
