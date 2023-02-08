@@ -120,6 +120,17 @@ app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 })
 
+app.get('/send-email', (req, res) => {
+  // Call to nodemailer
+
+  res.send(`
+  <script>alert("Thank you. Your response has been recorded."); 
+  window.location.href = "/contact-us"; </script>`
+  );
+  res.render("pages/contact-us");
+})
+
+
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
 
   const uuid = req.body.email;
