@@ -121,13 +121,50 @@ app.get('/contact-us', (req, res) => {
 })
 
 app.get('/send-email', (req, res) => {
-  // Call to nodemailer
 
+  // Define mandatory parameters
+  const SENDER_EMAIL = "ehospital112233@gmail.com";
+  const SENDER_PASS = "hlcvsrrzempexzhw";
+  const RECEIVER_EMAIL = "";
+
+  // Function to call to nodemailer
+  const nodeMailer = require("nodemailer");
+  const html = `
+    <h2> E-Hospital: Your contact us response </h2>
+    <p> 
+      Thank you for your email. We will respond in 3-5 business days.
+    </p>
+  `;
+
+  async function main() {
+    const transporter = nodeMailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: SENDER_EMAIL,
+        pass: SENDER_PASS,
+      },
+    });
+  
+    const info = await transporter.sendMail({
+      from: SENDER_EMAIL,
+      to: RECEIVER_EMAIL,
+      subkect: "Contact Information",
+      html: html,
+    });
+    console.log("Message sent: " + info.messageId);
+  }
+  
+  main().catch((e) => {
+    console.log(e);
+  });
+
+  // Alert the user on the website
   res.send(`
   <script>alert("Thank you. Your response has been recorded."); 
   window.location.href = "/contact-us"; </script>`
   );
-  res.render("pages/contact-us");
 })
 
 
