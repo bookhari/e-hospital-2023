@@ -118,14 +118,14 @@ app.get('/hospital', (req, res) => {
 
 app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
-})
+});
 
-app.get('/send-email', (req, res) => {
+app.post('/send-contact-form', (req, res) => {
 
   // Define mandatory parameters
   const SENDER_EMAIL = "ehospital112233@gmail.com";
   const SENDER_PASS = "hlcvsrrzempexzhw";
-  const RECEIVER_EMAIL = "";
+  // const RECEIVER_EMAIL = req.body.;
 
   // Function to call to nodemailer
   const nodeMailer = require("nodemailer");
@@ -136,6 +136,9 @@ app.get('/send-email', (req, res) => {
     </p>
   `;
 
+
+
+  res.send(`You submitted an email. Thank you.`);
   async function main() {
     const transporter = nodeMailer.createTransport({
       host: "smtp.gmail.com",
@@ -154,17 +157,19 @@ app.get('/send-email', (req, res) => {
       html: html,
     });
     console.log("Message sent: " + info.messageId);
-  }
-  
-  main().catch((e) => {
-    console.log(e);
-  });
 
-  // Alert the user on the website
-  res.send(`
-  <script>alert("Thank you. Your response has been recorded."); 
-  window.location.href = "/contact-us"; </script>`
-  );
+    // main().catch((e) => {
+    //   console.log(e);
+    // });
+
+    // Alert the user on the website
+    // res.send(`
+    // <script>alert("Thank you. Your response has been recorded."); 
+    // window.location.href = "/contact-us"; 
+    // </script>`
+    // );
+  }
+
 })
 
 
