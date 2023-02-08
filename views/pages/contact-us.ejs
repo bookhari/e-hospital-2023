@@ -11,7 +11,7 @@
   <title>E-Hospital</title>
   <meta name="author" content="E-Hospital" />
   <meta name="generator" content="Starfield Technologies; Go Daddy Website Builder 8.0.0000" />
-  <link rel="manifest" href="manifest.webmanifest" />
+  <!-- <link rel="manifest" href="manifest.webmanifest" /> -->
   <link rel="apple-touch-icon" sizes="57x57"
     href="http://img1.wsimg.com/isteam/ip/84e67726-d5dd-4591-ba17-0d8628d44ded/e-Hospital (1).png/:/rs=w:57,h:57,m" />
   <link rel="apple-touch-icon" sizes="60x60"
@@ -2027,11 +2027,12 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
   </style>
   <script>"use strict";
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('sw.js');
-      });
-    }</script>
+    // if ('serviceWorker' in navigator) {
+    //   window.addEventListener('load', function () {
+    //     navigator.serviceWorker.register('sw.js');
+    //   });
+    // }
+  </script>
 </head>
 
 <body class="x  x-fonts-fjalla-one">
@@ -2602,14 +2603,14 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                                 <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
                                   <div data-ux="Block"
                                     class="x-el x-el-div c1-1 c1-2 c1-1v c1-b c1-c c1-d c1-e c1-f c1-g">
-                                    <button
+                                    <a href="/index"
                                       data-ux-btn="primary" data-ux="ButtonPrimary" color="PRIMARY" fill="GHOST"
                                       shape="SQUARE" decoration="LINES" shadow="NONE" type="submit"
                                       data-aid="CONTACT_SUBMIT_BUTTON_REND"
                                       data-tccl="ux2.contact.submit_form.click,click" state="default"
                                       data-typography="ButtonAlpha"
-                                      onclick="sendEmail()"                           
-                                      class="x-el x-el-button c1-3w c1-1x c1-1d c1-57 c1-8j c1-13 c1-1w c1-1v c1-1a c1-1c c1-1b c1-3o c1-t c1-4 c1-4e c1-4f c1-51 c1-53 c1-8k c1-2m c1-2k c1-26 c1-8l c1-8m c1-8n c1-56 c1-8o c1-b c1-49 c1-65 c1-42 c1-8p c1-8q c1-8r c1-8s c1-8t c1-8u c1-8v c1-8w c1-8x c1-8y c1-8z c1-90 c1-91 c1-92 c1-93 c1-94 c1-45 c1-46 c1-47 c1-48">Send</button>
+                                                                 
+                                      class="x-el x-el-button c1-3w c1-1x c1-1d c1-57 c1-8j c1-13 c1-1w c1-1v c1-1a c1-1c c1-1b c1-3o c1-t c1-4 c1-4e c1-4f c1-51 c1-53 c1-8k c1-2m c1-2k c1-26 c1-8l c1-8m c1-8n c1-56 c1-8o c1-b c1-49 c1-65 c1-42 c1-8p c1-8q c1-8r c1-8s c1-8t c1-8u c1-8v c1-8w c1-8x c1-8y c1-8z c1-90 c1-91 c1-92 c1-93 c1-94 c1-45 c1-46 c1-47 c1-48">Send</a>
                                   </div>
                                 </div>
                               </div>
@@ -2775,11 +2776,6 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
     type="text/javascript">"IntersectionObserver" in window && "Intl" in window && "Locale" in window.Intl || document.write(`\x3Cscript src="../img1.wsimg.com/poly/v3/polyfill.mincc30.js?rum=0&amp;unknown=polyfill&amp;flags=gated&amp;features=Intl.~locale.en-CA">\x3C/script>`)</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BF2FDR6KMM" crossorigin></script>
   <script>
-    function sendEmail() {
-      console.log("Sending Email");
-    }
-  </script>
-  <script>
     "use strict";
     window['ga-disable-G-BF2FDR6KMM'] = true;
     window.dataLayer = window.dataLayer || [];
@@ -2796,35 +2792,35 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
     gtag('config', 'G-BF2FDR6KMM');
     // Core.utils.onAllowCookieTracking(() => { window[`ga-disable-${window._commercegaID}`] = false; window.gtag('config', window._commercegaID); });    "use strict";
 
-    !function (f, b, e, v, n, t, s) {
-      if (f.fbq) return;
+    // !function (f, b, e, v, n, t, s) {
+    //   if (f.fbq) return;
 
-      n = f.fbq = function () {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-      };
+    //   n = f.fbq = function () {
+    //     n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    //   };
 
-      if (!f._fbq) f._fbq = n;
-      n.push = n;
-      n.loaded = !0;
-      n.version = '2.0';
-      n.agent = 'plgodaddy';
-      n.queue = [];
-      t = b.createElement(e);
-      t.async = !0;
+    //   if (!f._fbq) f._fbq = n;
+    //   n.push = n;
+    //   n.loaded = !0;
+    //   n.version = '2.0';
+    //   n.agent = 'plgodaddy';
+    //   n.queue = [];
+    //   t = b.createElement(e);
+    //   t.async = !0;
 
-      t.onload = () => Core.utils.onAllowCookieTracking(() => f.fbq('consent', 'grant'));
+    //   t.onload = () => Core.utils.onAllowCookieTracking(() => f.fbq('consent', 'grant'));
 
-      t.src = v;
-      s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s);
-    }(window, document, 'script', '../connect.facebook.net/en_US/fbevents.js');
-    fbq('consent', 'revoke');
-    fbq('init', '282429905966327');
-    fbq('track', 'PageView');
+    //   t.src = v;
+    //   s = b.getElementsByTagName(e)[0];
+    //   s.parentNode.insertBefore(t, s);
+    // }(window, document, 'script', '../connect.facebook.net/en_US/fbevents.js');
+    // fbq('consent', 'revoke');
+    // fbq('init', '282429905966327');
+    // fbq('track', 'PageView');
 
-    var t = document.createElement("script"); 
-    t.type = "text/javascript", 
-    t.addEventListener("load", () => { window.tti.calculateTTI(({ name: t, value: e } = {}) => { let i = { "wam_site_hasPopupWidget": false, "wam_site_hasMessagingWidget": true, "wam_site_headerTreatment": "Fill", "wam_site_hasSlideshow": false, "wam_site_hasFreemiumBanner": false, "wam_site_homepageFirstWidgetType": "ABOUT", "wam_site_homepageFirstWidgetPreset": "about3", "wam_site_businessCategory": "hospitals", "wam_site_theme": "layout19", "wam_site_fontPack": "fjalla-one", "wam_site_cookieBannerEnabled": true, "wam_site_membershipEnabled": true, "wam_site_hasHomepageHTML": false, "wam_site_hasHomepageShop": false, "wam_site_hasHomepageOla": false, "wam_site_hasHomepageBlog": false, "wam_site_hasShop": false, "wam_site_hasOla": true, "wam_site_planType": "commerce", "wam_site_isHomepage": false, "wam_site_htmlWidget": false }; window.networkInfo && window.networkInfo.downlink && (i = Object.assign({}, i, { ["wam_site_networkSpeed"]: window.networkInfo.downlink.toFixed(2) })), window.tti.setCustomProperties(i), window.tti._collectVitals({ name: t, value: e }) }) }), t.setAttribute("src", "../img1.wsimg.com/traffic-assets/js/tccl-tti.min.html"), document.body.appendChild(t);
+    // var t = document.createElement("script"); 
+    // t.type = "text/javascript", 
+    // t.addEventListener("load", () => { window.tti.calculateTTI(({ name: t, value: e } = {}) => { let i = { "wam_site_hasPopupWidget": false, "wam_site_hasMessagingWidget": true, "wam_site_headerTreatment": "Fill", "wam_site_hasSlideshow": false, "wam_site_hasFreemiumBanner": false, "wam_site_homepageFirstWidgetType": "ABOUT", "wam_site_homepageFirstWidgetPreset": "about3", "wam_site_businessCategory": "hospitals", "wam_site_theme": "layout19", "wam_site_fontPack": "fjalla-one", "wam_site_cookieBannerEnabled": true, "wam_site_membershipEnabled": true, "wam_site_hasHomepageHTML": false, "wam_site_hasHomepageShop": false, "wam_site_hasHomepageOla": false, "wam_site_hasHomepageBlog": false, "wam_site_hasShop": false, "wam_site_hasOla": true, "wam_site_planType": "commerce", "wam_site_isHomepage": false, "wam_site_htmlWidget": false }; window.networkInfo && window.networkInfo.downlink && (i = Object.assign({}, i, { ["wam_site_networkSpeed"]: window.networkInfo.downlink.toFixed(2) })), window.tti.setCustomProperties(i), window.tti._collectVitals({ name: t, value: e }) }) }), t.setAttribute("src", "../img1.wsimg.com/traffic-assets/js/tccl-tti.min.html"), document.body.appendChild(t);
   </script>
 </body>
 <!-- Mirrored from e-hospital.godaddysites.com/contact-us by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:05 GMT -->
