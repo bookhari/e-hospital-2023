@@ -125,7 +125,8 @@ app.post('/send-contact-form', (req, res) => {
   // Define mandatory parameters
   const SENDER_EMAIL = "ehospital112233@gmail.com";
   const SENDER_PASS = "hlcvsrrzempexzhw";
-  // const RECEIVER_EMAIL = req.body.;
+  const RECEIVER_NAME = req.body.userName;
+  const RECEIVER_EMAIL = req.body.userEmail;
 
   // Function to call to nodemailer
   const nodeMailer = require("nodemailer");
@@ -136,9 +137,13 @@ app.post('/send-contact-form', (req, res) => {
     </p>
   `;
 
+  // Respond to the request and alert the user.
+  res.send(`
+  <script>alert("Thank you ${RECEIVER_NAME}. Your response has been recorded."); 
+    window.location.href = "/contact-us";
+  </script>`
+  );
 
-
-  res.send(`You submitted an email. Thank you.`);
   async function main() {
     const transporter = nodeMailer.createTransport({
       host: "smtp.gmail.com",
@@ -157,18 +162,11 @@ app.post('/send-contact-form', (req, res) => {
       html: html,
     });
     console.log("Message sent: " + info.messageId);
-
-    // main().catch((e) => {
-    //   console.log(e);
-    // });
-
-    // Alert the user on the website
-    // res.send(`
-    // <script>alert("Thank you. Your response has been recorded."); 
-    // window.location.href = "/contact-us"; 
-    // </script>`
-    // );
   }
+
+  main().catch((e) => {
+    console.log(e);
+  });
 
 })
 
