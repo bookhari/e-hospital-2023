@@ -7,7 +7,8 @@ const upload = multer();
 const port = process.env.PORT || 5000;
 var sql = '';
 var crypto = require('crypto')
-var http = require("http");
+const axios = require('axios')
+const FormData = require('form-data');
 
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
@@ -271,38 +272,29 @@ app.post('/get_doctorInfo', (req, res) => {
 
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
-  // console.log(req.body);
-  
-  url = "http://localhost:5000/connectionTesting";
-  var request = http.request({
-    host: 'localhost',
-    port: 5000,
-    path: '/connectionTesting',
-    method: 'POST',
-    formData: {
-      
-    }
-  }, function(response) {
-    // console.log(response)
+  // console.log(req.value);
+
+  const form = new FormData();
+  const file = req.file;
+  form.append('image', file.buffer, file.originalname);
+  form.append('value', "0");
+
+  const response = axios.post('http://localhost:5000/connectionTesting', form)
+    .then(response => {
+      console.log(`Status: ${response.status}`)
+    })
+    .catch(err => {
+      console.error(err)
   })
-  request.end();
-  // var image = req.body.image;
-  // console.log(req);
-  // try {
-  //   var ext = getExtension(image);
-  //   res.send(`File received. File type: ${ext}.`);
-  // } catch (error) {
-  //   console.log(error);
-  //   res.send(`File not received. The value found is: ${image}.`);
-  // }
+
   res.sendStatus(200);
 })
 
 // This is a connection testing api 
 app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request receive.");
-  // console.log(req.file);
-  // console.log(req.body);
+  console.log(req.file);
+  console.log(req.body);
   res.sendStatus(200);
 })
 
