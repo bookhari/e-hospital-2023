@@ -1,0 +1,75 @@
+<%- include('../partials/header1') -%>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>  
+
+    <div class="container">
+        <div class="title">Lab Admin Registration Form</div>
+        <div class="content">
+            <form action="/Lab" method="post">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">Lab Name</span>
+                        <input type="text" name="Lab_Name" placeholder="Enter Lab Name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Email Id</span>
+                        <input type="text" name="EmailId" placeholder="Enter Your Email Id" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Confirm Email</span>
+                        <input type="text" name="ConfirmEmail" placeholder="Enter Your Email ID" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Location 1</span>
+                        <input type="text" name="Location1" placeholder="Your Location 1" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Location 2</span>
+                        <input type="text" name="Location2" placeholder="Your Location 2" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Postal Code</span>
+                        <input type="text" name="PostalCode" placeholder="Your Postal Code" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">City</span>
+                        <input type="text" name="city" placeholder="Your City" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="details">Province</span>
+                        <input type="text" name="province" placeholder="Your Province" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Country</span>
+                        <input type="text" name="Country" placeholder="Your Country" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Referring Physician Name</span>
+                        <input type="text" name="Ref_Phy_Name" placeholder="Enter Total Facilities Departments">
+                    </div>                    
+                    <div class="input-box">
+                        <span class="details">Referring Physician Contact Information</span>
+                        <input type="text" name="Ref_Phy_Con_Info" placeholder="Enter Numbers of Doctors" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Insurance Information</span>
+                        <input type="text" name="Insu_Info" placeholder="Number of Nurses" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Payment Method</span>
+                        <input type="text" name="Payment_Metho" placeholder="Number of Admin" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Tax registration number</span>
+                        <input type="text" name="Tax_registration_number" placeholder="Tax registration number" required>
+                    </div>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Register">
+                    <!-- Register   -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
