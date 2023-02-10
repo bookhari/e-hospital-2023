@@ -1,10 +1,13 @@
 const express = require('express');
+const multer = require('multer');
 const conn = require('./dbConnection/dbConnection')
 const body_parse = require('body-parser');
 const app = express();
+const upload = multer();
 const port = process.env.PORT || 5000;
 var sql = '';
 var crypto = require('crypto')
+var http = require("http");
 
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
@@ -234,7 +237,6 @@ app.post('/patientsDashboard', (req, res) => {
 })
 
 app.post('/get_patientInfo', (req, res) => {
-
     const getDetails = req.body
     let uuid = "PAT-"+ "ON-" + getDetails.Age + "-" + getDetails.province + "-" + Math.floor(Math.random()*90000) + 10000;
     var password = crypto.randomBytes(16).toString("hex");
@@ -266,6 +268,44 @@ app.post('/get_doctorInfo', (req, res) => {
       res.render("pages/thankyou");
     })
 })
+
+app.post('/recordUpdate', upload.single("image"), (req,res) => {
+  // console.log(req.file);
+  // console.log(req.body);
+  
+  url = "http://localhost:5000/connectionTesting";
+  var request = http.request({
+    host: 'localhost',
+    port: 5000,
+    path: '/connectionTesting',
+    method: 'POST',
+    formData: {
+      
+    }
+  }, function(response) {
+    // console.log(response)
+  })
+  request.end();
+  // var image = req.body.image;
+  // console.log(req);
+  // try {
+  //   var ext = getExtension(image);
+  //   res.send(`File received. File type: ${ext}.`);
+  // } catch (error) {
+  //   console.log(error);
+  //   res.send(`File not received. The value found is: ${image}.`);
+  // }
+  res.sendStatus(200);
+})
+
+// This is a connection testing api 
+app.post('/connectionTesting', upload.single("image"), (req,res) => {
+  console.log("Request receive.");
+  // console.log(req.file);
+  // console.log(req.body);
+  res.sendStatus(200);
+})
+
 app.post('/Hospital', (req, res) => {
     const get_HospitalInfo = req.body;
     var password = crypto.randomBytes(16).toString("hex");
