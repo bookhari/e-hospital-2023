@@ -120,6 +120,10 @@ app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });
 
+app.get('/brain', (req, res) => {
+  res.render("pages/brain");
+});
+
 app.post('/send-contact-form', (req, res) => {
 
   // Define mandatory parameters
