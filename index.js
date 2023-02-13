@@ -127,14 +127,20 @@ app.post('/send-contact-form', (req, res) => {
   const SENDER_PASS = "hlcvsrrzempexzhw";
   const RECEIVER_NAME = req.body.userName;
   const RECEIVER_EMAIL = req.body.userEmail;
+  const USER_MESSAGE = req.body.userMessage;
 
   // Function to call to nodemailer
   const nodeMailer = require("nodemailer");
   const html = `
-    <h2> E-Hospital: Your contact us response </h2>
-    <p> 
-      Thank you for your email. We will respond in 3-5 business days.
+    <h3> E-Hospital: Your contact us response </h3>
+    <p> Hi ${RECEIVER_NAME}, </p>
+    <br> <br>      
+    Thank you for your email. This is to notify you that we have received you contact-us query.
+    We will respond in 3-5 business days. The following is your query for your records.
     </p>
+    <p> Name: ${RECEIVER_NAME} </p>
+    <p> Email: ${RECEIVER_EMAIL} </p>
+    <p> Message: ${USER_MESSAGE} </p>
   `;
 
   // Respond to the request and alert the user.
