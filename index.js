@@ -1,14 +1,16 @@
 const express = require('express');
 const multer = require('multer');
+const axios = require('axios');
+const FormData = require('form-data');
+const path = require('path');
 const conn = require('./dbConnection/dbConnection')
 const body_parse = require('body-parser');
 const app = express();
 const upload = multer();
 const port = process.env.PORT || 5000;
+
 var sql = '';
 var crypto = require('crypto')
-const axios = require('axios')
-const FormData = require('form-data');
 
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
@@ -274,20 +276,30 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
   // console.log(req.value);
 
-  const form = new FormData();
-  const file = req.file;
-  form.append('image', file.buffer, file.originalname);
-  form.append('value', "0");
+  // Check file extension path.extname()
+  if (typeof req.file != 'undefined') {
+    if (path.extname(req.file.originalname) == ".jpeg") {
+      const form = new FormData();
+      const file = req.file;
+      form.append('image', file.buffer, file.originalname);
+      form.append('value', "0");
+    
+      const response = axios.post('http://localhost:5000/connectionTesting', form)
+        .then(response => {
+          console.log(`Status: ${response.status}`)
+        })
+        .catch(err => {
+          console.error(err)
+      })
+    
+      res.send("Image receive, right format.");
+    } else {
+      res.send("File receive, wrong format.");
+    }
+  } else {
+    res.send("File not receive.");
+  }
 
-  const response = axios.post('http://localhost:5000/connectionTesting', form)
-    .then(response => {
-      console.log(`Status: ${response.status}`)
-    })
-    .catch(err => {
-      console.error(err)
-  })
-
-  res.sendStatus(200);
 })
 
 // This is a connection testing api 
