@@ -276,6 +276,7 @@ app.post('/get_doctorInfo', (req, res) => {
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
   // console.log(req.value);
+  // listDatabases();
 
   // Check file extension path.extname()
   if (typeof req.file != 'undefined') {
