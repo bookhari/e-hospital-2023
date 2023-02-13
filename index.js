@@ -5,10 +5,12 @@ const FormData = require('form-data');
 const path = require('path');
 const conn = require('./dbConnection/dbConnection');
 const mongoClient = require('./dbConnection/mongodbConnection');
+const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
 const upload = multer();
 const port = process.env.PORT || 5000;
+
 
 var sql = '';
 var crypto = require('crypto')
@@ -17,7 +19,7 @@ app.use(body_parse.json());
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({ extended: true }));
-
+// mongoClient.connectToServer();
 
 app.get('/', (req, res) => {
     res.render("pages/index");
@@ -276,7 +278,7 @@ app.post('/get_doctorInfo', (req, res) => {
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
   // console.log(req.value);
-  // listDatabases();
+  // console.log(mongoDb);
 
   // Check file extension path.extname()
   if (typeof req.file != 'undefined') {
@@ -287,17 +289,19 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
       form.append('value', "0");
     
       const response = axios.post('http://localhost:5000/connectionTesting', form)
-        .then(response => {
+        .then(async response => {
           console.log(`Status: ${response.status}`)
-          res.send(`Image receive, forward success. Response: ${response.status}`);
+          const result = await mongoDb.collection("files1").insertOne(req.file);
+          console.log(`New image created with the following id: ${result.insertedId}`);
+          res.send(`Image received, db update success. ML response: ${response.status}`);
         })
         .catch(err => {
           console.error(err)
-          res.send(`Image receive, forward failure. Response: ${err}`);
+          res.send(`Image received, forward failure. Response: ${err}`);
       })
     
     } else {
-      res.send("File receive, wrong format.");
+      res.send("File received, wrong format.");
     }
   } else {
     res.send("File not receive.");
