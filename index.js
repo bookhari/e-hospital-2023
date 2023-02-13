@@ -3,7 +3,8 @@ const multer = require('multer');
 const axios = require('axios');
 const FormData = require('form-data');
 const path = require('path');
-const conn = require('./dbConnection/dbConnection')
+const conn = require('./dbConnection/dbConnection');
+const mongoClient = require('./dbConnection/mongodbConnection');
 const body_parse = require('body-parser');
 const app = express();
 const upload = multer();
@@ -278,7 +279,7 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
 
   // Check file extension path.extname()
   if (typeof req.file != 'undefined') {
-    if (path.extname(req.file.originalname) == ".jpeg") {
+    if (path.extname(req.file.originalname) == ".png") {
       const form = new FormData();
       const file = req.file;
       form.append('image', file.buffer, file.originalname);
@@ -287,12 +288,13 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
       const response = axios.post('http://localhost:5000/connectionTesting', form)
         .then(response => {
           console.log(`Status: ${response.status}`)
+          res.send(`Image receive, forward success. Response: ${response.status}`);
         })
         .catch(err => {
           console.error(err)
+          res.send(`Image receive, forward failure. Response: ${err}`);
       })
     
-      res.send("Image receive, right format.");
     } else {
       res.send("File receive, wrong format.");
     }
