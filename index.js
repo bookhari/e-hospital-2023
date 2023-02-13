@@ -293,7 +293,7 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
           console.log(`Status: ${response.status}`)
           const result = await mongoDb.collection("files1").insertOne(req.file);
           console.log(`New image created with the following id: ${result.insertedId}`);
-          res.send(`Image received, db update success. ML response: ${response.status}`);
+          res.send(`Image received, db update success. ML response: ${response.data}`);
         })
         .catch(err => {
           console.error(err)
@@ -314,7 +314,7 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request receive.");
   console.log(req.file);
   console.log(req.body);
-  res.sendStatus(200);
+  res.send("Request receive by test api.");
 })
 
 app.post('/Hospital', (req, res) => {
