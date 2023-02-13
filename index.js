@@ -129,51 +129,68 @@ app.post('/send-contact-form', (req, res) => {
   const RECEIVER_EMAIL = req.body.userEmail;
   const USER_MESSAGE = req.body.userMessage;
 
-  // Function to call to nodemailer
-  const nodeMailer = require("nodemailer");
-  const html = `
-    <h3> E-Hospital: Your contact us response </h3>
-    <p> Hi ${RECEIVER_NAME}, </p>
-    <br> <br>      
-    Thank you for your email. This is to notify you that we have received you contact-us query.
-    We will respond in 3-5 business days. The following is your query for your records.
-    </p>
-    <p> Name: ${RECEIVER_NAME} </p>
-    <p> Email: ${RECEIVER_EMAIL} </p>
-    <p> Message: ${USER_MESSAGE} </p>
-  `;
-
-  // Respond to the request and alert the user.
-  res.send(`
-  <script>alert("Thank you ${RECEIVER_NAME}. Your response has been recorded."); 
-    window.location.href = "/contact-us";
-  </script>`
-  );
-
-  async function main() {
-    const transporter = nodeMailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: SENDER_EMAIL,
-        pass: SENDER_PASS,
-      },
-    });
+  var VALID_INPUTS = true;
   
-    const info = await transporter.sendMail({
-      from: SENDER_EMAIL,
-      to: RECEIVER_EMAIL,
-      subkect: "Contact Information",
-      html: html,
-    });
-    console.log("Message sent: " + info.messageId);
+
+  if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
+    VALID_INPUTS = false;
   }
 
-  main().catch((e) => {
-    console.log(e);
-  });
+  // Function to call to nodemailer
+  if(VALID_INPUTS){
+    const nodeMailer = require("nodemailer");
+    const html = `
+      <h3> E-Hospital: Your contact us response </h3>
+      <p> Hi ${RECEIVER_NAME}, </p>
+      <br> <br>      
+      Thank you for your email. This is to notify you that we have received you contact-us query.
+      We will respond in 3-5 business days. The following is your query for your records.
+      </p>
+      <p> Name: ${RECEIVER_NAME} </p>
+      <p> Email: ${RECEIVER_EMAIL} </p>
+      <p> Message: ${USER_MESSAGE} </p>
+    `;
 
+    // Respond to the request and alert the user.
+    res.send(`
+    <script>alert("Thank you ${RECEIVER_NAME}. Your response has been recorded."); 
+      window.location.href = "/contact-us";
+    </script>`
+    );
+
+    async function main() {
+      const transporter = nodeMailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: SENDER_EMAIL,
+          pass: SENDER_PASS,
+        },
+      });
+    
+      const info = await transporter.sendMail({
+        from: SENDER_EMAIL,
+        to: RECEIVER_EMAIL,
+        subkect: "Contact Information",
+        html: html,
+      });
+      console.log("Message sent: " + info.messageId);
+    }
+
+    main().catch((e) => {
+      console.log(e);
+    });
+  } else{
+
+    // Respond to the user that inputs are invalid
+    res.send(`
+    <script>alert("Your inputs are invalid. Make sure that every field is filled."); 
+      window.location.href = "/contact-us";
+    </script>`
+    );
+
+  }
 })
 
 
