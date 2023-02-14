@@ -282,7 +282,7 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
  
   // Check file extension path.extname()
   if (typeof req.file != 'undefined') {
-    if (path.extname(req.file.originalname) == ".jpeg" || path.extname(req.file.originalname) == ".png") {
+    if (path.extname(req.file.originalname) == ".jpeg") {
       const form = new FormData();
       const file = req.file;
       form.append('image', file.buffer, file.originalname);
@@ -293,18 +293,18 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
           console.log(`Status: ${response.status}`)
           const result = await mongoDb.collection("files1").insertOne(req.file);
           console.log(`New image created with the following id: ${result.insertedId}`);
-          res.send(`Image received, db update success. ML response: ${response.data}`);
+          res.send({message: response.data});
         })
         .catch(err => {
           console.error(err)
-          res.send(`Image received, forward failure. Response: ${err}`);
+          res.send({error: err});
       })
     
     } else {
-      res.send("File received, wrong format.");
+      res.send({error: "The file is in the wrong format."});
     }
   } else {
-    res.send("File not receive.");
+    res.send({error: "File not receive."});
   }
 
 })
