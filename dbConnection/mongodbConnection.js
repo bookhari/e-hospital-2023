@@ -6,10 +6,10 @@ const client = new MongoClient(uri);
 try {
     // Connect to the MongoDB cluster
     client.connect();
-    console.log('Connected to the Mongo DB server.');
-
-    // listDatabases();
+    console.log('Establish Mongo DB connection.');
+    testConnection();
 } catch (e) {
+    console.log('Cannot connect to the Mongo DB server.');
     console.error(e);
 }
 
@@ -23,12 +23,11 @@ module.exports = {
     }
 };
 
-// async function listDatabases(){
-//     databasesList = await client.db().admin().listDatabases();
-
-//     console.log("Databases:");
-//     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-// };
+async function testConnection(){
+    databasesList = await client.db().admin().listDatabases();
+    console.log("Connected to the Mongo Database");
+    // databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+};
 
 // async function createNewImage(client, collectionName, image){
 //     const result = await client.db("db1").collection(collectionName).insertOne(image);
