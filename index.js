@@ -279,10 +279,10 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
   // console.log(req.value);
   // console.log(mongoDb);
-
+ 
   // Check file extension path.extname()
   if (typeof req.file != 'undefined') {
-    if (path.extname(req.file.originalname) == ".png") {
+    if (path.extname(req.file.originalname) == ".jpeg" || path.extname(req.file.originalname) == ".png") {
       const form = new FormData();
       const file = req.file;
       form.append('image', file.buffer, file.originalname);
@@ -314,7 +314,7 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request receive.");
   console.log(req.file);
   console.log(req.body);
-  res.send("Request receive by test api.");
+  res.send("Request received by test api.");
 })
 
 app.post('/Hospital', (req, res) => {
