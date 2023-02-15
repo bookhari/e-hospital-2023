@@ -8,6 +8,13 @@
 <!-- Added by HTTrack -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 
+<!-- Bootstrap CSS link -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+<!-- Font Awesome CSS link -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+
 <head>
 
 <%- include('../partials/header') -%>
@@ -2055,25 +2062,106 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                                 Upload Image
                               </h4>
 
-                              <!--upload field-->
+                              <!--first name field-->
                               <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
                                 <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
-                                  <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_NAME"
+                                  <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL"
                                     class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
                                     <input
-                                      name="userName" placeholder="picture"
+                                      name="userEmail"
                                       type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel"
-                                      id="input5387" value="" data-aid="CONTACT_FORM_NAME" data-typography="InputAlpha"
+                                      id="input5388" placeholder="First Name of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha"
                                       class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
                                     <label
-                                      data-ux="InputFloatLabelLabel" for="input5387" data-typography="InputAlpha"
+                                      data-ux="InputFloatLabelLabel" for="input5388" data-typography="InputAlpha"
                                       class="x-el x-el-label c1-1 c1-2 c1-1o c1-1b c1-1c c1-4g c1-8e c1-8f c1-8g c1-8h c1-b c1-82 c1-42 c1-43 c1-8d c1-45 c1-46 c1-47 c1-48">
-                                      Name
+                                      First Name
                                     </label>
                                   </div>
                                 </div>
                               </div>
-                            
+
+                              <!--last name field-->
+                              <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
+                                <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
+                                  <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL"
+                                    class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
+                                    <input
+                                      name="userEmail"
+                                      type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel"
+                                      id="input5388" placeholder="Last name of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha"
+                                      class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
+                                    <label
+                                      data-ux="InputFloatLabelLabel" for="input5388" data-typography="InputAlpha"
+                                      class="x-el x-el-label c1-1 c1-2 c1-1o c1-1b c1-1c c1-4g c1-8e c1-8f c1-8g c1-8h c1-b c1-82 c1-42 c1-43 c1-8d c1-45 c1-46 c1-47 c1-48">
+                                      Last Name
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!--email field-->
+                              <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
+                                <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
+                                  <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL"
+                                    class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
+                                    <input
+                                      name="userEmail"
+                                      type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel"
+                                      id="input5388" placeholder="Email of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha"
+                                      class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
+                                    <label
+                                      data-ux="InputFloatLabelLabel" for="input5388" data-typography="InputAlpha"
+                                      class="x-el x-el-label c1-1 c1-2 c1-1o c1-1b c1-1c c1-4g c1-8e c1-8f c1-8g c1-8h c1-b c1-82 c1-42 c1-43 c1-8d c1-45 c1-46 c1-47 c1-48">
+                                      Email
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!--disease type-->
+                              <label for="disease type">disease type:</label>
+                              <div class="dropdown">
+                                 <!--<h3>Dropdown Heading</h3>-->
+                                <select>
+                                  <option value="" selected disabled>Select a disease type</option>
+                                  <option value="option1">cancer</option>
+                                  <option value="option2">disease 2</option>
+                                  <option value="option3">disease 3</option>
+                                </select>
+                              </div>
+                              <br>
+                              <!--test type-->
+                              <label for="test type">test type:</label>
+                              <div class="dropdown">
+                                <!--<h3>Dropdown Heading</h3>-->
+                               <select>
+                                 <option value="" selected disabled>Select a disease type</option>
+                                 <option value="option1">test 1</option>
+                                 <option value="option2">test 2</option>
+                                 <option value="option3">test 3</option>
+                               </select>
+                             </div>
+                             <br>
+                    
+                             <!--test date-->
+                             <div class="form-group">
+                              <label for="myDate">Select the date of the test:</label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                                <input type="date" class="form-control" id="myDate" name="myDate">
+                              </div>
+                              </div> 
+
+                              <!--image upload-->
+                              <form action="/upload" method="POST" enctype="multipart/form-data">
+                                <label for="myImage">Choose an image:</label>
+                                <input type="file" id="myImage" name="myImage">
+                                <!--<button type="submit">Upload</button>-->
+                              </form>
+                          
                               <!--button-->
                               <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
                                 <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
@@ -2089,6 +2177,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                                   </div>
                                 </div>
                               </div>
+
                             </form>
                           </div>
                         </div>
