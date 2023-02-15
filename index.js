@@ -291,8 +291,8 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
       const response = axios.post('http://localhost:5000/connectionTesting', form)
         .then(async response => {
           console.log(`Status: ${response.status}`)
-          const result = await mongoDb.collection("files1").insertOne(req.file);
-          console.log(`New image created with the following id: ${result.insertedId}`);
+          // const result = await mongoDb.collection("test").insertOne(req.file);
+          // console.log(`New image created with the following id: ${result.insertedId}`);
           res.send({message: response.data});
         })
         .catch(err => {
