@@ -1,8 +1,17 @@
 const express = require('express');
-const conn = require('./dbConnection/dbConnection')
+const multer = require('multer');
+const axios = require('axios');
+const FormData = require('form-data');
+const path = require('path');
+const conn = require('./dbConnection/dbConnection');
+const mongoClient = require('./dbConnection/mongodbConnection');
+const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
+const upload = multer();
 const port = process.env.PORT || 5000;
+
+
 var sql = '';
 var crypto = require('crypto')
 
@@ -10,7 +19,7 @@ app.use(body_parse.json());
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({ extended: true }));
-
+// mongoClient.connectToServer();
 
 app.get('/', (req, res) => {
     res.render("pages/index");
@@ -234,7 +243,6 @@ app.post('/patientsDashboard', (req, res) => {
 })
 
 app.post('/get_patientInfo', (req, res) => {
-
     const getDetails = req.body
     let uuid = "PAT-"+ "ON-" + getDetails.Age + "-" + getDetails.province + "-" + Math.floor(Math.random()*90000) + 10000;
     var password = crypto.randomBytes(16).toString("hex");
@@ -266,6 +274,49 @@ app.post('/get_doctorInfo', (req, res) => {
       res.render("pages/thankyou");
     })
 })
+
+app.post('/recordUpdate', upload.single("image"), (req,res) => {
+  // console.log(req.file);
+  // console.log(req.value);
+  // console.log(mongoDb);
+ 
+  // Check file extension path.extname()
+  if (typeof req.file != 'undefined') {
+    if (path.extname(req.file.originalname) == ".jpeg") {
+      const form = new FormData();
+      const file = req.file;
+      form.append('image', file.buffer, file.originalname);
+      form.append('value', "0");
+    
+      const response = axios.post('http://localhost:5000/connectionTesting', form)
+        .then(async response => {
+          console.log(`Status: ${response.status}`)
+          // const result = await mongoDb.collection("test").insertOne(req.file);
+          // console.log(`New image created with the following id: ${result.insertedId}`);
+          res.send({message: response.data});
+        })
+        .catch(err => {
+          console.error(err)
+          res.send({error: err});
+      })
+    
+    } else {
+      res.send({error: "The file is in the wrong format."});
+    }
+  } else {
+    res.send({error: "File not receive."});
+  }
+
+})
+
+// This is a connection testing api 
+app.post('/connectionTesting', upload.single("image"), (req,res) => {
+  console.log("Request receive.");
+  console.log(req.file);
+  console.log(req.body);
+  res.send("Request received by test api.");
+})
+
 app.post('/Hospital', (req, res) => {
     const get_HospitalInfo = req.body;
     var password = crypto.randomBytes(16).toString("hex");
