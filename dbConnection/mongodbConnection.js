@@ -1,13 +1,13 @@
 const { MongoClient } = require('mongodb');
 
-const uri = "mongodb+srv://admin:admin@cluster0.dw0swyx.mongodb.net/?retryWrites=true&w=majority"
+const uri = "mongodb+srv://admin:admin@e-hospital.mgq2xgp.mongodb.net/?retryWrites=true&w=majority"
 const client = new MongoClient(uri);
 
 try {
     // Connect to the MongoDB cluster
     client.connect();
     testConnection();
-    // findImageById("files1", "63ea98dc1c9663517dc9ec5a");
+    // findImageById("files1", "63ec4d0bf7e2456aaff8347c");
 } catch (e) {
     console.log('Cannot connect to the Mongo DB server.');
     console.error(e);
@@ -15,10 +15,10 @@ try {
 
 module.exports = {
     getDb: function () {
-      return client.db("db1");
+      return client.db("mldata");
     },
     createData: async function (collectionName, file) {
-        const result = await client.db("db1").collection(collectionName).insertOne(file);
+        const result = await client.db("mldata").collection(collectionName).insertOne(file);
         return result;
     }
 };
