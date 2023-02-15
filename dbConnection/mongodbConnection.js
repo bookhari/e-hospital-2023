@@ -6,7 +6,6 @@ const client = new MongoClient(uri);
 try {
     // Connect to the MongoDB cluster
     client.connect();
-    console.log('Establish Mongo DB connection.');
     testConnection();
     // findImageById("files1", "63ea98dc1c9663517dc9ec5a");
 } catch (e) {
