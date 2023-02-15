@@ -125,6 +125,84 @@ app.get('/hospital', (req, res) => {
     res.render("pages/hospital");
 })
 
+app.get('/contact-us', (req, res) => {
+  res.render("pages/contact-us");
+});
+
+app.post('/send-contact-form', (req, res) => {
+
+  // Define mandatory parameters
+  const SENDER_EMAIL = "ehospital112233@gmail.com";
+  const SENDER_PASS = "hlcvsrrzempexzhw";
+  const RECEIVER_NAME = req.body.userName;
+  const RECEIVER_EMAIL = req.body.userEmail;
+  const USER_MESSAGE = req.body.userMessage;
+
+  var VALID_INPUTS = true;
+  
+
+  if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
+    VALID_INPUTS = false;
+  }
+
+  // Function to call to nodemailer
+  if(VALID_INPUTS){
+    const nodeMailer = require("nodemailer");
+    const html = `
+      <h3> E-Hospital: Your contact us response </h3>
+      <p> Hi ${RECEIVER_NAME}, </p>
+      <br> <br>      
+      Thank you for your email. This is to notify you that we have received you contact-us query.
+      We will respond in 3-5 business days. The following is your query for your records.
+      </p>
+      <p> Name: ${RECEIVER_NAME} </p>
+      <p> Email: ${RECEIVER_EMAIL} </p>
+      <p> Message: ${USER_MESSAGE} </p>
+    `;
+
+    // Respond to the request and alert the user.
+    res.send(`
+    <script>alert("Thank you ${RECEIVER_NAME}. Your response has been recorded."); 
+      window.location.href = "/contact-us";
+    </script>`
+    );
+
+    async function main() {
+      const transporter = nodeMailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: SENDER_EMAIL,
+          pass: SENDER_PASS,
+        },
+      });
+    
+      const info = await transporter.sendMail({
+        from: SENDER_EMAIL,
+        to: RECEIVER_EMAIL,
+        subkect: "Contact Information",
+        html: html,
+      });
+      console.log("Message sent: " + info.messageId);
+    }
+
+    main().catch((e) => {
+      console.log(e);
+    });
+  } else{
+
+    // Respond to the user that inputs are invalid
+    res.send(`
+    <script>alert("Your inputs are invalid. Make sure that every field is filled."); 
+      window.location.href = "/contact-us";
+    </script>`
+    );
+
+  }
+})
+
+
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
 
   const uuid = req.body.email;
