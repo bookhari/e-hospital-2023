@@ -240,14 +240,21 @@ app.post('/patientsDashboard', (req, res) => {
 
 //Editable
 
-app.post('/patientsDashboardEdit', (req, res) => {
-  const uuid = req.body.email;
-  const Fnamet = req.body.Firstname;
-
+app.get('/patientsDashboardEdit', (req, res) => {
+  const uuid = req.query.id;
+  const fname = req.query.fname;
+  const MName = req.query.MName;
+  const LName = req.query.LName;
+  const MobileNumber = req.query.MobileNumber;
+  const Age = req.query.Age;
+  const BloodGroup = req.query.BloodGroup;
+  const Location = req.query.Location;
+  console.log(MName)
   
-  sql = "UPDATE patients_registration SET FName = ? WHERE uuid =  ? AND verification = ?";
-  conn.query(sql,[Fnamet,uuid,true],(error, result) => {
-    var patients_data = "result[0];";
+  sql = "UPDATE patients_registration SET FName = ?, MName = ? , LName = ? , MobileNumber = ? , Age = ? , BloodGroup = ? , Location = ?  WHERE uuid =  ?";
+  conn.query(sql,[fname,MName,LName,MobileNumber,Age,BloodGroup,Location,uuid],(error, result) => {
+    // console.log(result);
+    //var patients_data = "result[0]";
     // res.render("pages/Dashboard/patientsDashboard", {
     //   patient: patients_data,
       
@@ -302,13 +309,31 @@ app.post('/get_patientInfo', (req, res) => {
     var VALUES = [[getDetails.Fname, getDetails.Mname,
     getDetails.LName, getDetails.Age, getDetails.bloodGroup, getDetails.number,
     getDetails.EmailId, getDetails.Address, getDetails.Location, getDetails.PostalCode, getDetails.City, getDetails.province, getDetails.H_CardNo,
-    getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, uuid, false, password]]
+    getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, uuid, true, password]]
 
     conn.query(sql, [VALUES], (error, result) => {
         if (error) throw error
         res.render("pages/thankyou");
     })
-})
+    sms();
+
+    async function sms(){
+
+      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+      const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
+      
+      const client = require('twilio')(accountSid, authToken,{
+        logLevel: 'debug'
+      });
+      
+      client.messages
+            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+            , from: '+13433074905', to: getDetails.number})
+            .then(message => console.log(message.dateCreated));    //message.sid
+              }
+}
+)
+
 
 
 app.post('/get_doctorInfo', (req, res) => {
@@ -321,12 +346,28 @@ app.post('/get_doctorInfo', (req, res) => {
     var getDoctorsInfo = [[get_doctorInfo.Fname, get_doctorInfo.Mname,
     get_doctorInfo.LName, get_doctorInfo.age, get_doctorInfo.bloodGroup, get_doctorInfo.MobileNo,
     get_doctorInfo.EmailId, get_doctorInfo.ConfirmEmail, get_doctorInfo.Location1, get_doctorInfo.Location1, get_doctorInfo.PostalCode, get_doctorInfo.city, get_doctorInfo.Country, get_doctorInfo.province, get_doctorInfo.MLno,
-    get_doctorInfo.DLNo, get_doctorInfo.Specialization, get_doctorInfo.PractincingHospital, get_doctorInfo.gender, uuid, false, password]]
+    get_doctorInfo.DLNo, get_doctorInfo.Specialization, get_doctorInfo.PractincingHospital, get_doctorInfo.gender, uuid, true, password]]
 
     conn.query(sql, [getDoctorsInfo], (error, result) => {
         if (error) throw error
       res.render("pages/thankyou");
     })
+    sms();
+
+    async function sms(){
+
+      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+      const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
+      
+      const client = require('twilio')(accountSid, authToken,{
+        logLevel: 'debug'
+      });
+      
+      client.messages
+            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+            , from: '+13433074905', to: get_doctorInfo.MobileNo})
+            .then(message => console.log(message.dateCreated));    //message.sid
+              }
 })
 
 
