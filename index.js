@@ -2,7 +2,7 @@ const express = require('express');
 const conn = require('./dbConnection/dbConnection')
 const body_parse = require('body-parser');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5555;
 var sql = '';
 var crypto = require('crypto')
 
@@ -115,6 +115,14 @@ app.get('/b', (req, res) => {
 app.get('/hospital', (req, res) => {
     res.render("pages/hospital");
 })
+
+
+
+app.get('/liver', (req, res) => {
+    res.render("pages/liver-prediction");
+})
+
+
 
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
 
