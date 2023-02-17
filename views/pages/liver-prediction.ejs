@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="en-CA">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+
+<style>
+  .bodyContent{
+      margin-top: 60px;
+      min-height: calc(100vh - 60px);
+      display: flex;
+      width: 100%;
+      background-image: url("https://badgut.org/wp-content/uploads/Image-Content-liver.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+  }
+  .bodyLeft{
+      width: 20%;
+      min-width: 230px;
+      background-color: lightgrey;
+  }
+  .bodyLeft p{
+      margin: 1rem;
+  }
+  .bodyRight{
+      display: flex;
+      flex-direction: column;
+      flex:1;
+
+  }
+  .instruction{
+      font-size: 2rem;
+      text-align: center;
+      margin: 3rem 1rem 0 1rem;
+      border-bottom: 2px solid black;
+  }
+  .modelAuthor{
+      margin: 1rem;
+      font-size: 0.8rem;
+  }
+  .diseaseTitle{
+      margin: 1rem;
+      font-size: 2rem;
+      font-weight: bold;
+  }
+  .card1{
+      margin: 1rem;
+      background-color: rgba(66,69,84,0.4);
+      border-radius: 12px;
+      min-height: 100px;
+      box-shadow: 2px 2px 2px 2px #888888;
+      color: white!important;
+      padding: 1rem;
+  }
+  select, input{
+      width: 100%;
+      border-radius: 8px;
+      padding-left: 0.5rem;
+  }
+  .col-sm div{
+      font-size: 1.1rem;
+      margin-top: 1rem;
+  }
+  .patientInfo{
+      padding-left: 1rem;
+      font-size: 1.5rem;
+  }
+  .liverRes{
+      margin: 1rem 0 0 1rem;
+  }
+
+
+
+
+</style>
+
+
+
+<head>
+
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+</head>
+
+<%- include('../partials/header') -%>
+<body>
+    <div class="bodyContent">
+        <div class="bodyLeft">
+            <div class="instruction">Instructions</div>
+            <p>Enter bio parameters to analyze heart failure probability.</p>
+            <div class="modelAuthor">Model trained by @Hamidreza Hatami Shirkouhi & @Yasaman Mohtashami</div>
+        </div>
+
+        <div class="bodyRight">
+            <div class="diseaseTitle">Liver Disease Prediction</div>
+            <div class="card1">
+                <div class="patientInfo">Patient information</div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div>Age</div>
+                            <input type="text" class="form-control" id="age"/>
+                        </div>
+                        <div class="col-sm">
+                            <div for="gender">Gender</div>
+                              <select class="form-control" id="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                              </select>
+                        </div>
+                        <div class="col-sm"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div>Total Bilirubin</div>
+                            <input type="text" class="form-control" id="tb"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Direct Bilirubin</div>
+                            <input type="text" class="form-control" id="db"/>
+                        </div>
+                        <div class="col-sm"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div>Alkaline Phosphatase</div>
+                            <input type="text" class="form-control" id="ap"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Alanine Aminotransferase</div>
+                            <input type="text" class="form-control" id="aa1"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Aspartate Aminotransferase</div>
+                            <input type="text" class="form-control" id="aa2"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div>Total Proteins</div>
+                            <input type="text" class="form-control" id="tp"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Albumin</div>
+                            <input type="text" class="form-control" id="al"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Albumin and Globulin Ratio</div>
+                            <input type="text" class="form-control" id="ag"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3" id="myButton">Run model</button>
+                </div>
+            </div>
+            <div class="card1">
+                <div class="patientInfo">Prediction Result</div>
+                <div class="liverRes">Congratulations! No liver disease detected.</div>
+            </div>
+        </div>
+
+
+
+    </div>
+</body>
+<%- include('../partials/footer-new') -%>
+
+</html>
+
+
+
+
+<script>
+    const userInput = {
+        age:document.getElementById("age").value,
+        gender:document.getElementById("gender").value,
+        tb:document.getElementById("tb").value,
+        db:document.getElementById("db").value,
+        ap:document.getElementById("ap").value,
+        aa1:document.getElementById("aa1").value,
+        aa2:document.getElementById("aa2").value,
+        tp:document.getElementById("tp").value,
+        al:document.getElementById("al").value,
+        ag:document.getElementById("ag").value
+    };
+
+    // const btn = document.getElementById("myButton");
+    const btn = document.getElementById("myButton");
+    btn.addEventListener('click', event => {
+        event.preventDefault();
+        console.log(userInput);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
