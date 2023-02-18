@@ -368,20 +368,24 @@ app.post('/update_availability', (req, res) => {
   const uuid = req.body.email;
   const password = req.body.password;
 
-  sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
-  console.log(sql)
-  conn.query(sql,(error, result) => {
-    if (error) throw error
-    if (result.affectedRows == 1) {
-      result.changedRows == 1 ? res.send({success:"Availability updated."}) : res.send({success:"The update is already in place."})
-    } else if (result.affectedRows == 0) {
-      res.send({error:"Your account info is not correct."});
-    } else if (result.affectedRows > 1) {
-      res.send({error:"Duplicate account updated, please contact the system manager."});
-    } else {
-      res.send({error:"Something goes wrong in the database."});
-    }
-  })
+  if (!Availability || !uuid || !password) {
+    res.send({error:"Missing Availability, ID, or password."});
+  } else {
+    sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+    console.log(sql)
+    conn.query(sql,(error, result) => {
+      if (error) throw error
+      if (result.affectedRows == 1) {
+        result.changedRows == 1 ? res.send({success:"Availability updated."}) : res.send({success:"The update is already in place."})
+      } else if (result.affectedRows == 0) {
+        res.send({error:"Your account info is not correct."});
+      } else if (result.affectedRows > 1) {
+        res.send({error:"Duplicate account updated, please contact the system manager."});
+      } else {
+        res.send({error:"Something goes wrong in the database."});
+      }
+    })
+  }
 })
 
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
