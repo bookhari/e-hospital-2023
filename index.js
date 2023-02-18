@@ -365,7 +365,7 @@ app.get('/get_availableDentists', (req, res) => {
 
 app.post('/update_availability', (req, res) => {
   const Availability = req.body.Availability;
-  const uuid = req.body.email;
+  const uuid = req.body.id;
   const password = req.body.password;
 
   if (!Availability || !uuid || !password) {
