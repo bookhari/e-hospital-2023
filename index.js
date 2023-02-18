@@ -355,6 +355,35 @@ app.post('/get_doctorInfo', (req, res) => {
     })
 })
 
+app.get('/get_availableDentists', (req, res) => {
+  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
+  conn.query(sql, (error, result) => {
+    if (error) throw error
+    res.send(result);
+  })
+})
+
+app.post('/update_availability', (req, res) => {
+  const Availability = req.body.Availability;
+  const uuid = req.body.email;
+  const password = req.body.password;
+
+  sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  console.log(sql)
+  conn.query(sql,(error, result) => {
+    if (error) throw error
+    if (result.affectedRows == 1) {
+      result.changedRows == 1 ? res.send({success:"Availability updated."}) : res.send({success:"The update is already in place."})
+    } else if (result.affectedRows == 0) {
+      res.send({error:"Your account info is not correct."});
+    } else if (result.affectedRows > 1) {
+      res.send({error:"Duplicate account updated, please contact the system manager."});
+    } else {
+      res.send({error:"Something goes wrong in the database."});
+    }
+  })
+})
+
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
   // console.log(req.value);
