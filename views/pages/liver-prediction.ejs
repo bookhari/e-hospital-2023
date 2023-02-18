@@ -65,8 +65,9 @@
       padding-left: 1rem;
       font-size: 1.5rem;
   }
-  .liverRes{
+  #liverRes{
       margin: 1rem 0 0 1rem;
+      font-size: 1.5rem;
   }
 
 
@@ -98,13 +99,14 @@
     <div class="bodyContent">
         <div class="bodyLeft">
             <div class="instruction">Instructions</div>
-            <p>Enter bio parameters to analyze heart failure probability.</p>
+            <p>Enter bio parameters to analyze liver disease.</p>
             <div class="modelAuthor">Model trained by @Hamidreza Hatami Shirkouhi & @Yasaman Mohtashami</div>
         </div>
 
         <div class="bodyRight">
             <div class="diseaseTitle">Liver Disease Prediction</div>
-            <div class="card1">
+            <form action="" method="post">
+                <div class="card1">
                 <div class="patientInfo">Patient information</div>
                 <div class="container">
                     <div class="row">
@@ -163,9 +165,10 @@
                     <button type="submit" class="btn btn-success mt-3" id="myButton">Run model</button>
                 </div>
             </div>
+            </form>
             <div class="card1">
                 <div class="patientInfo">Prediction Result</div>
-                <div class="liverRes">Congratulations! No liver disease detected.</div>
+                <div id="liverRes"></div>
             </div>
         </div>
 
@@ -181,7 +184,12 @@
 
 
 <script>
-    const userInput = {
+
+    const btn = document.getElementById("myButton");
+    const liverRes = document.getElementById('liverRes')
+    btn.addEventListener('click', event => {
+        event.preventDefault();
+        const formData = {
         age:document.getElementById("age").value,
         gender:document.getElementById("gender").value,
         tb:document.getElementById("tb").value,
@@ -192,13 +200,23 @@
         tp:document.getElementById("tp").value,
         al:document.getElementById("al").value,
         ag:document.getElementById("ag").value
-    };
+        };
+        console.log(formData)
 
-    // const btn = document.getElementById("myButton");
-    const btn = document.getElementById("myButton");
-    btn.addEventListener('click', event => {
-        event.preventDefault();
-        console.log(userInput);
+        fetch('http://127.0.0.1:5002/predict_liver_disease', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers:{
+          'Content-Type':'application/json'
+        }
+          })
+          .then(response => response.text())
+          .then(data => {
+              console.log(data)
+            liverRes.innerHTML = data;
+          });
+
+
     })
 </script>
 
