@@ -357,36 +357,63 @@ app.post('/get_doctorInfo', (req, res) => {
 
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
-  // console.log(req.value);
-  // console.log(mongoDb);
- 
-  // Check file extension path.extname()
-  if (typeof req.file != 'undefined') {
-    if (path.extname(req.file.originalname) == ".jpeg") {
-      const form = new FormData();
-      const file = req.file;
-      form.append('image', file.buffer, file.originalname);
-      form.append('value', "0");
-    
-      const response = axios.post('http://localhost:5000/connectionTesting', form)
-        .then(async response => {
-          console.log(`Status: ${response.status}`)
-          // const result = await mongoDb.collection("test").insertOne(req.file);
-          // console.log(`New image created with the following id: ${result.insertedId}`);
-          res.send({message: response.data});
-        })
-        .catch(err => {
-          console.error(err)
-          res.send({error: err});
-      })
-    
-    } else {
-      res.send({error: "The file is in the wrong format."});
+  // console.log(req.body);
+
+  if (!req.body) {
+    res.send({error:"Missing request body."});
+    return;
+  }
+  const PatientEmail = req.body.PatientEmail;
+  const PatientFirstName = req.body.PatientFirstName;
+  const PatientLastName = req.body.PatientLastName;
+
+  // Checkout the patient profile
+  if (!PatientEmail || !PatientFirstName || !PatientLastName) {
+    res.send({error:"Missing patient email, first name, or last name."});
+    return;
+  }
+  var pid = 0;
+  sql = `SELECT id FROM patients_registration WHERE EmailId = "${PatientEmail}" AND FName = "${PatientFirstName}" AND LName = "${PatientLastName}"`;
+    conn.query(sql, (error, result) => {
+    if (error) throw error
+    if (result.length == 0) {
+      res.send({error:"No patient matched in databse."});
+      return;
+    } else if (result.length > 1) {
+      res.send({error:"Duplicate patient profile matched."});
+      return;
+    } else if (result.length < 0) {
+      res.send({error:"Invalid index on the backend."});
+      return;
     }
-  } else {
+    pid = result[0].id;
+  })
+
+  // Check file extension path.extname()
+  if (!req.file) {
     res.send({error: "File not receive."});
+    return;
+  } else if (path.extname(req.file.originalname) != ".jpeg") {
+    res.send({error: "The file is in the wrong format."});
+    return;
   }
 
+  // Send data to external api
+  const form = new FormData();
+  const file = req.file;
+  form.append('image', file.buffer, file.originalname);
+  // form.append('value', "0");
+  axios.post('http://localhost:5000/connectionTesting', form)
+    .then(async response => {
+      console.log(`Status: ${response.status}`)
+      // const result = await mongoDb.collection("test").insertOne(req.file);
+      // console.log(`New image created with the following id: ${result.insertedId}`);
+      res.send({message: response.data});
+    })
+    .catch(err => {
+      console.error(err)
+      res.send({error: err});
+  })
 })
 
 // This is a connection testing api 
