@@ -2051,7 +2051,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                           class="x-el x-el-div c1-1 c1-2 c1-74 c1-7d c1-7e c1-7f c1-t c1-28 c1-7g c1-2a c1-7h c1-b c1-c c1-7i c1-7j c1-7k c1-7l c1-7m c1-7n c1-7o c1-d c1-7p c1-7q c1-7r c1-e c1-f c1-g">
                           <div data-ux="Block" data-aid="CONTACT_FORM_CONTAINER_REND"
                             class="x-el x-el-div c1-1 c1-2 c1-1w c1-1v c1-b c1-c c1-d c1-e c1-f c1-g">
-                            <form aria-live="polite" data-ux="Form" action="/send-contact-form" method="post"
+                            <form aria-live="polite" data-ux="Form" action="/submit-brain" method="post"
                               class="x-el x-el-form c1-1 c1-2 c1-2f c1-b c1-c c1-d c1-e c1-f c1-g"><input type="text"
                                 name="_app_id" autoComplete="off" tabindex="-1" style="display:none" value="" />
 
@@ -2061,7 +2061,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                                   <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL"
                                     class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
                                     <input
-                                      name="userEmail"
+                                      name="patientFirstName"
                                       type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel"
                                       id="input5388" placeholder="First Name of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha"
                                       class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
@@ -2080,7 +2080,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                                   <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL"
                                     class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
                                     <input
-                                      name="userEmail"
+                                      name="patientLastName"
                                       type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel"
                                       id="input5388" placeholder="Last name of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha"
                                       class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
@@ -2099,7 +2099,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                                   <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL"
                                     class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
                                     <input
-                                      name="userEmail"
+                                      name="patientEmail"
                                       type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel"
                                       id="input5388" placeholder="Email of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha"
                                       class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
@@ -2149,24 +2149,34 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                               </div> 
 
                               <!--image upload-->
-                              <form action="/upload" method="POST" enctype="multipart/form-data">
+                              <!-- <form action="/upload" method="POST" enctype="multipart/form-data"> -->
                                 <label for="myImage">Choose an image:</label>
                                 <input type="file" id="myImage" name="myImage">
                                 <!--<button type="submit">Upload</button>-->
-                              </form>
+                              <!-- </form> -->
                           
                               <!--button-->
                               <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
                                 <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
                                   <div data-ux="Block"
                                     class="x-el x-el-div c1-1 c1-2 c1-1v c1-b c1-c c1-d c1-e c1-f c1-g">
-                                <input type="submit" value="Send"
-                                      data-ux-btn="primary" data-ux="ButtonPrimary" color="PRIMARY" fill="GHOST"
-                                      shape="SQUARE" decoration="LINES" shadow="NONE" type="submit"
-                                      data-aid="CONTACT_SUBMIT_BUTTON_REND"
-                                      data-tccl="ux2.contact.submit_form.click,click" state="default"
-                                      data-typography="ButtonAlpha"                                                             
-                                      class="x-el x-el-button c1-3w c1-1x c1-1d c1-57 c1-8j c1-13 c1-1w c1-1v c1-1a c1-1c c1-1b c1-3o c1-t c1-4 c1-4e c1-4f c1-51 c1-53 c1-8k c1-2m c1-2k c1-26 c1-8l c1-8m c1-8n c1-56 c1-8o c1-b c1-49 c1-65 c1-42 c1-8p c1-8q c1-8r c1-8s c1-8t c1-8u c1-8v c1-8w c1-8x c1-8y c1-8z c1-90 c1-91 c1-92 c1-93 c1-94 c1-45 c1-46 c1-47 c1-48"/>
+                               <input
+                                        type="submit"
+                                        value="Send"
+                                        data-ux-btn="primary"
+                                        data-ux="ButtonPrimary"
+                                        color="PRIMARY"
+                                        fill="GHOST"
+                                        shape="SQUARE"
+                                        decoration="LINES"
+                                        shadow="NONE"
+                                        type="submit"
+                                        data-aid="CONTACT_SUBMIT_BUTTON_REND"
+                                        data-tccl="ux2.contact.submit_form.click,click"
+                                        state="default"
+                                        data-typography="ButtonAlpha"
+                                        class="x-el x-el-button c1-3w c1-1x c1-1d c1-57 c1-8j c1-13 c1-1w c1-1v c1-1a c1-1c c1-1b c1-3o c1-t c1-4 c1-4e c1-4f c1-51 c1-53 c1-8k c1-2m c1-2k c1-26 c1-8l c1-8m c1-8n c1-56 c1-8o c1-b c1-49 c1-65 c1-42 c1-8p c1-8q c1-8r c1-8s c1-8t c1-8u c1-8v c1-8w c1-8x c1-8y c1-8z c1-90 c1-91 c1-92 c1-93 c1-94 c1-45 c1-46 c1-47 c1-48"
+                                      />
                                   </div>
                                 </div>
                               </div>
