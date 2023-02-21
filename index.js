@@ -209,6 +209,17 @@ app.post('/send-contact-form', (req, res) => {
   }
 })
 
+
+app.post('/submit-brain', (req, res) => {
+  const PATIENT_FIRST_NAME = req.body.patientFirstName;
+  const PATIENT_LAST_NAME = req.body.patientLastName;
+  const PATIENT_EMAIL = req.body.patientEmail;
+
+  console.log(`Thank you for your submission ${PATIENT_FIRST_NAME}, ${PATIENT_LAST_NAME},
+  ${PATIENT_EMAIL}`);
+
+})
+
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
 
   const uuid = req.body.email;
