@@ -125,6 +125,10 @@ app.get('/hospital', (req, res) => {
     res.render("pages/hospital");
 })
 
+// Lab reterival
+app.get('/lab', (req, res) => {
+  res.render("pages/lab");
+
 app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });
@@ -302,7 +306,7 @@ app.post('/patientsDashboard', (req, res) => {
       if (error) throw error
       if(result.length == 0){
         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-        res.render('pages/patientLogin',{
+        res.render('pages/patientLogin',{    //patientsDashboard
           error: errorMessage
         })
       } else {
@@ -322,6 +326,68 @@ app.post('/patientsDashboard', (req, res) => {
       })
 })
 
+//Editable
+
+app.get('/patientsDashboardEdit', (req, res) => {
+  const uuid = req.query.id;
+  const fname = req.query.fname;
+  const MName = req.query.MName;
+  const LName = req.query.LName;
+  const MobileNumber = req.query.MobileNumber;
+  const Age = req.query.Age;
+  const BloodGroup = req.query.BloodGroup;
+  const Location = req.query.Location;
+  console.log(MName)
+  
+  sql = "UPDATE patients_registration SET FName = ?, MName = ? , LName = ? , MobileNumber = ? , Age = ? , BloodGroup = ? , Location = ?  WHERE uuid =  ?";
+  conn.query(sql,[fname,MName,LName,MobileNumber,Age,BloodGroup,Location,uuid],(error, result) => {
+    // console.log(result);
+    //var patients_data = "result[0]";
+    // res.render("pages/Dashboard/patientsDashboard", {
+    //   patient: patients_data,
+      
+    // })
+  
+  })
+
+})
+
+app.post('/patientsDashboardEditTest', (req, res) => {
+  const uuid = req.body.email;
+  const password = req.body.password;
+  const Fname = req.body.Fname;
+
+  sql = 'SELECT * FROM `patients_registration` WHERE uuid =  ? AND verification = ?';
+  console.log(sql);
+  conn.query(sql, [uuid,true] ,(error, result) => {
+      if (error) throw error
+      if(result.length == 0){
+        var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
+        res.render('pages/patientLogin',{    //patientsDashboard
+          error: errorMessage
+        })
+      } else {
+      if (result[0].uuid === uuid && result[0].password === password) {
+        var patients_data = result[0];
+        
+         sql = "UPDATE patients_registration SET FName = ? WHERE uuid =  ? AND verification = ?";
+        conn.query(sql,[Fname,uuid,true],(error, result) => {
+          
+          res.render("pages/Dashboard/patientsDashboard", {
+            patient: patients_data,
+          });
+      })
+        }
+        else {
+          var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
+          res.render('pages/patientLogin',{
+            error: errorMessage
+          })
+        }
+      }
+      })
+})
+
 app.post('/get_patientInfo', (req, res) => {
     const getDetails = req.body
     let uuid = "PAT-"+ "ON-" + getDetails.Age + "-" + getDetails.province + "-" + Math.floor(Math.random()*90000) + 10000;
@@ -330,13 +396,33 @@ app.post('/get_patientInfo', (req, res) => {
     var VALUES = [[getDetails.Fname, getDetails.Mname,
     getDetails.LName, getDetails.Age, getDetails.bloodGroup, getDetails.number,
     getDetails.EmailId, getDetails.Address, getDetails.Location, getDetails.PostalCode, getDetails.City, getDetails.province, getDetails.H_CardNo,
-    getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, uuid, false, password]]
+    getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, uuid, true, password]]
 
     conn.query(sql, [VALUES], (error, result) => {
         if (error) throw error
         res.render("pages/thankyou");
     })
-})
+    sms();
+
+    async function sms(){
+
+      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+      const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
+      
+      const client = require('twilio')(accountSid, authToken,{
+        logLevel: 'debug'
+      });
+      
+      client.messages
+            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+            , from: '+13433074905', to: getDetails.number})
+            .then(message => console.log(message.dateCreated));    //message.sid
+              }
+}
+)
+
+
+
 app.post('/get_doctorInfo', (req, res) => {
     const get_doctorInfo = req.body
     var password = crypto.randomBytes(16).toString("hex");
@@ -347,13 +433,30 @@ app.post('/get_doctorInfo', (req, res) => {
     var getDoctorsInfo = [[get_doctorInfo.Fname, get_doctorInfo.Mname,
     get_doctorInfo.LName, get_doctorInfo.age, get_doctorInfo.bloodGroup, get_doctorInfo.MobileNo,
     get_doctorInfo.EmailId, get_doctorInfo.ConfirmEmail, get_doctorInfo.Location1, get_doctorInfo.Location1, get_doctorInfo.PostalCode, get_doctorInfo.city, get_doctorInfo.Country, get_doctorInfo.province, get_doctorInfo.MLno,
-    get_doctorInfo.DLNo, get_doctorInfo.Specialization, get_doctorInfo.PractincingHospital, get_doctorInfo.gender, uuid, false, password]]
+    get_doctorInfo.DLNo, get_doctorInfo.Specialization, get_doctorInfo.PractincingHospital, get_doctorInfo.gender, uuid, true, password]]
 
     conn.query(sql, [getDoctorsInfo], (error, result) => {
         if (error) throw error
       res.render("pages/thankyou");
     })
+    sms();
+
+    async function sms(){
+
+      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+      const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
+      
+      const client = require('twilio')(accountSid, authToken,{
+        logLevel: 'debug'
+      });
+      
+      client.messages
+            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+            , from: '+13433074905', to: get_doctorInfo.MobileNo})
+            .then(message => console.log(message.dateCreated));    //message.sid
+              }
 })
+
 
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
@@ -412,6 +515,72 @@ app.post('/Hospital', (req, res) => {
         res.render("pages/thankyou");
     })
 })
+
+const nodemailer = require("nodemailer");
+
+
+// create reusable transporter object using the default SMTP transport
+var transporter = nodemailer.createTransport({
+    service: "gmail",
+auth:{
+     user:'ehospital112233@gmail.com',
+     pass:'hlcvsrrzempexzhw'
+    }
+  });
+
+
+
+
+// Lab Registration
+
+app.post('/Lab', (req, res) => {
+  const get_LabInfo = req.body;
+  var uniqueID = "HOS-" + Math.floor(Math.random()*90000) + 10000;
+  var password = crypto.randomBytes(16).toString("hex");
+  email=req.body.ConfirmEmail;
+  
+  var login_url = 'http://www.e-hospital.ca/signin';
+  transporter.sendMail({
+    from: "ehospital112233@gmail.com", // sender address
+    to:email, // list of receivers
+    subject: "Your E-Lab account confirmed", // Subject line
+    html: `
+    <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lab Registration Confirmation</title>
+</head>
+<body>
+  <h1>Lab Registration Confirmation</h1>
+  <p> Hi There,</p>
+  <p>We are pleased to confirm your registration for the ${get_LabInfo.Lab_Name}.</p>
+  <p>Details of your registration:</p>
+  <ul>
+    <li>Email: ${get_LabInfo.EmailId}</li>
+  </ul>
+  <p>Best regards,</p>
+  <p>E-Hospital</p>
+  <p>http://e-hospital.ca/</p>
+
+</body>
+</html>
+
+ `, // html body
+});
+
+
+  sql = "INSERT INTO `lab_admin`(`Lab_Name`, `Email_Id`, `Confirm_Email`, `Location1`, `Location2`, `PostalCode`, `City`, `Country` ,`Province`, `Ref_Phy_Name`, `Ref_Phy_Con_Info`, `Insu_Info`, `Payment_Metho`, `uuid`, `verification`, `password`, `TRN`) VALUES ?;";
+
+  var getLabInfo = [[get_LabInfo.Lab_Name,get_LabInfo.EmailId, get_LabInfo.ConfirmEmail, get_LabInfo.Location1, get_LabInfo.Location2, get_LabInfo.PostalCode, get_LabInfo.city, get_LabInfo.Country, get_LabInfo.province, get_LabInfo.Ref_Phy_Name, get_LabInfo.Ref_Phy_Con_Info, get_LabInfo.Insu_Info, get_LabInfo.Payment_Metho, uniqueID, password,false, get_LabInfo.Tax_registration_number]]
+
+  conn.query(sql, [getLabInfo], (error, result) => {
+      if (error) throw error
+      res.render("pages/thankyou");
+      
+  })
+}
+)
 
 // app.post('/masterDashboard', (req, res) => {
 //     const email = req.body.email;
@@ -474,8 +643,11 @@ app.get('/hospitalData', (req, res) => {
 // user: "uottawabiomedicalsystems@gmail.com", //
 // pass: "@uOttawa5902",
 
+const twilio = require("twilio");
+
 app.get('/sendEmail', (req, res) => {
-    usertype = req.query.usertype;
+
+  usertype = req.query.usertype;
     var uniqueID = ''
     var password = '';
     var sql = '';
@@ -490,10 +662,12 @@ app.get('/sendEmail', (req, res) => {
     else  if(usertype === 'doc'){
       sql = "SELECT * FROM `doctors_registration` WHERE id = ?";
     }
+
     conn.query(sql,[req.query.id],(error, result) => {
       if (error) throw error
       uniqueID = result[0].uuid;
       password = result[0].password;
+      MobileNo = result[0].MobileNumber;
       email = result[0].EmailId || result[0].Email_Id;
 
       if(usertype === 'pat' || usertype === 'doc'){
@@ -506,8 +680,8 @@ app.get('/sendEmail', (req, res) => {
         name = result[0].Hospital_Name;
       }
 
-      console.log(uniqueID);
-      console.log(password);
+      // console.log(uniqueID);
+      // console.log(password);
 
       main();
 
@@ -555,6 +729,7 @@ app.get('/sendEmail', (req, res) => {
               var sql = '';
               if(usertype === 'pat'){
                 sql = "UPDATE patients_registration SET verification = ? WHERE id = ?";
+                sms();
               }
 
               else  if(usertype === 'hos') {
@@ -569,8 +744,30 @@ app.get('/sendEmail', (req, res) => {
                 res.json({status: true});
               });
             }
+
         }
-        // main().catch(console.error);
+
+async function sms(){
+
+const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
+
+const client = require('twilio')(accountSid, authToken,{
+  logLevel: 'debug'
+});
+
+client.messages
+      .create({body: '\n\n E-Hospital Account \n User: '+uniqueID+ ' \n Password: '+password
+      , from: '+13433074905', to: MobileNo})
+      .then(message => console.log(message.dateCreated));    //message.sid
+        }
     })
+
+
+
+
+
+
+
 
 app.listen(port, () => console.log(`Server running on the port : ${port}`))
