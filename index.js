@@ -1,8 +1,17 @@
 const express = require('express');
-const conn = require('./dbConnection/dbConnection')
+const multer = require('multer');
+const axios = require('axios');
+const FormData = require('form-data');
+const path = require('path');
+const conn = require('./dbConnection/dbConnection');
+const mongoClient = require('./dbConnection/mongodbConnection');
+const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
+const upload = multer();
 const port = process.env.PORT || 5000;
+
+
 var sql = '';
 var crypto = require('crypto')
 
@@ -10,7 +19,7 @@ app.use(body_parse.json());
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({ extended: true }));
-
+// mongoClient.connectToServer();
 
 app.get('/', (req, res) => {
     res.render("pages/index");
@@ -119,6 +128,85 @@ app.get('/hospital', (req, res) => {
 // Lab reterival
 app.get('/lab', (req, res) => {
   res.render("pages/lab");
+
+app.get('/contact-us', (req, res) => {
+  res.render("pages/contact-us");
+});
+
+app.post('/send-contact-form', (req, res) => {
+
+  // Define mandatory parameters
+  const SENDER_EMAIL = "ehospital112233@gmail.com";
+  const SENDER_PASS = "hlcvsrrzempexzhw";
+  const RECEIVER_NAME = req.body.userName;
+  const RECEIVER_EMAIL = req.body.userEmail;
+  const USER_MESSAGE = req.body.userMessage;
+
+  var VALID_INPUTS = true;
+
+
+  if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
+    VALID_INPUTS = false;
+  }
+
+  // Function to call to nodemailer
+  if(VALID_INPUTS){
+    const nodeMailer = require("nodemailer");
+    const html = `
+      <h3> E-Hospital: Your contact us response </h3>
+      <p> Hi ${RECEIVER_NAME}, </p>
+      <br>
+      Thank you for your email. This is to notify you that we have received your contact-us query.
+      We will respond in 3-5 business days. The following is the query for your records.
+      <br>
+      <p> Name: ${RECEIVER_NAME} </p>
+      <p> Email: ${RECEIVER_EMAIL} </p>
+      <p> Message: ${USER_MESSAGE} </p>
+    `;
+
+    // Respond to the request and alert the user.
+    res.send(`
+    <script>alert("Thank you ${RECEIVER_NAME}. Your response has been recorded."); 
+      window.location.href = "/contact-us";
+    </script>`
+    );
+
+    async function main() {
+      const transporter = nodeMailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: SENDER_EMAIL,
+          pass: SENDER_PASS,
+        },
+        tls: {
+          rejectUnauthorized: false
+        }
+      });
+
+      const info = await transporter.sendMail({
+        from: SENDER_EMAIL,
+        to: RECEIVER_EMAIL,
+        subject: "Your Contact Us Query to E-Hospital",
+        html: html,
+      });
+      console.log("Message sent: " + info.messageId);
+    }
+
+    main().catch((e) => {
+      console.log(e);
+    });
+  } 
+  else{
+    // Respond to the user that inputs are invalid
+    res.send(`
+    <script>alert("Your inputs are invalid. Make sure that every field is filled."); 
+      window.location.href = "/contact-us";
+    </script>`
+    );
+
+  }
 })
 
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
@@ -301,7 +389,6 @@ app.post('/patientsDashboardEditTest', (req, res) => {
 })
 
 app.post('/get_patientInfo', (req, res) => {
-
     const getDetails = req.body
     let uuid = "PAT-"+ "ON-" + getDetails.Age + "-" + getDetails.province + "-" + Math.floor(Math.random()*90000) + 10000;
     var password = crypto.randomBytes(16).toString("hex");
@@ -371,10 +458,52 @@ app.post('/get_doctorInfo', (req, res) => {
 })
 
 
+app.post('/recordUpdate', upload.single("image"), (req,res) => {
+  // console.log(req.file);
+  // console.log(req.value);
+  // console.log(mongoDb);
+ 
+  // Check file extension path.extname()
+  if (typeof req.file != 'undefined') {
+    if (path.extname(req.file.originalname) == ".jpeg") {
+      const form = new FormData();
+      const file = req.file;
+      form.append('image', file.buffer, file.originalname);
+      form.append('value', "0");
+    
+      const response = axios.post('http://localhost:5000/connectionTesting', form)
+        .then(async response => {
+          console.log(`Status: ${response.status}`)
+          // const result = await mongoDb.collection("test").insertOne(req.file);
+          // console.log(`New image created with the following id: ${result.insertedId}`);
+          res.send({message: response.data});
+        })
+        .catch(err => {
+          console.error(err)
+          res.send({error: err});
+      })
+    
+    } else {
+      res.send({error: "The file is in the wrong format."});
+    }
+  } else {
+    res.send({error: "File not receive."});
+  }
+
+})
+
+// This is a connection testing api 
+app.post('/connectionTesting', upload.single("image"), (req,res) => {
+  console.log("Request receive.");
+  console.log(req.file);
+  console.log(req.body);
+  res.send("Request received by test api.");
+})
+
 app.post('/Hospital', (req, res) => {
     const get_HospitalInfo = req.body;
     var password = crypto.randomBytes(16).toString("hex");
-    sql = "INSERT INTO `hospital_admin`(`Hospital_Name`, `Email_Id`, `Confirm_Email`, `Location1`, `Location2`, `PostalCode`, `City`, `Province`, `Country`, `Facilities_departments​`, `Number_Doctors`, `Number_Nurse`, `No_Admins`, `Patients_per_year`, `​Tax_registration_number​`, `uuid`, `verification`, `password`) VALUES ?";
+    sql = "INSERT INTO `hospital_admin`(`Hospital_Name`, `Email_Id`, `Confirm_Email`, `Location1`, `Location2`, `PostalCode`, `City`, `Province`, `Country`, `Facilities_departments`, `Number_Doctors`, `Number_Nurse`, `No_Admins`, `Patients_per_year`, `Tax_registration_number`, `uuid`, `verification`, `password`) VALUES ?";
 
     var getDoctorsInfo = [[get_HospitalInfo.Hospital_Name,
     get_HospitalInfo.EmailId, get_HospitalInfo.ConfirmEmail, get_HospitalInfo.Location1, get_HospitalInfo.Location1, get_HospitalInfo.PostalCode, get_HospitalInfo.city, get_HospitalInfo.Country, get_HospitalInfo.province,
