@@ -596,6 +596,8 @@
           const appendix = $(identifier).data('mail');
 
           const base_url = window.location.origin;
+
+
           fetch(base_url + appendix)
               .then((response) => {
                   return response.json();
