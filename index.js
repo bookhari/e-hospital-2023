@@ -128,7 +128,7 @@ app.get('/hospital', (req, res) => {
 // Lab reterival
 app.get('/lab', (req, res) => {
   res.render("pages/lab");
-
+})
 app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });
