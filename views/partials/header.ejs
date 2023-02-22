@@ -7,69 +7,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title></title>
     <!-- google-fonts -->
-    <link href="//fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    
     <!-- //google-fonts -->
     <!-- Template CSS Style link -->
     <link rel="stylesheet" href="/css/style-starter.css">
+    <link rel="stylesheet" href="/css/header.css">
 
 </head>
 
 <body>
-    <header id="site-header" >
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg stroke">
-              <a class="navbar-brand" href="/">
-                  <img src="http://img1.wsimg.com/isteam/ip/84e67726-d5dd-4591-ba17-0d8628d44ded/e-Hospital (1).png/:/rs=h:96,cg:true,m/qt=q:95" alt="e-hospital" title="e-hospital" style="height:100px;" />
-                </a>
-                <!-- if logo is image enable this
-    <a class="navbar-brand" href="#index.html">
-        <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
-    </a> -->
-                <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
-                    data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
-                    <span class="navbar-toggler-icon fa icon-close fa-times"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav ml-lg-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="index">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="services">Services</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="register">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="signin">Login</a>
-                        </li>
-                        <!---connect database and remove comment out on New Report-->
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="New-report">New Report</a>
-                        </li> -->
-                        <!-- search button -->
-                        <!-- //search button -->
-                    </ul>
-                </div>
-                <!-- toggle switch for light and dark theme -->
-                <!-- <div class="cont-ser-position">
-                    <nav class="navigation">
-                        <div class="theme-switch-wrapper">
-                            <label class="theme-switch" for="checkbox">
-                                <input type="checkbox" id="checkbox">
-                                <div class="mode-container">
-                                    <i class="gg-sun"></i>
-                                    <i class="gg-moon"></i>
-                                </div>
-                            </label>
-                        </div>
-                    </nav>
-                </div> -->
-                <!-- //toggle switch for light and dark theme -->
-            </nav>
+   
+    <nav id="navbar">
+        <div class="nav-wrapper">
+          <!-- Navbar Logo -->
+          <div class="logo">
+            <a href="index"><i class=""></i><img src="images/Logo-white.png" width="200px"></a>
+          </div>
+      
+          <!-- Navbar Links -->
+          <ul id="menu">
+            <li><a href="index">Home</a></li><!--
+         --><li><a href="services">Services</a></li><!--
+         --><li><a href="register">Register</a></li><!--
+         --><li><a href="signin">Login</a></li>
+          </ul>
         </div>
-    </header>
+      </nav>
+      
+      
+      <!-- Menu Icon -->
+      <div class="menuIcon">
+        <span class="icon icon-bars"></span>
+        <span class="icon icon-bars overlay"></span>
+      </div>
+      
+      <div class="overlay-menu">
+        <ul id="menu">
+            <li><a href="index">Home</a></li>
+            <li><a href="services">Services</a></li>
+            <li><a href="register">Register</a></li>
+            <li><a href="signin">Login</a></li>
+          </ul>
+      </div>
+
+</body>
+
+<script>
+var lastScrollTop;
+navbar = document.getElementById('navbar');
+window.addEventListener('scroll',function(){
+var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+if(scrollTop > lastScrollTop){
+navbar.style.top='-80px';
+}
+else{
+navbar.style.top='0';
+}
+lastScrollTop = scrollTop;
+});
+  </script>
+<script>
+     let menuIcon = document.querySelector('.menuIcon');
+        let nav = document.querySelector('.overlay-menu');
+
+        menuIcon.addEventListener('click', () => {
+            if (nav.style.transform != 'translateX(0%)') {
+                nav.style.transform = 'translateX(0%)';
+                nav.style.transition = 'transform 0.2s ease-out';
+            } else { 
+                nav.style.transform = 'translateX(-100%)';
+                nav.style.transition = 'transform 0.2s ease-out';
+            }
+        });
+
+
+        // Toggle Menu Icon ========================================
+        let toggleIcon = document.querySelector('.menuIcon');
+
+        toggleIcon.addEventListener('click', () => {
+            if (toggleIcon.className != 'menuIcon toggle') {
+                toggleIcon.className += ' toggle';
+            } else {
+                toggleIcon.className = 'menuIcon';
+            }
+        });
+
+  
+</script>
+
+
+
+</html>
