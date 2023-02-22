@@ -1,3 +1,8 @@
+<!-- <%- include('../partials/header') -%>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>  
+<br> <br> <br> <br> <br> <br> -->
+
+
 <!DOCTYPE html>
 <html lang="en-CA">
 <!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
@@ -22,47 +27,21 @@
 
 </head>
 <body>
+    <%- include('../partials/header') -%>
 
 
-<%- include('../partials/header') -%>
-
-    <div class="container">
-        <div class="title">Doctors Registration From</div>
+<div class="container">
+        <div class="title">Lab Admin Registration Form</div>
         <div class="content">
-            <form action="/get_doctorInfo" method="post">
+            <form action="/Lab" method="post">
                 <div class="user-details">
                     <div class="input-box">
-                        <span class="details">First Name</span>
-                        <input type="text" name="Fname" placeholder="Enter your name" required>
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Middle Name</span>
-                        <input type="text" name="Mname" placeholder="Enter your Middle Name" required>
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Last Name</span>
-                        <input type="text" name="LName" placeholder="Enter Last Name" required>
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Gender</span>
-                        <input type="text" name="gender" placeholder="Male or Female" required>
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Age</span>
-                        <input type="text" name="age" placeholder="Enter your age" required>
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Blood Group</span>
-                        <input type="text" name="bloodGroup" placeholder="Enter blood group" required>
-                    </div>
-
-                    <div class="input-box">
-                        <span class="details">Mobile Number</span>
-                        <input type="text" name="MobileNo" placeholder="Enter Your Number">
+                        <span class="details">Lab Name</span>
+                        <input type="text" name="Lab_Name" placeholder="Enter Lab Name" required>
                     </div>
                     <div class="input-box">
                         <span class="details">Email Id</span>
-                        <input type="text" name="EmailId" placeholder="Enter Your Email ID" required>
+                        <input type="text" name="EmailId" placeholder="Enter Your Email Id" required>
                     </div>
                     <div class="input-box">
                         <span class="details">Confirm Email</span>
@@ -84,33 +63,39 @@
                         <span class="details">City</span>
                         <input type="text" name="city" placeholder="Your City" required>
                     </div>
-                    <div class="input-box">
-                        <span class="details">Country</span>
-                        <input type="text" name="Country" placeholder="Your Country" required>
-                    </div>
+
                     <div class="input-box">
                         <span class="details">Province</span>
                         <input type="text" name="province" placeholder="Your Province" required>
                     </div>
                     <div class="input-box">
-                        <span class="details">Medical LICENSE Number</span>
-                        <input type="text" name="MLno" placeholder="Enter Medical License Number" required>
+                        <span class="details">Country</span>
+                        <input type="text" name="Country" placeholder="Your Country" required>
                     </div>
                     <div class="input-box">
-                        <span class="details">Driving License Number</span>
-                        <input type="text" name="DLNo" placeholder="Driving License Number" required>
+                        <span class="details">Referring Physician Name</span>
+                        <input type="text" name="Ref_Phy_Name" placeholder="Enter Referring Physician Name">
+                    </div>                    
+                    <div class="input-box">
+                        <span class="details">Referring Physician Contact Information</span>
+                        <input type="text" name="Ref_Phy_Con_Info" placeholder="Enter Referring Physician Contact Info" required>
                     </div>
                     <div class="input-box">
-                        <span class="details">Specialization</span>
-                        <input type="text" name="Specialization" placeholder="Your Specialization" required>
+                        <span class="details">Insurance Information</span>
+                        <input type="text" name="Insu_Info" placeholder="Insurance Information" required>
                     </div>
                     <div class="input-box">
-                        <span class="details">Practicing Hospital</span>
-                        <input type="text" name="PractincingHospital" placeholder="" required>
+                        <span class="details">Payment Method</span>
+                        <input type="text" name="Payment_Metho" placeholder="Payment Method" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Tax registration number</span>
+                        <input type="text" name="Tax_registration_number" placeholder="Tax registration number" required>
                     </div>
                 </div>
                 <div class="button">
                     <input type="submit" value="Register">
+                    <!-- Register   -->
                 </div>
             </form>
         </div>
@@ -119,3 +104,4 @@
 </body>
 
 </html>
+    

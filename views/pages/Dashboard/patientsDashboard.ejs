@@ -90,32 +90,41 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>First Name</th>
+                                            <th >First Name</th>
                                             <th>Middel Name</th>
                                             <th>Last Name</th>
-                                            <th>Email Id</th>
                                             <th>Mobile Number</th>
+                                            <th>Age</th>
                                             <th>Blood Group</th>
                                             <th>Location</th>
                                             <th>verification</th>
+                                            <th>Edit</th>
 
                                         </tr>
                                     </thead>
 
                                     <tbody id="get_table_data">
-                                        <tr>
-                                            <td><%= patient.FName %></td>
-                                            <td><%= patient.LName %></td>
-                                            <td><%= patient.EmailId %></td>
-                                            <td><%= patient.MobileNumber %></td>
-                                            <td><%= patient.DLNumber %></td>
-                                            <td><%= patient.BloodGroup %></td>
-                                            <td><%= patient.Location %></td>
+                                        <tr contenteditable="true" ondblclick="ediableTable()">
+                                            <td ><%= patient.FName %></td>
+                                            <td ><%= patient.MName %></td>
+                                            <td ><%= patient.LName %></td>
+                                            <td ><%= patient.MobileNumber %></td>
+                                            <td ><%= patient.Age %></td>
+                                            <td ><%= patient.DLNumber %></td>
+                                            <td ><%= patient.BloodGroup %></td>
+                                            <td ><%= patient.Location %></td>
                                             <% if(patient.verification) { %>
                                               <td>verified</td>
                                             <% } else { %>
                                             <td>verification pending</td>
                                             <% } %>
+                                            <td>
+                                                <a href="#"
+                                                  data-mail="/patientsDashboardEdit?id=<%= patient.uuid %>"
+                                                  onclick="emailVerification(this);">
+                                                    <button class="btn btn-primary">Update</button>
+                                                </a>
+                                            </td>
                                         </tr>
 
                                     </tbody>
@@ -422,7 +431,6 @@
 
     <script>
         $(function () {
-            $('#example1').DataTable()
             $('#example2').DataTable({
                 'paging': true,
                 'lengthChange': false,
@@ -432,7 +440,70 @@
                 'autoWidth': false
             })
         })
-    </script>
+
+function emailVerification(identifier) {
+      const appendix = $(identifier).data('mail');
+
+      const base_url = window.location.origin;
+    var tr = document.getElementsByTagName("tr")[1];
+
+     var fname = tr.getElementsByTagName("td")[0];
+     var MName = tr.getElementsByTagName("td")[1];
+     var LName = tr.getElementsByTagName("td")[2];
+     var MobileNumber = tr.getElementsByTagName("td")[3];
+     var Age = tr.getElementsByTagName("td")[4];
+     var BloodGroup = tr.getElementsByTagName("td")[5];
+     var Location = tr.getElementsByTagName("td")[6];
+    //  var td = tr.getElementsByTagName("td")[7];
+    fname = fname.innerHTML;
+    MName = MName.innerHTML;
+    LName = LName.innerHTML;
+    MobileNumber = MobileNumber.innerHTML;
+    Age = Age.innerHTML;
+    BloodGroup = BloodGroup.innerHTML;
+    Location = Location.innerHTML;
+    var exT = +"&MName="+MName+"&LName="+LName+"&MobileNumber="+MobileNumber+"&Age="+Age+"&BloodGroup="+BloodGroup+"&Location="+Location;
+      fetch(base_url + appendix+"&fname="+fname+exT)
+          .then((response) => {
+              return response.json();
+          }).then((res) => {
+            console.log(res);
+              if(res.status){
+                // alert("Verification complete. Email with credentials sent to user");
+                window.location.reload();
+              }
+              return res;
+          }).catch((err) => {
+            //   alert("Error in sending email to user. Please try again later.");
+            //   console.error(err)
+          });
+          document.getElementsByTagName("tr")[1].contentEditable =false;
+    }
+
+    // $(function () {
+    //       $('.patients_option').click(function(){
+    //         $('#patients_table').show();
+
+    //       });
+    //       $('#example2').DataTable({
+    //             'paging': true,
+    //             'lengthChange': false,
+    //             'searching': false,
+    //             'ordering': true,
+    //             'info': true,
+    //             'autoWidth': false
+    //         })
+    // })
+
+</script>
+
+<script>
+    
+    function ediableTable(){
+        document.getElementsByTagName("tr")[1].contentEditable =true;
+      
+}
+</script>
 </body>
 
 </html>
