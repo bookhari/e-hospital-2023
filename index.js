@@ -363,21 +363,22 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
     res.send({error:"Missing request body."});
     return;
   }
-  const PatientEmail = req.body.PatientEmail;
-  const PatientFirstName = req.body.PatientFirstName;
-  const PatientLastName = req.body.PatientLastName;
+  const email = req.body.email;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
 
   // Checkout the patient profile
-  if (!PatientEmail || !PatientFirstName || !PatientLastName) {
+  if (!email || !firstName || !lastName) {
     res.send({error:"Missing patient email, first name, or last name."});
     return;
   }
   var pid = 0;
-  sql = `SELECT id FROM patients_registration WHERE EmailId = "${PatientEmail}" AND FName = "${PatientFirstName}" AND LName = "${PatientLastName}"`;
-    conn.query(sql, (error, result) => {
+  sql = `SELECT id FROM patients_registration WHERE EmailId = "${email}" AND FName = "${firstName}" AND LName = "${lastName}"`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
     if (error) throw error
     if (result.length == 0) {
-      res.send({error:"No patient matched in databse."});
+      res.send({error:"No patient matched in database."});
       return;
     } else if (result.length > 1) {
       res.send({error:"Duplicate patient profile matched."});
@@ -387,32 +388,44 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
       return;
     }
     pid = result[0].id;
-  })
 
-  // Check file extension path.extname()
-  if (!req.file) {
-    res.send({error: "File not receive."});
-    return;
-  } else if (path.extname(req.file.originalname) != ".jpeg") {
-    res.send({error: "The file is in the wrong format."});
-    return;
-  }
+    // Check file extension path.extname()
+    if (!req.file) {
+      res.send({error: "File not receive."});
+      return;
+    } else if (path.extname(req.file.originalname) != ".jpeg") {
+      res.send({error: "The file is in the wrong format."});
+      return;
+    }
 
-  // Send data to external api
-  const form = new FormData();
-  const file = req.file;
-  form.append('image', file.buffer, file.originalname);
-  // form.append('value', "0");
-  axios.post('http://localhost:5000/connectionTesting', form)
-    .then(async response => {
-      console.log(`Status: ${response.status}`)
-      // const result = await mongoDb.collection("test").insertOne(req.file);
-      // console.log(`New image created with the following id: ${result.insertedId}`);
-      res.send({message: response.data});
+    // Check Record existed
+    const diseaseType = req.body.diseaseType;
+    const testType = req.body.testType;
+    const date = req.body.date;
+
+    if (!diseaseType || !testType || !date) {
+      res.send({error:"Missing patient disease type, test type, or date."});
+      return;
+    }
+
+    // Send data to external api
+    const form = new FormData();
+    const file = req.file;
+    form.append('image', file.buffer, file.originalname);
+    form.append('diseaseType', diseaseType);
+    form.append('testType', testType);
+    form.append('date', date);
+    axios.post('http://localhost:5000/connectionTesting', form)
+      .then(async response => {
+        console.log(`Status: ${response.status}`)
+        // const result = await mongoDb.collection("test").insertOne(req.file);
+        // console.log(`New image created with the following id: ${result.insertedId}`);
+        res.send({message: response.data});
+      })
+      .catch(err => {
+        console.error(err)
+        res.send({error: err});
     })
-    .catch(err => {
-      console.error(err)
-      res.send({error: err});
   })
 })
 
