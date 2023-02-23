@@ -97,8 +97,8 @@
                                             <th>Age</th>
                                             <th>Blood Group</th>
                                             <th>Location</th>
-                                            <th>verification</th>
-                                            <th>Edit</th>
+                                             <th>Height</th>
+                                            <th>Weight</th>
 
                                         </tr>
                                     </thead>
@@ -110,18 +110,15 @@
                                             <td ><%= patient.LName %></td>
                                             <td ><%= patient.MobileNumber %></td>
                                             <td ><%= patient.Age %></td>
-                                            <td ><%= patient.DLNumber %></td>
                                             <td ><%= patient.BloodGroup %></td>
                                             <td ><%= patient.Location %></td>
-                                            <% if(patient.verification) { %>
-                                              <td>verified</td>
-                                            <% } else { %>
-                                            <td>verification pending</td>
-                                            <% } %>
+                                            <td ><%= patient.height %></td>
+                                            <td ><%= patient.weight %></td>
+
                                             <td>
                                                 <a href="#"
                                                   data-mail="/patientsDashboardEdit?id=<%= patient.uuid %>"
-                                                  onclick="emailVerification(this);">
+                                                  onclick="editPatient(this);">
                                                     <button class="btn btn-primary">Update</button>
                                                 </a>
                                             </td>
@@ -441,8 +438,9 @@
             })
         })
 
-function emailVerification(identifier) {
+function editPatient(identifier) {
       const appendix = $(identifier).data('mail');
+      
 
       const base_url = window.location.origin;
     var tr = document.getElementsByTagName("tr")[1];
@@ -454,7 +452,8 @@ function emailVerification(identifier) {
      var Age = tr.getElementsByTagName("td")[4];
      var BloodGroup = tr.getElementsByTagName("td")[5];
      var Location = tr.getElementsByTagName("td")[6];
-    //  var td = tr.getElementsByTagName("td")[7];
+     var Height = tr.getElementsByTagName("td")[7];
+     var Weight = tr.getElementsByTagName("td")[8];
     fname = fname.innerHTML;
     MName = MName.innerHTML;
     LName = LName.innerHTML;
@@ -462,20 +461,26 @@ function emailVerification(identifier) {
     Age = Age.innerHTML;
     BloodGroup = BloodGroup.innerHTML;
     Location = Location.innerHTML;
-    var exT = +"&MName="+MName+"&LName="+LName+"&MobileNumber="+MobileNumber+"&Age="+Age+"&BloodGroup="+BloodGroup+"&Location="+Location;
-      fetch(base_url + appendix+"&fname="+fname+exT)
+    weight =Weight.innerHTML;
+    height = Height.innerHTML;
+
+
+    var exT1 = "&MName="+MName+"&LName="+LName+"&MobileNumber="+MobileNumber;
+    var exT2 = "&Age="+Age+"&BloodGroup="+BloodGroup+"&Location="+Location+"&weight="+weight+"&height="+height;
+      fetch(base_url + appendix+"&fname="+fname+exT1+exT2)
           .then((response) => {
               return response.json();
           }).then((res) => {
             console.log(res);
               if(res.status){
-                // alert("Verification complete. Email with credentials sent to user");
-                window.location.reload();
+             alert("User information is successfully updated");
+                 window.location.reload();
               }
               return res;
           }).catch((err) => {
-            //   alert("Error in sending email to user. Please try again later.");
-            //   console.error(err)
+            //   alert(err);
+            console.error(err)
+            window.location.reload();
           });
           document.getElementsByTagName("tr")[1].contentEditable =false;
     }
@@ -495,14 +500,6 @@ function emailVerification(identifier) {
     //         })
     // })
 
-</script>
-
-<script>
-    
-    function ediableTable(){
-        document.getElementsByTagName("tr")[1].contentEditable =true;
-      
-}
 </script>
 </body>
 

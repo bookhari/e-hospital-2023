@@ -223,6 +223,7 @@ app.post('/patientsDashboard', (req, res) => {
         })
       } else {
       if (result[0].uuid === uuid && result[0].password === password) {
+        // console.log(result[0].uuid);
         var patients_data = result[0];
           res.render("pages/Dashboard/patientsDashboard", {
               patient: patients_data,
@@ -249,93 +250,189 @@ app.get('/patientsDashboardEdit', (req, res) => {
   const Age = req.query.Age;
   const BloodGroup = req.query.BloodGroup;
   const Location = req.query.Location;
-  console.log(MName)
+  const weight = req.query.weight;
+  const height = req.query.height; 
   
-  sql = "UPDATE patients_registration SET FName = ?, MName = ? , LName = ? , MobileNumber = ? , Age = ? , BloodGroup = ? , Location = ?  WHERE uuid =  ?";
-  conn.query(sql,[fname,MName,LName,MobileNumber,Age,BloodGroup,Location,uuid],(error, result) => {
-    // console.log(result);
-    //var patients_data = "result[0]";
-    // res.render("pages/Dashboard/patientsDashboard", {
-    //   patient: patients_data,
+  sql = "UPDATE patients_registration SET FName = ?, MName = ? , LName = ? , MobileNumber = ? , Age = ? , BloodGroup = ? , Location = ? , weight = ? , height = ? WHERE uuid =  ?";
+  conn.query(sql,[fname,MName,LName,MobileNumber,Age,BloodGroup,Location,weight,height,uuid],(error, result) => {
+    var patients_data = [fname,MName,LName,MobileNumber,Age,BloodGroup,Location,weight,height,uuid];
+    res.render("pages/Dashboard/patientsDashboard", {
+      patient: patients_data,
       
-    // })
+    })
   
   })
 
 })
 
-app.post('/patientsDashboardEditTest', (req, res) => {
-  const uuid = req.body.email;
-  const password = req.body.password;
-  const Fname = req.body.Fname;
+// app.post('/patientsDashboardEditTest', (req, res) => {
+//   const uuid = req.body.email;
+//   const password = req.body.password;
+//   const Fname = req.body.Fname;
 
-  sql = 'SELECT * FROM `patients_registration` WHERE uuid =  ? AND verification = ?';
-  console.log(sql);
+//   sql = 'SELECT * FROM `patients_registration` WHERE uuid =  ? AND verification = ?';
+//   console.log(sql);
+//   conn.query(sql, [uuid,true] ,(error, result) => {
+//       if (error) throw error
+//       if(result.length == 0){
+//         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
+//         res.render('pages/patientLogin',{    //patientsDashboard
+//           error: errorMessage
+//         })
+//       } else {
+//       if (result[0].uuid === uuid && result[0].password === password) {
+//         var patients_data = result[0];
+        
+//          sql = "UPDATE patients_registration SET FName = ? WHERE uuid =  ? AND verification = ?";
+//         conn.query(sql,[Fname,uuid,true],(error, result) => {
+          
+//           res.render("pages/Dashboard/patientsDashboard", {
+//             patient: patients_data,
+//           });
+//       })
+//         }
+//         else {
+//           var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
+//           res.render('pages/patientLogin',{
+//             error: errorMessage
+//           })
+//         }
+//       }
+//       })
+// })
+
+
+
+
+app.post('/get_patientInfoTest',(req,res)=>{
+  
+  const getDetails = req.body
+  const uuid = getDetails.EmailId;
+  console.log(uuid)
+  sql = 'SELECT * FROM `patients_registration` WHERE EmailId =  ? ';
+  // console.log(sql);
   conn.query(sql, [uuid,true] ,(error, result) => {
+    console.log("T1")
       if (error) throw error
-      if(result.length == 0){
+      if(result.length != 0){
+        console.log(result.length)
         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
         res.render('pages/patientLogin',{    //patientsDashboard
           error: errorMessage
         })
-      } else {
-      if (result[0].uuid === uuid && result[0].password === password) {
-        var patients_data = result[0];
-        
-         sql = "UPDATE patients_registration SET FName = ? WHERE uuid =  ? AND verification = ?";
-        conn.query(sql,[Fname,uuid,true],(error, result) => {
-          
-          res.render("pages/Dashboard/patientsDashboard", {
-            patient: patients_data,
-          });
-      })
-        }
-        else {
-          var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-          res.render('pages/patientLogin',{
-            error: errorMessage
-          })
-        }
+      } 
+      else {
+
+        let uuid = "PAT-"+ "ON-" + getDetails.Age + "-" + getDetails.province + "-" + Math.floor(Math.random()*90000) + 10000;
+        var password = crypto.randomBytes(16).toString("hex");
+        sql = "INSERT INTO `patients_registration`(`uuid`,`FName`, `MName`, `LName`, `Age`, `BloodGroup`, `MobileNumber`, `EmailId`, `Address`, `Location`, `PostalCode`, `City`, `Province`, `HCardNumber`, `PassportNumber`, `PRNumber`, `DLNumber`, `Gender`, `verification`, `password`) VALUES ?";
+    
+        // sqlt = "SELECT * FROM `patients_registration` WHERE uuid = ?";
+    
+        var VALUES = [[uuid,getDetails.Fname, getDetails.Mname,
+        getDetails.LName, getDetails.Age, getDetails.bloodGroup, getDetails.number,
+        getDetails.EmailId, getDetails.Address, getDetails.Location, getDetails.PostalCode, getDetails.City, getDetails.province, getDetails.H_CardNo,
+        getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, true, password]]
+            conn.query(sql,[VALUES], (error, result) => {
+              if (error) throw error
+              res.render("pages/thankyou");
+              })
+
       }
       })
 })
+
 
 app.post('/get_patientInfo', (req, res) => {
 
     const getDetails = req.body
     let uuid = "PAT-"+ "ON-" + getDetails.Age + "-" + getDetails.province + "-" + Math.floor(Math.random()*90000) + 10000;
     var password = crypto.randomBytes(16).toString("hex");
-    sql = "INSERT INTO `patients_registration`(`FName`, `MName`, `LName`, `Age`, `BloodGroup`, `MobileNumber`, `EmailId`, `Address`, `Location`, `PostalCode`, `City`, `Province`, `HCardNumber`, `PassportNumber`, `PRNumber`, `DLNumber`, `Gender`, `uuid`, `verification`, `password`) VALUES ?";
-    var VALUES = [[getDetails.Fname, getDetails.Mname,
+    sql = "INSERT INTO `patients_registration`(`uuid`,`FName`, `MName`, `LName`, `Age`, `BloodGroup`, `MobileNumber`, `EmailId`, `Address`, `Location`, `PostalCode`, `City`, `Province`, `HCardNumber`, `PassportNumber`, `PRNumber`, `DLNumber`, `Gender`, `verification`, `password`) VALUES ?";
+
+   var VALUES = [[uuid,getDetails.Fname, getDetails.Mname,
     getDetails.LName, getDetails.Age, getDetails.bloodGroup, getDetails.number,
     getDetails.EmailId, getDetails.Address, getDetails.Location, getDetails.PostalCode, getDetails.City, getDetails.province, getDetails.H_CardNo,
-    getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, uuid, true, password]]
+    getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, true, password]]
+        conn.query(sql,[VALUES], (error, result) => {
+          if (error) throw error
+          res.render("pages/thankyou");
+          })
+    // sms();
 
-    conn.query(sql, [VALUES], (error, result) => {
-        if (error) throw error
-        res.render("pages/thankyou");
-    })
-    sms();
+    // async function sms(){
 
-    async function sms(){
-
-      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
-      const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
+    //   const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+    //   const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
       
-      const client = require('twilio')(accountSid, authToken,{
-        logLevel: 'debug'
-      });
+    //   const client = require('twilio')(accountSid, authToken,{
+    //     logLevel: 'debug'
+    //   });
       
-      client.messages
-            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
-            , from: '+13433074905', to: getDetails.number})
-            .then(message => console.log(message.dateCreated));    //message.sid
-              }
+    //   client.messages
+    //         .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+    //         , from: '+13433074905', to: getDetails.number})
+    //         .then(message => console.log(message.dateCreated));    //message.sid
+    //           }
 }
 )
 
 
+app.post('/get_docotorInfoTest',(req,res)=>{
 
+
+  const uuid = req.body.EmailId;
+  const password = req.body.password;
+  sql = 'SELECT * FROM `doctors_registration` WHERE uuid =  ? AND verification = ?';
+  conn.query(sql,[uuid,true],(error, result) => {
+      if (error) throw error
+      if(result.length == 0){
+        errorMessage = 'Either ID or Password is wrong or your account is not verified. Please Check';
+        
+        const get_doctorInfo = req.body
+        var password = crypto.randomBytes(16).toString("hex");
+        let uuid = "DOC-"+ "ON-" + get_doctorInfo.age + "-" + get_doctorInfo.province + "-" + Math.floor(Math.random()*90000) + 10000;
+        // let randomId = Math.floor(Math.random()*90000) + 10000;
+        sql = 'INSERT INTO `doctors_registration`(`Fname`, `Mname`, `Lname`, `Age`, `bloodGroup`, `MobileNumber`, `EmailId`, `ConfirmEmail`, `Location1`, `Location2`, `PostalCode`, `City`, `Country`, `Province`, `Medical_LICENSE_Number`, `DLNumber`, `Specialization`, `PractincingHospital`, `Gender`, `uuid`, `verification`, `password`) VALUES ?';
+    
+        var getDoctorsInfo = [[get_doctorInfo.Fname, get_doctorInfo.Mname,
+        get_doctorInfo.LName, get_doctorInfo.age, get_doctorInfo.bloodGroup, get_doctorInfo.MobileNo,
+        get_doctorInfo.EmailId, get_doctorInfo.ConfirmEmail, get_doctorInfo.Location1, get_doctorInfo.Location1, get_doctorInfo.PostalCode, get_doctorInfo.city, get_doctorInfo.Country, get_doctorInfo.province, get_doctorInfo.MLno,
+        get_doctorInfo.DLNo, get_doctorInfo.Specialization, get_doctorInfo.PractincingHospital, get_doctorInfo.gender, uuid, true, password]]
+    
+        conn.query(sql, [getDoctorsInfo], (error, result) => {
+            if (error) throw error
+          res.render("pages/thankyou");
+        })
+
+        res.render("pages/doctorLogin",{
+          error: errorMessage
+        });
+      } else {
+      if (result[0].uuid === uuid && result[0].password === password) {
+        var patients_data;
+        var doctors_data;
+        doctors_data   = result[0];
+        console.log(doctors_data);
+          sql = "SELECT * FROM `patients_registration` WHERE 1";
+          conn.query(sql, (error, result) => {
+            patients_data = result;
+            if (error) throw error
+            res.render("pages/Dashboard/DoctorDashBoard", {
+              patients: patients_data,
+              doctor: doctors_data
+            });
+        })
+      } else {
+        errorMessage = 'Either ID or Password is wrong or your account is not verified. Please Check';
+        res.render("pages/doctorLogin",{
+          error: errorMessage
+        });
+      }
+    }
+      })
+
+})
 app.post('/get_doctorInfo', (req, res) => {
     const get_doctorInfo = req.body
     var password = crypto.randomBytes(16).toString("hex");
@@ -352,7 +449,7 @@ app.post('/get_doctorInfo', (req, res) => {
         if (error) throw error
       res.render("pages/thankyou");
     })
-    sms();
+    // sms();
 
     async function sms(){
 
@@ -366,7 +463,7 @@ app.post('/get_doctorInfo', (req, res) => {
       client.messages
             .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
             , from: '+13433074905', to: get_doctorInfo.MobileNo})
-            .then(message => console.log(message.dateCreated));    //message.sid
+            .then(message => console.log(message.status));    //message.sid
               }
 })
 
@@ -600,7 +697,7 @@ app.get('/sendEmail', (req, res) => {
               var sql = '';
               if(usertype === 'pat'){
                 sql = "UPDATE patients_registration SET verification = ? WHERE id = ?";
-                sms();
+                // f
               }
 
               else  if(usertype === 'hos') {
