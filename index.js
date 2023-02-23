@@ -142,8 +142,7 @@ app.post('/send-contact-form', (req, res) => {
   const RECEIVER_EMAIL = req.body.userEmail;
   const USER_MESSAGE = req.body.userMessage;
 
-  var VALID_INPUTS = true;
-
+  let VALID_INPUTS = true;
 
   if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
     VALID_INPUTS = false;
@@ -211,12 +210,15 @@ app.post('/send-contact-form', (req, res) => {
 
 
 app.post('/submit-brain', (req, res) => {
-  const PATIENT_FIRST_NAME = req.body.patientFirstName;
-  const PATIENT_LAST_NAME = req.body.patientLastName;
-  const PATIENT_EMAIL = req.body.patientEmail;
+  const PATIENT_FIRST_NAME = req.body.firstName;
+  const PATIENT_LAST_NAME = req.body.lastName;
+  const PATIENT_EMAIL = req.body.email;
+  
+  // console.log(`Thank you for your submission ${PATIENT_FIRST_NAME}, ${PATIENT_LAST_NAME},
+  // ${PATIENT_EMAIL}`);
 
-  console.log(`Thank you for your submission ${PATIENT_FIRST_NAME}, ${PATIENT_LAST_NAME},
-  ${PATIENT_EMAIL}`);
+  res.send(`Thank you for your submission ${PATIENT_FIRST_NAME}, ${PATIENT_LAST_NAME},
+  ${PATIENT_EMAIL}`)
 
 })
 
