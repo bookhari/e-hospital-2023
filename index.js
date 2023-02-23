@@ -8,16 +8,23 @@ const mongoClient = require('./dbConnection/mongodbConnection');
 const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
-const upload = multer();
+
+const storage = multer.diskStorage({
+  destination: 'uploads/',
+  filename: (req, file, cb) => {
+    cb(null, `${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage });
 const port = process.env.PORT || 5000;
-
-
 var sql = '';
 var crypto = require('crypto')
 
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
+app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: true }));
 // mongoClient.connectToServer();
 
@@ -208,17 +215,23 @@ app.post('/send-contact-form', (req, res) => {
   }
 })
 
-
-app.post('/submit-brain', (req, res) => {
+app.post('/submit-brain', upload.single('image'), (req, res) => {
   const PATIENT_FIRST_NAME = req.body.firstName;
   const PATIENT_LAST_NAME = req.body.lastName;
   const PATIENT_EMAIL = req.body.email;
+  const IMAGE = req.body.image;
   
-  // console.log(`Thank you for your submission ${PATIENT_FIRST_NAME}, ${PATIENT_LAST_NAME},
+  console.log(`${req.file.filename}`);
+  // res.write(`Thank you for your submission ${PATIENT_FIRST_NAME}, ${PATIENT_LAST_NAME},
   // ${PATIENT_EMAIL}`);
-
-  res.send(`Thank you for your submission ${PATIENT_FIRST_NAME}, ${PATIENT_LAST_NAME},
-  ${PATIENT_EMAIL}`)
+  
+  // res.send(`/uploads/${req.file.filename}`);
+  res.render('pages/submit-brain');
+  // res.write(`
+  // <script>
+  //   window.location.href = "/brain-result";
+  // </script>`
+  // );
 
 })
 
