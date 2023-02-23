@@ -18,6 +18,27 @@ app.get('/', (req, res) => {
 app.get('/services', (req, res) => {
     res.render("pages/services");
 })
+app.get('/diagnostic-depart', (req, res) => {
+  res.render("pages/diagnostic-depart");
+})
+app.get('/common-diseases-diagnostics', (req, res) => {
+  res.render("pages/common-diseases-diagnostics");
+})
+app.get('/brain', (req, res) => {
+  res.render("pages/brain");
+})
+app.get('/liver', (req, res) => {
+  res.render("pages/liver");
+})
+app.get('/heart', (req, res) => {
+  res.render("pages/heart");
+})
+app.get('/Breast-Diagnostic', (req, res) => {
+  res.render("pages/Breast-Diagnostic");
+})
+app.get('/symptoms-checker', (req, res) => {
+  res.render("pages/symptoms-checker");
+})
 app.get('/index', (req, res) => {
     res.render("pages/index");
 })
