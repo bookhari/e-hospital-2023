@@ -146,6 +146,11 @@ app.get('/hospital', (req, res) => {
     res.render("pages/hospital");
 })
 
+app.get('/heartDiseasePrediction', (req, res) => {
+  res.render("pages/heartDiseasePrediction");
+})
+
+
 // Lab reterival
 app.get('/lab', (req, res) => {
   res.render("pages/lab");
