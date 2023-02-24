@@ -434,7 +434,7 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         console.log(`Status: ${response.status}`)
         // const result = await mongoDb.collection("test").insertOne(req.file);
         // console.log(`New image created with the following id: ${result.insertedId}`);
-        res.send({message: response.data});
+        res.send({response.data});
       })
       .catch(err => {
         console.error(err)
