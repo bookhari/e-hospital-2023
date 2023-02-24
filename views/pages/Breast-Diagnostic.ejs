@@ -11,16 +11,45 @@
   <meta property="og:title" content="Breast Diagnostic | E-Hospital" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_CA" />
-  <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+  $('#my-form').submit(function(event) {
+    event.preventDefault(); // Prevent default form submission
+    // Get form data
+    var formData = new FormData(this);
+    // Send AJAX request
+    $.ajax({
+      url: "/recordUpdate",
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        // Handle successful response from server
+        //alert(data.message);
+        $("#testResult")
+          .val(data.message);
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        // Handle error response from server
+        alert(textStatus + ': ' + errorThrown);
+      }
+    });
+  });
+  });
+  </script> 
+  <%- include('../partials/header') -%>
 </head>
 
-<%- include('../partials/header') -%>
+
+
 <body>
    
     <div class="container1">
       <div class="content1">
         <div class="title">Breast Diagnostic Form</div>
-            <form id="my-form" method="post" action="https://e860-174-116-62-228.ngrok.io/recordUpdate" onsubmit="yourJsFunction();return false" enctype="multipart/form-data">
+            <form id="my-form" >
                 <div class="user-details">
                     <div class="input-box">
                         <span class="details">First Name</span>
@@ -69,6 +98,15 @@
                     <div>
                     <input type="submit" value="Submit" class="submit-button">
                    </div> 
+                   <div class="result-box">
+                    <label for="testResult">Test Result:</label>
+                    <br> 
+		                <input type="text" id="testResult" name="testResult" placeholder="Check test result here" \
+                    style="border: 2px solid #ccc; border-radius: 4px; padding: 6px 10px;  width: 100%; font-size: 30px; font-weight: 500;
+                    color: #27ae60; margin-top: 20px;
+                    animation: fadeIn 1s ease-in;box-sizing: border-box; 
+                     margin-top: 10px;" disabled="disabled" required>
+                   </div>  
             </form>
                   
               
@@ -76,13 +114,15 @@
               </div> 
             
            </div>
- <br><br><br><br><br><br>            
-               
+          
+  
  </body>
-  <footer>
+ <br><br><br><br><br><br><br><br>  
+ <div>
+ <footer>
   <%- include('../partials/footer-new') -%>      
 </footer>
-
+</div>
 
 </html>
 
@@ -93,7 +133,12 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-
+footer {
+  width: 100%; /* Set the width to 100% to cover the entire page */
+  position: relative; /* Position the footer as a fixed element */
+  bottom: 0; /* Position the footer at the bottom of the page */
+  left: 0; /* Position the footer to the left of the page */
+}
 body {
     width: 100vw;
     height: 100vh;
@@ -104,8 +149,8 @@ body {
     padding: 10px;
 }
   .container1 {
-    max-width: 1200px;
-    height: 100%;
+    max-width: 1100px;
+    height: 105%;
     width: 100%;
     position: relative;
     top:13%;
