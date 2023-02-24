@@ -1,0 +1,84 @@
+<html>
+<head>
+<style>
+.dropbtn {
+  background-color: blue;
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropbtn:hover {
+  background-color: brown;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 140px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {
+   background-color: #ddd;
+ }
+
+.show {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+
+<div class="dropdown">
+  <button onclick="labtestList()" class="dropbtn">LAB TEST</button>
+  <div id="myDropdown1" class="dropdown-content">
+    <a href="./vitaminform" onclick="Vitamintest()">Vitamin test</a>
+    <a href="./lipidform" onclick="LipidProfile()">Lipid Profile</a>
+    <a href="./urinform" onclick="Urinalysis()">Urinalysis</a>
+    <a href="./bmpform" onclick="BasicMetabolicPanel()">Basic Metabolic Panel</a>
+    <a href="./cmpform" onclick="ComprehensiveMetabolicPanel()">Comprehensive Metabolic Panel</a>
+<a href="./cbcform" onclick="CompleteBloodCount()">Complete Blood Count </a>
+<a href="./thyroidform" onclick="ThyroidTest()">Thyroid Test</a>
+
+  </div>
+</div>
+
+<script>
+/* methods to hide and show the dropdown content */
+function labtestList() {
+  document.getElementById("myDropdown1").classList.toggle("show");
+}
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
+
+</body>
+</html>

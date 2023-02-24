@@ -30,6 +30,33 @@ app.get('/Login', (req, res) => {
 app.get('/register', (req, res) => {
     res.render("pages/register");
 })
+app.get('/lab', (req, res) => {
+  res.render("pages/lab");
+})
+app.get('/vitaminform', (req, res) => {
+  res.render("pages/vitaminform");
+})
+app.get('/lipidform', (req, res) => {
+  res.render("pages/lipidform");
+})
+app.get('/urinform', (req, res) => {
+  res.render("pages/urinform");
+})
+app.get('/bmpform', (req, res) => {
+  res.render("pages/bmpform");
+})
+app.get('/cmpform', (req, res) => {
+  res.render("pages/cmpform");
+})
+app.get('/cbcform', (req, res) => {
+  res.render("pages/cbcform");
+})
+app.get('/thyroidform', (req, res) => {
+  res.render("pages/thyroidform");
+})
+app.get('/widget', (req, res) => {
+  res.render("pages/widget");
+})
 app.get('/signin', (req, res) => {
     res.render("pages/signin");
 })
