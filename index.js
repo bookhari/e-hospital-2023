@@ -37,6 +37,10 @@ app.get('/doctorpasswordchange', (req, res) => {
     errorMessage = '';
     res.render("pages/doctorpasswordchange");
 })
+app.get('/common-diseases-diagnostics', (req, res) => {
+  errorMessage = '';
+  res.render("pages/common-diseases-diagnostics");
+})
 app.get('/patientpasswordchange', (req, res) => {
     errorMessage = '';
     res.render("pages/doctorpasswordchange");
