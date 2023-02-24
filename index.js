@@ -578,36 +578,90 @@ app.post('/get_doctorInfo', (req, res) => {
 
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
-  // console.log(req.value);
-  // console.log(mongoDb);
- 
-  // Check file extension path.extname()
-  if (typeof req.file != 'undefined') {
-    if (path.extname(req.file.originalname) == ".jpeg") {
-      const form = new FormData();
-      const file = req.file;
-      form.append('image', file.buffer, file.originalname);
-      form.append('value', "0");
-    
-      const response = axios.post('http://localhost:5000/connectionTesting', form)
-        .then(async response => {
-          console.log(`Status: ${response.status}`)
-          // const result = await mongoDb.collection("test").insertOne(req.file);
-          // console.log(`New image created with the following id: ${result.insertedId}`);
-          res.send({message: response.data});
-        })
-        .catch(err => {
-          console.error(err)
-          res.send({error: err});
-      })
-    
-    } else {
-      res.send({error: "The file is in the wrong format."});
-    }
-  } else {
-    res.send({error: "File not receive."});
-  }
+  // console.log(req.body);
 
+  if (!req.body) {
+    res.send({error:"Missing request body."});
+    return;
+  }
+  const email = req.body.email;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+
+  // Checkout the patient profile
+  if (!email || !firstName || !lastName) {
+    res.send({error:"Missing patient email, first name, or last name."});
+    return;
+  }
+  var pid = 0;
+  sql = `SELECT id FROM patients_registration WHERE EmailId = "${email}" AND FName = "${firstName}" AND LName = "${lastName}"`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) throw error
+    if (result.length == 0) {
+      res.send({error:"No patient matched in database."});
+      return;
+    } else if (result.length > 1) {
+      res.send({error:"Duplicate patient profile matched."});
+      return;
+    } else if (result.length < 0) {
+      res.send({error:"Invalid index on the backend."});
+      return;
+    }
+    pid = result[0].id;
+
+    // Check file extension path.extname()
+    if (!req.file) {
+      res.send({error: "File not receive."});
+      return;
+    } else if (path.extname(req.file.originalname) != ".jpeg") {
+      res.send({error: "The file is in the wrong format."});
+      return;
+    }
+
+    // Check Record existed
+    const diseaseType = req.body.diseaseType;
+    const testType = req.body.testType;
+    const date = req.body.date;
+
+    if (!diseaseType || !testType || !date) {
+      res.send({error: "Missing patient disease type, test type, or date."});
+      return;
+    }
+
+    // Check disease type
+    var extURL;
+    switch (diseaseType) {
+      case "Malignant":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
+      case "Pneumonia":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
+      default:
+        res.send({error: `Unknown disease type: ${diseaseType}`});
+        return;
+    }
+
+    // Send data to external api
+    const form = new FormData();
+    const file = req.file;
+    form.append('image', file.buffer, file.originalname);
+    form.append('diseaseType', diseaseType);
+    form.append('testType', testType);
+    form.append('date', date);
+    axios.post(extURL, form)
+      .then(async response => {
+        console.log(`Status: ${response.status}`)
+        // const result = await mongoDb.collection("test").insertOne(req.file);
+        // console.log(`New image created with the following id: ${result.insertedId}`);
+        res.send(response.data);
+      })
+      .catch(err => {
+        console.error(err)
+        res.send({error: err});
+    })
+  })
 })
 
 // This is a connection testing api 
@@ -615,7 +669,7 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request receive.");
   console.log(req.file);
   console.log(req.body);
-  res.send("Request received by test api.");
+  res.send({result: "Request received by test api."});
 })
 
 app.post('/Hospital', (req, res) => {
