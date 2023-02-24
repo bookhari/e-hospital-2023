@@ -16,26 +16,26 @@
   <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
   <meta property="og:locale" content="en_CA" />
   <link href="css/login.css" rel="stylesheet" type="text/css">
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     
   <script>
     $(document).ready(function() {
-  $('#my-form').submit(function(event) {
+  $('#patientForm').submit(function(event) {
     event.preventDefault(); // Prevent default form submission
-
     // Get form data
     var formData = new FormData(this);
-
     // Send AJAX request
     $.ajax({
-      url: "https://e860-174-116-62-228.ngrok.io/recordUpdate",
+      url: "/recordUpdate",
       type: 'POST',
       data: formData,
       processData: false,
       contentType: false,
       success: function(data) {
         // Handle successful response from server
-        alert(response);
+        //alert(data.message);
+        $("#testResult")
+          .val(data.message);
       },
       error: function(xhr, textStatus, errorThrown) {
         // Handle error response from server
@@ -44,7 +44,7 @@
     });
   });
 });
-  </script> -->
+  </script>
   
   <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
   <%- include('../partials/header') -%>
@@ -54,7 +54,7 @@
 
   <div class="container">
  
-	<form id="patientForm" method="post" action="https://e860-174-116-62-228.ngrok.io/recordUpdate"   enctype="multipart/form-data"> 
+	<form id="patientForm" method="post" action="/recordUpdate" enctype="multipart/form-data"> 
     
     <!-- <label for="common-diseases-diagnostics">Comman Disease Diagnostic Form:</label><br><br>
     <input type="common-diseases-diagnostics" value="Comman Disease Diagnostic Form"><br><br> -->
@@ -110,11 +110,8 @@
   
 <!-- <script type="text/javascript">
   var frm = $('#patientForm');
-
   frm.submit(function (e) {
-
       e.preventDefault();
-
       $.ajax({
           type: frm.attr('method'),
           url: frm.attr('action'),
