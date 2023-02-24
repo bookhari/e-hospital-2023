@@ -10,7 +10,6 @@
 <!-- Font Awesome CSS link -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 
-
 <head>
 
 <%- include('../partials/header') -%>
@@ -379,10 +378,6 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
       padding-left: 0px
     }
 
-    .x .c1-2c {
-      [object -object]: 0px
-    }
-
     .x .c1-2e {
       margin-top: 0
     }
@@ -437,10 +432,6 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 
     .x .c1-3d {
       flex-grow: 0
-    }
-
-    .x .c1-3e {
-      [object -object]:
     }
 
     .x .c1-3g {
@@ -609,14 +600,6 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 
     .x .c1-4r {
       line-height: 1.5
-    }
-
-    .x .c1-4u {
-      transition:
-    }
-
-    .x .c1-4v {
-      transform:
     }
 
     .x .c1-4w {
@@ -2014,8 +1997,33 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
     }
   </style>
 </head>
-
-<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+  $('#patientForm').submit(function(event) {
+  event.preventDefault(); // Prevent default form submission
+  // Get form data
+  var formData = new FormData(this);
+  // Send AJAX request
+  $.ajax({
+    url: "/recordUpdate",
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(data) {
+      // Handle successful response from server
+      //alert(data.message);
+      $("#testResult")
+        .val(data.message);
+    },
+    error: function(xhr, textStatus, errorThrown) {
+      // Handle error response from server
+      alert(textStatus + ': ' + errorThrown);
+    }
+  });
+});
+});</script>
 
 <body class="x  x-fonts-fjalla-one">
   <div id="layout-84-e-67726-d-5-dd-4591-ba-17-0-d-8628-d-44-ded"
@@ -2050,7 +2058,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                             <form 
                             aria-live="polite"
                             data-ux="Form"
-                            action="/submit-brain"
+                            action="/recordUpdate"
                             method="post"
                             class="x-el x-el-form c1-1 c1-2 c1-2f c1-b c1-c c1-d c1-e c1-f c1-g"
                             enctype="multipart/form-data"
@@ -2179,7 +2187,6 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                                   </div>
                                 </div>
                               </div>
-
                             </form>
                           </div>
                         </div>
@@ -2193,17 +2200,12 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
         </div>
     </div>
   </div>
-  
-</body>
 
   <footer>
 <%- include('../partials/footer-new') -%>
 
 </footer>
-  </body>
-
-<!-- Mirrored from e-hospital.godaddysites.com/brain by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:02 GMT -->
-
+</body>
 </html>
 
 
