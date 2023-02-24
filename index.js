@@ -27,6 +27,9 @@ app.get('/', (req, res) => {
 app.get('/services', (req, res) => {
     res.render("pages/services");
 })
+app.get('/diabetology', (req, res) => {
+  res.render("pages/diabetology");
+})
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })
