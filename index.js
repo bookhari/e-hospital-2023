@@ -404,8 +404,22 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
     const date = req.body.date;
 
     if (!diseaseType || !testType || !date) {
-      res.send({error:"Missing patient disease type, test type, or date."});
+      res.send({error: "Missing patient disease type, test type, or date."});
       return;
+    }
+
+    // Check disease type
+    var extURL;
+    switch (diseaseType) {
+      case "Malignant":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
+      case "Pneumonia":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
+      default:
+        res.send({error: `Unknown disease type: ${diseaseType}`});
+        return;
     }
 
     // Send data to external api
@@ -415,7 +429,7 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
     form.append('diseaseType', diseaseType);
     form.append('testType', testType);
     form.append('date', date);
-    axios.post('http://localhost:5000/connectionTesting', form)
+    axios.post(extURL, form)
       .then(async response => {
         console.log(`Status: ${response.status}`)
         // const result = await mongoDb.collection("test").insertOne(req.file);
