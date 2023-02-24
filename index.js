@@ -448,7 +448,7 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request receive.");
   console.log(req.file);
   console.log(req.body);
-  res.send("Request received by test api.");
+  res.send({result: "Request received by test api."});
 })
 
 app.post('/Hospital', (req, res) => {
