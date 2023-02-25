@@ -36,6 +36,9 @@ app.get('/services', (req, res) => {
 app.get('/diabetology', (req, res) => {
   res.render("pages/diabetology");
 })
+app.get('/ediabetes', (req, res) => {
+  res.render("pages/ediabetes");
+})
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })
