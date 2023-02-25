@@ -35,7 +35,6 @@
           processData: false,
           contentType: false,
           success: function(data) {
-
             console.log(`Succesful response ${JSON.stringify(data)}`);
             // Handle successful response from server
             console.log(`Message is: ${data.result}`);
@@ -166,16 +165,14 @@
               </div>
             </div>
         </div>
+        <footer>
+          <%- include('../partials/footer-new') -%>
+        </footer>
         </section>
       </div>
     </div>
   </div>
   </div>
-
-  <footer>
-    <%- include('../partials/footer-new') -%>
-
-  </footer>
 </body>
 
 </html>
