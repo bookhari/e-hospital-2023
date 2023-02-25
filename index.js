@@ -48,6 +48,9 @@ app.get('/brain', (req, res) => {
 app.get('/psychology', (req, res) => {
   res.render("pages/psychology");
 })
+app.get('/psychologyQuestionnaire', (req, res) => {
+  res.render("pages/psychologyQuestionnaire");
+})
 app.get('/liver', (req, res) => {
   res.render("pages/liver");
 })
