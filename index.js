@@ -63,6 +63,11 @@ app.get('/symptoms-checker', (req, res) => {
 app.get('/index', (req, res) => {
     res.render("pages/index");
 })
+
+app.get('/Breast-Diagnostic', (req, res) => {
+    res.render("pages/Breast-Diagnostic");
+})
+
 app.get('/Login', (req, res) => {
   errorMessage = '';
   res.render("pages/logina8b9",{
