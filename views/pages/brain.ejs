@@ -1996,7 +1996,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
       min-height: 100vh;
     }
   </style>
-</head>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
   $(document).ready(function() {
@@ -2024,24 +2024,20 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
   });
 });
 });</script>
+</head>
 
-<body class="x  x-fonts-fjalla-one">
-  <div id="layout-84-e-67726-d-5-dd-4591-ba-17-0-d-8628-d-44-ded"
-    class="layout layout-layout layout-layout-layout-19 locale-en-CA lang-en">
-    <div data-ux="Page" id="page-5333"
-      class="x-el x-el-div x-el c1-1 c1-2 c1-3 c1-4 c1-5 c1-6 c1-7 c1-8 c1-9 c1-a c1-b c1-c c1-d c1-e c1-f c1-g c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
+
+<body class="x x-fonts-fjalla-one">
+  <div id="layout-84-e-67726-d-5-dd-4591-ba-17-0-d-8628-d-44-ded" class="layout layout-layout layout-layout-layout-19 locale-en-CA lang-en">
+    <div data-ux="Page" id="page-5333" class="x-el x-el-div x-el c1-1 c1-2 c1-3 c1-4 c1-5 c1-6 c1-7 c1-8 c1-9 c1-a c1-b c1-c c1-d c1-e c1-f c1-g c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
       <div data-ux="Block" class="x-el x-el-div page-inner c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
         <div id="b639448c-0c69-4bc5-9a31-6dbcdc7176cf" class="widget widget-contact widget-contact-contact-3">
-          <div data-ux="Widget" role="region" id="b639448c-0c69-4bc5-9a31-6dbcdc7176cf"
-            class="x-el x-el-div x-el c1-1 c1-2 c1-3 c1-b c1-c c1-d c1-e c1-f c1-g c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
-            <div>
+          <div data-ux="Widget" role="region" id="b639448c-0c69-4bc5-9a31-6dbcdc7176cf" class="x-el x-el-div x-el c1-1 c1-2 c1-3 c1-b c1-c c1-d c1-e c1-f c1-g c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
               <section data-ux="Section"
                 class="x-el x-el-section c1-1 c1-2 c1-3 c1-i c1-j c1-3o c1-b c1-c c1-m c1-n c1-d c1-e c1-f c1-g">
                 <div data-ux="Container"
                   class="x-el x-el-div c1-1 c1-2 c1-p c1-q c1-r c1-s c1-t c1-b c1-c c1-61 c1-d c1-62 c1-e c1-63 c1-f c1-64 c1-g">
-                  <h1 role="heading" aria-level="1" data-ux="SectionHeading" data-aid="CONTACT_SECTION_TITLE_REND"
-                    data-promoted-from="2" data-order="0" data-typography="HeadingBeta"
-                    class="x-el x-el-h1 c1-1 c1-1x c1-1b c1-1c c1-6w c1-3j c1-3k c1-2e c1-6x c1-1v c1-1y c1-6a c1-1j c1-43 c1-6y c1-6b c1-6z c1-6c c1-6d c1-6e">
+                  <h1 role="heading" aria-level="1" data-ux="SectionHeading" data-aid="CONTACT_SECTION_TITLE_REND" data-promoted-from="2" data-order="0" data-typography="HeadingBeta" class="x-el x-el-h1 c1-1 c1-1x c1-1b c1-1c c1-6w c1-3j c1-3k c1-2e c1-6x c1-1v c1-1y c1-6a c1-1j c1-43 c1-6y c1-6b c1-6z c1-6c c1-6d c1-6e">
                     
                     <!--heading-->
                     <br>
@@ -2055,8 +2051,8 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                           class="x-el x-el-div c1-1 c1-2 c1-74 c1-7d c1-7e c1-7f c1-t c1-28 c1-7g c1-2a c1-7h c1-b c1-c c1-7i c1-7j c1-7k c1-7l c1-7m c1-7n c1-7o c1-d c1-7p c1-7q c1-7r c1-e c1-f c1-g">
                           <div data-ux="Block" data-aid="CONTACT_FORM_CONTAINER_REND"
                             class="x-el x-el-div c1-1 c1-2 c1-1w c1-1v c1-b c1-c c1-d c1-e c1-f c1-g">
-                            <form 
-                            aria-live="polite"
+                            <form
+                            id="patientForm" 
                             data-ux="Form"
                             action="/recordUpdate"
                             method="post"
@@ -2127,46 +2123,61 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                               <!--disease type-->
                               <label for="disease type">disease type:</label>
                               <div class="dropdown">
-                                 <!--<h3>Dropdown Heading</h3>-->
-                                <select>
-                                  <option value="option1" selected disabled>Select a disease type</option>
-                                  <option value="option1">glioma</option>
+                                <select name="diseaseType">
+                                  <option value="Default" selected disabled>Select a disease type</option>
+                                  <option value="Glioma">Glioma</option>
+                                  <option value="Alzheimers">Alzheimers</option>
                                 </select>
                               </div>
                               <br>
                               <!--test type-->
                               <label for="test type">test type:</label>
-                              <div class="dropdown">                                
-                                <!--<h3>Dropdown Heading</h3>-->
-                               <select>
-                                 <option value="" selected disabled>Select a disease type</option>
-                                 <option value="option1">test 1</option>
-                                 <option value="option2">test 2</option>
-                                 <option value="option3">test 3</option>
+                              <div class="dropdown">
+                               <select name="testType">
+                                 <option value="" selected disabled>Select a test type</option>
+                                 <option value="X-ray">X-ray</option>
+                                 <option value="MRI">MRI</option>
+                                 <option value="CT Scan">CT Scan</option>
                                </select>
                              </div>
                              <br>
                     
                              <!--test date-->
                              <div class="form-group">
-                              <label for="myDate">Select the date of the test:</label>
+                              <label for="date">Select the date of the test:</label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                 </div>
-                                <input type="date" class="form-control" id="myDate" name="myDate">
+                                <input type="date" class="form-control" id="date" name="date">
                               </div>
                               </div> 
 
-                              <!--image upload-->          
-                              <label for="image">Choose an image:</label>
-                              <input type="file" id="image" name="image" accept="image/*"/>                              
-                          
+                              <!--image upload-->
+                              <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">          
+                                <label data-ux-btn="primary" 
+                                data-ux="ButtonPrimary"
+                                for="file"                              
+                                ></label>
+                                <input
+                                name="image"
+                                color="PRIMARY"
+                                fill="GHOST"
+                                shape="SQUARE"
+                                decoration="LINES"
+                                shadow="NONE"
+                                data-typography="ButtonAlpha"
+                                class="x-el x-el-button"
+                                type="file" id="image" name="image" accept="image/*"/>
+                              </div>  
+
+
+                              <!-- Test Result -->
+                              <label for="testResult">Test Result:</label>
+                              <input type="text" id="testResult" name="testResult" disabled="disabled" required><br><br>
+
                               <!--button-->
                               <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
-                                <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
-                                  <div data-ux="Block"
-                                    class="x-el x-el-div c1-1 c1-2 c1-1v c1-b c1-c c1-d c1-e c1-f c1-g">
                                <input
                                         type="submit"
                                         value="Send"
@@ -2198,7 +2209,6 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
             </div>
           </div>
         </div>
-    </div>
   </div>
 
   <footer>
@@ -2207,18 +2217,3 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 </footer>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
