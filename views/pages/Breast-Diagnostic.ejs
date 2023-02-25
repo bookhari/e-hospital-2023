@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>Breast Diagnostic | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+  <meta property="og:url" content="breast-diagnostic.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="Breast Diagnostic | E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_CA" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+  $('#my-form').submit(function(event) {
+    event.preventDefault(); // Prevent default form submission
+    // Get form data
+    var formData = new FormData(this);
+    // Send AJAX request
+    $.ajax({
+      url: "/recordUpdate",
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        // Handle successful response from server
+        //alert(data.message);
+        $("#testResult")
+          .val(data.message);
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        // Handle error response from server
+        alert(textStatus + ': ' + errorThrown);
+      }
+    });
+  });
+  });
+  </script> 
+  <%- include('../partials/header') -%>
+</head>
+
+
+
+<body>
+   
+    <div class="container1">
+      <div class="content1">
+        <div class="title">Breast Diagnostic Form</div>
+            <form id="my-form" >
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">First Name</span>
+                        <input type="text" name="firstName" placeholder="Enter First Name" required pattern="[A-Za-z]+" title="Please enter letters only">
+                    </div>
+                    <div class="input-box">
+                      <span class="details">Last Name</span>
+                      <input type="text" name="lastName" placeholder="Enter Last Name"  required >
+                    </div>
+                    <div class="input-box">
+                      <span class="details">User Email</span>
+                      <input type="text" name="email" placeholder="Enter User Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"title="Please enter Your Email only">
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Date of the test</span>
+                        <input type="date" name="date" min="2021-01-01" max="2023-12-31" required>
+                    </div> 
+                    <div class="input-box" id="diseaseType">
+                        <span class="details">Breast diseases type</span>
+                        <div class="custom-select">
+                            <select name="diseaseType">
+                                <option value="">Select Breast diseases type</option>
+                                <option value="Malignant">Malignant</option>
+                                <option value="Cysts">Cysts</option>
+                                <option value="Benign Lumps">Benign Lumps</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-box" id="testType">
+                        <span class="details">Test type</span>
+                        <div class="custom-select">
+                            <select name="testType">
+                                <option value="">Select Test_type</option>
+                                <option value="Breast ultrasound">Breast ultrasound</option>
+                                <option value="Diagnostic mammogram">Diagnostic mammogram</option>
+                                <option value="Breast magnetic resonance imaging (MRI)">Breast magnetic resonance imaging (MRI)</option>
+                                <option value="Biopsy">Biopsy</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                    <div class="input-box">
+                              <span class="details">Upload Image</span>
+                              <input type="file" name="image" required>
+                          </div>
+                    <div>
+                    <input type="submit" value="Submit" class="submit-button">
+                   </div> 
+                   <div class="result-box">
+                    <label for="testResult">Test Result:</label>
+                    <br> 
+		                <input type="text" id="testResult" name="testResult" placeholder="Check test result here" \
+                    style="border: 2px solid #ccc; border-radius: 4px; padding: 6px 10px;  width: 100%; font-size: 30px; font-weight: 500;
+                    color: #27ae60;
+                    animation: fadeIn 1s ease-in;box-sizing: border-box; 
+                     margin-top: 10px;" disabled="disabled" required>
+                   </div>  
+            </form>
+                  
+              
+                
+              </div> 
+            
+           </div>
+          
+  
+ </body>
+ <br><br><br><br><br><br><br><br>  
+ <div>
+ <footer>
+  <%- include('../partials/footer-new') -%>      
+</footer>
+</div>
+
+</html>
+
+<style> 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+footer {
+  width: 100%; /* Set the width to 100% to cover the entire page */
+  position: relative; /* Position the footer as a fixed element */
+  bottom: 0; /* Position the footer at the bottom of the page */
+  left: 0; /* Position the footer to the left of the page */
+}
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+    padding: 10px;
+}
+  .container1 {
+    max-width: 1100px;
+    height: 110%;
+    width: 100%;
+    position: relative;
+    top:13%;
+    background-color: #cacdce;
+    background-size: cover;
+    background-position: center;
+    padding: 25px 30px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.container1 .title {
+    font-size: 35px;
+    font-weight: 500;
+    height: 65px;
+    position: relative;
+    background-image: url('images/Cancer.png');
+    color: white;
+    background-size: cover;
+    background-position: center;
+
+}
+
+.container1 .title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 75px;
+    bottom: 0;
+    height: 3px;
+    width: 840px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+
+.content1 form .user-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+}
+
+form .user-details .input-box {
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 20px);
+}
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 60px;
+}
+
+.custom-select select {
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  appearance: none;
+  
+}
+
+
+.custom-select:after {
+  
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+}
+
+.custom-select option {
+  font-size: 16px;
+}
+.input-box {
+    width: 100%;
+    background-color: rgb(4, 11, 55);
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    border: 1px solid rgba(211, 211, 211, 0.626);
+    border-radius: 5px;
+}
+
+.input-box .details {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.input-box input[type="text"],
+.input-box input[type="date"],
+.input-box textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: none;
+    border-bottom: 1px solid gray;
+}
+
+.input-box textarea {
+    resize: none;
+    min-height: 100px;
+}
+
+.submit-button {
+    width: 300% ;
+    right: 320px ;
+    padding: 10px;
+    position: relative;
+    box-sizing: border-box;
+    background-color:rgb(4, 11, 55);
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 30px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: darkgreen;
+}
+.result-box {
+    width: 100%;
+    padding: 10px;
+    position: relative;
+    margin-top: 0px;
+    background-color: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+      text-align: left;
+    }
+    .result-text {
+      font-size: 20px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+    .result {
+      font-size: 30px;
+      font-weight: 500;
+      color: #27ae60;
+      margin-top: 20px;
+      animation: fadeIn 1s ease-in;
+    }
+
+</style>

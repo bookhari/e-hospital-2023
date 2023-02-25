@@ -24,12 +24,53 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.render("pages/index");
 })
+
+app.get('/pneumonia', (req, res) => {
+  res.render("pages/pneumonia");
+})
+
+
 app.get('/services', (req, res) => {
     res.render("pages/services");
 })
+<<<<<<< HEAD
+=======
+app.get('/diabetology', (req, res) => {
+  res.render("pages/diabetology");
+})
+app.get('/diagnostic-depart', (req, res) => {
+  res.render("pages/diagnostic-depart");
+})
+app.get('/common-diseases-diagnostics', (req, res) => {
+  res.render("pages/common-diseases-diagnostics");
+})
+app.get('/brain', (req, res) => {
+  res.render("pages/brain");
+})
+app.get('/psychology', (req, res) => {
+  res.render("pages/psychology");
+})
+app.get('/liver', (req, res) => {
+  res.render("pages/liver");
+})
+app.get('/heartdiagnosisfrontend', (req, res) => {
+  res.render("pages/heartdiagnosisfrontend");
+})
+app.get('/Breast-Diagnostic', (req, res) => {
+  res.render("pages/Breast-Diagnostic");
+})
+app.get('/symptoms-checker', (req, res) => {
+  res.render("pages/symptoms-checker");
+})
+>>>>>>> main
 app.get('/index', (req, res) => {
     res.render("pages/index");
 })
+
+app.get('/Breast-Diagnostic', (req, res) => {
+    res.render("pages/Breast-Diagnostic");
+})
+
 app.get('/Login', (req, res) => {
   errorMessage = '';
   res.render("pages/logina8b9",{
@@ -45,6 +86,10 @@ app.get('/signin', (req, res) => {
 app.get('/doctorpasswordchange', (req, res) => {
     errorMessage = '';
     res.render("pages/doctorpasswordchange");
+})
+app.get('/common-diseases-diagnostics', (req, res) => {
+  errorMessage = '';
+  res.render("pages/common-diseases-diagnostics");
 })
 app.get('/patientpasswordchange', (req, res) => {
     errorMessage = '';
@@ -125,6 +170,15 @@ app.get('/hospital', (req, res) => {
     res.render("pages/hospital");
 })
 
+app.get('/heartDiseasePrediction', (req, res) => {
+  res.render("pages/heartDiseasePrediction");
+})
+
+
+// Lab reterival
+app.get('/lab', (req, res) => {
+  res.render("pages/lab");
+})
 app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Test</title>
+        <style>
+            .c{
+                padding :300px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <%- include('../partials/header')-%>
+        </header>
+
+
+        <div class= 'c'>
+            <p>Pneumonia is a respiratory infection that affects the lungs, causing inflammation and fluid accumulation in the air sacs. It can be caused by bacteria, viruses, or fungi, and its symptoms can range from mild to severe, including cough, fever, chills, difficulty breathing, and chest pain. Pneumonia can affect anyone, but it is more common in infants, young children, and the elderly, as well as those with weakened immune systems or underlying health conditions. Treatment typically involves antibiotics, rest, and plenty of fluids, and in severe cases, hospitalization may be necessary.</p>
+            <br>
+            <br>
+            <p>In addition, chest x-rays can be useful in diagnosing and monitoring pneumonia. When pneumonia is present, chest x-rays can reveal areas of the lungs that are affected by inflammation and fluid accumulation, giving healthcare providers a better understanding of how severe the infection is. By uploading a chest x-ray image to a system, doctors and other medical professionals can quickly and easily assess the extent of the infection and determine the best course of treatment for the patient. This can help with timely diagnosis and treatment, leading to better outcomes for individuals with pneumonia. However, it is important to note that chest x-rays are just one tool in diagnosing and monitoring pneumonia, and healthcare providers may also rely on other tests and clinical findings to make a complete diagnosis and determine the best treatment plan.</p>
+            <br>
+            <br>
+            <button onclick= redirect_url()>
+             Click here to upload the image   
+            </button> 
+            <script>
+                function redirect_url(){
+                    location.href= 'https://pneumonia-ml-e90u-main-fzuesh63iq-wm.a.run.app'
+                }
+            </script>
+        </div>
+    
+       <footer>
+        <%- include('../partials/footer-new')-%>
+       </footer> 
+    </body>
+
+</html>
