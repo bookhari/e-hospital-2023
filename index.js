@@ -662,7 +662,7 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         extURL = "http://localhost:5000/connectionTesting";
         break;
       case "Pneumonia":
-        extURL = "http://localhost:5000/connectionTesting";
+        extURL = "https://pneumonia-api.onrender.com/checkPnemonia";
         break;
       default:
         res.send({error: `Unknown disease type: ${diseaseType}`});
