@@ -1852,3 +1852,12 @@
     z-index: 9999;
   }
 }
+
+.page-inner {
+  background-color: rgb(204, 211, 217);
+  min-height: 100vh;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
