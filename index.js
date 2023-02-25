@@ -33,8 +33,6 @@ app.get('/pneumonia', (req, res) => {
 app.get('/services', (req, res) => {
     res.render("pages/services");
 })
-<<<<<<< HEAD
-=======
 app.get('/diabetology', (req, res) => {
   res.render("pages/diabetology");
 })
@@ -62,7 +60,6 @@ app.get('/Breast-Diagnostic', (req, res) => {
 app.get('/symptoms-checker', (req, res) => {
   res.render("pages/symptoms-checker");
 })
->>>>>>> main
 app.get('/index', (req, res) => {
     res.render("pages/index");
 })
