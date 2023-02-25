@@ -77,6 +77,9 @@ app.get('/Login', (req, res) => {
 app.get('/register', (req, res) => {
     res.render("pages/register");
 })
+app.get('/findadentist', (req, res) => {
+  res.render("pages/findadentist");
+})
 app.get('/labtest', (req, res) => {
   res.render("pages/labtest");
 })
