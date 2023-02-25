@@ -24,6 +24,12 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.render("pages/index");
 })
+
+app.get('/pneumonia', (req, res) => {
+  res.render("pages/pneumonia");
+})
+
+
 app.get('/services', (req, res) => {
     res.render("pages/services");
 })
