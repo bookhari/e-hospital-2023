@@ -45,6 +45,9 @@ app.get('/common-diseases-diagnostics', (req, res) => {
 app.get('/brain', (req, res) => {
   res.render("pages/brain");
 })
+app.get('/psychology', (req, res) => {
+  res.render("pages/psychology");
+})
 app.get('/liver', (req, res) => {
   res.render("pages/liver");
 })
