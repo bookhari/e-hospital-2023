@@ -51,7 +51,7 @@ html {
 
 body {
   margin: 0;
-  padding: 0;
+  padding: 2px;
   font-family: "Public Sans", sans-serif;
   font-size: 0.875rem;
   font-weight: 300;
@@ -80,6 +80,7 @@ h3 {
 h1 {
   font-size: 2.31rem;
   margin-bottom: 1.5rem;
+  padding: 2px;
 }
 @media (min-width: 64em) {
   h1 {
@@ -378,11 +379,13 @@ button,
   display: flex;
   background-color: hsl(0, 0%, 98%);
   align-content: center;
+  justify-content: center;
 }
 @media (min-width: 64em) {
   .appt .container {
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 }
 @media (min-width: 64em) {
