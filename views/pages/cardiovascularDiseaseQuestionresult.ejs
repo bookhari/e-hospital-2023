@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">     
+  <header>
+    <%- include('../partials/header'); %>
+  </header>  
+  <body>
+    <div id="container">
+      <h4 id='result'>Model Result: </h4>
+      <p id="result-message"></p>
+    </div>
+  </body>
+  <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const result = Number(urlParams.get('result'));
+    let resultMessageElement = document.getElementById("result-message");
+    if(result === 1){
+      resultMessageElement.textContent = "Our test result is that you have the possibility of cardiovascular disease, it is recommended that you go to the hospital for further examination.";
+    } else if(result === 0){
+      resultMessageElement.textContent = "The result of our test is that you may not suffer from cardiovascular disease. If you have other symptoms, it is recommended that you go to the hospital for further examination.";
+    }
+    
+    // document.getElementById('container').innerHTML = "<p>Model Result：" + result + "</p>"
+  </script>
+</html>

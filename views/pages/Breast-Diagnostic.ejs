@@ -30,9 +30,15 @@
       success: function(data) {
         // Handle successful response from server
         //alert(data.message);
-        console.log(`Succesful response ${JSON.stringify(data)}`);
-        console.log(`Message is: ${data.result}`);
-        $("#testResul").val(data.result);
+        console.log(data);
+        if (data.error) {
+          console.log(data.error);
+          alert(JSON.stringify(data.error));
+        } else {
+          console.log(`Succesful response ${JSON.stringify(data)}`);
+          console.log(`Message is: ${data.result}`);
+          $("#testResul").val(data.result);
+        }
       },
       error: function(xhr, textStatus, errorThrown) {
         // Handle error response from server
