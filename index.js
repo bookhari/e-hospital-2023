@@ -36,6 +36,9 @@ app.get('/services', (req, res) => {
 app.get('/diabetology', (req, res) => {
   res.render("pages/diabetology");
 })
+app.get('/ediabetes', (req, res) => {
+  res.render("pages/ediabetes");
+})
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })
@@ -601,6 +604,13 @@ app.post('/get_doctorInfo', (req, res) => {
               }
 })
 
+app.get('/get_diabetologyList', (req, res) => {
+  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
+  conn.query(sql, (error, result) => {
+    if (error) throw error
+    res.send(result);
+  })
+})
 
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
