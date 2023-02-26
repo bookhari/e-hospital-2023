@@ -664,6 +664,12 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
       case "Pneumonia":
         extURL = "http://localhost:5000/connectionTesting";
         break;
+      case "Glioma":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
+      case "Alzheimers":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
       default:
         res.send({error: `Unknown disease type: ${diseaseType}`});
         return;
@@ -967,3 +973,4 @@ client.messages
 
 
 
+app.listen(port, () => console.log(`Server running on the port : ${port}`))
