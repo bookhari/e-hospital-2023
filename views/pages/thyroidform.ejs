@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>Thyroid Test Appointment Form</h2>
+
+    <p>Kindly fill in all the required details below.</p>
+
+    <form action="/action_page.php" method="POST">
+      <fieldset>
+        <label for="fname">First name:</label><br>
+        <input type="text" id="fname" name="fname" value="" required><br><br>
+        <label for="lname">Last name:</label><br>
+        <input type="text" id="lname" name="lname" value="" required><br><br>
+        <label for="birthday">Birthday:</label><br>
+        <input type="date" id="birthday" name="birthday" required><br><br>
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address" value="" required><br><br>
+        <label for="pin">PIN:</label><br>
+        <input type="text" id="pin" name="pin" size="6" required pattern="[0-9]{6}"><br><br>
+        <label for="email">Enter your email ID:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        <label for="phone">Enter a phone number:</label><br>
+        <input type="tel" id="phone" name="phone" placeholder="123-456-7890" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"><br><br>
+        <label for="appointmentdate">Appointment Date:</label><br>
+        <input type="date" id="appointmentdate" name="appointmentdate" required><br><b>
+
+        <input type="submit" value="Submit">
+      </fieldset>
+    </form>
+  </body>
+</html>
+

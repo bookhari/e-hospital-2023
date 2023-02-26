@@ -83,6 +83,36 @@ app.get('/Login', (req, res) => {
 app.get('/register', (req, res) => {
     res.render("pages/register");
 })
+app.get('/findadentist', (req, res) => {
+  res.render("pages/findadentist");
+})
+app.get('/labtest', (req, res) => {
+  res.render("pages/labtest");
+})
+app.get('/vitaminform', (req, res) => {
+  res.render("pages/vitaminform");
+})
+app.get('/lipidform', (req, res) => {
+  res.render("pages/lipidform");
+})
+app.get('/urinform', (req, res) => {
+  res.render("pages/urinform");
+})
+app.get('/bmpform', (req, res) => {
+  res.render("pages/bmpform");
+})
+app.get('/cmpform', (req, res) => {
+  res.render("pages/cmpform");
+})
+app.get('/cbcform', (req, res) => {
+  res.render("pages/cbcform");
+})
+app.get('/thyroidform', (req, res) => {
+  res.render("pages/thyroidform");
+})
+app.get('/widget', (req, res) => {
+  res.render("pages/widget");
+})
 app.get('/signin', (req, res) => {
     res.render("pages/signin");
 })
@@ -616,6 +646,9 @@ app.post('/get_doctorInfo', (req, res) => {
               }
 })
 
+app.get('/get_availableDentists', (req, res) => {
+  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
+
 app.get('/get_diabetologyList', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
   conn.query(sql, (error, result) => {
@@ -623,6 +656,34 @@ app.get('/get_diabetologyList', (req, res) => {
     res.send(result);
   })
 })
+
+
+
+app.post('/update_availability', (req, res) => {
+  const Availability = req.body.Availability;
+  const uuid = req.body.id;
+  const password = req.body.password;
+
+  if (!Availability || !uuid || !password) {
+    res.send({error:"Missing Availability, ID, or password."});
+  } else {
+    sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+    console.log(sql)
+    conn.query(sql,(error, result) => {
+      if (error) throw error
+      if (result.affectedRows == 1) {
+        result.changedRows == 1 ? res.send({success:"Availability updated."}) : res.send({success:"The update is already in place."})
+      } else if (result.affectedRows == 0) {
+        res.send({error:"Your account info is not correct."});
+      } else if (result.affectedRows > 1) {
+        res.send({error:"Duplicate account updated, please contact the system manager."});
+      } else {
+        res.send({error:"Something goes wrong in the database."});
+      }
+    })
+  }
+})
+
 
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
