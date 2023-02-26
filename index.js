@@ -633,7 +633,10 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
   sql = `SELECT id FROM patients_registration WHERE EmailId = "${email}" AND FName = "${firstName}" AND LName = "${lastName}"`;
   console.log(sql);
   conn.query(sql, (error, result) => {
-    if (error) throw error
+    if (error) {
+      res.send({"MySQL_Error": error});
+      return;
+    }
     if (result.length == 0) {
       res.send({error:"No patient matched in database."});
       return;
@@ -672,7 +675,7 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         extURL = "http://localhost:5000/connectionTesting";
         break;
       case "Pneumonia":
-        extURL = "http://localhost:5000/connectionTesting";
+        extURL = "https://pneumonia-api.onrender.com/checkPnemonia";
         break;
       default:
         res.send({error: `Unknown disease type: ${diseaseType}`});
@@ -694,8 +697,8 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         res.send(response.data);
       })
       .catch(err => {
-        console.error(err)
-        res.send({error: err});
+        console.error(err.response.data)
+        res.send({error: err.response.data});
     })
   })
 })
