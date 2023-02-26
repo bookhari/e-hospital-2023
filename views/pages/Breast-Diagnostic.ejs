@@ -12,7 +12,6 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_CA" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  
   <script>
     $(document).ready(function() {
   $('#my-form').submit(function(event) {
@@ -24,15 +23,13 @@
       url: "/recordUpdate",
       type: 'POST',
       data: formData,
-      dataType: 'json',
       processData: false,
       contentType: false,
       success: function(data) {
         // Handle successful response from server
         //alert(data.message);
-        console.log(`Succesful response ${JSON.stringify(data)}`);
-        console.log(`Message is: ${data.result}`);
-        $("#testResul").val(data.result);
+        $("#testResult")
+          .val(data.message);
       },
       error: function(xhr, textStatus, errorThrown) {
         // Handle error response from server
@@ -102,9 +99,9 @@
                     <input type="submit" value="Submit" class="submit-button">
                    </div> 
                    <div class="result-box">
-                    <label for="testResul">Test Result:</label>
+                    <label for="testResult">Test Result:</label>
                     <br> 
-		                <input type="text" id="testResul" name="testResul" placeholder="Check test result here" \
+		                <input type="text" id="testResult" name="testResult" placeholder="Check test result here" \
                     style="border: 2px solid #ccc; border-radius: 4px; padding: 6px 10px;  width: 100%; font-size: 30px; font-weight: 500;
                     color: #27ae60;
                     animation: fadeIn 1s ease-in;box-sizing: border-box; 
@@ -157,7 +154,7 @@ body {
     width: 100%;
     position: relative;
     top:13%;
-    background-color: #ececec;
+    background-color: #cacdce;
     background-size: cover;
     background-position: center;
     padding: 25px 30px;
@@ -184,7 +181,7 @@ body {
     top: 75px;
     bottom: 0;
     height: 3px;
-    width: 1035px;
+    width: 840px;
     border-radius: 5px;
     background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }

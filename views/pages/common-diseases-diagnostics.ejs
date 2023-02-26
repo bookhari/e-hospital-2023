@@ -34,9 +34,8 @@
       success: function(data) {
         // Handle successful response from server
         //alert(data.message);
-        console.log(`Succesful response ${JSON.stringify(data)}`);
-        console.log(`Message is: ${data.result}`);
-        $("#testResult").val(data.result);
+        $("#testResult")
+          .val(data.message);
       },
       error: function(xhr, textStatus, errorThrown) {
         // Handle error response from server
