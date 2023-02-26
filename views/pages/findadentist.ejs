@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <p>Kindly fill in all the required details below.</p>
+
+    <form action="/action_page.php" method="POST">
+      <fieldset>
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address" value="" required><br><br>
+        <label for="pin">Postal Code:</label><br>
+        <input type="text" id="pin" name="pin" size="6"><br><br>
+        <label for="Find Dentsit nearest to">Find Denstist nearest to (between 0 and 50 km):</label><br>
+        <input type="range" id="Find Doctor nearest to" name="Find Doctor nearest to" min="0" max="50"><br><br>
+
+        <input type="submit" value="Submit">
+      </fieldset>
+    </form>
+  </body>
+</html>
