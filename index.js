@@ -30,8 +30,8 @@ app.get('/brain', (req, res) => {
 app.get('/liver', (req, res) => {
   res.render("pages/liver");
 })
-app.get('/heartdiagnosisfrontend', (req, res) => {
-  res.render("pages/heartdiagnosisfrontend");
+app.get('/heartDiseasePrediction', (req, res) => {
+  res.render("pages/heartDiseasePrediction");
 })
 app.get('/Breast-Diagnostic', (req, res) => {
   res.render("pages/Breast-Diagnostic");
