@@ -168,9 +168,13 @@ app.get('/hospitalLogin', (req, res) => {
     res.render("pages/hospitalLogin",{
       error: errorMessage
     });
+      
 })
 app.get('/about', (req, res) => {
     res.render("pages/about-us");
+})
+app.get('/vitaminform', (req, res) => {
+  res.render("pages/vitaminform");
 })
 app.get('/Contact', (req, res) => {
     res.render("pages/contact-us");
