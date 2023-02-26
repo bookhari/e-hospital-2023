@@ -86,6 +86,15 @@ app.get('/register', (req, res) => {
 app.get('/signin', (req, res) => {
     res.render("pages/signin");
 })
+app.get('/cardiovascularDiseaseQuestionnaire', (req, res) => {
+  res.render("pages/cardiovascularDiseaseQuestionnaire");
+})
+app.get('/cardiovascularDiseaseQuestionresult', (req, res) => {
+  res.render("pages/cardiovascularDiseaseQuestionresult");
+})
+app.get('/internalmedicine', (req, res) => {
+  res.render("pages/internalmedicine");
+})
 app.get('/doctorpasswordchange', (req, res) => {
     errorMessage = '';
     res.render("pages/doctorpasswordchange");
