@@ -115,6 +115,10 @@
                             <input type="text" class="form-control" id="age"/>
                         </div>
                         <div class="col-sm">
+                            <div>Patient name</div>
+                            <input type="text" class="form-control" id="name"/>
+                        </div>
+                        <div class="col-sm">
                             <div for="gender">Gender</div>
                               <select class="form-control" id="gender">
                                 <option value="male">Male</option>
@@ -170,7 +174,14 @@
                 <div class="patientInfo">Prediction Result</div>
                 <div id="liverRes"></div>
             </div>
+
+            <div class="card1">
+                <div class="patientInfo">Visualizations</div>
+                <button class="btn btn-primary mt-3" id="myButton2">Age & Gender distribution</button>
+                <div id="visual1"></div>
+            </div>
         </div>
+
 
 
 
@@ -186,20 +197,38 @@
 <script>
 
     const btn = document.getElementById("myButton");
+    const btn2 = document.getElementById("myButton2");
     const liverRes = document.getElementById('liverRes')
+    const visual1 = document.getElementById('visual1')
+
+    btn2.addEventListener('click', event => {
+        event.preventDefault();
+        fetch('http://127.0.0.1:5002/liver_graph', {
+            method: 'GET',
+          })
+            .then(response => response.text())
+            .then(html => {
+              const img = document.createElement('img');
+              img.src = `data:image/png;base64,${html.trim()}`;
+              document.getElementById('visual1').appendChild(img);
+            });
+    })
+
+
     btn.addEventListener('click', event => {
         event.preventDefault();
         const formData = {
-        age:document.getElementById("age").value,
-        gender:document.getElementById("gender").value,
-        tb:document.getElementById("tb").value,
-        db:document.getElementById("db").value,
-        ap:document.getElementById("ap").value,
-        aa1:document.getElementById("aa1").value,
-        aa2:document.getElementById("aa2").value,
-        tp:document.getElementById("tp").value,
-        al:document.getElementById("al").value,
-        ag:document.getElementById("ag").value
+            age:document.getElementById("age").value,
+            name:document.getElementById("name").value,
+            gender:document.getElementById("gender").value,
+            tb:document.getElementById("tb").value,
+            db:document.getElementById("db").value,
+            ap:document.getElementById("ap").value,
+            aa1:document.getElementById("aa1").value,
+            aa2:document.getElementById("aa2").value,
+            tp:document.getElementById("tp").value,
+            al:document.getElementById("al").value,
+            ag:document.getElementById("ag").value
         };
         console.log(formData)
 
