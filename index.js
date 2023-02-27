@@ -31,6 +31,9 @@ app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
 
+app.get('/ecg', (req, res) => {
+  res.render("pages/ecg-ml");
+})
 
 app.get('/services', (req, res) => {
     res.render("pages/services");
