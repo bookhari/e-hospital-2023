@@ -196,6 +196,8 @@
 
 <script>
 
+    const baseURL = 'https://e-hospital-liver.herokuapp.com'
+
     const btn = document.getElementById("myButton");
     const btn2 = document.getElementById("myButton2");
     const liverRes = document.getElementById('liverRes')
@@ -203,7 +205,7 @@
 
     btn2.addEventListener('click', event => {
         event.preventDefault();
-        fetch('http://127.0.0.1:5002/liver_graph', {
+        fetch(`${baseURL}/liver_graph`, {
             method: 'GET',
           })
             .then(response => response.text())
@@ -232,7 +234,7 @@
         };
         console.log(formData)
 
-        fetch('http://127.0.0.1:5002/predict_liver_disease', {
+        fetch(`${baseURL}/predict_liver_disease`, {
             method: 'POST',
             body: JSON.stringify(formData),
             headers:{

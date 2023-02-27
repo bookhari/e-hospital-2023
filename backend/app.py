@@ -1,33 +1,27 @@
-from flask import Flask, request, jsonify, render_template, make_response
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import pickle
-from flask_mysqldb import MySQL
 import pandas as pd
 import matplotlib.pyplot as plt
 import io
 import base64
-
 import mysql.connector
 
 
 
 
 app = Flask(__name__)  # See here
-# app.config['MYSQL_HOST'] = 'localhost' # Replace with your host
-# app.config['MYSQL_USER'] = 'root' # Replace with your MySQL username
-# app.config['MYSQL_PASSWORD'] = '123456' # Replace with your MySQL password
-# app.config['MYSQL_DB'] = 'eHospital' # Replace with your MySQL database name
 
 
-app.config['MYSQL_HOST'] = 'us-cdbr-east-06.cleardb.net' # Replace with your host
-app.config['MYSQL_USER'] = 'b05e8c26aca707' # Replace with your MySQL username
-app.config['MYSQL_PASSWORD'] = 'b1ead699' # Replace with your MySQL password
-app.config['MYSQL_DB'] = 'heroku_6f03eb70d098e57' # Replace with your MySQL database name
-
-
-
-mysql = MySQL(app)
+# mysql = MySQL(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+cnx = mysql.connector.connect(
+    host='us-cdbr-east-06.cleardb.net',
+    user='b05e8c26aca707',
+    password='b1ead699',
+    database='heroku_6f03eb70d098e57'
+)
 
 
 @app.route("/get_my_ip", methods=["GET"])
@@ -37,10 +31,16 @@ def get_my_ip():
 
 @app.route("/liver_graph", methods=["GET"])
 def graph():
-    cur = mysql.connection.cursor()
+    cnx = mysql.connector.connect(
+        host='us-cdbr-east-06.cleardb.net',
+        user='b05e8c26aca707',
+        password='b1ead699',
+        database='heroku_6f03eb70d098e57'
+    )
+    cursor = cnx.cursor()
     query = "SELECT age, gender, COUNT(*) FROM liver WHERE prediction='yes' GROUP BY age, gender"
-    cur.execute(query)
-    results = cur.fetchall()
+    cursor.execute(query)
+    results = cursor.fetchall()
     df = pd.DataFrame(results, columns=['age', 'gender', 'count'])
     df_pivot = df.pivot(index='age', columns='gender', values='count')
     fig, ax = plt.subplots()
@@ -78,7 +78,12 @@ def predict_liver_disease():
         ]]
         res = loaded_model.predict(input)[0]
 
-        cur = mysql.connection.cursor()
+        # cur = mysql.connection.cursor()
+        cursor = cnx.cursor()
+
+
+
+
         query = "INSERT INTO liver (" \
                 "name, " \
                 "age, " \
@@ -96,9 +101,10 @@ def predict_liver_disease():
         values = (
         data['name'], data['age'], data['gender'], data['tb'], data['db'], data['ap'], data['aa1'], data['aa2'],
         data['tp'], data['al'], data['ag'], "yes" if res == 1 else "no")
-        cur.execute(query, values)
-        mysql.connection.commit()
-        cur.close()
+        cursor.execute(query, values)
+        cnx.commit()
+        cursor.close()
+        cnx.close()
 
         return "Potential liver disease detected, further examination required." if res == 1 else "No liver disease detected."
     except Exception as e:
@@ -107,4 +113,4 @@ def predict_liver_disease():
 
 
 if __name__ == '__main__':
-    app.run(port=5002, debug=True)
+    app.run(port=8081)
