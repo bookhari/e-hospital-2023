@@ -177,7 +177,7 @@
 
             <div class="card1">
                 <div class="patientInfo">Visualizations</div>
-                <button class="btn btn-primary mt-3" id="myButton2">Age & Gender distribution</button>
+                <button class="btn btn-primary mt-3 mb-3" id="myButton2">Age & Gender distribution</button>
                 <div id="visual1"></div>
             </div>
         </div>
@@ -212,7 +212,10 @@
             .then(html => {
               const img = document.createElement('img');
               img.src = `data:image/png;base64,${html.trim()}`;
-              document.getElementById('visual1').appendChild(img);
+              const visualElement = document.getElementById('visual1');
+              if(visualElement.hasChildNodes()) visualElement.childNodes[0] = img;
+              else visualElement.appendChild(img);
+              // document.getElementById('visual1').appendChild(img);
             });
     })
 

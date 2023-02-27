@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <title>Patient Information Form</title>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    
+  <script>
+    $(document).ready(function() {
+  $('#patientForm').submit(function(event) {
+    event.preventDefault(); // Prevent default form submission
+    // Get form data
+    var formData = new FormData(this);
+    // Send AJAX request
+    $.ajax({
+      url: "/recordUpdate",
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        // Handle successful response from server
+        //alert(data.message);
+        console.log(data);
+        if (data.error) {
+          console.log(data.error);
+          alert(JSON.stringify(data.error));
+        } else {
+          console.log(`Succesful response ${JSON.stringify(data)}`);
+          console.log(`Message is: ${data.result}`);
+          $("#testResult").val(data.result);
+        }
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        // Handle error response from server
+        alert(textStatus + ': ' + errorThrown);
+      }
+    });
+  });
+});
+  </script>
+  
+  <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
+  <%- include('../partials/header') -%>
+  <link href="/css/common-diseases-diagnostics.css" rel="stylesheet" >
+</head>
+<body>
+
+  <div class="container">
+ 
+	<form id="patientForm" method="post" action="/recordUpdate" enctype="multipart/form-data"> 
+    
+    <!-- <label for="common-diseases-diagnostics">Comman Disease Diagnostic Form:</label><br><br>
+    <input type="common-diseases-diagnostics" value="Comman Disease Diagnostic Form"><br><br> -->
+    <div class="header">
+      <!-- <img src="https://softwaremeets.com/wp-content/uploads/cf7_software_uploads/1608721076-eHospital-Logo.png" alt="Logo">  onsubmit="return false" -->
+      <h1>Comman Disease</h1>
+      <h2>Diagnostic Form</h2>
+    </div>
+
+    <div class="header2">
+      <h3>Patient's Information</h3>
+     
+    </div>
+
+		<label for="firstName">First Name:</label>
+		<input type="text" id="firstName" name="firstName" required><br><br>
+
+		<label for="lastName">Last Name:</label>
+		<input type="text" id="lastName" name="lastName" required><br><br>
+
+		<label for="email">Email:</label>
+		<input type="email" id="email" name="email" required><br><br>
+
+		<label for="diseaseType">Disease Type:</label>
+		<select id="diseaseType" name="diseaseType" required>
+			<option value="">-- Select Disease Type --</option>
+			<option value="Pneumonia">Pneumonia</option>
+			<option value="TBD">TBD</option>
+		</select><br><br>
+
+		<label for="testType">Test Type:</label>
+		<select id="testType" name="testType" required>
+			<option value="">-- Select Test Type --</option>
+			<option value="X-ray">X-ray</option>
+			<option value="MRI">MRI</option>
+			<option value="CT-scan">CT-scan</option>
+		</select><br><br>
+
+		<label for="date">Date:</label>
+		<input type="date" id="date" name="date" required><br><br>
+
+		<label for="image">Upload Image:</label>
+		<input type="file" id="image" name="image" required><br><br>
+    <label for="testResult">Test Result:</label>
+		<input type="text" id="testResult" name="testResult"  disabled="disabled" required><br><br>
+    
+    <!-- <div class="output"> -->
+    <!-- output result goes here -->
+    <!-- </div> -->
+    <input type="submit" value="Submit">
+  </form>
+  </div>
+  
+<!-- <script type="text/javascript">
+  var frm = $('#patientForm');
+  frm.submit(function (e) {
+      e.preventDefault();
+      $.ajax({
+          type: frm.attr('method'),
+          url: frm.attr('action'),
+          data: frm.serialize(),
+          success: function (data) {
+              console.log('Submission was successful.');
+              console.log(data);
+          },
+          error: function (data) {
+              console.log('An error occurred.');
+              console.log(data);
+          },
+      });
+  });
+</script> -->
+  <div> 
+    <footer>
+  <%- include('../partials/footer-new') -%>
+  
+  </footer>
+  </div> 
+  
+
+</body>
+</html>
