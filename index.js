@@ -15,7 +15,7 @@ const axios = require('axios');
 const multer = require('multer');
 
 
-const upload = multer();
+const upload = multer({ dest: "uploads" });
 const port = process.env.PORT || 5000;
 
 
