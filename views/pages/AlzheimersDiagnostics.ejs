@@ -14,11 +14,39 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   
   <%- include('../partials/header') -%>
-</head>
-<body>
+  <!-- Fetching  API Request -->
+  <script>
+    function sendData() {
+      let form = document.getElementById('myForm');
 
-  <div class="container">
-    <div id="content-wrap">
+      
+      let formData = new FormData(form);
+      console.log(formData)
+      fetch('https://ad-classification.herokuapp.com/classify_image_ad', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.text(); // read response body as text
+          }
+          throw new Error('Network did not respond.');
+        })
+        .then(text => {
+          console.log('Success:', text);
+          let result = JSON.parse(text)
+          let resultInput = document.getElementById('testResult');
+          resultInput.value = result.text;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+</head>
+
+<body>
+    <div class="container">
       <div class="content">
         <div class="top"></div>
         <form id="myForm">
@@ -57,10 +85,6 @@
                 <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" required id="uploadFile">
                 <button class="submit-button" type="button" onclick="sendData()">Submit</button>
               </div>
-              <!-- <div class="input-box">
-                <button class="submit-button"
-                type="button" onclick="sendData()">Submit</button>
-              </div> -->
               <div class="result-box">
                 <br>
                 <input type="text" id="testResult" name="testResult" placeholder="Check test result here" \
@@ -68,49 +92,15 @@
                   color: #000000;
                   animation: fadeIn 2s ease-in;box-sizing: border-box; 
                   margin-top: 0px; margin-bottom: 12px;" disabled="disabled" required>
-              </div>            
-          </form>
-  
-        <!-- Fetching  API Request -->
-        <script>
-          function sendData() {
-            let form = document.getElementById('myForm');
-
-            
-            let formData = new FormData(form);
-            console.log(formData)
-            fetch('https://ad-classification.herokuapp.com/classify_image_ad', {
-                method: 'POST',
-                body: formData
-              })
-              .then(response => {
-                if (response.ok) {
-                  return response.text(); // read response body as text
-                }
-                throw new Error('Network did not respond.');
-              })
-              .then(text => {
-                console.log('Success:', text);
-                let result = JSON.parse(text)
-                let resultInput = document.getElementById('testResult');
-                resultInput.value = result.text;
-              })
-              .catch(error => {
-                console.error('Error:', error);
-              });
-          }
-        </script>
+              </div>   
+          </div>        
+        </form>
       </div>
+    <%- include('../partials/footer-new') -%>  
+
     </div>
-    <footer>
-      <%- include('../partials/footer-new') -%>
-    </footer>
-  </div>
-
+    <!-- <br><br> -->
 </body>
-
- <br><br><br><br><br><br><br><br> 
-
 </html>
 
 <style> 
@@ -131,19 +121,19 @@ body {
     padding: 10px;
 }
 
-  .container {
-    max-width: 1100px;
-    height: 115%;
-    width: 100%;
-    position: relative;
-    top:15%;
-    background-color: #ececec;
-    background-size: cover;
-    background-position: center;
-    padding: 30px 30px;
-    border-radius: 5px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-    
+.container {
+  max-width: 1100px;
+  height: 115%;
+  width: 100%;
+  position: relative;
+  top:15%;
+  background-color: #ececec;
+  background-size: cover;
+  background-position: center;
+  padding: 30px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  
 }
 
 .content-wrap {
@@ -296,11 +286,12 @@ form .patient-details .input-box {
       animation: fadeIn 3s ease-in;
     }
 
-footer {
+/* .new_footer_top {
   position: relative;
   left:0;
   bottom: 0;
-  width: 100%;
-}
+  right: 0;
+  width: -200%;
+} */
 
 </style>
