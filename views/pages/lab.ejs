@@ -1,0 +1,107 @@
+<!-- <%- include('../partials/header') -%>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>  
+<br> <br> <br> <br> <br> <br> -->
+
+
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css">
+
+</head>
+<body>
+    <%- include('../partials/header') -%>
+
+
+<div class="container">
+        <div class="title">Lab Admin Registration Form</div>
+        <div class="content">
+            <form action="/Lab" method="post">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">Lab Name</span>
+                        <input type="text" name="Lab_Name" placeholder="Enter Lab Name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Email Id</span>
+                        <input type="text" name="EmailId" placeholder="Enter Your Email Id" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Confirm Email</span>
+                        <input type="text" name="ConfirmEmail" placeholder="Enter Your Email ID" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Location 1</span>
+                        <input type="text" name="Location1" placeholder="Your Location 1" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Location 2</span>
+                        <input type="text" name="Location2" placeholder="Your Location 2" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Postal Code</span>
+                        <input type="text" name="PostalCode" placeholder="Your Postal Code" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">City</span>
+                        <input type="text" name="city" placeholder="Your City" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="details">Province</span>
+                        <input type="text" name="province" placeholder="Your Province" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Country</span>
+                        <input type="text" name="Country" placeholder="Your Country" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Referring Physician Name</span>
+                        <input type="text" name="Ref_Phy_Name" placeholder="Enter Referring Physician Name">
+                    </div>                    
+                    <div class="input-box">
+                        <span class="details">Referring Physician Contact Information</span>
+                        <input type="text" name="Ref_Phy_Con_Info" placeholder="Enter Referring Physician Contact Info" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Insurance Information</span>
+                        <input type="text" name="Insu_Info" placeholder="Insurance Information" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Payment Method</span>
+                        <input type="text" name="Payment_Metho" placeholder="Payment Method" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Tax registration number</span>
+                        <input type="text" name="Tax_registration_number" placeholder="Tax registration number" required>
+                    </div>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Register">
+                    <!-- Register   -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
+    

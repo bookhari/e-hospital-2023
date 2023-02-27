@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Services | Heart Diagnosis</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css">
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<style>
+  select {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  select:focus {
+    border-color: #9b59b6;
+  }
+
+  .spinner {
+    border: 5px solid #9b59b6;
+    border-top-color: #9b59b6;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .black-button {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .black-button input[type="submit"] {
+    background: linear-gradient(-135deg, #747474, rgb(0, 0, 0));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 400px;
+    width: 300px;
+
+  }
+
+  .black-button input[type="submit"]:hover {
+    background: linear-gradient(-135deg, #000000, #747474);
+  }
+</style>
+
+
+
+<%- include('../partials/header') -%>
+
+  <div class="container">
+    <div class="title">Early heart disease prediction </div>
+    <p id="log" style="
+    color:tomato; 
+    font-weight: bold;
+    font-size: larger;
+    text-align: left;">
+      Result
+    </p>
+    <div class="content">
+
+      <form id="form">
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Model</span>
+            <select name="ml_model" id="ml_model" required onchange="clearResult()">
+              <option value="" disabled selected>Select your option</option>
+              <option value="DecisionTree">DecisionTree</option>
+              <option value="GBT">GBT</option>
+              <option value="KNN">KNN</option>
+              <option value="NaiveBayes">NaiveBayes</option>
+              <option value="NN">NN</option>
+              <option value="SVMLinear">SVMLinear</option>
+              <option value="SVMRBF">SVMRBF</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Age</span>
+            <input type="number" id="age" name="age" placeholder="Enter your age"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              maxlength="3" title="Please enter numbers only" min="0" max="120" step="1" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Sex</span>
+            <select name="gender" id="gender" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=1>Male</option>
+              <option value=0>female</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Chest Musle pain</span>
+            <select name="CMP" id="CMP" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=1>Atypical angina</option>
+              <option value=2>Normal angina</option>
+              <option value=3>Asymptotic</option>
+              <option value=4>Non-anginal ache</option>
+
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Serum Cholestrol</span>
+            <input 
+            type="number" 
+            min="120" 
+            max="564"
+            name="Serum" 
+            id="Serum" 
+            placeholder="Please enter a value between 120 and 564 (mg/dl)" 
+            maxlength="10"
+            oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+            title="Please enter numbers only"
+            required 
+            value="251.0"
+            >
+          </div>
+          <div class="input-box">
+            <span class="details">Max pulse rate</span>
+            <input 
+            type="number" 
+            name="MPR" 
+            id="MPR" 
+            placeholder="Please enter a value between 71 and 202 (bpm)" 
+            maxlength="3"
+            min="71" 
+            max="202"
+            oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+            title="Please enter numbers only"
+            required>
+          </div>
+          <div class="input-box">
+            <span class="details">Excercise incuced angina</span>
+            <select name="EIA" id="EIA" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=1>Yes</option>
+              <option value=0>No</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Old Peak</span>
+            <input type="number" name="OP" id="OP" placeholder="Enter a number between 0 and 6.4" maxlength="3"
+              step="0.1" min="0" max="6.2"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              title="Please enter numbers only" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Slope</span>
+            <select name="Slope" id="Slope" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=1 selected>Up Slopping</option>
+              <option value=2>No slope</option>
+              <option value=3>Down slope</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Fluroscopy</span>
+
+            <input type="text" 
+              id="Fluroscopy" name="Fluroscopy" 
+              placeholder="Enter"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              maxlength="4" 
+              title="Please enter numbers only" 
+              required 
+              value="0">
+          </div>
+          <div class="input-box">
+            <span class="details">Thalium</span>
+            <input type="number" id="Thalium" name="Thalium"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              maxlength="4" title="Please enter numbers only" value="5.6" placeholder="Enter a number between 0 and 7"
+              maxlength="3" 
+              step="0.1" 
+              min="0" max="7">
+          </div>
+
+        </div>
+        <div class="spinner" style="display: none;"></div>
+
+        <div class="black-button">
+          <input type="submit" value="Predict">
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+    document.getElementById("log").innerHTML = ``;
+    const spinner = document.querySelector('.spinner');
+
+
+
+    function logSubmit(event) {
+      event.preventDefault();
+      document.getElementById("log").innerHTML = ``;
+
+      const data = {
+        age: parseFloat(document.getElementById("age").value)?.toFixed(1),
+        gender: parseFloat(document.getElementById("gender").value)?.toFixed(1),
+        CMP: parseFloat(document.getElementById("CMP")?.value)?.toFixed(1),
+        Serum: parseFloat(document.getElementById("Serum").value)?.toFixed(1),
+        MPR: parseFloat(document.getElementById("MPR").value)?.toFixed(1),
+        EIA: parseFloat(document.getElementById("EIA").value)?.toFixed(1),
+        OP: parseFloat(document.getElementById("OP").value)?.toFixed(1),
+        Slope: parseFloat(document.getElementById("Slope").value)?.toFixed(1),
+        Fluroscopy: parseFloat(document.getElementById("Fluroscopy")?.value).toFixed(1),
+        Thalium: parseFloat(document.getElementById("Thalium").value)?.toFixed(1),
+      }
+      let base_url = 'https://mlmodel.herokuapp.com/ml/';
+      let ml_model = document.getElementById("ml_model")?.value;
+      spinner.style.display = 'block'; // show the spinner
+
+      const requestBody = {
+        input: [
+          data.age,
+          data.gender,
+          data.CMP,
+          data.Serum,
+          data.MPR,
+          data.EIA,
+          data.OP,
+          data.Slope,
+          data.Fluroscopy,
+          data.Thalium,
+        ]
+      }
+
+      fetch(base_url + ml_model, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody),
+
+      })
+        .then(response => response.json())
+        .then(data => {
+
+
+          if (data === 1.0) {
+            document.getElementById("log").innerHTML = `You probably have heart disease risk`;
+            spinner.style.display = 'none'; // hide the spinner
+
+
+          } else if (data === 0.0) {
+            document.getElementById("log").innerHTML = `You have a healthy heart`;
+            spinner.style.display = 'none'; // hide the spinner
+          }
+
+        })
+        .catch(error => {
+          document.getElementById("log").innerHTML = `Please try again later`;
+          spinner.style.display = 'none'; // hide the spinner
+
+        });
+
+
+    }
+    function clearResult() {
+      // To clear result
+      document.getElementById("log").innerHTML = ``;
+    }
+    const form = document.getElementById('form');
+    form.addEventListener('submit', logSubmit);
+  </script>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diagnostic | E-Hospital</title>
+        <meta name="author" content="E-Hospital" />
+
+        <meta property="og:url" content="register.html" />
+        <meta property="og:site_name" content="E-Hospital" />
+        <meta property="og:title" content="E-Hospital" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+        <meta property="og:locale" content="en_CA" />
+        <!-- Swiper CSS -->
+        <link rel="stylesheet" href="css/swiper-bundle.min.css">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="css/diagnostic-card-layout.css">
+        
+    </head>
+    <body>
+        <%- include('../partials/header') -%>
+        <!-- First section -->
+        <div style="background-image: url('images/diagnostic-bg.jpg');
+            background-size: cover; background-position: 400px,0px;
+            height:700px;">
+            <div style="width: 100%; 
+                margin-left: 0px; 
+                height: 100%;
+                padding-top:100px; 
+                background-image: linear-gradient(to right,rgba(143,181,203,1) 40%, rgba(143,181,203,0));">
+                <div style="width: 50%;
+                    margin-left: 0px;
+                    padding-top: 140px; padding-left: 50px;">
+                    <center><h1 style="line-height: 1; font-size: 8vh;">Welcome to Diagnostic Department</h1><br></center>
+                    <center><p style=" line-height: 1;font-size: 4vh;">E-Hospital foremost department provides our patients fast and accurate diagnostic.</p></center>
+                </div>
+            </div>
+        </div>
+        <div style="background-color: #EFEFEF">
+            <center><h1 style="padding-top: 20px;"> What are you looking for today?</h1></center>
+        </div>
+        
+        <div class="slide-body">
+            <div class="slide-container swiper">
+                <div class="slide-content">
+                    <div class="card-wrapper swiper-wrapper">
+                        <div class="card swiper-slide">
+                            <div class="image-content">
+                                
+
+                                <div class="card-image">
+                                    <img src="images/heart.png" class="card-img">
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <h2 class="name">Heart Diagnostic</h2>
+                                <p class="description">Here is the page for heart diagnostic.</p>
+
+                                <button class="button" onclick="document.location='heartDiseasePrediction'">Learn More</button>
+                            </div>
+                        </div>
+                        <div class="card swiper-slide">
+                            <div class="image-content">
+                                
+
+                                <div class="card-image">
+                                    <img src="images/brain.png" class="card-img">
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <h2 class="name">Brain Diagnostic</h2>
+                                <p class="description">Here is the page for brain diagnostic</p>
+
+                                <button class="button" onclick="document.location='brain'">Learn More</button>
+                            </div>
+                        </div>
+                        <div class="card swiper-slide">
+                            <div class="image-content">
+                                
+
+                                <div class="card-image">
+                                    <img src="images/breast.png" class="card-img">
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <h2 class="name">Breast Diagnostic</h2>
+                                <p class="description">Here is the page for breast diagnostic.</p>
+
+                                <button class="button" onclick="document.location='Breast-Diagnostic'">Learn More</button>
+                            </div>
+                        </div>
+                        <div class="card swiper-slide">
+                            <div class="image-content">
+                                
+
+                                <div class="card-image">
+                                    <img src="images/liver.png" class="card-img">
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <h2 class="name">Liver Diagnostic</h2>
+                                <p class="description">Here is the page for liver diagnostic.</p>
+
+                                <button class="button" onclick="document.location='liver'">Learn More</button>
+                            </div>
+                        </div>
+                        <div class="card swiper-slide">
+                            <div class="image-content">
+                                
+
+                                <div class="card-image">
+                                    <img src="images/common.png" class="card-img">
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <h2 class="name">Common disease Diagnostic</h2>
+                                <p class="description">Here is the page for common disease.</p>
+
+                                <button class="button" onclick="document.location='common-diseases-diagnostics'">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-button-next swiper-navBtn"></div>
+                <div class="swiper-button-prev swiper-navBtn"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <div style="background-color: white;
+                    width: 100%; height:450px;">
+            <div style="float: left;width: 50%;">
+                <img src="images/symptoms-checker.jpg" style="height: 350px;width: 350px; margin-top: 30px;margin-left: 40%;border: 1px transparent;">
+            </div>
+            <div style="float:right;width: 50%;">
+                <h1 style="padding-top: 50px;margin-left: 15px;">Not what are you looking for?</h1>
+                <p style="padding-top: 30px;margin-left:15px;font-size:150%;line-height: 300%;"> Try our symptoms checker, an interative way to diagnose your problems.</p>
+                <button class="button" onclick="document.location='symptoms-checker'">Get started</button>
+            </div>
+        </div>
+        <footer>
+            <%- include('../partials/footer-new') -%>
+        </footer>
+    </body>
+
+    <!-- Swiper JS -->
+    <script src="js/swiper-bundle.min.js"></script>
+
+    <!-- JavaScript -->
+    <script>
+        var swiper = new Swiper(".slide-content", {
+            slidesPerView: 3,
+            spaceBetween: 25,
+            loop: false,
+            centerSlide: 'true',
+            fade: 'true',
+            grabCursor: 'true',
+            a11y:false,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+
+            breakpoints:{
+                0: {
+                    slidesPerView: 1,
+                },
+                520: {
+                    slidesPerView: 2,
+                },
+                950: {
+                    slidesPerView: 3,
+                },
+            },
+        });
+    </script>
+</html>
