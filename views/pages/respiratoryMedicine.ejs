@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charSet="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        .container{
+            padding: 10px;
+        }
+        div{
+            padding: 10px;
+        }
+        h1{
+            text-align: center;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;  
+        }
+        h2{
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font: bold;
+        }
+        h3{
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        h4{
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+        p{
+            text-align:justify;
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        div.bg {
+            background-image: url("../images/bg.jpeg");
+            height: 60%; 
+            background-position: top;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .info {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') -%>
+    <div class="bg"></div><br>
+    <h1 style="color:black; font-size: 300%;">SPECIALITIES PAGE: RESPIRATORY MEDICINE</h1><br>
+    <div class="container">
+        <div class="card bg-light text-dark">
+            <h4>PNEUMONIA</h4>
+            <p>Pneumonia is a generic diagnosis. 
+                Even though there are different types of pneumonia, the way that the condition affects the lungs is similar in each one.
+                With pneumonia, a virus, bacteria, or another infectious agent causes the tiny air sacs in the lungs (alveoli) to fill with fluid or pus. 
+                These air sacs are what help exchange oxygen and other gases between the air that is breathed in and the blood.
+                When these sacs are filled with fluid, the body’s ability to exchange gases is reduced.
+            </p>
+        </div><br>                
+        <div class="card bg-light text-dark">
+            <div class="card-body"><strong> Symptoms</strong>
+                <ul>
+                    <li> - Fever</li>
+                    <li> - Chills</li>
+                    <li> - A cough that produces phlegm</li>
+                    <li> - Shortness of breath</li>
+                    <li> - Chest pain when you cough or breathe</li>
+                </ul>
+            </div>
+        </div><br>
+        <button onclick="prediction()" type="button" class="btn btn-dark">Pneumonia Prediction</button>
+        <div id="predict" style="display: none;">
+            <strong>Upload your X-Ray file below</strong><br>
+            <form action="/predict" method="POST" enctype="multipart/form-data">
+                <div class="custom-file mb-3">
+                    <input type="file" class="custom-file-input" id="customFile" name="file">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+                <input type="submit" class="btn btn-success" value="Upload"><br>
+               
+                
+                
+                
+                  
+            </form>
+            <% if (message) { %>
+                <p><%= message %></p>
+            <% } %>
+
+            
+            <% var predictionStr = JSON.stringify(prediction); %>
+            <p>Prediction: <%= predictionStr %></p>
+            <% if (predictionStr == '{"predicted_class":"PNEUMONIA"}') { %>
+                <div class="card card-body alert alert-danger"><center>POSITIVE. The patient might have the disease.</center></div>
+            <% } if (predictionStr == '{"predicted_class":"NORMAL"}') { %>
+                <div class="card card-body alert alert-success"><center>NEGATIVE. The patient is healthy.</center></div>
+            <% } %>
+
+            
+               
+
+        </div>
+    </div>
+        <script>
+            function prediction() {
+              var p = document.getElementById("predict");
+              if (p.style.display === "none") {
+                p.style.display = "block";
+              } else {
+                p.style.display = "none";
+              }
+            }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+        <script>$(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        </script>
+    <footer>
+        <%- include('../partials/footer-new') -%>
+    </footer>
+</body>
+</html>

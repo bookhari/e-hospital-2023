@@ -30,7 +30,7 @@ app.get('/services', (req, res) => {
 })
 
 
-app.get('/pneumonia', (req, res) => {
+app.get('/respiratorymedicine', (req, res) => {
   // Send a GET request to the Flask app's /pneumonia endpoint to get the HTML content of the page
   axios.get('https://mlmodel2.herokuapp.com/pneumonia')
     .then(response => {
@@ -88,8 +88,8 @@ const storage = multer.diskStorage({
 });
 
 
-app.get('/pneumonia2', (req, res) => {
-  res.render('pages/predict',{message:'',prediction:''});
+app.get('/respiratoryMedicine2', (req, res) => {
+  res.render('pages/respiratoryMedicine',{message:'',prediction:''});
 });
 
 // Set up a route to handle form submissions and post to the Flask app
@@ -112,7 +112,7 @@ app.post('/predict', upload.single('file'), (req, res) => {
     .then(response => {
       // The response data contains the HTML content of the predict page
       const prediction = response.data;
-      res.render('pages/predict', { message: 'File uploaded successfully', prediction: prediction });
+      res.render('pages/respiratoryMedicine', { message: 'File uploaded successfully', prediction: prediction });
       
     })
     .catch(error => {
