@@ -8,8 +8,10 @@ const mongoClient = require('./dbConnection/mongodbConnection');
 const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
+
 const upload = multer();
 const port = process.env.PORT || 5000;
+
 
 
 var sql = '';
@@ -55,7 +57,7 @@ app.get('/psychologyQuestionnaire', (req, res) => {
   res.render("pages/psychologyQuestionnaire");
 })
 app.get('/liver', (req, res) => {
-  res.render("pages/liver");
+  res.render("pages/liver-prediction");
 })
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
@@ -213,6 +215,8 @@ app.get('/hospital', (req, res) => {
     res.render("pages/hospital");
 })
 
+
+
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
 })
@@ -301,6 +305,7 @@ app.post('/send-contact-form', (req, res) => {
 
   }
 })
+
 
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
 
