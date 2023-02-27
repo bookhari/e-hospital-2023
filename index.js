@@ -59,6 +59,7 @@ app.post('/pneumoniapredict', upload.single('image'),(req, res) => {
   // Get the uploaded image file from the request body
   const imageFile = req.file
   
+  
   // Convert the image file to a buffer and add it to the form data
   const imageData = fs.readFileSync(imageFile.path);
   form.append('image', imageData, { filename: 'image.jpg', contentType: 'image/jpeg' });
