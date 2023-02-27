@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charSet="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        /* The side navigation menu */
+        .sidebar {
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color:#555;
+        position: fixed;
+        height: 80%;
+        overflow: auto;
+        }
+
+        /* Sidebar links */
+        .sidebar a {
+        display: block;
+        color: black;
+        padding: 16px;
+        text-decoration: none;
+        }
+
+        /* Active/current link */
+        .sidebar a.active {
+        background-color:#f1f1f1;
+        color:black;
+        }
+
+        /* Links on mouse-over */
+        .sidebar a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+        }
+
+        .column {
+        float: left;
+        width: 30%;
+        padding: 10px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+        /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+        div.content {
+        margin-left: 200px;
+        padding: 1px 16px;
+        height: 1000px;
+        }
+
+
+        .heading{
+            background-color:#555;;
+        align-content: center;
+        height: 100px;
+
+        width: 100vw;
+        }
+
+        .container{
+            padding: 10px;
+            border:blue
+        }
+        h1{
+            text-align: center; 
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+             font-size: 50px;
+        }
+
+        h2{
+            text-align: center; 
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font: bold;
+        }
+
+        h3{
+        
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        h4{
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+        p{
+            text-align:justify;
+        }
+
+       </style>
+        
+  </head>
+
+<body>
+    <%- include('../partials/header') -%>
+    <div style="background-color:#f1f1f1;">
+        <div class="heading"> 
+            <br>
+         <h1 style="color:black">SPECIALITIES PAGE: RESPIRATORY MEDICINE</h1>
+        </div>
+
+        <!-- The sidebar -->
+        <div class="sidebar">
+            <a href="#welcome">Speciality Page: Respiratory Medicine</a>
+            <a href="#commonDiseases">Common Diseases</a>
+            <a href="#doctors">List of Doctors</a>
+            <a href="#FAQ">FAQ's</a>
+            <a class="active" href="#predict">Pnemonia Prediction</a>
+        </div>
+        <div class="content">
+            <div class="container" id="welcome">
+                <h3 style="color:black">Welcome!</h3>
+                <p style="color:black">Here, you can find the information related to the services offered by the <b>Department of Respiratory Medicine</b>
+                </p>
+            </div>
+        <div class="container" id="commonDiseases">
+            <div class="row">
+                <div class="column card-body" style="border: 2px solid #555; border-radius: 2%;;">
+                    <h2 style="color:black">ASTHMA</h2>
+                    <p style="color:black"> 
+                        Asthma affects 25 million people in the United States. 
+                        People with a family history of asthma, respiratory allergies, or severe childhood respiratory illness are at a higher risk of developing asthma.
+                        Asthma is a chronic inflammatory disease that causes breathing problems when the airways become narrowed by inflammation or blocked by mucus. 
+                        The condition's severity varies from person to person, but most people take daily preventive medication to control their symptoms and prevent flare-ups.
+                    </p>
+                    <p style="color:black"><strong>Symptoms</strong></p>
+                    <ul style="list-style-type: circle;">
+                        <li> *Wheezing</li>
+                        <li> *Coughing</li>
+                        <li> *Tightness in the chest</li>
+                        <li> *Shortness of breath</li>
+                    </ul>
+                </div>
+                <div class="column card-body" style="border: 2px solid #555; border-radius: 2%;;">
+                    <h2 style="color:black">PNEUMONIA</h2>
+                    <p style="color:black">
+                        Pneumonia is a generic diagnosis. Even though there are different types of pneumonia, the way that the condition affects the lungs is similar in each one.
+                        With pneumonia, a virus, bacteria, or another infectious agent causes the tiny air sacs in the lungs (alveoli) to fill with fluid or pus. 
+                        These air sacs are what help exchange oxygen and other gases between the air that is breathed in and the blood. 
+                        When these sacs are filled with fluid, the bodys ability to exchange gases is reduced.10
+                    </p>
+                    <p style="color:black"><strong>Symptoms</strong></p>
+                    <ul style="list-style-type: circle;">
+                            <li> *Fever</li>
+                            <li> *Chills</li>
+                            <li> *A cough that produces phlegm</li>
+                            <li> *Shortness of breath</li>
+                            <li> *Chest pain when you cough or breathe</li>
+                        </ul>
+                </div>
+                <div class="column card-body" style="border: 2px solid #555; border-radius: 2%;;">
+                    <h2 style="color:black">TUBERCULOSIS</h2>
+                    <p style="color:black">
+                        Tuberculosis is a bacterial lung disease caused by Mycobacterium tuberculosis.
+                        More than 1.8 billion people around the world have tuberculosis, but the disease is only considered active in 10 million of them.
+                        People with strong immune systems sometimes carry an inactive form of the disease, called latent tuberculosis.
+                        In people with weaker immune systems, the bacteria attacks lung tissue.
+                        It can also spread and cause damage to other parts of the body.
+                    </p>
+                    <p style="color:black"><strong>Symptoms</strong></p>
+                        <ul style="list-style-type: circle;">
+                            <li> *A cough that lasts longer than three weeks</li>
+                            <li> *A cough that brings up blood or mucus</li>
+                            <li> *Fatigue</li>
+                            <li> *Poor appetite</li>
+                        </ul>
+                </div>
+              </div>
+        </div>
+        <div class="container" id="predict">
+            <h1 style="text-align: left;">Upload Pneumonia X-Ray Image</h1><br>
+            <form action="/predict" method="POST" enctype="multipart/form-data">
+                <label for="file">Please select the X-ray file to be uploaded: </label>
+                <input type="file" class="btn btn-info" id="file" name="file" ><br>
+                <input type="submit" class="btn btn-success" value="Upload">
+            </form>
+            <% if (message) { %>
+                <p><%= message %></p>
+              <% } %>
+              <% if (prediction) { %>
+                  <p>Prediction: <%= JSON.stringify(prediction) %></p>
+                <% } %>
+        </div>
+        <footer>
+            <%- include('../partials/footer-new') -%>
+        </footer>
+        </div>
+        
+    </div>
+        
+
+ </body>
+
+</html>
