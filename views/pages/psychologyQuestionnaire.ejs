@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang:"en">
+<head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+    
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="./images/favicon-32x32.png"
+    />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400&display=swap"
+        rel="stylesheet"
+     />
+
+     <link href="css/psychology.css" rel="stylesheet" type="text/css">
+     
+    <title>E-Hospital | Psychology</title>
+
+    <style>
+        .c{
+            padding: 300px;
+        }
+    
+    </style>
+</head>
+
+<body>
+    <form>
+      <p>1.	What is your preferred gender of the psychologist? </p>
+      <input type="radio" id="option-a" name="q1" value="a">
+      <label for="option-a">A) Male </label><br>
+      <input type="radio" id="option-b" name="q1" value="b">
+      <label for="option-b">B) Female </label><br>
+      <input type="radio" id="option-c" name="q1" value="c">
+      <label for="option-c">C) No preference</label><br><br>
+      
+
+      <p>2.	What is your preferred language for therapy sessions?  </p>
+      <input type="radio" id="option-a" name="q2" value="a">
+      <label for="option-a">A) English  </label><br>
+      <input type="radio" id="option-b" name="q2" value="b">
+      <label for="option-b">B) French  </label><br>
+      <input type="radio" id="option-c" name="q2" value="c">
+      <label for="option-c">C) Other </label><br><br>
+
+
+      <p>3.	What type of treatment setting do you prefer?   </p>
+      <input type="radio" id="option-a" name="q3" value="a">
+      <label for="option-a">A) In-person therapy   </label><br>
+      <input type="radio" id="option-b" name="q3" value="b">
+      <label for="option-b">B) Online therapy   </label><br>
+      <input type="radio" id="option-c" name="q3" value="c">
+      <label for="option-c">C) Hybrid (a mix of in-person and online) therapy </label><br><br>
+
+
+      <p>4.	Are you looking for a therapist who focuses on a specific age group? </p>
+      <input type="radio" id="option-a" name="q4" value="a">
+      <label for="option-a">A) Children and adolescents   </label><br>
+      <input type="radio" id="option-b" name="q4" value="b">
+      <label for="option-b">B) Adults   </label><br>
+      <input type="radio" id="option-c" name="q4" value="c">
+      <label for="option-c">C) No preference </label><br><br>
+
+
+      <p>5.	What is your primary concern that you want to address with a psychologist?   </p>
+      <input type="radio" id="option-a" name="q5" value="a">
+      <label for="option-a">A) Depression   </label><br>
+      <input type="radio" id="option-b" name="q5" value="b">
+      <label for="option-b">B) Anxiety   </label><br>
+      <input type="radio" id="option-c" name="q5" value="c">
+      <label for="option-c">C) Relationship issues  </label><br><br>
+
+
+      <p>6.	Do you have a preference for a specific type of psychological treatment modality or What type of therapy are you interested in?  </p>
+      <input type="radio" id="option-a" name="q6" value="a">
+      <label for="option-a">A) Psychodynamic therapy   </label><br>
+      <input type="radio" id="option-b" name="q6" value="b">
+      <label for="option-b">B) Behavioral therapy   </label><br>
+      <input type="radio" id="option-c" name="q6" value="c">
+      <label for="option-c">C) Cognitive therapy  </label><br><br>
+
+
+      <p>7.	What is your preferred time frame for therapy sessions?  </p>
+      <input type="radio" id="option-a" name="q7" value="a">
+      <label for="option-a">A) Morning   </label><br>
+      <input type="radio" id="option-b" name="q7" value="b">
+      <label for="option-b">B) Afternoon   </label><br>
+      <input type="radio" id="option-c" name="q7" value="c">
+      <label for="option-c">C) Evening  </label><br><br>
+
+
+      <p>8.	How frequently would you like to attend therapy sessions?   </p>
+      <input type="radio" id="option-a" name="q8" value="a">
+      <label for="option-a">A) Weekly   </label><br>
+      <input type="radio" id="option-b" name="q8" value="b">
+      <label for="option-b">B) Bi-weekly   </label><br>
+      <input type="radio" id="option-c" name="q8" value="c">
+      <label for="option-c">C) Monthly  </label><br><br>
+
+
+      <p>9.	What is your budget for therapy sessions?  </p>
+      <input type="radio" id="option-a" name="q9" value="a">
+      <label for="option-a">A) Less than $100/session   </label><br>
+      <input type="radio" id="option-b" name="q9" value="b">
+      <label for="option-b">B) $100-$150/session   </label><br>
+      <input type="radio" id="option-c" name="q9" value="c">
+      <label for="option-c">C) $150-$200/session  </label><br><br>
+
+
+      <input type="button" value="Submit" onclick="checkAnswer()">
+    </form>
+
+    <script>
+        var answers = ['','','','','','','','',''];
+        
+        function checkAnswer() {
+          var q1SelectedOption = document.querySelector('input[name="q1"]:checked');
+          var q2SelectedOption = document.querySelector('input[name="q2"]:checked');
+          var q3SelectedOption = document.querySelector('input[name="q3"]:checked');
+          var q4SelectedOption = document.querySelector('input[name="q4"]:checked');
+          var q5SelectedOption = document.querySelector('input[name="q5"]:checked');
+          var q6SelectedOption = document.querySelector('input[name="q6"]:checked');
+          var q7SelectedOption = document.querySelector('input[name="q7"]:checked');
+          var q8SelectedOption = document.querySelector('input[name="q8"]:checked');
+          var q9SelectedOption = document.querySelector('input[name="q9"]:checked');
+          
+
+          answers[1] = q1SelectedOption.value;
+          answers[2] = q2SelectedOption.value;
+          answers[3] = q3SelectedOption.value;
+          answers[4] = q4SelectedOption.value;
+          answers[5] = q5SelectedOption.value;
+          answers[6] = q6SelectedOption.value;
+          answers[7] = q7SelectedOption.value;
+          answers[8] = q8SelectedOption.value;
+          answers[9] = q9SelectedOption.value;
+
+          
+          var numSame = 0;
+          var x = 0;
+
+          for (var i = 0; i < DrNames.length; i++) {
+            var cam = 0;
+            for (var j = 0; j < DrNames[i].length; j++) {
+             if (answers[j] ===  DrNames[i][j]) {
+             cam++;
+                 }
+             }
+             if (numSame < cam){
+                numSame = cam;
+                x = i;
+
+                }
+          }
+
+            document.getElementById("result").value = names[x];
+            
+         
+        }
+        
+      </script>  
+      <input type="text" id="result" readonly>
+  
+      
+
+<script>
+  // Define the Information of Dr.s database
+  var Emily = ['b', 'a', 'b', 'c', 'a', 'b', 'c', 'a', 'a'];
+  var William = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'b'];
+  var Charlotte = ['a', 'b', 'a', 'b', 'c', 'c', 'a', 'b', 'b'];
+  var James = ['b', 'b', 'c', 'a', 'b', 'a', 'c', 'c', 'c'];
+  var Olivia = ['a', 'a', 'a', 'a', 'a', 'c', 'b', 'b', 'b'];
+  var Benjamin = ['b', 'a', 'a', 'a', 'b', 'c', 'a', 'a', 'c'];
+  var Sophia = ['a', 'a', 'b', 'a', 'b', 'a', 'b', 'b', 'a'];
+  var Henry = ['b', 'a', 'b', 'a', 'a', 'c', 'c', 'b', 'b'];
+  var Isabella = ['b', 'a', 'a', 'c', 'c', 'a', 'a', 'c', 'b'];
+  var Edward = ['b', 'b', 'b', 'b', 'c', 'a', 'b', 'c', 'a'];
+
+  var DrNames = [Emily, William, Charlotte, James, Olivia, Benjamin, Sophia, Henry, Isabella, Edward];
+  var names = ['Emily', 'William', 'Charlotte', 'James', 'Olivia', 'Benjamin', 'Sophia', 'Henry', 'Isabella', 'Edward'];
+
+</script>
+
+
+<p> is the best doctor who is suitable for you. </p>
+
+ <footer>
+    <%- include('../partials/footer-new') -%>
+ </footer>
+
+
+</body>
+
+
+</html>

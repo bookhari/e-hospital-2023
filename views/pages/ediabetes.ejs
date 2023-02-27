@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang:"en">
+<head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+
+        
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="./images/favicon-32x32.png"
+    />
+
+
+     <!-- Montserrat Font -->
+     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+     <!-- Material Icons -->
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+ 
+     <!-- Custom CSS -->
+     <link rel="stylesheet" href="css/ediabetes.css">
+ 
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    
+    <title>E-Hospital | eDiabetes Management Platform</title>
+
+    <style>
+        .c{
+            padding: 300px;
+        }
+    
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <%- include('../partials/header') -%>
+    </header>
+
+    <div class="grid-container">
+
+    <aside id="sidebar">
+        <div class="sidebar-title">
+          <div class="sidebar-brand">
+            <span class="material-icons-outlined">inventory</span> eDiabetes
+          </div>
+          <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+        </div>
+        <!--profile image-->
+        <div class="profile">
+            <img class="profile" src="/images/profilepic.jpg" alt="">
+          <h2>Patient Name</h2> 
+          <p>Patient</p>
+        </div>
+        <ul class="sidebar-list">
+          <li class="sidebar-list-item">
+            <a href="/diabetology" target="_blank">
+              <span class="icon"><i class="fa-solid fa-house-medical"></i></span>
+              <span class="item">Home</span>
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="profile.html" target="_blank">
+              <span class="icon"><i class="fa-solid fa-user"></i></span>
+              <span class="item">Profile</span>
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="data.html" target="_blank">
+              <span class="icon"><i class="fa-solid fa-vials"></i></span>
+              <span class="item">Measurements</span>
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="https://www.kaggle.com/datasets/johndasilva/diabetes" target="_blank">
+              <span class="icon"><i class="fa-solid fa-head-side-cough"></i></span>
+              <span class="item">Diseases</span>
+
+          <li class="sidebar-list-item">
+            <a href="#" target="_blank">
+              <span class="icon"><i class="fa-sharp fa-solid fa-file-waveform"></i></span>
+              <span class="item">Prescriptions</span>
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="#" target="_blank">
+              <span class="icon"><i class="fa-solid fa-message"></i></span>
+              <span class="item">Messages</span>
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="#" target="_blank">
+              <span class="material-icons-outlined">settings</span> Settings
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End Sidebar -->
+
+      <!-- Main -->
+      <main class="main-container">
+        <div class="main-title">
+          <p class="font-weight-bold">eDiabetes Management Platform</p>
+        </div>
+
+        <div class="main-cards">
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">BLOOD PRESSURE</p>
+              <span class="icon"><i class="fa-solid fa-weight-scale"></i>
+            </div>
+            <span class="text-primary font-weight-bold">249</span>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">HEART RATE</p>
+              <span class="icon"><i class="fa-solid fa-heart-pulse"></i></span>
+              
+            </div>
+            <span class="text-primary font-weight-bold">83</span>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">BLOOD SUGAR</p>
+              <span class="icon"><i class="fa-sharp fa-solid fa-heart-circle-bolt"></i>
+              
+            </div>
+            <span class="text-primary font-weight-bold">79</span>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">INVENTORY ALERTS</p>
+              <span class="icon"><i class="fa-sharp fa-solid fa-heart-circle-exclamation"></i>
+              
+            </div>
+            <span class="text-primary font-weight-bold">56</span>
+          </div>
+
+        </div>
+
+        <div class="charts">
+
+          <div class="charts-card">
+            <p class="chart-title">Glucose Level</p>
+            <div id="bar-chart"></div>
+          </div>
+
+          <div class="charts-card">
+            <p class="chart-title">Insuline Level</p>
+            <div id="area-chart"></div>
+          </div>
+
+        </div>
+      </main>
+      <!-- End Main -->
+    </div>
+
+    </div>
+
+    <footer>
+        <%- include('../partials/footer-new') -%>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- ApexCharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/ediabetes.js"></script>
+
+
+</body>
+
+
+</html>
+
+

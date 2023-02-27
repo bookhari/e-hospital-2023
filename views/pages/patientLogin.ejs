@@ -31,7 +31,7 @@
 <div class="mainclass">
   <div class="wrapper">
     <div class="title">Patient Login</div>
-    <form action="/patientsDashboard" method="post">
+    <form action="/patientsDashboard" method="post" id="myForm">
       <div class="field">
         <input type="text" name="email"required>
         <label>Email Address</label>
@@ -48,9 +48,9 @@
         <div class="pass-link"><a href="#">Forgot password?</a></div>
       </div>
       <div class="field">
-        <input type="submit" value="Login">
+        <input type="submit" value="Login" >
       </div>
-      <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
+      <div class="signup-link">Not a member? <a href="/patientRegister">Signup now</a></div>
     </form>
   </div>
 </div>
