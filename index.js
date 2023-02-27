@@ -69,7 +69,36 @@ app.get('/symptoms-checker', (req, res) => {
 app.get('/index', (req, res) => {
     res.render("pages/index");
 })
-
+app.get('/labapp', (req, res) => { //Christina&Sanika
+  res.render("pages/labapp");
+})
+app.get('/vitaminform', (req, res) => { //Christina&Sanika
+  res.render("pages/vitaminform");
+})
+app.get('/lipidform', (req, res) => { //Christina&Sanika
+  res.render("pages/lipidform");
+})
+app.get('/uform', (req, res) => { //Christina&Sanika
+  res.render("pages/uform");
+})
+app.get('/bmpform', (req, res) => { //Christina&Sanika
+  res.render("pages/bmpform");
+})
+app.get('/cmpform', (req, res) => { //Christina&Sanika
+  res.render("pages/cmpform");
+})
+app.get('/cbcform', (req, res) => { //Christina&Sanika
+  res.render("pages/cbcform");
+})
+app.get('/thyroidform', (req, res) => { //Christina&Sanika
+  res.render("pages/thyroidform");
+})
+app.get('/findadentist', (req, res) => { //Christina&Sanika
+  res.render("pages/findadentist");
+})
+app.get('/widget', (req, res) => { //Christina&Sanika
+  res.render("pages/widget");
+})
 app.get('/Breast-Diagnostic', (req, res) => {
     res.render("pages/Breast-Diagnostic");
 })
@@ -154,6 +183,7 @@ app.get('/hospitalLogin', (req, res) => {
     res.render("pages/hospitalLogin",{
       error: errorMessage
     });
+      
 })
 app.get('/about', (req, res) => {
     res.render("pages/about-us");
