@@ -187,13 +187,6 @@ app.get('/hospital', (req, res) => {
 
 
 
-
-app.get('/liver', (req, res) => {
-    res.render("pages/liver-prediction");
-})
-
-
-
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
 })
