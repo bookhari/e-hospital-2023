@@ -1,7 +1,6 @@
 const express = require('express');
 const multer = require('multer');
 const axios = require('axios');
-const FormData = require('form-data');
 const path = require('path');
 const conn = require('./dbConnection/dbConnection');
 const mongoClient = require('./dbConnection/mongodbConnection');
@@ -11,10 +10,6 @@ const app = express();
 
 const fs = require('fs');
 const FormData = require('form-data');
-const axios = require('axios');
-const multer = require('multer');
-
-
 const upload = multer({ dest: "uploads" });
 const port = process.env.PORT || 5000;
 
