@@ -1,15 +1,18 @@
 const express = require('express');
 const multer = require('multer');
 const axios = require('axios');
-const FormData = require('form-data');
 const path = require('path');
 const conn = require('./dbConnection/dbConnection');
 const mongoClient = require('./dbConnection/mongodbConnection');
 const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
-const upload = multer();
+
+const fs = require('fs');
+const FormData = require('form-data');
+const upload = multer({ dest: "uploads" });
 const port = process.env.PORT || 5000;
+
 
 
 var sql = '';
@@ -24,11 +27,108 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.render("pages/index");
 })
+app.get('/pneumoniahome', (req, res) => {
+  res.render("pages/index");
+})
+app.get('/respiratorymedicine', (req, res) => {
+  // Send a GET request to the Flask app's /pneumonia endpoint to get the HTML content of the page
+  axios.get('https://mlmodel2.herokuapp.com/pneumonia')
+    .then(response => {
+      // The response data contains the HTML content of the page
+      const html = response.data;
+
+      // Set the Content-Type header to text/html
+      res.set('Content-Type', 'text/html');
+
+      // Send the HTML content of the page as the response
+      res.send(html);
+      console.log(req)
+    })
+    .catch(error => {
+      // If an error occurs, log the error and send a 500 Internal Server Error response
+      console.error(error);
+      res.sendStatus(500);
+    });
+});
+
+
+app.post('/pneumoniapredict', upload.single('image'),(req, res) => {
+  const form = new FormData();
+  
+  // Get the uploaded image file from the request body
+  const imageFile = req.file
+  
+  // Convert the image file to a buffer and add it to the form data
+  const imageData = fs.readFileSync(imageFile.path);
+  form.append('image', imageData, { filename: 'image.jpg', contentType: 'image/jpeg' });
+  
+  
+  // Send a POST request to the Flask app's /pneumoniapredict endpoint with the image data
+  axios.post('https://mlmodel2.herokuapp.com/pneumoniapredict', form, {
+    headers: form.getHeaders()
+  })
+    .then(response => {
+      // The response data contains the HTML content of the predict page
+      const html = response.data;
+      res.set('Content-Type', 'text/html');
+      res.send(html);
+    })
+    .catch(error => {
+      console.error(error);
+      res.sendStatus(500);
+    });
+});
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+
+app.get('/respiratoryMedicine2', (req, res) => {
+  res.render('pages/respiratoryMedicine',{message:'',prediction:''});
+});
+
+// Set up a route to handle form submissions and post to the Flask app
+app.post('/predict', upload.single('file'), (req, res) => {
+  const form = new FormData();
+  // Construct the URL of the Flask app's /predict endpoint
+  
+
+  const imageFile = req.file
+  
+  // Convert the image file to a buffer and add it to the form data
+  const imageData = fs.readFileSync(imageFile.path);
+  form.append('file', imageData, { filename: 'image.jpg', contentType: 'image/jpeg' });
+  
+  
+  // Send a POST request to the Flask app's /pneumoniapredict endpoint with the image data
+  axios.post('http://127.0.0.1:5000/predict', form, {
+    headers: form.getHeaders()
+  })
+    .then(response => {
+      // The response data contains the HTML content of the predict page
+      const prediction = response.data;
+      res.render('pages/respiratoryMedicine', { message: 'File uploaded successfully', prediction: prediction });
+      
+    })
+    .catch(error => {
+      console.error(error);
+      res.sendStatus(500);
+    });
+});
+
 
 app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
 
+app.get('/ecg', (req, res) => {
+  res.render("pages/ecg-ml");
+})
 
 app.get('/services', (req, res) => {
     res.render("pages/services");
@@ -55,7 +155,7 @@ app.get('/psychologyQuestionnaire', (req, res) => {
   res.render("pages/psychologyQuestionnaire");
 })
 app.get('/liver', (req, res) => {
-  res.render("pages/liver");
+  res.render("pages/liver-prediction");
 })
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
@@ -72,9 +172,42 @@ app.get('/symptoms-checker', (req, res) => {
 app.get('/index', (req, res) => {
     res.render("pages/index");
 })
-
+app.get('/labapp', (req, res) => { //Christina&Sanika
+  res.render("pages/labapp");
+})
+app.get('/vitaminform', (req, res) => { //Christina&Sanika
+  res.render("pages/vitaminform");
+})
+app.get('/lipidform', (req, res) => { //Christina&Sanika
+  res.render("pages/lipidform");
+})
+app.get('/uform', (req, res) => { //Christina&Sanika
+  res.render("pages/uform");
+})
+app.get('/bmpform', (req, res) => { //Christina&Sanika
+  res.render("pages/bmpform");
+})
+app.get('/cmpform', (req, res) => { //Christina&Sanika
+  res.render("pages/cmpform");
+})
+app.get('/cbcform', (req, res) => { //Christina&Sanika
+  res.render("pages/cbcform");
+})
+app.get('/thyroidform', (req, res) => { //Christina&Sanika
+  res.render("pages/thyroidform");
+})
+app.get('/findadentist', (req, res) => { //Christina&Sanika
+  res.render("pages/findadentist");
+})
+app.get('/widget', (req, res) => { //Christina&Sanika
+  res.render("pages/widget");
+})
 app.get('/Breast-Diagnostic', (req, res) => {
     res.render("pages/Breast-Diagnostic");
+})
+
+app.get('/AlzheimersDiagnostics', (req, res) => {
+  res.render("pages/AlzheimersDiagnostics");
 })
 
 app.get('/Login', (req, res) => {
@@ -157,6 +290,7 @@ app.get('/hospitalLogin', (req, res) => {
     res.render("pages/hospitalLogin",{
       error: errorMessage
     });
+      
 })
 app.get('/about', (req, res) => {
     res.render("pages/about-us");
@@ -185,6 +319,8 @@ app.get('/b', (req, res) => {
 app.get('/hospital', (req, res) => {
     res.render("pages/hospital");
 })
+
+
 
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
@@ -274,6 +410,7 @@ app.post('/send-contact-form', (req, res) => {
 
   }
 })
+
 
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
 

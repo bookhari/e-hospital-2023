@@ -174,7 +174,7 @@ function jump(data_medical){
         if (predata) {
           alert('success');
           // Need change the front end local url to cloud when deploy
-          var url = new URL("http://localhost:5000/cardiovascularDiseaseQuestionresult");
+          var url = new URL("http://www.e-hospital.ca/cardiovascularDiseaseQuestionresult");
           url.searchParams.append('result', predata);
           window.location.replace(url);
         }
