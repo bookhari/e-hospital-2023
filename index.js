@@ -757,6 +757,38 @@ app.post('/get_doctorInfo', (req, res) => {
               }
 })
 
+app.post('/update_patientAppointment', (req, res) => {
+  const uuid = req.body.id;
+  const password = req.body.password;
+  sql = 'SELECT * FROM `patients_registration` WHERE uuid = ? AND verification = ?';
+  console.log(sql);
+  conn.query(sql, [uuid,true] ,(error, result) => {
+    if (error) throw error
+    if(result.length == 0){
+      res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
+      return;
+    } else {
+      if (result[0].uuid === uuid && result[0].password === password) {
+        // Correct patients
+        const date = req.body.date;
+        sql = `INSERT INTO patients_appointmentRequest (patient_id, appointmentDate) VALUES (${result[0].id}, "${date}")`;
+        console.log(sql);
+        conn.query(sql,(error, result) => {
+          if (error) throw error
+          if (result.affectedRows == 1) {
+            res.send({success:"Appointment request sent."})
+          } else {
+            res.send({error:"Something goes wrong in the database."});
+          }
+        })
+      } else {
+        res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
+        return;
+      }
+    }
+  })
+})
+
 app.get('/get_availableDentists', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
   conn.query(sql, (error, result) => {
@@ -775,7 +807,7 @@ app.get('/get_availableDoctors', (req, res) => {
 
 app.post('/update_availability', (req, res) => {
   const Availability = req.body.Availability;
-  const uuid = req.body.email;
+  const uuid = req.body.id;
   const password = req.body.password;
 
   sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
