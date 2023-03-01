@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Services | Alzheimers Prediction</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css">
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<style>
+  select {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  select:focus {
+    border-color: #9b59b6;
+  }
+
+  .spinner {
+    border: 5px solid #9b59b6;
+    border-top-color: #9b59b6;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .black-button {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .black-button input[type="submit"] {
+    background: linear-gradient(-135deg, #747474, rgb(0, 0, 0));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 400px;
+    width: 300px;
+
+  }
+
+  .black-button input[type="submit"]:hover {
+    background: linear-gradient(-135deg, #000000, #747474);
+  }
+</style>
+
+
+
+<%- include('../partials/header') -%>
+
+  <div class="container">
+    <div class="title">Alzheimers Prediction</div>
+    <p id="log" style="
+    color:tomato; 
+    font-weight: bold;
+    font-size: larger;
+    text-align: left;">
+      Result
+    </p>
+    <div class="content">
+
+      <form id="form">
+        <div class="user-details">
+
+          <div class="input-box">
+            <span class="details">Age</span>
+            <input 
+              type="number" 
+              oninput="clearResult()"
+              id="age" 
+              name="age" 
+              placeholder="Enter your age" 
+              maxlength="3" 
+              min="0" max="120"
+              required
+              title="Please enter numbers only" 
+            >
+          </div>
+          <div class="input-box">
+            <span class="details">Gender</span>
+            <select name="gender" id="gender"  onchange="clearResult()" required>
+              <option value="" disabled selected>Select</option>
+              <option value=1>Male</option>
+              <option value=0>female</option>
+            </select>
+          </div>
+
+          <div class="input-box">
+            <span class="details">Visit</span>
+            <input 
+              type="number" 
+              step="any"
+              oninput="clearResult()"              
+              name="VST" 
+              id="VST" 
+              placeholder="Visit Order" 
+              maxlength="3"
+              title="Please enter numbers only" 
+              required
+            >
+          </div>
+          <div class="input-box">
+            <span class="details">MR Delay</span>
+            <input 
+            type="number" 
+            step="any"
+            oninput="clearResult()"               
+            name="MRD" 
+            id="MRD" 
+            placeholder="Enter MR Delay Time" 
+            maxlength="3"
+            title="Please enter numbers only" 
+            required
+          >
+          </div>
+          <div class="input-box">
+            <span class="details">Hand</span>
+            <input 
+              type="number" 
+              step="any"
+              oninput="clearResult()"                 
+              name="HND" 
+              id="HND" 
+              placeholder="Enter Hand value" 
+              maxlength="3"
+              title="Please enter numbers only"
+              required 
+            >
+          </div>
+          <div class="input-box">
+            <span class="details">EDUC</span>
+            <input 
+              type="number" 
+              step="any"
+              oninput="clearResult()"                 
+              name="EDUC" 
+              id="EDUC" 
+              placeholder="Enter Years of Education value" 
+              maxlength="3"
+              title="Please enter numbers only" 
+              required
+            >
+          </div>
+
+          <div class="input-box">
+            <span class="details">SES</span>
+            <input 
+              type="number" 
+              step="any"
+              oninput="clearResult()"                
+              name="SES" 
+              id="SES" 
+              placeholder="Enter Socioeconomic Status value" 
+              maxlength="3"
+              title="Please enter numbers only" 
+              required
+            >
+          </div>
+          <div class="input-box">
+            <span class="details">MMSE</span>
+            <input 
+            type="number" 
+            step="any"
+            oninput="clearResult()"               
+            name="MMSE" 
+            id="MMSE" 
+            placeholder="Enter Mini-Mental State Examination" 
+            maxlength="3" 
+            required
+            title="Please enter numbers only" >
+          </div>
+          <div class="input-box">
+            <span class="details">CDR</span>
+            <input 
+            type="number" 
+            step="any"
+            oninput="clearResult()"       
+            name="CDR" id="CDR" placeholder="Enter Clinical Dementia Rating" maxlength="3"required
+            title="Please enter numbers only" >
+          </div>
+          <div class="input-box">
+            <span class="details">eTIV</span>
+            <input 
+            type="number" 
+            step="any"
+            oninput="clearResult()"                   name="eTIV" id="eTIV" placeholder="Estimated total intracranial volume"maxlength="3" required
+            title="Please enter numbers only" >
+          </div>
+
+          <div class="input-box">
+            <span class="details">nWBV</span>
+            <input 
+            type="number" 
+            step="any"
+            oninput="clearResult()"       
+            name="nWBV" 
+            id="nWBV" placeholder="Enter Normalize Whole Brain Volume" 
+            maxlength="3" required
+            title="Please enter numbers only" >
+          </div>
+          <div class="input-box">
+            <span class="details">ASF</span>
+            <input 
+            type="number" 
+            step="any"
+            oninput="clearResult()"                   
+            name="ASF" 
+            id="ASF" 
+            placeholder="Enter Atlas Scaling Factor" 
+            maxlength="3"
+            required
+            title="Please enter numbers only" >
+          </div>
+
+
+        </div>
+        <div class="spinner" style="display: none;"></div>
+
+        <div class="black-button">
+          <input type="submit" value="Predict">
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+    document.getElementById("log").innerHTML = ``;
+    const spinner = document.querySelector('.spinner');
+
+    function logSubmit(event) {
+      event.preventDefault();
+      document.getElementById("log").innerHTML = ``;
+
+      const data = {
+        age: parseInt(document.getElementById("age").value),
+        gender: parseInt(document.getElementById("gender").value),
+        VST: parseInt(document.getElementById("VST")?.value),
+        MRD: parseInt(document.getElementById("MRD").value),
+        HND: parseInt(document.getElementById("HND").value),
+        EDUC: parseInt(document.getElementById("EDUC").value),
+        SES: parseInt(document.getElementById("SES").value),
+        MMSE: parseInt(document.getElementById("MMSE").value),
+        CDR: parseInt(document.getElementById("CDR").value),
+        eTIV: parseInt(document.getElementById("eTIV").value),
+        nWBV: parseInt(document.getElementById("nWBV").value),
+        ASF: parseInt(document.getElementById("ASF").value),
+
+      }
+
+      let base_url = 'https://alzheimer-api.herokuapp.com/predict';
+      spinner.style.display = 'block'; // show the spinner
+
+      const requestBody = 
+        {
+          "Visit":data.VST,
+          "MR_Delay":data.MRD,
+          "M_F":data.gender,
+          "Age":data.age,
+          "EDUC":data.EDUC,
+          "SES":data.SES,
+          "MMSE":data.MMSE,
+          "CDR":data.CDR,
+          "eTIV":data.eTIV,
+          "nWBV":data.nWBV,
+          "ASF":data.ASF
+      }
+      // Test body
+      // const requestBody = {
+      //     "Visit":2,
+      //     "MR_Delay":182,
+      //     "M_F":1,
+      //     "Age":66,
+      //     "EDUC":13,
+      //     "SES":2.0,
+      //     "MMSE":30.0,
+      //     "CDR":0.0,
+      //     "eTIV":1506,
+      //     "nWBV":0.740,
+      //     "ASF":1.165
+      // }
+  
+
+        fetch('https://alzheimer-api.herokuapp.com/predict', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(requestBody)
+			})
+
+        .then(response => response.json())
+        .then(data => {
+          if (data?.prediction === 'Demented!') {
+            document.getElementById("log").innerHTML = `You probably have - alzheimer's`;
+            spinner.style.display = 'none'; // hide the spinner
+
+
+          } else if (data?.prediction === 'Nondemented!') {
+            document.getElementById("log").innerHTML = `You are healthy - No alzheimer's`;
+            spinner.style.display = 'none'; // hide the spinner
+          }
+
+        })
+        .catch(error => {
+          document.getElementById("log").innerHTML = `Please try again later :  ${error}`;
+          spinner.style.display = 'none'; // hide the spinner
+
+        });
+
+
+    }
+    function clearResult() {
+      // To clear result
+      document.getElementById("log").innerHTML = ``;
+    }
+    const form = document.getElementById('form');
+    form.addEventListener('submit', logSubmit);
+  </script>
+
+</html>
