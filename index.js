@@ -757,28 +757,87 @@ app.post('/get_doctorInfo', (req, res) => {
               }
 })
 
-app.post('/update_patientAppointment', (req, res) => {
+app.get('/get_availableDoctors', (req, res) => {
+  sql = "SELECT Specialization, COUNT(Specialization) AS 'NumberOfDoctors' FROM doctors_registration WHERE Availability = 1 AND verification = 1 GROUP BY Specialization";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
+    res.send(result);
+  })
+})
+
+app.post('/get_availableDoctorsBySpecialization', (req, res) => {
+  const specialization = req.body.specialization;
+  sql = `SELECT Fname, Mname, Lname, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, uuid FROM doctors_registration WHERE Availability = 1 AND verification = 1 AND Specialization = "${specialization}"`;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
+    res.send(result);
+  })
+})
+
+app.post('/get_appointmentList', (req, res) => {
+  const uuid = req.body.id;
+  sql = `SELECT appointmentDate, slot
+  from doctors_registration join doctors_appointment ON doctors_registration.id = doctors_appointment.doctor_id
+  WHERE doctors_registration.uuid = "${uuid}" AND appointmentDate = CURRENT_DATE();`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
+    res.send(result);
+  })
+})
+
+app.post('/update_appointment', (req, res) => {
+  const doc_uuid = req.body.doc_id;
   const uuid = req.body.id;
   const password = req.body.password;
   sql = 'SELECT * FROM `patients_registration` WHERE uuid = ? AND verification = ?';
   console.log(sql);
   conn.query(sql, [uuid,true] ,(error, result) => {
-    if (error) throw error
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
     if(result.length == 0){
       res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
       return;
     } else {
       if (result[0].uuid === uuid && result[0].password === password) {
         // Correct patients
-        const date = req.body.date;
-        sql = `INSERT INTO patients_appointmentRequest (patient_id, appointmentDate) VALUES (${result[0].id}, "${date}")`;
-        console.log(sql);
-        conn.query(sql,(error, result) => {
-          if (error) throw error
-          if (result.affectedRows == 1) {
-            res.send({success:"Appointment request sent."})
+        const patient_id = result[0].id;
+        sql = `SELECT id FROM doctors_registration WHERE uuid = "${doc_uuid}" AND verification = true`
+        conn.query(sql, (error, result) => {
+          if (error) {
+            res.send({error: error.sqlMessage});
+            return;
+          }
+          if(result.length == 0){
+            res.send({error: "No valid doctor is using this email. Please Check."});
+            return;
           } else {
-            res.send({error:"Something goes wrong in the database."});
+            const date = req.body.date;
+            const slot = req.body.slot;
+            sql = `INSERT INTO doctors_appointment (doctor_id, patient_id, appointmentDate, slot)  VALUES (${result[0].id}, ${patient_id}, "${date}", ${slot})`;
+            console.log(sql);
+            conn.query(sql,(error, result) => {
+              if (error) {
+                res.send({error: error.sqlMessage});
+                return;
+              }
+              if (result.affectedRows == 1) {
+                res.send({success:"Appointment scheduled."})
+              } else {
+                res.send({error:"Something goes wrong in the database."});
+              }
+            })
           }
         })
       } else {
@@ -790,17 +849,12 @@ app.post('/update_patientAppointment', (req, res) => {
 })
 
 app.get('/get_availableDentists', (req, res) => {
-  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
+  sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
   conn.query(sql, (error, result) => {
-    if (error) throw error
-    res.send(result);
-  })
-})
-
-app.get('/get_availableDoctors', (req, res) => {
-  sql = "SELECT Specialization, COUNT(Specialization) AS 'NumberOfDoctors' FROM doctors_registration WHERE Availability = 1 GROUP BY Specialization";
-  conn.query(sql, (error, result) => {
-    if (error) throw error
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
     res.send(result);
   })
 })
@@ -813,7 +867,10 @@ app.post('/update_availability', (req, res) => {
   sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
   console.log(sql)
   conn.query(sql,(error, result) => {
-    if (error) throw error
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
     if (result.affectedRows == 1) {
       result.changedRows == 1 ? res.send({success:"Availability updated."}) : res.send({success:"The update is already in place."})
     } else if (result.affectedRows == 0) {
@@ -829,7 +886,10 @@ app.post('/update_availability', (req, res) => {
 app.get('/get_diabetologyList', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
   conn.query(sql, (error, result) => {
-    if (error) throw error
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
     res.send(result);
   })
 })
