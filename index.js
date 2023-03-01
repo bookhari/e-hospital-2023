@@ -60,6 +60,9 @@ app.get('/liver', (req, res) => {
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
 })
+app.get('/alzheimersPrediction', (req, res) => {
+  res.render("pages/alzheimersPrediction");
+})
 app.get('/Breast-Diagnostic', (req, res) => {
   res.render("pages/Breast-Diagnostic");
 })
