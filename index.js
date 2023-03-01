@@ -848,6 +848,38 @@ app.post('/update_appointment', (req, res) => {
   })
 })
 
+app.post('/check_patientAppointment', (req, res) => {
+  const uuid = req.body.id;
+  sql = `SELECT doctors_registration.Fname, doctors_registration.Mname, doctors_registration.Lname, doctors_registration.MobileNumber, doctors_registration.Location1, doctors_registration.Location2, doctors_registration.City, appointmentDate, slot
+  FROM doctors_registration JOIN doctors_appointment JOIN patients_registration 
+  ON doctors_registration.id = doctors_appointment.doctor_id AND patients_registration.id = doctors_appointment.patient_id
+  WHERE patients_registration.uuid = "${uuid}" AND appointmentDate = CURRENT_DATE();`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
+    res.send(result);
+  })
+})
+
+app.post('/check_doctorAppointment', (req, res) => {
+  const uuid = req.body.id;
+  sql = `SELECT patients_registration.FName, patients_registration.MName, patients_registration.LName, patients_registration.MobileNumber, appointmentDate, slot
+  FROM doctors_registration JOIN doctors_appointment JOIN patients_registration 
+  ON doctors_registration.id = doctors_appointment.doctor_id AND patients_registration.id = doctors_appointment.patient_id
+  WHERE doctors_registration.uuid = "${uuid}" AND appointmentDate = CURRENT_DATE();`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
+    res.send(result);
+  })
+})
+
 app.get('/get_availableDentists', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
   conn.query(sql, (error, result) => {
