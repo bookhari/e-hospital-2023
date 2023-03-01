@@ -8,6 +8,12 @@
     margin: 10px;
     }
     
+    .a1{
+      text-decoration:none;
+      font-family:Arial;
+      display: block;
+  }
+
     .imgservices{
       border-radius: 60%;
       width: 70px;
