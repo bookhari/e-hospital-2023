@@ -660,6 +660,7 @@ app.get('/get_diabetologyList', (req, res) => {
   })
 })
 
+
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
   // console.log(req.body);
@@ -903,6 +904,10 @@ app.get('/hospitalData', (req, res) => {
             res.render(result)
         }
     })
+})
+
+app.get('/MS-diagnoses',(req, res) => {
+  res.render("pages/MS-diagnoses")
 })
 
 // user: "uottawabiomedicalsystems@gmail.com", //
