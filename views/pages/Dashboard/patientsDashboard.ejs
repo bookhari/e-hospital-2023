@@ -90,32 +90,38 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>First Name</th>
+                                            <th >First Name</th>
                                             <th>Middel Name</th>
                                             <th>Last Name</th>
-                                            <th>Email Id</th>
                                             <th>Mobile Number</th>
+                                            <th>Age</th>
                                             <th>Blood Group</th>
                                             <th>Location</th>
-                                            <th>verification</th>
+                                             <th>Height</th>
+                                            <th>Weight</th>
 
                                         </tr>
                                     </thead>
 
                                     <tbody id="get_table_data">
-                                        <tr>
-                                            <td><%= patient.FName %></td>
-                                            <td><%= patient.LName %></td>
-                                            <td><%= patient.EmailId %></td>
-                                            <td><%= patient.MobileNumber %></td>
-                                            <td><%= patient.DLNumber %></td>
-                                            <td><%= patient.BloodGroup %></td>
-                                            <td><%= patient.Location %></td>
-                                            <% if(patient.verification) { %>
-                                              <td>verified</td>
-                                            <% } else { %>
-                                            <td>verification pending</td>
-                                            <% } %>
+                                        <tr contenteditable="true" ondblclick="ediableTable()">
+                                            <td ><%= patient.FName %></td>
+                                            <td ><%= patient.MName %></td>
+                                            <td ><%= patient.LName %></td>
+                                            <td ><%= patient.MobileNumber %></td>
+                                            <td ><%= patient.Age %></td>
+                                            <td ><%= patient.BloodGroup %></td>
+                                            <td ><%= patient.Location %></td>
+                                            <td ><%= patient.height %></td>
+                                            <td ><%= patient.weight %></td>
+
+                                            <td>
+                                                <a href="#"
+                                                  data-mail="/patientsDashboardEdit?id=<%= patient.uuid %>"
+                                                  onclick="editPatient(this);">
+                                                    <button class="btn btn-primary">Update</button>
+                                                </a>
+                                            </td>
                                         </tr>
 
                                     </tbody>
@@ -422,7 +428,6 @@
 
     <script>
         $(function () {
-            $('#example1').DataTable()
             $('#example2').DataTable({
                 'paging': true,
                 'lengthChange': false,
@@ -432,7 +437,70 @@
                 'autoWidth': false
             })
         })
-    </script>
+
+function editPatient(identifier) {
+      const appendix = $(identifier).data('mail');
+      
+
+      const base_url = window.location.origin;
+    var tr = document.getElementsByTagName("tr")[1];
+
+     var fname = tr.getElementsByTagName("td")[0];
+     var MName = tr.getElementsByTagName("td")[1];
+     var LName = tr.getElementsByTagName("td")[2];
+     var MobileNumber = tr.getElementsByTagName("td")[3];
+     var Age = tr.getElementsByTagName("td")[4];
+     var BloodGroup = tr.getElementsByTagName("td")[5];
+     var Location = tr.getElementsByTagName("td")[6];
+     var Height = tr.getElementsByTagName("td")[7];
+     var Weight = tr.getElementsByTagName("td")[8];
+    fname = fname.innerHTML;
+    MName = MName.innerHTML;
+    LName = LName.innerHTML;
+    MobileNumber = MobileNumber.innerHTML;
+    Age = Age.innerHTML;
+    BloodGroup = BloodGroup.innerHTML;
+    Location = Location.innerHTML;
+    weight =Weight.innerHTML;
+    height = Height.innerHTML;
+
+
+    var exT1 = "&MName="+MName+"&LName="+LName+"&MobileNumber="+MobileNumber;
+    var exT2 = "&Age="+Age+"&BloodGroup="+BloodGroup+"&Location="+Location+"&weight="+weight+"&height="+height;
+      fetch(base_url + appendix+"&fname="+fname+exT1+exT2)
+          .then((response) => {
+              return response.json();
+          }).then((res) => {
+            console.log(res);
+              if(res.status){
+             alert("User information is successfully updated");
+                 window.location.reload();
+              }
+              return res;
+          }).catch((err) => {
+            //   alert(err);
+            console.error(err)
+            window.location.reload();
+          });
+          document.getElementsByTagName("tr")[1].contentEditable =false;
+    }
+
+    // $(function () {
+    //       $('.patients_option').click(function(){
+    //         $('#patients_table').show();
+
+    //       });
+    //       $('#example2').DataTable({
+    //             'paging': true,
+    //             'lengthChange': false,
+    //             'searching': false,
+    //             'ordering': true,
+    //             'info': true,
+    //             'autoWidth': false
+    //         })
+    // })
+
+</script>
 </body>
 
 </html>
