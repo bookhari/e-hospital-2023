@@ -214,6 +214,9 @@ app.get('/heartStrokeDetection', (req, res) => {
   res.render("pages/heartStrokeDetection");
 })
 
+app.get('/cancerDetection', (req, res) => {
+  res.render("pages/cancerDetection");
+})
 app.get('/Login', (req, res) => {
   errorMessage = '';
   res.render("pages/logina8b9",{
