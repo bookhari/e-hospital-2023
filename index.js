@@ -289,6 +289,18 @@ app.get('/patientLogin', (req, res) => {
       error: errorMessage
     });
 })
+app.get('/specialty', (req, res) => {
+  errorMessage = '';
+  res.render("pages/specialty",{
+    error: errorMessage
+  });
+})
+app.get('/patientLogin', (req, res) => {
+  errorMessage = '';
+  res.render("pages/patientLogin",{
+    error: errorMessage
+  });
+})
 app.get('/doctorLogin', (req, res) => {
     errorMessage = '';
     res.render("pages/doctorLogin",{
