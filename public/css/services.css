@@ -1,0 +1,112 @@
+.card1{
+    width: 350px;
+    border: 1px solid gray;
+    box-shadow: 1px 1px 3px #888;
+    border-top: 10px solid rgb(70, 70, 70);
+    min-height: 10px;
+    padding: 10px;
+    margin: 10px;
+    }
+    
+    .imgservices{
+      border-radius: 60%;
+      width: 70px;
+      margin: 10px;
+    }
+    
+    .textheading{
+      font-weight: bold;
+      font-size: large;
+      margin-left: 100px;
+      margin-top: -45px;
+    }
+    
+    .pservices{
+      margin: 10px;
+      font-family: Arial;
+      line-height: 1.5em;
+      font-size: 1.em;
+    }
+    
+    #mainbox1{
+      box-sizing: border-box;
+      justify-content: center;
+      display: inline-flex;
+    flex-wrap: wrap;
+    }
+
+
+    .button {
+        background-color: #363636; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+      .button:hover {
+        background-color: #5e5e5e;
+        color: white;
+      }
+
+      * {
+        box-sizing:border-box;
+      }
+      
+      .content-container {
+        padding: 10px;
+      }
+      
+      .col-container:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      
+      .column-one {
+        float: left;
+        width: 66.66666%;
+        padding: 35px;
+      }
+      
+      .column-two {
+        float: left;
+        width: 33.33333%;
+        padding: 35px;
+      }
+      
+      .l-font {
+        font-size: 25px;
+         color: #03071e;
+      }
+      
+      .xl-font {
+        font-size: 55px;
+        padding-left: 150px;
+        padding-top: 150px;
+
+        color: #03071e;
+      }
+      
+      
+      .zigzagimg {
+        display: block;
+        height: auto;
+        max-width: 100%;
+      }
+      
+      @media screen and (max-width: 800px) {
+        .column-one,
+        .column-two {
+          width: 100%;
+          text-align: center;
+        }
+        .zigzagimg {
+          margin: auto;
+        }
+      }
+      
