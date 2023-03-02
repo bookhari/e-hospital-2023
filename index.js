@@ -213,6 +213,10 @@ app.get('/AlzheimersDiagnostics', (req, res) => {
   res.render("pages/AlzheimersDiagnostics");
 })
 
+app.get('/heartStrokeDetection', (req, res) => {
+  res.render("pages/heartStrokeDetection");
+})
+
 app.get('/Login', (req, res) => {
   errorMessage = '';
   res.render("pages/logina8b9",{
