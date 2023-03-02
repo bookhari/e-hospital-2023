@@ -886,6 +886,93 @@ app.post('/Hospital', (req, res) => {
     })
 })
 
+app.post('/update_tumorRecord', (req, res) => {
+  if (!req.body) {
+    res.send({error:"Missing request body."});
+    return;
+  }
+  const email = req.body.email;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+
+  // Checkout the patient profile
+  if (!email || !firstName || !lastName) {
+    res.send({error:"Missing patient email, first name, or last name."});
+    return;
+  }
+  var pid = 0;
+  sql = `SELECT id FROM patients_registration WHERE EmailId = "${email}" AND FName = "${firstName}" AND LName = "${lastName}"`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({"MySQL_Error": error});
+      return;
+    }
+    if (result.length == 0) {
+      res.send({error:"No patient matched in database."});
+      return;
+    } else if (result.length > 1) {
+      res.send({error:"Duplicate patient profile matched."});
+      return;
+    } else if (result.length < 0) {
+      res.send({error:"Invalid index on the backend."});
+      return;
+    }
+    pid = result[0].id;
+
+    // Check Record existed
+    const radius = req.body.radius;
+    const texture = req.body.texture;
+    const perimeter = req.body.perimeter;
+    const area = req.body.area;
+    const smoothness = req.body.smoothness;
+    const compactness = req.body.compactness;
+    const concavity = req.body.concavity;
+    const concavePoints = req.body.concavePoints;
+    const symmetry = req.body.symmetry;
+    const fractalDimension = req.body.fractalDimension;
+    const date = req.body.date;
+    const prediction = req.body.prediction;
+
+    if (!radius || !texture || !perimeter || !area || !smoothness || !compactness || !concavity || !concavePoints || !symmetry || !fractalDimension || !date || !prediction) {
+      res.send({error: "Missing patient record or date."});
+      return;
+    }
+
+    sql = `INSERT INTO tumor (patient_id, radius, texture, perimeter, area, smoothness, compactness, concavity, concavePoints, symmetry, fractalDimension, recordDate, prediction)
+    VALUES (${pid}, ${radius}, ${texture}, ${perimeter}, ${area}, ${smoothness}, ${compactness}, ${concavity}, ${concavePoints}, ${symmetry}, ${fractalDimension}, "${date}", "${prediction}")`;
+    console.log(sql);
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({"MySQL_Error": error});
+        return;
+      }
+      if (result.affectedRows == 1) {
+        res.send({success:"Tumor Record update success."});
+        return;
+      } else {
+        res.send({error:"Something goes wrong in the database."});
+      }
+    })
+  })
+})
+
+app.post('/get_tumorRecord', (req, res) => {
+  if (!req.body) {
+    res.send({error:"Missing request body."});
+    return;
+  }
+  const uuid = req.body.id;
+  const password = req.body.password;
+  sql = `SELECT radius, texture, perimeter, area, smoothness, compactness, concavity, concavePoints, symmetry, fractalDimension, recordDate, prediction 
+  FROM tumor JOIN patients_registration ON tumor.patient_id = patients_registration.id 
+  WHERE uuid = "${uuid}" AND PASSWORD = "${password}" AND verification = 1`;
+  conn.query(sql,(error, result) => {
+      if (error) throw error
+      res.send({result: result});
+  })
+})
+
 const nodemailer = require("nodemailer");
 
 
