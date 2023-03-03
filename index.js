@@ -364,13 +364,29 @@ app.post('/send-contact-form', (req, res) => {
   const SENDER_PASS = "hlcvsrrzempexzhw";
   const RECEIVER_NAME = req.body.userName;
   const RECEIVER_EMAIL = req.body.userEmail;
+  const PHONE_NUMBER = req.body.phoneNumber
   const USER_MESSAGE = req.body.userMessage;
 
   var VALID_INPUTS = true;
 
-
-  if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
+  if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)||Boolean(!PHONE_NUMBER)){
     VALID_INPUTS = false;
+  }
+
+  // Store request to database
+  if(VALID_INPUTS){
+    sql = `INSERT INTO contact_us (name, email, phoneNumber, message) VALUES ("${RECEIVER_NAME}", "${RECEIVER_EMAIL}", "${PHONE_NUMBER}", "${USER_MESSAGE}")`;
+    console.log(sql);
+    conn.query(sql,(error, result) => {
+      if (error) {
+        res.send({error: error.sqlMessage});
+        return;
+      }
+      if (result.affectedRows != 1) {
+        res.send({error:"Something goes wrong in the database."});
+        return;
+      }
+    })
   }
 
   // Function to call to nodemailer
