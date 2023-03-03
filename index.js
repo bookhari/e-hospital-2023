@@ -417,7 +417,6 @@ app.post('/send-contact-form', (req, res) => {
         html: html,
       });
       console.log("Message sent: " + info.messageId);
-      console.log(html);
     }
 
     main().catch((e) => {

@@ -14,7 +14,6 @@
     "mysql2": "^3.1.2",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
-    "sib-api-v3-sdk": "^8.5.0",
     "twilio": "^4.7.2"
   }
 }
