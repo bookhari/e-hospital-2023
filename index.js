@@ -231,114 +231,80 @@ app.get('/contact-us', (req, res) => {
 });
 
 app.post('/send-contact-form', (req, res) => {
-  const SIB_KEY = "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";
-  console.log(SIB_KEY);
-  const Sib = require('sib-api-v3-sdk');
-  const client = Sib.ApiClient.instance;
-  const apiKey = client.authentications['api-key']
-  apiKey.apiKey = SIB_KEY;
 
-  const tranEmailApi = new Sib.TransactionalEmailsApi()
-  const sender = {
-    email: 'abudh064@uottawa.ca',
-    name: 'E Hospital',
+
+  const SENDER_EMAIL = "ehospital23@gmail.com";
+  const SENDER_PASS = "bozsyftcnmqhokte";
+  const RECEIVER_NAME = req.body.userName;
+  const RECEIVER_EMAIL = req.body.userEmail;
+  const USER_PHONE = req.body.phoneNumber;
+  const USER_MESSAGE = req.body.userMessage;
+   
+  var VALID_INPUTS = true;
+
+
+  if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
+    VALID_INPUTS = false;
   }
-  const receivers = [
-    {
-        email: req.body.userEmail,
-    },
-  ]
 
-  tranEmailApi.sendTransacEmail({
-        sender,
-        to: receivers,
-        subject: 'Subscribe to Cules Coding to become a developer',
-        textContent: `
-        Cules Coding will teach you how to become {{params.role}} a developer.
-        `,
-        htmlContent: `
-        <h1>Cules Coding</h1>
-        <a href="https://cules-coding.vercel.app/">Visit</a>
-                `,
-        params: {
-            role: 'Frontend',
+  // Function to call to nodemailer
+  if(VALID_INPUTS){
+    const nodeMailer = require("nodemailer");
+    const html = `
+      <h3> E-Hospital: Your contact us response </h3>
+      <p> Hi ${RECEIVER_NAME}, </p>
+      <br>
+      Thank you for your email. This is to notify you that we have received your contact-us query.
+      We will respond in 3-5 business days. The following is the query for your records.
+      <br>
+      <p> Name: ${RECEIVER_NAME} </p>
+      <p> Email: ${RECEIVER_EMAIL} </p>
+      <p> Message: ${USER_MESSAGE} </p>
+    `;
+
+    // Respond to the request and alert the user.
+    res.send(`
+    <script>alert("Thank you ${RECEIVER_NAME}. Your response has been recorded."); 
+      window.location.href = "/contact-us";
+    </script>`
+    );
+
+    async function main() {
+      const transporter = nodeMailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: SENDER_EMAIL,
+          pass: SENDER_PASS,
         },
-    })
-    .then(console.log)
-    .catch(console.log);
+        tls: {
+          rejectUnauthorized: false
+        }
+      });
 
-  // Define mandatory parameters
-  // const SENDER_EMAIL = "ehospital112233@gmail.com";
-  // const SENDER_PASS = "hlcvsrrzempexzhw";
-  // const RECEIVER_NAME = req.body.userName;
-  // const RECEIVER_EMAIL = req.body.userEmail;
-  // const USER_MESSAGE = req.body.userMessage;
+      const info = await transporter.sendMail({
+        from: SENDER_EMAIL,
+        to: RECEIVER_EMAIL,
+        subject: "Your Contact Us Query to E-Hospital",
+        html: html,
+      });
+      console.log("Message sent: " + info.messageId);
+    }
 
-  // var VALID_INPUTS = true;
+    main().catch((e) => {
+      console.log(e);
+    });
+  } 
+  else{
+    // Respond to the user that inputs are invalid
+    res.send(`
+    <script>alert("Your inputs are invalid. Make sure that every field is filled."); 
+      window.location.href = "/contact-us";
+    </script>`
+    );
 
-
-  // if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
-  //   VALID_INPUTS = false;
-  // }
-
-  // // Function to call to nodemailer
-  // if(VALID_INPUTS){
-  //   const nodeMailer = require("nodemailer");
-  //   const html = `
-  //     <h3> E-Hospital: Your contact us response </h3>
-  //     <p> Hi ${RECEIVER_NAME}, </p>
-  //     <br>
-  //     Thank you for your email. This is to notify you that we have received your contact-us query.
-  //     We will respond in 3-5 business days. The following is the query for your records.
-  //     <br>
-  //     <p> Name: ${RECEIVER_NAME} </p>
-  //     <p> Email: ${RECEIVER_EMAIL} </p>
-  //     <p> Message: ${USER_MESSAGE} </p>
-  //   `;
-
-  //   // Respond to the request and alert the user.
-  //   res.send(`
-  //   <script>alert("Thank you ${RECEIVER_NAME}. Your response has been recorded."); 
-  //     window.location.href = "/contact-us";
-  //   </script>`
-  //   );
-
-  //   async function main() {
-  //     const transporter = nodeMailer.createTransport({
-  //       host: "smtp.gmail.com",
-  //       port: 587,
-  //       secure: false,
-  //       auth: {
-  //         user: SENDER_EMAIL,
-  //         pass: SENDER_PASS,
-  //       },
-  //       tls: {
-  //         rejectUnauthorized: false
-  //       }
-  //     });
-
-  //     const info = await transporter.sendMail({
-  //       from: SENDER_EMAIL,
-  //       to: RECEIVER_EMAIL,
-  //       subject: "Your Contact Us Query to E-Hospital",
-  //       html: html,
-  //     });
-  //     console.log("Message sent: " + info.messageId);
-  //   }
-
-  //   main().catch((e) => {
-  //     console.log(e);
-  //   });
-  // } 
-  // else{
-  //   // Respond to the user that inputs are invalid
-  //   res.send(`
-  //   <script>alert("Your inputs are invalid. Make sure that every field is filled."); 
-  //     window.location.href = "/contact-us";
-  //   </script>`
-  //   );
-
-  // }
+  }
 })
 
 
