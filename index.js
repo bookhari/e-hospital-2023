@@ -240,8 +240,7 @@ app.post('/send-contact-form', (req, res) => {
   const USER_PHONE = req.body.phoneNumber;
   const USER_MESSAGE = req.body.userMessage;
    
-  var VALID_INPUTS = true;
-
+  let VALID_INPUTS = true;
 
   if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
     VALID_INPUTS = false;
@@ -259,6 +258,7 @@ app.post('/send-contact-form', (req, res) => {
       <br>
       <p> Name: ${RECEIVER_NAME} </p>
       <p> Email: ${RECEIVER_EMAIL} </p>
+      <p> Phone: ${USER_PHONE} </p>
       <p> Message: ${USER_MESSAGE} </p>
     `;
 
@@ -290,6 +290,7 @@ app.post('/send-contact-form', (req, res) => {
         html: html,
       });
       console.log("Message sent: " + info.messageId);
+      console.log(html);
     }
 
     main().catch((e) => {
