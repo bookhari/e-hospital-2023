@@ -10,7 +10,8 @@ const app = express();
 
 const fs = require('fs');
 const FormData = require('form-data');
-const upload = multer({ dest: "uploads" });
+const memoryStorage = multer.memoryStorage()
+const upload = multer({ storage: memoryStorage })
 const port = process.env.PORT || 5000;
 
 
@@ -852,12 +853,15 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         extURL = "http://localhost:5000/connectionTesting";
         break;
       case "Pneumonia":
-        extURL = "https://pneumonia-api.onrender.com/checkPnemonia";
+        extURL = "https://lfsrepo-mlmodel-pneumonia.herokuapp.com/predict";
         break;
       case "Glioma":
         extURL = "http://localhost:5000/connectionTesting";
         break;
       case "Alzheimers":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
+      case "TBD":
         extURL = "http://localhost:5000/connectionTesting";
         break;
       default:
@@ -880,18 +884,19 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         res.send(response.data);
       })
       .catch(err => {
-        console.error(err.response.data)
+        console.log(err.response)
         res.send({error: err.response.data});
     })
+    // res.send({success: "test"});
   })
 })
 
 // This is a connection testing api 
 app.post('/connectionTesting', upload.single("image"), (req,res) => {
-  console.log("Request receive.");
+  console.log("Request received by test api.");
   console.log(req.file);
   console.log(req.body);
-  res.send({result: "Request received by test api."});
+  res.send({prediction: "Request received by test api."});
 })
 
 app.post('/Hospital', (req, res) => {

@@ -40,8 +40,8 @@
           alert(JSON.stringify(data.error));
         } else {
           console.log(`Succesful response ${JSON.stringify(data)}`);
-          console.log(`Message is: ${data.result}`);
-          $("#testResult").val(data.result);
+          console.log(`Message is: ${JSON.stringify(data)}`);
+          $("#testResult").val(JSON.stringify(data));
         }
       },
       error: function(xhr, textStatus, errorThrown) {
