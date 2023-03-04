@@ -10,7 +10,8 @@ const app = express();
 
 const fs = require('fs');
 const FormData = require('form-data');
-const upload = multer({ dest: "uploads" });
+const memoryStorage = multer.memoryStorage()
+const upload = multer({ storage: memoryStorage })
 const port = process.env.PORT || 5000;
 
 
@@ -359,17 +360,18 @@ app.get('/contact-us', (req, res) => {
 
 app.post('/send-contact-form', (req, res) => {
 
-  // Define mandatory parameters
-  const SENDER_EMAIL = "ehospital112233@gmail.com";
-  const SENDER_PASS = "hlcvsrrzempexzhw";
+
+  const SENDER_EMAIL = "ehospital23@gmail.com";
+  const SENDER_PASS = "bozsyftcnmqhokte";
   const RECEIVER_NAME = req.body.userName;
   const RECEIVER_EMAIL = req.body.userEmail;
-  const PHONE_NUMBER = req.body.phoneNumber
+
+  const USER_PHONE = req.body.phoneNumber;
   const USER_MESSAGE = req.body.userMessage;
+   
+  let VALID_INPUTS = true;
 
-  var VALID_INPUTS = true;
-
-  if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)||Boolean(!PHONE_NUMBER)){
+  if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
     VALID_INPUTS = false;
   }
 
@@ -401,6 +403,7 @@ app.post('/send-contact-form', (req, res) => {
       <br>
       <p> Name: ${RECEIVER_NAME} </p>
       <p> Email: ${RECEIVER_EMAIL} </p>
+      <p> Phone: ${USER_PHONE} </p>
       <p> Message: ${USER_MESSAGE} </p>
     `;
 
@@ -867,12 +870,15 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         extURL = "http://localhost:5000/connectionTesting";
         break;
       case "Pneumonia":
-        extURL = "https://pneumonia-api.onrender.com/checkPnemonia";
+        extURL = "https://lfsrepo-mlmodel-pneumonia.herokuapp.com/predict";
         break;
       case "Glioma":
         extURL = "http://localhost:5000/connectionTesting";
         break;
       case "Alzheimers":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
+      case "TBD":
         extURL = "http://localhost:5000/connectionTesting";
         break;
       default:
@@ -895,18 +901,19 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         res.send(response.data);
       })
       .catch(err => {
-        console.error(err.response.data)
+        console.log(err.response)
         res.send({error: err.response.data});
     })
+    // res.send({success: "test"});
   })
 })
 
 // This is a connection testing api 
 app.post('/connectionTesting', upload.single("image"), (req,res) => {
-  console.log("Request receive.");
+  console.log("Request received by test api.");
   console.log(req.file);
   console.log(req.body);
-  res.send({result: "Request received by test api."});
+  res.send({prediction: "Request received by test api."});
 })
 
 app.post('/Hospital', (req, res) => {
