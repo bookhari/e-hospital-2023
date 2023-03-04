@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="en">     
+  <header>
+    <%- include('../partials/header'); %>
+  </header>   
+
+<body>
+  <div id="container">
+    <h4 id='header_font'>Cardiovascular Disease test questions </h4>
+    <div id="q_items">
+      <form class="contact-form" role="form">
+        <div id="inp_items">
+            <label for="Ages">Ages (Please input your ages in days):</label><br>
+            <input type="number" id="Ages" name="Ages"><br>
+            <label for="Height">Height (Please input your height in cm):</label><br>
+            <input type="number" id="Height" name="Height"><br>
+            <label for="Weight">Weight (Please input your weight in kg):</label><br>
+            <input type="number" id="Weight" name="Weight"><br>
+            <!--上面为输入值--> 
+            <!-- it is input style -->
+          <div class="form-group">
+              <label for="exampleFormControlSelect1">Please tell us your Gender: </label>
+              <select class="form-control" id="gender" name="gender">
+                <option value="1">Female</option>
+                <option value="2">Male</option>
+              </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Please select whether you drink alcohol or not:  </label>
+            <select class="form-control" id="alcohol" name="alcohol">
+              <option value="1">yes</option>
+              <option value="0">no</option>
+            </select>
+          </div>        
+        
+        </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Please select whether you smoke or not: </label>
+            <select class="form-control" id="smoke" name="smoke">
+              <option value="1">yes</option>
+              <option value="0">no</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Please select whether you active or not: </label>
+            <select class="form-control" id="active" name="active">
+              <option value="1">yes</option>
+              <option value="0">no</option>
+            </select>
+          </div>
+          <div class="form-group">
+              <label for="exampleFormControlSelect1">Please select your most recent glucose status:</label>
+              <select class="form-control" id="gluc" name="gluc">
+                <option value="1">normal</option>
+                <option value="2">above normal</option>
+                <option value="3">well above normal</option>
+              </select>
+          </div> 
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Please select your most recent Cholesterol status:</label>
+            <select class="form-control" id="Cholesterol" name="cholesterol">
+              <option value="1">normal</option>
+              <option value="2">above normal</option>
+              <option value="3">well above normal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Systolic blood pressure</label>
+            <select class="form-control" id="Systolic blood pressure" name="systolicBloodPressure">
+              <option>90</option>
+              <option>95</option>
+              <option>100</option>
+              <option>105</option>
+              <option>110</option>
+              <option>115</option>
+              <option>120</option>
+              <option>125</option>
+              <option>130</option>
+              <option>135</option>
+              <option>140</option>
+              <option>145</option>
+              <option>150</option>
+              <option>155</option>
+              <option>160</option>
+              <option>165</option>
+              <option>170</option>
+            </select>
+          </div> 
+
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Diastolic blood pressure</label>
+            <select class="form-control" id="Diastolic blood pressure" name="diastolicBloodPressure">
+              <option>50</option>
+              <option>60</option>
+              <option>70</option>
+              <option>80</option>
+              <option>90</option>
+              <option>100</option>
+              <option>110</option>
+              <option>120</option>
+              <option>130</option>
+              <option>140</option>
+              <option>150</option>
+              <option>160</option>
+            </select>
+          </div> 
+          <div id="btn_ft">
+            <button type="submit" id="btn_l" class="btn btn-primary">submit</button>
+            <!-- <button type="submit" id="btn_r" class="btn btn-primary">refresh</button> -->
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>  
+  <footer>
+    <%- include('../partials/footer-new'); %>
+  </footer>
+</body>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- <script src="/jquery-3.1.1.min.js" type="application/json"></script> -->
+<!-- <script src="/axios.min.js" type="application/json"></script> -->
+<script>
+  /**
+ * Retrieves input data from a form and returns it as a JSON object.
+ * @param  {HTMLFormControlsCollection} elements  the form elements
+ * @return {Object}                               form data as an object literal
+ */
+var data_medical;
+const formToJSON = (elements) =>
+  [].reduce.call(
+    elements,
+    (data, element) => {
+      data[element.name] = element.value;
+      return data;
+    },
+    {}
+  );
+
+const handleFormSubmit = (event) => {
+  // Stop the form from submitting since we’re handling that with AJAX.
+  event.preventDefault();
+
+  // Call our function to get the form data.
+  data_medical = formToJSON(form.elements);
+  //console.log(data);
+  jump(data_medical);
+};
+
+
+const form = document.getElementsByClassName('contact-form')[0];
+form.addEventListener('submit', handleFormSubmit);
+
+/*将表单数据格式转换*/
+
+function jump(data_medical){
+    /*var search_keyword=document.getElementById("btn_l").value;*/
+    axios.post('https://internal-medicine-api-deploy.herokuapp.com/data_generate', {
+      // 给后端传数据 search是button接收的字符 你根据数据格式调整一些再
+      // 也可以增加字段 key-value这种 testtxt就是我加的
+        age:data_medical.Ages, height: data_medical.Height, weight: data_medical.Weight, active: data_medical.active,alco:data_medical.alcohol,
+        cholesterol:data_medical.cholesterol,ap_lo:data_medical.diastolicBloodPressure, gender: data_medical.gender, 
+        gluc: data_medical.gluc, smoke: data_medical.smoke,ap_hi:data_medical.systolicBloodPressure
+
+        /*search: search_keyword*/
+    })
+    .then(function (response) {
+      
+        var predata = response.data.resultdata;
+        if (predata) {
+          alert('success');
+          // Need change the front end local url to cloud when deploy
+          var url = new URL("http://www.e-hospital.ca/cardiovascularDiseaseQuestionresult");
+          url.searchParams.append('result', predata);
+          window.location.replace(url);
+        }
+        
+        
+       
+    })
+    .catch(function (error) {
+        alert("Error!");
+    });
+}
+</script>  
+
+</html>

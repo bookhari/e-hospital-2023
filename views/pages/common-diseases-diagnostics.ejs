@@ -34,8 +34,18 @@
       success: function(data) {
         // Handle successful response from server
         //alert(data.message);
-        $("#testResult")
-          .val(data.message);
+        console.log(data);
+        if (data.error) {
+          console.log(data.error);
+          alert(JSON.stringify(data.error));
+        } else {
+          console.log(`Succesful response ${JSON.stringify(data)}`);
+          console.log(`Message is: ${JSON.stringify(data)}`);
+          var st1=JSON.stringify(data);
+          str= st1.replace(/[\[\]""]+/g,'');          
+          console.log(str);        
+          $("#testResult").val(str);
+        }
       },
       error: function(xhr, textStatus, errorThrown) {
         // Handle error response from server
