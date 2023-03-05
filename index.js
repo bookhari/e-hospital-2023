@@ -31,6 +31,9 @@ app.get('/', (req, res) => {
 app.get('/pneumoniahome', (req, res) => {
   res.render("pages/index");
 })
+app.get('/heartdiseasefrontend', (req, res) => {
+  res.render("pages/heartdiseasefrontend");
+})
 app.get('/respiratorymedicine', (req, res) => {
   // Send a GET request to the Flask app's /pneumonia endpoint to get the HTML content of the page
   axios.get('https://mlmodel2.herokuapp.com/pneumonia')
@@ -117,6 +120,10 @@ app.get('/widget', (req, res) => { //Christina&Sanika
 })
 app.get('/Breast-Diagnostic', (req, res) => {
     res.render("pages/Breast-Diagnostic");
+})
+
+app.get('/heartStrokeDetection', (req, res) => {
+  res.render("pages/heartStrokeDetection");
 })
 
 app.get('/heartStrokeDetection', (req, res) => {
