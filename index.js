@@ -649,11 +649,27 @@ app.post('/get_doctorInfo', (req, res) => {
             .then(message => console.log(message.status));    //message.sid
               }
 })
+app.route("/ajax")
+.post(function(req,res){
 
-app.get('/get_availableDentists', (req, res) => {
-  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
+ res.send({response:req.body.Country});
+ console.log("success")
+console.log(req.body)
+console.log(req.body.Country)
+});
+app.post('/get_availableDentists', (req, res) => {
+  const Province = req.body.Province;
+  const City = req.body.City;
+  const Country = req.body.Country;
+  console.log(Province)
+  console.log(City)
+  console.log(Country)
+
+
+  sql = `SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1 AND Province = "${Province}" AND City ="${City}" AND Country = "${Country}"`;
   conn.query(sql, (error, result) => {
     if (error) throw error
+    console.log(result)
     res.send(result);
   })
 })
