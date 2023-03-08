@@ -41,7 +41,10 @@
         } else {
           console.log(`Succesful response ${JSON.stringify(data)}`);
           console.log(`Message is: ${JSON.stringify(data)}`);
-          $("#testResult").val(JSON.stringify(data));
+          var st1=JSON.stringify(data);
+          str= st1.replace(/[\[\]""]+/g,'');          
+          console.log(str);        
+          $("#testResult").val(str);
         }
       },
       error: function(xhr, textStatus, errorThrown) {
