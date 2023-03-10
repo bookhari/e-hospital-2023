@@ -908,6 +908,32 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
   })
 })
 
+// This is a MongoDB testing api
+app.post('/imageUploadTesting', upload.single("image"), async (req,res) => {
+  console.log("Request received by image test api.");
+  const patient_id = req.body.patient_id;
+  const recordType = req.body.recordType;
+  const recordDate = req.body.recordDate;
+
+  console.log(req.file);
+  console.log(req.body);
+
+  if (!patient_id || !recordType || !recordDate || !req.file) {
+    res.send({error:"Missing patient id, record type, record date, or record file."});
+    return;
+  }
+
+  const record = {
+    patient_id: patient_id,
+    RecordDate: recordDate,
+    file: req.file
+  }
+
+  const result = await mongoDb.collection(recordType).insertOne(record);
+  console.log(`New image created with the following id: ${result.insertedId}`);
+  res.send({prediction: "Request received by test api."});
+})
+
 // This is a connection testing api 
 app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request received by test api.");
