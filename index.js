@@ -1176,55 +1176,32 @@ client.messages
     })
 
 
-// This is a MongoDB import api
+// This is a MongoDB import API template
 app.post('/imageUpload', upload.single("image"), async (req,res) => {
   const patient_id = req.body.patient_id; // patient id, e.g. "25", must be retrieved from MySQL first by using phone number
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
   const recordDate = req.body.recordDate; // record date, e.g. "2023-03-01 09:00:00"
 
-  if (!patient_id || !recordType || !recordDate || !req.file) {
-    res.send({error:"Missing patient id, record type, record date, or record file."});
-    return;
-  }
-
-  const record = {
-    patient_id: patient_id,
-    RecordDate: recordDate,
-    file: req.file
-  }
-
-  const result = await mongoDb.collection(recordType).insertOne(record);
-  res.send({success: `New image created with the following id: ${result.insertedId}`});
+  const result = await imageUpload(patient_id, recordType, recordDate, req.file);
+  res.send(result);
 })
 
-// This is a MongoDB API for retrieving image by patient id
+// This is a MongoDB API template for retrieving image by patient id
 app.post('/imageRetrieveByPatientId', async (req,res) => {
   const patient_id = req.body.patient_id; // patient id, e.g. "25", must be retrieved from MySQL first by using phone number
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
-  if (!patient_id || !recordType) {
-    res.send({error:"Missing patient id or record type."});
-    return;
-  }
-
-  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id }).toArray();
-  res.send({success: result});
+  const result = await imageRetrieveByPatientId(patient_id, recordType);
+  res.send(result);
 })
 
-// This is a MongoDB API for retrieving image by record id 
+// This is a MongoDB API template for retrieving image by record id 
 app.post('/imageRetrieveByRecordId', async (req,res) => {
   const _id = req.body._id; // record id, e.g. "640b68a96d5b6382c0a3df4c"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
-  if (!_id || !recordType) {
-    res.send({error:"Missing patient id or record type."});
-    return;
-  }
-
-  var mongo = require('mongodb');
-  var o_id = new mongo.ObjectId(_id);
-  const result = await mongoDb.collection(recordType).findOne({ _id: o_id });
-  res.send({success: result});
+  const result = await imageRetrieveByRecordId(_id, recordType);
+  res.send(result);
 })
 
 // This is a connection testing api 
@@ -1234,5 +1211,41 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log(req.body);
   res.send({prediction: "Request received by test api."});
 })
+
+
+async function imageUpload(patient_id, recordType, recordDate, file) {
+  if (!patient_id || !recordType || !recordDate || !file) {
+    return {error:"Missing patient id, record type, record date, or record file."};
+  }
+
+  const record = {
+    patient_id: patient_id,
+    RecordDate: recordDate,
+    file: file
+  }
+
+  const result = await mongoDb.collection(recordType).insertOne(record);
+  return {success: "New image created.", id: result.insertedId};
+}
+
+async function imageRetrieveByPatientId(patient_id, recordType) {
+  if (!patient_id || !recordType) {
+    return {error:"Missing patient id or record type."};
+  }
+
+  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id }).toArray();
+  return {success: result};
+}
+
+async function imageRetrieveByRecordId(_id, recordType) {
+  if (!_id || !recordType) {
+    return {error:"Missing patient id or record type."};
+  }
+
+  var mongo = require('mongodb');
+  var o_id = new mongo.ObjectId(_id);
+  const result = await mongoDb.collection(recordType).findOne({ _id: o_id });
+  return {success: result};
+}
 
 app.listen(port, () => console.log(`Server running on the port : ${port}`))
