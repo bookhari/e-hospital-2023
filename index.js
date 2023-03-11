@@ -1200,14 +1200,14 @@ app.post('/imageUpload', upload.single("image"), async (req,res) => {
       return;
     }
     patient_id = result[0].id;
-  
+
     const MongoResult = await imageUpload(patient_id, recordType, recordDate, req.file);
     res.send(MongoResult);
   });
 })
 
-// This is a MongoDB API template for retrieving image by patient id
-app.post('/imageRetrieveByPatientId', async (req,res) => {
+// This is a MongoDB API template for retrieving image by patient phone number
+app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
