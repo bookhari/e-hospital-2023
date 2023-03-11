@@ -908,40 +908,6 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
   })
 })
 
-// This is a MongoDB testing api
-app.post('/imageUploadTesting', upload.single("image"), async (req,res) => {
-  console.log("Request received by image test api.");
-  const patient_id = req.body.patient_id;
-  const recordType = req.body.recordType;
-  const recordDate = req.body.recordDate;
-
-  console.log(req.file);
-  console.log(req.body);
-
-  if (!patient_id || !recordType || !recordDate || !req.file) {
-    res.send({error:"Missing patient id, record type, record date, or record file."});
-    return;
-  }
-
-  const record = {
-    patient_id: patient_id,
-    RecordDate: recordDate,
-    file: req.file
-  }
-
-  const result = await mongoDb.collection(recordType).insertOne(record);
-  console.log(`New image created with the following id: ${result.insertedId}`);
-  res.send({prediction: "Request received by test api."});
-})
-
-// This is a connection testing api 
-app.post('/connectionTesting', upload.single("image"), (req,res) => {
-  console.log("Request received by test api.");
-  console.log(req.file);
-  console.log(req.body);
-  res.send({prediction: "Request received by test api."});
-})
-
 app.post('/Hospital', (req, res) => {
     const get_HospitalInfo = req.body;
     var password = crypto.randomBytes(16).toString("hex");
@@ -1209,10 +1175,47 @@ client.messages
         }
     })
 
+// This is a MongoDB import api
+app.post('/imageUpload', upload.single("image"), async (req,res) => {
+  const patient_id = req.body.patient_id; // patient id, e.g. "25", must be retrieved from MySQL first by using phone number
+  const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
+  const recordDate = req.body.recordDate; // record date, e.g. "2023-03-01 09:00:00"
 
+  if (!patient_id || !recordType || !recordDate || !req.file) {
+    res.send({error:"Missing patient id, record type, record date, or record file."});
+    return;
+  }
 
+  const record = {
+    patient_id: patient_id,
+    RecordDate: recordDate,
+    file: req.file
+  }
 
+  const result = await mongoDb.collection(recordType).insertOne(record);
+  res.send({success: `New image created with the following id: ${result.insertedId}`});
+})
 
+// This is a MongoDB retrieved image by patient id api 
+app.post('/imageRetrieveByPatientId', async (req,res) => {
+  const patient_id = req.body.patient_id; // patient id, e.g. "25", must be retrieved from MySQL first by using phone number
+  const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
+  if (!patient_id || !recordType) {
+    res.send({error:"Missing patient id."});
+    return;
+  }
+
+  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id });
+  res.send({success: result});
+})
+
+// This is a connection testing api 
+app.post('/connectionTesting', upload.single("image"), (req,res) => {
+  console.log("Request received by test api.");
+  console.log(req.file);
+  console.log(req.body);
+  res.send({prediction: "Request received by test api."});
+})
 
 app.listen(port, () => console.log(`Server running on the port : ${port}`))
