@@ -1175,6 +1175,7 @@ client.messages
         }
     })
 
+
 // This is a MongoDB import api
 app.post('/imageUpload', upload.single("image"), async (req,res) => {
   const patient_id = req.body.patient_id; // patient id, e.g. "25", must be retrieved from MySQL first by using phone number
@@ -1196,7 +1197,7 @@ app.post('/imageUpload', upload.single("image"), async (req,res) => {
   res.send({success: `New image created with the following id: ${result.insertedId}`});
 })
 
-// This is a MongoDB retrieved image by patient id api 
+// This is a MongoDB API for retrieving image by patient id
 app.post('/imageRetrieveByPatientId', async (req,res) => {
   const patient_id = req.body.patient_id; // patient id, e.g. "25", must be retrieved from MySQL first by using phone number
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
@@ -1207,6 +1208,22 @@ app.post('/imageRetrieveByPatientId', async (req,res) => {
   }
 
   const result = await mongoDb.collection(recordType).find({ patient_id: patient_id });
+  res.send({success: result});
+})
+
+// This is a MongoDB API for retrieving image by record id 
+app.post('/imageRetrieveByRecordId', async (req,res) => {
+  const _id = req.body._id; // record id, e.g. "640b68a96d5b6382c0a3df4c"
+  const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
+
+  if (!_id || !recordType) {
+    res.send({error:"Missing patient id or record type."});
+    return;
+  }
+
+  var mongo = require('mongodb');
+  var o_id = new mongo.ObjectId(_id);
+  const result = await mongoDb.collection(recordType).findOne({ _id: o_id });
   res.send({success: result});
 })
 
