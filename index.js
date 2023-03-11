@@ -1178,21 +1178,61 @@ client.messages
 
 // This is a MongoDB import API template
 app.post('/imageUpload', upload.single("image"), async (req,res) => {
-  const patient_id = req.body.patient_id; // patient id, e.g. "25", must be retrieved from MySQL first by using phone number
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
   const recordDate = req.body.recordDate; // record date, e.g. "2023-03-01 09:00:00"
 
-  const result = await imageUpload(patient_id, recordType, recordDate, req.file);
-  res.send(result);
+  // Check patient identity
+  if (phoneNumber == 0) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    patient_id = result[0].id;
+  
+    const MongoResult = await imageUpload(patient_id, recordType, recordDate, req.file);
+    res.send(MongoResult);
+  });
 })
 
 // This is a MongoDB API template for retrieving image by patient id
 app.post('/imageRetrieveByPatientId', async (req,res) => {
-  const patient_id = req.body.patient_id; // patient id, e.g. "25", must be retrieved from MySQL first by using phone number
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
-  const result = await imageRetrieveByPatientId(patient_id, recordType);
-  res.send(result);
+  // Check patient identity
+  if (phoneNumber == 0) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    const MongoResult = await imageRetrieveByPatientId(patient_id, recordType);
+    res.send(MongoResult);
+  });
 })
 
 // This is a MongoDB API template for retrieving image by record id 
@@ -1200,8 +1240,8 @@ app.post('/imageRetrieveByRecordId', async (req,res) => {
   const _id = req.body._id; // record id, e.g. "640b68a96d5b6382c0a3df4c"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
-  const result = await imageRetrieveByRecordId(_id, recordType);
-  res.send(result);
+  const MongoResult = await imageRetrieveByRecordId(_id, recordType);
+  res.send(MongoResult);
 })
 
 // This is a connection testing api 
@@ -1211,7 +1251,6 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log(req.body);
   res.send({prediction: "Request received by test api."});
 })
-
 
 async function imageUpload(patient_id, recordType, recordDate, file) {
   if (!patient_id || !recordType || !recordDate || !file) {
