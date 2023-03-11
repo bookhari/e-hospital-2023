@@ -1203,11 +1203,11 @@ app.post('/imageRetrieveByPatientId', async (req,res) => {
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
   if (!patient_id || !recordType) {
-    res.send({error:"Missing patient id."});
+    res.send({error:"Missing patient id or record type."});
     return;
   }
 
-  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id });
+  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id }).toArray();
   res.send({success: result});
 })
 
