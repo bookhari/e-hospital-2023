@@ -1252,6 +1252,14 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   res.send({prediction: "Request received by test api."});
 })
 
+/**
+ * This is the function that updates a single file (image) to the patient record in MongoDB.
+ * @param {*} patient_id Existed id from the table "patients_registration" under MySQL database.
+ * @param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
+ * @param {*} recordDate The date when this record was generated, e.g. "2023-03-01 09:00:00".
+ * @param {*} file The record, can be an image or other file that can be used on ML prediction directly.
+ * @returns If success, return {success: "New image created.", id: "id of this record"}; otherwise, return {error:"Error message."}.
+ */
 async function imageUpload(patient_id, recordType, recordDate, file) {
   if (!patient_id || !recordType || !recordDate || !file) {
     return {error:"Missing patient id, record type, record date, or record file."};
@@ -1267,6 +1275,12 @@ async function imageUpload(patient_id, recordType, recordDate, file) {
   return {success: "New image created.", id: result.insertedId};
 }
 
+/**
+ * This is the function that retrieves all records in a specific record type in MongoDB through patient id.
+ * @param {*} patient_id Existed id from the table "patients_registration" under MySQL database.
+ * @param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
+ * @returns If success, return {success: [{Record A in JSON}, {Record B in JSON}, ...]}; otherwise, return return {error:"Error message."}.
+ */
 async function imageRetrieveByPatientId(patient_id, recordType) {
   if (!patient_id || !recordType) {
     return {error:"Missing patient id or record type."};
@@ -1276,6 +1290,12 @@ async function imageRetrieveByPatientId(patient_id, recordType) {
   return {success: result};
 }
 
+/**
+ * This is the function that retrieves specific records in a specific record type in MongoDB through the id of the record.
+ * @param {*} _id The id of the record in MongoDB.
+ * @param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
+ * @returns If success, return {success: {Record in JSON}}; otherwise, return return {error:"Error message."}.
+ */
 async function imageRetrieveByRecordId(_id, recordType) {
   if (!_id || !recordType) {
     return {error:"Missing patient id or record type."};
