@@ -16,10 +16,6 @@ try {
 module.exports = {
     getDb: function () {
       return client.db("htdata");
-    },
-    createData: async function (collectionName, file) {
-        const result = await client.db("htdata").collection(collectionName).insertOne(file);
-        return result;
     }
 };
 
