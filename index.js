@@ -1252,6 +1252,7 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   res.send({prediction: "Request received by test api."});
 })
 
+
 /**
  * This is the function that updates a single file (image) to the patient record in MongoDB.
  * @param {*} patient_id Existed id from the table "patients_registration" under MySQL database.
@@ -1286,7 +1287,8 @@ async function imageRetrieveByPatientId(patient_id, recordType) {
     return {error:"Missing patient id or record type."};
   }
 
-  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id }).toArray();
+  const sort = { RecordDate: -1 };
+  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id }).sort(sort).toArray();
   return {success: result};
 }
 
