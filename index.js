@@ -798,6 +798,8 @@ app.post('/get_doctorInfo', (req, res) => {
               }
 })
 
+/* Diabetology Page, code started for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
+
 app.get('/get_diabetologyList', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
   conn.query(sql, (error, result) => {
@@ -805,6 +807,7 @@ app.get('/get_diabetologyList', (req, res) => {
     res.send(result);
   })
 })
+/* Diabetology Page, code ended for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
 
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
