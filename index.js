@@ -1176,6 +1176,55 @@ client.messages
     })
 
 
+
+// This API is for update the ML prediction result to the database. 
+app.post('/updateDisease', (req, res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const disease = req.body.disease; // the name of the disease, e.g. "pneumonia"
+  const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
+  const prediction = req.body.prediction; // prediction result, e.g. "diseased" or "detail disease type"
+  const accuracy = req.body.accuracy; // prediction accuracy, e.g. "90%"
+  const reccordType = req.body.reccordType; // the type of the health test, e.g. "X-Ray" or "ecg"
+  const reccordId = req.body.reccordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
+
+  if (!phoneNumber || !disease || !date || !prediction) {
+    res.send({error:"Missing patient phone number, disease, date, or prediction."});
+    return;
+  }
+
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    sql = `INSERT into ${disease} (patient_id, prediction_date, prediction, accuracy, record_type, record_id)
+    VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${reccordType?"\""+reccordType+"\"":"NULL"}, ${reccordId?"\""+reccordId+"\"":"NULL"})
+    ON DUPLICATE KEY 
+    UPDATE prediction_date = "${date}", 
+    prediction = "${prediction}",
+    accuracy = ${accuracy?"\""+accuracy+"\"":"NULL"},
+    record_type = ${reccordType?"\""+reccordType+"\"":"NULL"},
+    record_id = ${reccordId?"\""+reccordId+"\"":"NULL"};`;
+    conn.query(sql, async (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        return;
+      }
+      res.send({success: "Submit success."});
+    });
+  });
+
+})
+
 // This is a MongoDB import API template
 app.post('/imageUpload', upload.single("image"), async (req,res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
@@ -1183,7 +1232,7 @@ app.post('/imageUpload', upload.single("image"), async (req,res) => {
   const recordDate = req.body.recordDate; // record date, e.g. "2023-03-01 09:00:00"
 
   // Check patient identity
-  if (phoneNumber == 0) {
+  if (!phoneNumber) {
     res.send({error:"Missing patient phone number"});
     return;
   }
@@ -1212,7 +1261,7 @@ app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
   // Check patient identity
-  if (phoneNumber == 0) {
+  if (!phoneNumber) {
     res.send({error:"Missing patient phone number"});
     return;
   }
