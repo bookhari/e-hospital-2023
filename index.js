@@ -146,8 +146,11 @@ app.get('/ediabetes', (req, res) => {
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })
-app.get('/common-diseases-diagnostics', (req, res) => {
-  res.render("pages/common-diseases-diagnostics");
+app.get('/Pneumonia-diagnostics', (req, res) => {
+  res.render("pages/Pneumonia-diagnostics");
+})
+app.get('/kidney-diagnostic', (req, res) => {
+  res.render("pages/kidney-diagnostic");
 })
 app.get('/brain', (req, res) => {
   res.render("pages/brain");
@@ -879,6 +882,9 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         extURL = "http://localhost:5000/connectionTesting";
         break;
       case "Alzheimers":
+        extURL = "http://localhost:5000/connectionTesting";
+        break;
+        case "kidney-stones":
         extURL = "http://localhost:5000/connectionTesting";
         break;
       case "TBD":
