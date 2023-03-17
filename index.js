@@ -1377,7 +1377,7 @@ async function imageRetrieveByPatientId(patient_id, recordType) {
   }
 
   const sort = { RecordDate: -1 };
-  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id }).sort(sort).toArray();
+  const result = await mongoDb.collection(recordType).find({ patient_id: patient_id }, { projection: { patient_id: 0 }}).sort(sort).toArray();
   return {success: result};
 }
 
@@ -1394,7 +1394,7 @@ async function imageRetrieveByRecordId(_id, recordType) {
 
   var mongo = require('mongodb');
   var o_id = new mongo.ObjectId(_id);
-  const result = await mongoDb.collection(recordType).findOne({ _id: o_id });
+  const result = await mongoDb.collection(recordType).findOne({ _id: o_id }, { projection: { patient_id: 0 }});
   return {success: result};
 }
 
