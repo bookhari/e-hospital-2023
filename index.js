@@ -1281,11 +1281,11 @@ app.post('/imageUpload', upload.single("image"), async (req,res) => {
   // console.log(sql);
   conn.query(sql, async (error, result) => {
     if (error) {
-      res.send({error:"No patient matched in database."});
+      res.send({error:"Something wrong in MySQL."});
       return;
     }
     if (result.length != 1) {
-      res.send({error:"Something wrong in MySQL."});
+      res.send({error:"No patient matched in database."});
       return;
     }
     patient_id = result[0].id;
@@ -1307,14 +1307,14 @@ app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
   }
   var patient_id = 0;
   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  // console.log(sql);
+  console.log(sql);
   conn.query(sql, async (error, result) => {
     if (error) {
-      res.send({error:"No patient matched in database."});
+      res.send({error:"Something wrong in MySQL."});
       return;
     }
     if (result.length != 1) {
-      res.send({error:"Something wrong in MySQL."});
+      res.send({error:"No patient matched in database."});
       return;
     }
     patient_id = result[0].id;
