@@ -473,6 +473,11 @@ app.post('/send-contact-form', (req, res) => {
   }
 })
 
+app.get('/emergency-locations', (req, res) => {
+  res.render("pages/emergency-locations");
+});
+
+
 
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
 
