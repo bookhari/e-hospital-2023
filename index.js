@@ -375,19 +375,22 @@ app.get('/heartDiseasePrediction', (req, res) => {
 app.get('/lab', (req, res) => {
   res.render("pages/lab");
 })
+
+
+/* TaskName - Contact Us page with email confirmation 
+   Team: Apeksha, Enrico, Tarin
+*/
 app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });
 
 app.post('/send-contact-form', (req, res) => {
-
-
   const SENDER_EMAIL = "ehospital23@gmail.com";
   const SENDER_PASS = "bozsyftcnmqhokte";
+  
   const RECEIVER_NAME = req.body.userName;
   const RECEIVER_EMAIL = req.body.userEmail;
-
-  const USER_PHONE = req.body.phoneNumber;
+  const PHONE_NUMBER = req.body.phoneNumber;
   const USER_MESSAGE = req.body.userMessage;
 
   let VALID_INPUTS = true;
@@ -402,11 +405,20 @@ app.post('/send-contact-form', (req, res) => {
     console.log(sql);
     conn.query(sql, (error, result) => {
       if (error) {
-        res.send({ error: error.sqlMessage });
+        res.send(`
+        <script>alert("An error occured while sending. Error message: ${error.sqlMessage}"); 
+          window.location.href = "/contact-us";
+        </script>`
+        );
+        
         return;
       }
       if (result.affectedRows != 1) {
-        res.send({ error: "Something goes wrong in the database." });
+        res.send(`
+        <script>alert("Sorry, an error occured in the database. Please contact the site admin."); 
+          window.location.href = "/contact-us";
+        </script>`
+        );
         return;
       }
     })
@@ -424,7 +436,7 @@ app.post('/send-contact-form', (req, res) => {
       <br>
       <p> Name: ${RECEIVER_NAME} </p>
       <p> Email: ${RECEIVER_EMAIL} </p>
-      <p> Phone: ${USER_PHONE} </p>
+      <p> Phone: ${PHONE_NUMBER} </p>
       <p> Message: ${USER_MESSAGE} </p>
     `;
 
@@ -469,9 +481,9 @@ app.post('/send-contact-form', (req, res) => {
       window.location.href = "/contact-us";
     </script>`
     );
-
   }
 })
+
 
 
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
