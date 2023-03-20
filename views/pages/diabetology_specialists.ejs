@@ -33,6 +33,19 @@
     <header>
         <%- include('../partials/header') -%>
     </header>
+<script>
+    fetch(
+      "/get_diabetologyList", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    })
+    .then(data=>{return data.json()})
+    .then(res=>{console.log(res)})
+
+  </script>
 
     <section class="appt"> 
       <div class="container flex-jc-c">
