@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Emergency Locations</title>
+
+    <script>
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.watchPosition(showPosition);
+        } else {
+          console.log("Geolocation is not supported.")
+        }
+      }
+      function showPosition(position) {
+        console.log(`The position is ${position.coords.latitude}, ${position.coords.longitude}`)
+      }
+
+      let position = getLocation();
+    </script>
+  </head>
+  <body></body>
+</html>

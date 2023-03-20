@@ -21,7 +21,9 @@ var crypto = require('crypto')
 
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
-app.use(express.static(__dirname + '/public'))
+
+app.use(express.static(__dirname + '/public'));
+
 app.use(express.urlencoded({ extended: true }));
 // mongoClient.connectToServer();
 
@@ -473,9 +475,10 @@ app.post('/send-contact-form', (req, res) => {
   }
 })
 
-app.get('/emergency-locations', (req, res) => {
+app.get('/emergency-locations', async (req, res) => {
   res.render("pages/emergency-locations");
 });
+
 
 
 
