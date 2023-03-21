@@ -179,7 +179,7 @@ a:hover {
 button,
 .button {
   padding: 1.5rem 4.5rem;
-  background-image: linear-gradient(to right, hsl(233, 26%, 24%), hsl(233, 29%, 49%));
+  background-image: linear-gradient(to right, hsl(0, 0%, 15%), hsl(0, 0%, 33%));
   border: 0;
   border-radius: 30px;
   cursor: pointer;
