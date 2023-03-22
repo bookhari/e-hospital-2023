@@ -541,7 +541,7 @@ app.get('/HealthCare_DashBoard', (req, res) => {
   res.render("pages/Dashboard/HealthCare_DashBoard");
 })
 
-app.post('/DoctorsDashBoard', (req, res) => {
+app.post('/DoctorDashBoard', (req, res) => {
   const uuid = req.body.email;
   const password = req.body.password;
   sql = 'SELECT * FROM `doctors_registration` WHERE uuid =  ? AND verification = ?';

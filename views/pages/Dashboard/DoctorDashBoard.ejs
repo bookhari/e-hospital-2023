@@ -88,6 +88,12 @@
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
+                    <li class="treeview" id="search_patient">
+                        <a href="#">
+                            <i class="fa fa-dashboard"></i> <span>Search Patient</span>
+                            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
                         </a>
                     </li>
                 </ul>
@@ -188,23 +194,7 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody id="get_table_data">
-                                        <tr>
-                                            <td><%= doctor.Fname %></td>
-                                            <td><%= doctor.Lname %></td>
-                                            <td><%= doctor.EmailId %></td>
-                                            <td><%= doctor.Medical_LICENSE_Number %></td>
-                                            <td><%= doctor.Specialization %></td>
-                                            <td><%= doctor.bloodGroup %></td>
-                                            <td><%= doctor.Location1 %></td>
-                                            <% if(doctor.verification) { %>
-                                              <td>verified</td>
-                                            <% } else { %>
-                                            <td>verification pending</td>
-                                            <% } %>
-                                        </tr>
-                                      
-                                    </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -214,6 +204,36 @@
         </div>
 
     </div>
+
+    <div class="content-wrapper" id="search_patient">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Search Patient
+                <small>advanced tables</small>
+            </h1>
+            <!-- <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Data tables</li>
+            </ol> -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
 
 
     <footer class="main-footer">
