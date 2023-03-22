@@ -7,14 +7,14 @@ const mongoClient = require('./dbConnection/mongodbConnection');
 const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
-
+const Swal = require('sweetalert2')
 const fs = require('fs');
 const FormData = require('form-data');
 const memoryStorage = multer.memoryStorage()
 const upload = multer({ storage: memoryStorage })
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000; 
 
-
+/* Please use comments to identify your work thankyou */
 
 var sql = '';
 var crypto = require('crypto')
@@ -541,7 +541,7 @@ app.get('/HealthCare_DashBoard', (req, res) => {
   res.render("pages/Dashboard/HealthCare_DashBoard");
 })
 
-app.post('/DoctorsDashBoard', (req, res) => {
+app.post('/DoctorDashBoard', (req, res) => {
   const uuid = req.body.email;
   const password = req.body.password;
   sql = 'SELECT * FROM `doctors_registration` WHERE uuid =  ? AND verification = ?';
@@ -577,6 +577,49 @@ app.post('/DoctorsDashBoard', (req, res) => {
   })
 })
 
+
+app.post('/searchpatient', (req, res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  console.log(phoneNumber);
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  var check_list=[];
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log("Something wrong in MySQL");
+      return;
+    }
+    if (result.length != 1) {
+      check_list[0]=1;
+      res.render('pages/searchpatient', {check:check_list});
+      res.send({error:"No patient matched in database."});
+      console.log("No patient matched in database");
+      return;
+    }
+    patient_id = result[0].id;
+    console.log(patient_id);
+    sql_search_query = `SELECT * FROM patients_registration WHERE id = "${patient_id}"`;
+    conn.query(sql_search_query, function (err, result) {
+      if (err) throw err;
+
+      ///res.render() function
+      res.render('pages/searchpatient', {data: result});
+    });
+    console.log(sql_search_query);
+    });
+
+   
+
+})
+//app.post('/searchpatient', async (req,res) => {  
+//})
 app.post('/patientsDashboard', (req, res) => {
   const uuid = req.body.email;
   const password = req.body.password;
