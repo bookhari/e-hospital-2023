@@ -194,7 +194,23 @@
                                         </tr>
                                     </thead>
 
-
+                                    <tbody id="get_table_data">
+                                        <tr>
+                                            <td><%= doctor.Fname %></td>
+                                            <td><%= doctor.Lname %></td>
+                                            <td><%= doctor.EmailId %></td>
+                                            <td><%= doctor.Medical_LICENSE_Number %></td>
+                                            <td><%= doctor.Specialization %></td>
+                                            <td><%= doctor.bloodGroup %></td>
+                                            <td><%= doctor.Location1 %></td>
+                                            <% if(doctor.verification) { %>
+                                              <td>verified</td>
+                                            <% } else { %>
+                                            <td>verification pending</td>
+                                            <% } %>
+                                        </tr>
+                                      
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -205,11 +221,11 @@
 
     </div>
 
-    <div class="content-wrapper" id="search_patient">
+    <div class="content-wrapper" id="doctors_table">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Search Patient
+                Doctors Details
                 <small>advanced tables</small>
             </h1>
             <!-- <ol class="breadcrumb">
@@ -225,7 +241,38 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email Id</th>
+                                        <th>Medical license </th>
+                                        <th>Specialization</th>
+                                        <th>Blood Group</th>
+                                        <th>Location</th>
+                                        <th>Verification</th>
+                                    </tr>
+                                </thead>
 
+                                <tbody id="get_table_data">
+                                    <tr>
+                                        <td><%= doctor.Fname %></td>
+                                        <td><%= doctor.Lname %></td>
+                                        <td><%= doctor.EmailId %></td>
+                                        <td><%= doctor.Medical_LICENSE_Number %></td>
+                                        <td><%= doctor.Specialization %></td>
+                                        <td><%= doctor.bloodGroup %></td>
+                                        <td><%= doctor.Location1 %></td>
+                                        <% if(doctor.verification) { %>
+                                          <td>verified</td>
+                                        <% } else { %>
+                                        <td>verification pending</td>
+                                        <% } %>
+                                    </tr>
+                                  
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
