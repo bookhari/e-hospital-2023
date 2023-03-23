@@ -17,15 +17,83 @@
         rel="stylesheet"
      />
 
-     <link rel="stylesheet" type="text/css" href="/css/diabetology.css" />
+
     <title>E-Hospital | Diabetology</title>
 
     <style>
-        .c{
-            padding: 300px;
-        }
-    
-    </style>
+      *{
+          box-sizing: border-box;
+      }
+      body{
+          padding: 0;
+          margin: 0;
+      }
+      a{
+          text-decoration: none;
+      }
+      .cont {
+          max-width: 960px;
+          margin: 0 auto;
+      }
+      .row {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          margin-top: 1rem;
+      }
+      .coll {
+          width: 33.3333333%;
+          padding: 15px;
+      }
+      .coll .card {
+          width: 100%;
+          box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+          transition: transform 0.3s ease;
+      }
+      .coll img {
+          width: 100%;
+          height: auto;
+          border: 0;
+      }
+      .coll .card-body {
+          padding: 0 15px 15px 15px;
+          background-color: #fff;
+          border-bottom-left-radius: 15px;
+          border-bottom-right-radius: 15px;
+      }
+      .card-body h5 {
+          font-size: 24px;
+          margin: 7px 0;
+      }
+      .card:hover{
+          transform: translateY(-10px);
+          transition: transform 0.3s ease;
+      }
+      .card p {
+          color: #6c757d;
+      }
+      .card-body .Availability-text span {
+          color: #e74c3c;
+      }
+      .card-body h5 a{
+          color: #222;
+      }
+      
+      @media(min-width: 577px) and (max-width: 768px){
+          .coll{
+              width: 50%;
+          }
+      }
+      @media(max-width: 576px){
+          .coll{
+              width: 100%;
+          }
+      }
+      </style>
+
+<link rel="stylesheet" type="text/css" href="/css/diabetology.css" />
+
+
 </head>
 
 <body>
@@ -33,21 +101,71 @@
     <header>
         <%- include('../partials/header') -%>
     </header>
-<script>
-    fetch(
-      "/get_diabetologyList", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    })
-    .then(data=>{return data.json()})
-    .then(res=>{console.log(res)})
 
-  </script>
+    <section class="banner">
+      <div class="container">
+        <!--<div class="banner__image"></div>-->
 
-    <section class="appt"> 
+        <div class="banner__text container--pall">
+          <h0 style="margin-bottom: 1rem;">Find a Diabetology Specialist</h0>
+        </div>
+        
+      </div>
+    </section>
+
+      
+      <div class="cont">
+          <div class="row" name="cardRow">
+              <!-- test card -->
+              <!-- <div class="col">
+                  <div class="card">
+                      <img src="https://www.stockvault.net/data/2015/09/01/177580/preview16.jpg">
+                      <div class="card-body">
+                          <h5 class="doctor-name">
+                              <a href="#">Name</a>
+                          </h5>
+                          <p class="Availability-text">
+                              Specialization <span class="Availability">Availability: 0</span>
+                          </p>
+                          <p class="card-text">
+                              Address
+                          </p>
+                      </div>
+                  </div>
+              </div> -->
+          </div>
+      </div>
+      
+      <script>
+      
+       fetch( 'http://www.e-hospital.ca/get_diabetologyList')
+       .then (response => {
+        console.log (response);
+        return response.json( );
+       });
+
+      const res = response;
+
+    //  const res = [{"Fname":"Test","Mname":"","Lname":"D4","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1104","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D8","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1108","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D11","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1111","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D12","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1112","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D18","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1118","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D19","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1119","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D32","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1132","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D36","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1136","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D40","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1140","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D42","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1142","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D46","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1146","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D49","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1149","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1}];
+
+      
+     function addCard(name, specialization, location, availability){
+          var anchor = document.getElementsByName("cardRow")[0];
+          var div = '<div class="coll"><div class="card"><img src="https://www.stockvault.net/data/2015/09/01/177580/preview16.jpg"><div class="card-body"><h5 class="doctor-name"><a href="#">' + name + '</a></h5><p class="Availability-text">' + specialization + ' <span class="Availability"> Availability: ' + availability + '</span></p><p class="card-text">'+ location + '</p></div></div></div>';
+          anchor.insertAdjacentHTML("beforeend", div);
+      };
+      
+      for (var i = 0; i < res.length; i ++){
+          var ava = res[i].Availability; 
+          var name = res[i].Fname + " " + res[i].Mname + " " + res[i].Lname;
+          var loc = res[i].Location1 + " " + res[i].Location2 + "\n" + res[i].City + " " + res[i].Province + " " + res[i].Country + "\n" + res[i].PostalCode;
+          var spe = res[i].Specialization;
+      
+          addCard(name, spe, loc, ava);
+      }
+      </script>
+
+    <section class="appt" style="margin-top: 2rem; margin-bottom: 3rem;"> 
       <div class="container flex-jc-c">
           <a href="/contact-us" class="button appt">Request An Appointment</a>
         </div>
