@@ -153,7 +153,7 @@
       
      function addCard(name, specialization, location, availability){
           var anchor = document.getElementsByName("cardRow")[0];
-          var div = '<div class="coll"><div class="card"><img src="https://www.stockvault.net/data/2015/09/01/177580/preview16.jpg"><div class="card-body"><h5 class="doctor-name"><a href="#">' + name + '</a></h5><p class="Availability-text">' + specialization + ' <span class="Availability"> Availability: ' + availability + '</span></p><p class="card-text">'+ location + '</p></div></div></div>';
+          var div = '<div class="coll"><div class="card"><img src="/images/DocProfile.png"><div class="card-body"><h5 class="doctor-name"><a href="#">' + name + '</a></h5><p class="Availability-text">' + specialization + ' <span class="Availability"> Availability: ' + availability + '</span></p><p class="card-text">'+ location + '</p></div></div></div>';
           anchor.insertAdjacentHTML("beforeend", div);
       };
       
