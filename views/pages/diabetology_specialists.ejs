@@ -35,11 +35,13 @@
           max-width: 960px;
           margin: 0 auto;
       }
-      .row {
+      .roww {
           display: flex;
           justify-content: center;
           flex-wrap: wrap;
           margin-top: 1rem;
+          margin-left: 0px;
+          margin-right: 0px;
       }
       .coll {
           width: 33.3333333%;
@@ -115,7 +117,7 @@
 
       
       <div class="cont">
-          <div class="row" name="cardRow">
+          <div class="roww" name="cardRow">
               <!-- test card -->
               <!-- <div class="col">
                   <div class="card">
@@ -144,9 +146,9 @@
         return response.json( );
        });
 
-      const res = response;
+     // const res = response;
 
-    //  const res = [{"Fname":"Test","Mname":"","Lname":"D4","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1104","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D8","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1108","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D11","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1111","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D12","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1112","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D18","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1118","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D19","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1119","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D32","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1132","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D36","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1136","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D40","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1140","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D42","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1142","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D46","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1146","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D49","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1149","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1}];
+      const res = [{"Fname":"Test","Mname":"","Lname":"D4","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1104","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D8","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1108","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D11","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1111","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D12","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1112","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D18","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1118","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D19","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1119","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D32","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1132","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D36","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1136","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D40","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1140","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D42","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1142","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D46","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1146","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D49","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1149","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1}];
 
       
      function addCard(name, specialization, location, availability){
