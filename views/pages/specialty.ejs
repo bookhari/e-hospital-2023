@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<script>
+    window.onload=function(){
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        //document.querySelector("#download").addEventListener('click', generateCSV);
+        const forms = document.querySelector('form');
+        let selected = [];
+        forms.addEventListener('change', event => {
+            valueGather();
+            // const checked = document.querySelectorAll('input[type="number"]');
+            // selected = Array.from(checked).map(x => x.value);
+            // console.log(selected);
+        });
+    }
+    // $(document).ready(function() {
+    //     $('#symptom-form').submit(function(event) {
+    //         event.preventDefault();
+
+    //         var dataForm = new FormData(this);
+
+    //         $.ajax({
+    //             url: "recordUpdate",
+    //             type: 'Post',
+    //             data: dataForm,
+    //             dataType: 'json',
+    //             processData: false,
+    //             contentType: false,
+    //             success: function(data) {
+    //                 console.log(data);
+    //                 if(data.error) {
+    //                     console.log(data.error);
+    //                     alert(JSON.stringify(data.error));
+    //                 } else {
+    //                     console.log("Successful response ${JSON.stringify(data)}");
+    //                     console.log('Message is: ${data.result}');
+    //                     $("#testResul").val(data.result);
+    //                 }
+    //             },
+    //             error: function(xhr, testStatus, errorThrown) {
+    //                 alert(testStatus + ': '+ errorThrown)
+    //             }
+    //         });
+    //     })
+    // });
+
+     function yell() {
+        valueGather();
+        alert(bc_diagnose(selected));
+     }  
+    
+    function valueClear() {
+        document.querySelector('form').reset();
+    }
+
+    function valueGather(){
+        const checked = document.querySelectorAll('input[type="number"]');
+        selected = Array.from(checked).map(x => x.value);
+        console.log(selected);
+    }
+
+    function bc_diagnose(ins) {
+        if (ins[10] <= 0.049) {
+            if (ins[6] <= 694.6) {
+                if (ins[10] <= 0.045) {
+                    if (ins[4] <= 22.455) {
+                    return 1;
+                } else {
+                    if (ins[4] <= 22.575) {
+                    return 0;
+                } else {
+                     return 1;
+                }
+            }
+        } else {
+            if (ins[4] <= 24.71) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+            } else {
+                if (ins[3] <= 16.08) {
+                    return 0;
+                } else {
+                    if (ins[4] <= 19.83) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+            } else {
+                if (ins[4] <= 14.16) {
+                    if (ins[9] <= 0.174) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    if (ins[5] <= 88.37) {
+                        if (ins[7] <= 0.108) {
+                            return 1;
+                        } else {
+                            if (ins[9] <= 0.107) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    } else {
+                        if (ins[4] <= 16.235) {
+                            if (ins[10] <= 0.075) {
+                                if (ins[3] <= 14.22) {
+                                    return 0;
+                                } else {
+                                    return 1;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            if (ins[7] < 0.088) {
+                                if (ins[9] <= 0.125) {
+                                    return 0;
+                                } else {
+                                    return 1;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        }
+                    }
+                }           
+            }
+    }
+
+        
+    //     const otherCheckbox = document.querySelector('#other');
+    //     const otherText = document.querySelector('#otherValue');
+    //     otherText.style.visibility = 'hidden';
+
+    //     otherCheckbox.addEventListener('change', () => {
+    //         if (otherCheckbox.checked) {
+    //             otherText.style.visibility = 'visible';
+    //             otherText.value = '';
+    //         } else {
+    //             otherText.style.visibility = 'hidden';
+    //         }
+    //     });
+    // }
+  
+
+//   function generateCSV(e){
+//     console.log('hi')
+//     e.preventDefault();
+//     const formdata = new FormData(document.getElementById('symptom-form'));
+//     const formObj = Object.fromEntries(formdata);
+//     const len = Object.keys(formObj).length/2;
+//     let formValues = '';
+//     for(let i=1; i<= len; i++){
+//        // comma separated values and break line
+//         formValues += formObj['symptom'+i] +','+formObj['Have it'+i]+ "\r\n";
+//     }
+//     downloadCSV(formValues);
+//   }
+  
+//    function downloadCSV(formValues){
+//      const columnNames = "Symptom, Has it";
+//      let csvContent = "data:text/csv;charset=utf-8,";
+//      csvContent += columnNames + "\r\n";
+//      csvContent += formValues + "\r\n";
+
+//      const encodedUri = encodeURI(csvContent);
+//      var link = document.createElement("a");
+//      link.setAttribute("href", encodedUri);
+//      link.setAttribute("download", "my-form-data.csv");
+//      document.body.appendChild(link);
+//      link.click();
+//     // link.remove();
+//   }
+
+</script>
+<html lang="en">
+<head>
+    <%- include('../partials/header') -%>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input[type=number] {
+            background-color:rgb(235, 231, 231);
+            border: solid 2px black;
+        }
+
+
+        #symptom-form {
+        background-color:whitesmoke;
+        padding: 30px;
+        border: solid black;
+        }
+
+        #symptom{
+            width: 90px;
+            background-color:rgb(235, 231, 231);
+            border: solid 2px black;
+        }
+
+        #download {
+            text-align: center;
+        }
+
+        #download-btn {
+            padding: 10px;
+            width: 40%;
+            background-color: rgb(255, 255, 255);
+            border: solid 1px black;
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 9px #999;
+        }
+
+        #download-btn:active {
+            box-shadow: 0 3px #666;
+            transform: translateY(4px);
+        }
+
+
+    </style>
+ 
+</head>
+<body>
+   
+
+    <div style="margin: auto;
+    margin-top: 50px;
+    display: flex;
+    width:100%;
+    padding: 30px;"
+    class="container-fluid">
+        <div class="row"  style="margin: auto;
+        float: left;
+        width: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;">
+            <form method="" action=""  id="symptom-form">
+                <label for="symptom1">Email</label>
+                <input type="text" name='email' id="symptom"><br>
+                <label for="symptom1">First Name</label>
+                <input type="text" name='fName' id="symptom"><br>
+                <label for="symptom1">Last Name</label>
+                <input type="text" name='lName' id="symptom"><br>
+
+                <label for="symptom1">Radius</label>
+                <input type="number" name="symptom1" step= "0.000001" min="0" id="symptom" value="0"><br>
+
+                <label for="symptom1">Texture</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="symptom1">Perimeter</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="symptom1">Area</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="symptom1">Smoothness</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="symptom1">Compactness</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="symptom1">Concavity</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="symptom1">Concave Points</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="symptom1">Symmetry</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="symptom1">Fractal Dimension</label>
+                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="record">Date</label>
+                <input type="date" name="recDate" id="symptom">
+                
+                
+                
+                <!-- <input type="checkbox" name="symptom2" id="symptom2" value="Sneeze">
+                <label for="symptom2">Sneeze</label><br>
+                <input type="checkbox" name="symptom3" id="symptom3" value="Dry Eyes">
+                <label for="symptom3">Dry Eyes</label><br>
+                <input type="checkbox" name="symptom4" id="symptom4" value="Sweating">
+                <label for="symptom4">Sweating</label><br>
+                <input type="checkbox" name="symptom5" id="symptom5" value="Vomitting">
+                <label for="symptom5">Vomitting</label><br>
+                <input type="checkbox" name="symptom6" id="symptom6" value="Muscle Pain">
+                <label for="symptom6">Muscle Pain</label><br>
+                <input type="checkbox" name="other" id="other" value="Other">
+                <label for="other">Other</label>
+                <input type="text" id="otherValue" name="other" style="border: 3px solid red"/><br> -->
+                <div id="download">
+                    <input type="submit" id="download-btn" onclick="valueGather()">
+                    <input type="button" id="download-btn" value="Reset" onclick="valueClear()">
+                </div>
+            </form>
+            <button onclick="yell()">Calculate</button>
+        </div>
+        <div class="row"  style="margin: auto;
+        float: right;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20%;
+        border: 3px solid red;
+        padding: 100px;">
+        </div>
+      </div>
+
+    <footer>
+        <%- include('../partials/footer-new') -%>
+        
+      </footer>
+</body>
+</html>
