@@ -4,7 +4,10 @@
     
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
     <!-- displays site properly based on user's device -->
+
     
     <link
         rel="icon"
@@ -118,38 +121,20 @@
       
       <div class="cont">
           <div class="roww" name="cardRow">
-              <!-- test card -->
-              <!-- <div class="col">
-                  <div class="card">
-                      <img src="https://www.stockvault.net/data/2015/09/01/177580/preview16.jpg">
-                      <div class="card-body">
-                          <h5 class="doctor-name">
-                              <a href="#">Name</a>
-                          </h5>
-                          <p class="Availability-text">
-                              Specialization <span class="Availability">Availability: 0</span>
-                          </p>
-                          <p class="card-text">
-                              Address
-                          </p>
-                      </div>
-                  </div>
-              </div> -->
+
           </div>
       </div>
       
       <script>
       
-       fetch( 'http://www.e-hospital.ca/get_diabetologyList')
-       .then (response => {
-        console.log (response);
-        return response.json( );
-       });
+var res = {};
 
-     // const res = response;
+       fetch( 'http://localhost:5000/get_diabetologyList')
+        .then((response) => response.json())
+        .then((data) => 
+            populate(data)
 
-      const res = [{"Fname":"Test","Mname":"","Lname":"D4","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1104","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D8","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1108","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D11","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1111","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D12","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1112","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D18","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1118","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D19","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1119","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D32","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1132","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D36","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1136","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D40","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1140","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D42","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1142","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D46","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1146","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1},{"Fname":"Test","Mname":"","Lname":"D49","Specialization":"Diabetology","Location1":"75 Laurier Ave. E","Location2":"Room 1149","City":"Ottawa","Province":"Ontario","Country":"Canada","PostalCode":"K1N 6N5","Availability":1}];
-
+        );
       
      function addCard(name, specialization, location, availability){
           var anchor = document.getElementsByName("cardRow")[0];
@@ -157,6 +142,7 @@
           anchor.insertAdjacentHTML("beforeend", div);
       };
       
+      function populate(res){
       for (var i = 0; i < res.length; i ++){
           var ava = res[i].Availability; 
           var name = res[i].Fname + " " + res[i].Mname + " " + res[i].Lname;
@@ -165,6 +151,7 @@
       
           addCard(name, spe, loc, ava);
       }
+    }
       </script>
 
     <section class="appt" style="margin-top: 2rem; margin-bottom: 3rem;"> 
