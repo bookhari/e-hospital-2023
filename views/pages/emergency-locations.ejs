@@ -1,22 +1,46 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+      .MapDiv {
+        height: 1000px;
+        width: 1000px;
+      }
+    </style>
     <title>Emergency Locations</title>
 
-    <script>
-      function getLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.watchPosition(showPosition);
-        } else {
-          console.log("Geolocation is not supported.")
-        }
-      }
-      function showPosition(position) {
-        console.log(`The position is ${position.coords.latitude}, ${position.coords.longitude}`)
-      }
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.26/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.26/"></script>
 
-      let position = getLocation();
+    <script>
+      require([
+        "esri/config",
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/rest/locator",
+        "esri/Graphic",
+      ], function (esriConfig, Map, MapView, locator, Graphic) {
+        esriConfig.apiKey =
+          "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd-RXNWi44KwDM-SeN4GldsP8QiTHPeX";
+
+        const map = new Map({
+          basemap: "arcgis-navigation",
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [18.9553, 69.6492], //Longitude, latitude
+          zoom: 13,
+        });
+      });
     </script>
   </head>
-  <body></body>
+  <body>
+    This is text
+    <div id="viewDiv" class="MapDiv">This is a div</div>
+  </body>
 </html>
