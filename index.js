@@ -146,6 +146,9 @@ app.get('/ediabetes', (req, res) => {
 app.get('/diabetology_specialists', (req, res) => {
   res.render("pages/diabetology_specialists");
 })
+app.get('/DiabetologyDiagnostics', (req, res) => {
+  res.render("pages/DiabetologyDiagnostics");
+})
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })
