@@ -7,7 +7,6 @@ const mongoClient = require('./dbConnection/mongodbConnection');
 const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
-const Swal = require('sweetalert2')
 const fs = require('fs');
 const FormData = require('form-data');
 const memoryStorage = multer.memoryStorage()
@@ -28,6 +27,13 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.render("pages/index");
 })
+
+// Hamza Khan Team for Specialities Page
+app.get('/specialities', (req, res) => {
+  res.render("pages/specialities");
+})
+//// Hamza Khan Team for Specialities Page
+
 app.get('/pneumoniahome', (req, res) => {
   res.render("pages/index");
 })
