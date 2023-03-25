@@ -1001,15 +1001,6 @@ app.post('/recordUpdate', upload.single("image"), (req, res) => {
   })
 })
 
-
-// This is a connection testing api 
-app.post('/connectionTesting', upload.single("image"), (req, res) => {
-  console.log("Request received by test api.");
-  console.log(req.file);
-  console.log(req.body);
-  res.send({ prediction: "Request received by test api." });
-})
-
 app.post('/Hospital', (req, res) => {
   const get_HospitalInfo = req.body;
   var password = crypto.randomBytes(16).toString("hex");
@@ -1285,6 +1276,38 @@ app.get('/sendEmail', (req, res) => {
 })
 
 
+
+// This API is for checking the authorized patient list of the doctor
+app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
+  const uuid = req.body.uuid;
+  const password = req.body.password;
+  sql = `SELECT id FROM doctors_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  var doctor_id = 0;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.length == 0) {
+      res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
+      return;
+    }
+
+    doctor_id = result[0].id;
+    sql = `SELECT FName, MName, LName, Age, Gender, BloodGroup, height, weight, MobileNumber, EmailId
+    FROM doctor_recordauthorized join patients_registration ON doctor_recordauthorized.patient_id = patients_registration.id
+    WHERE doctor_id = ${doctor_id}`
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        console.log(error);
+        return;
+      }
+      res.send({success:result});
+    })
+  })
+})
 
 // This API is for update the ML prediction result to the database. 
 app.post('/updateDisease', (req, res) => {
