@@ -1277,6 +1277,19 @@ app.get('/sendEmail', (req, res) => {
 
 
 
+// API for symptoms checker
+app.get('/get_symptoms_checker', (req, res) => {
+  sql = "SELECT * FROM symptoms_checker";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send({success: result});
+  })
+})
+
 // This API is for checking the authorized patient list of the doctor
 app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
   const uuid = req.body.uuid;
