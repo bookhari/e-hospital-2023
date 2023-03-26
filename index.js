@@ -1357,6 +1357,48 @@ app.post('/updateDisease', (req, res) => {
 
 })
 
+// This is the MySQL health test search API
+app.post('/healthTestRetrieveByPhoneNumber', async (req,res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const recordType = req.body.recordType; // the record type, e.g. "ecg", this represents the table name in the database
+
+  // Check parameters
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number."});
+    return;
+  }
+  if (!recordType) {
+    res.send({error:"Missing record type."});
+    return;
+  }
+
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    sql = `SELECT * FROM ${recordType} WHERE patient_id = "${patient_id}" ORDER BY RecordDate DESC`
+    conn.query(sql, async (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        return;
+      }
+
+      var temp = removeKey(result,"patient_id");
+      res.send({success:temp});
+    });
+  });
+})
+
 // This is a MongoDB import API template
 app.post('/imageUpload', upload.single("image"), async (req,res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
@@ -1433,6 +1475,18 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   res.send({prediction: "Request received by test api."});
 })
 
+/**
+ * Remove the sensitive field from the result.
+ * @param {*} result The result from the database.
+ * @param {*} key The field that is sensitive.
+ * @returns The result without the sensitive field.
+ */
+function removeKey(result, key) {
+  for (let i = 0; i < result.length; i++) {
+    delete result[i][key];
+  }
+  return result;
+}
 
 /**
  * This is the function that updates a single file (image) to the patient record in MongoDB.
