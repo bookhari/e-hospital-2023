@@ -1281,6 +1281,13 @@ app.get('/sendEmail', (req, res) => {
 app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
   const uuid = req.body.uuid;
   const password = req.body.password;
+
+  // Check parameters
+  if (!uuid || !password) {
+    res.send({error:"Missing doctor credential."});
+    return;
+  }
+
   sql = `SELECT id FROM doctors_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
   var doctor_id = 0;
   conn.query(sql, (error, result) => {
@@ -1405,11 +1412,16 @@ app.post('/imageUpload', upload.single("image"), async (req,res) => {
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
   const recordDate = req.body.recordDate; // record date, e.g. "2023-03-01 09:00:00"
 
-  // Check patient identity
+  // Check parameters
   if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
+    res.send({error:"Missing patient phone number."});
     return;
   }
+  if (!recordType || !recordDate) {
+    res.send({error:"Missing record type or record date."});
+    return;
+  }
+
   var patient_id = 0;
   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
   // console.log(sql);
@@ -1434,11 +1446,16 @@ app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
-  // Check patient identity
+  // Check parameters
   if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
+    res.send({error:"Missing patient phone number."});
     return;
   }
+  if (!recordType) {
+    res.send({error:"Missing record type."});
+    return;
+  }
+
   var patient_id = 0;
   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
   console.log(sql);
@@ -1462,6 +1479,16 @@ app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
 app.post('/imageRetrieveByRecordId', async (req,res) => {
   const _id = req.body._id; // record id, e.g. "640b68a96d5b6382c0a3df4c"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
+
+  // Check parameters
+  if (!_id) {
+    res.send({error:"Missing record id."});
+    return;
+  }
+  if (!recordType) {
+    res.send({error:"Missing record type."});
+    return;
+  }
 
   const MongoResult = await imageRetrieveByRecordId(_id, recordType);
   res.send(MongoResult);
