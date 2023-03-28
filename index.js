@@ -136,8 +136,8 @@ app.get('/contact-us', (req, res) => {
 app.post('/send-contact-form', (req, res) => {
 
   // Define mandatory parameters
-  const SENDER_EMAIL = "ehospital112233@gmail.com";
-  const SENDER_PASS = "hlcvsrrzempexzhw";
+  const SENDER_EMAIL = "hospitaltest2@gmail.com";
+  const SENDER_PASS = "Ro6132632159!";
   const RECEIVER_NAME = req.body.userName;
   const RECEIVER_EMAIL = req.body.userEmail;
   const USER_MESSAGE = req.body.userMessage;
@@ -301,20 +301,26 @@ app.post('/patientsDashboard', (req, res) => {
   const uuid = req.body.email;
   const password = req.body.password;
   sql = 'SELECT * FROM `patients_registration` WHERE uuid =  ? AND verification = ?';
-  console.log(sql);
+  // console.log(sql);
+
+  // API to fetch data from SQL, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
   conn.query(sql, [uuid,true] ,(error, result) => {
       if (error) throw error
-      if(result.length == 0){
+      if(result[0].length === 0){
         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
         res.render('pages/patientLogin',{    //patientsDashboard
           error: errorMessage
         })
-      } else {
+      } 
+      
+      // This should be change
+      else {
       if (result[0].uuid === uuid && result[0].password === password) {
-        // console.log(result[0].uuid);
+
         var patients_data = result[0];
           res.render("pages/Dashboard/patientsDashboard", {
-              patient: patients_data,
+              patient: patients_data
+
             });
         }
         else {
@@ -326,8 +332,125 @@ app.post('/patientsDashboard', (req, res) => {
       }
       })
 })
+ // API to fetch data from SQL, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
-//Editable
+/* Patient Dashboard For showing the test results, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
+app.get('/patientscardio', function(req, res) {
+  const id = req.query.id;
+  if (!id) {
+    res.status(400).json({ error: 'id parameter is required' });
+    return;
+  }
+    const ptd = req.query.id;
+  sqlCardio = 'SELECT * FROM `ecg` WHERE patient_id = ?';
+  conn.query(sqlCardio, [ptd],(error, result)=>{
+    if (error) throw error
+    if (result[0].patient_id == ptd) {
+
+      }
+
+    res.json(result[0].RecordDate);
+})
+
+});
+
+app.get('/patientscardiovascular', function(req, res) {
+  const id = req.query.id;
+  if (!id) {
+    res.status(400).json({ error: 'id parameter is required' });
+    return;
+  }
+    const ptd = req.query.id;
+  sqlCardio = 'SELECT * FROM `cardiovascular` WHERE patient_id = ?';
+
+  conn.query(sqlCardio, [ptd],(error, result)=>{
+    if (error) throw error
+    if (result[0].patient_id == ptd) {
+
+      }
+    res.json(result[0]);
+
+})
+
+});
+
+
+
+
+/* Patient Dashboard For showing the test results, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
+
+const { MongoClient } = require('mongodb');
+
+const uri = "mongodb+srv://ehuser:ehuser@e-hospital.mgq2xgp.mongodb.net/?retryWrites=true&w=majority"
+const client = new MongoClient(uri);
+
+// API to fetch data from MongoDB, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
+async function getRecordDate(patient_id, recordType) {
+  try {
+    const parsedId = parseInt(patient_id, 10); // convert to number
+    // console.log(parsedId);
+    // console.log(recordType);
+    await client.connect();
+    const database = client.db("htdata");
+    const collection = database.collection(recordType);
+    const result = await collection.findOne({ patient_id: parsedId }); // use parsed ID in query
+    if (result === null) {
+      console.log(`No record found for patient ID: ${patient_id}`);
+      return null;
+    }
+    return result.RecordDate;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+}
+
+
+async function GetInformation(id, recordType)
+{
+  const patient_id = id;
+  const recordDate = await getRecordDate(patient_id, recordType);
+  if (recordDate !== null) {
+    return recordDate;
+  }
+  
+}
+
+app.get('/RetrieveXray', async function(req, res) {
+  const id = req.query.id;
+  const recordType = "X-Ray_Lung";
+  if (!id) {
+    res.status(400).json({ error: 'id parameter is required' });
+    return;
+  }
+  tmp = await GetInformation(id, recordType);
+  // console.log(tmp);
+  res.json(tmp);
+});
+
+
+
+app.get('/RetrieveEndoscopic', async function(req, res) {
+  const id = req.query.id;
+  const recordType = "Endoscopic";
+  if (!id) {
+    res.status(400).json({ error: 'id parameter is required' });
+    return;
+  }
+  tmp = await GetInformation(id, recordType);
+  console.log(tmp);
+  res.json(tmp);
+});
+// API to fetch data from MongoDB, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
+/* Patient Dashboard For showing the test results, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
+/* Patient Dashboard with Editable fields, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+//Editable Part
 
 app.get('/patientsDashboardEdit', (req, res) => {
   const uuid = req.query.id;
@@ -352,58 +475,21 @@ app.get('/patientsDashboardEdit', (req, res) => {
   })
 
 })
+/* Patient Dashboard with Editable fields, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
-// app.post('/patientsDashboardEditTest', (req, res) => {
-//   const uuid = req.body.email;
-//   const password = req.body.password;
-//   const Fname = req.body.Fname;
-
-//   sql = 'SELECT * FROM `patients_registration` WHERE uuid =  ? AND verification = ?';
-//   console.log(sql);
-//   conn.query(sql, [uuid,true] ,(error, result) => {
-//       if (error) throw error
-//       if(result.length == 0){
-//         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-//         res.render('pages/patientLogin',{    //patientsDashboard
-//           error: errorMessage
-//         })
-//       } else {
-//       if (result[0].uuid === uuid && result[0].password === password) {
-//         var patients_data = result[0];
-        
-//          sql = "UPDATE patients_registration SET FName = ? WHERE uuid =  ? AND verification = ?";
-//         conn.query(sql,[Fname,uuid,true],(error, result) => {
-          
-//           res.render("pages/Dashboard/patientsDashboard", {
-//             patient: patients_data,
-//           });
-//       })
-//         }
-//         else {
-//           var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-//           res.render('pages/patientLogin',{
-//             error: errorMessage
-//           })
-//         }
-//       }
-//       })
-// })
-
-
-
-
+/* Text phone verification for Patients, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 app.post('/get_patientInfoTest',(req,res)=>{
   
   const getDetails = req.body
   const uuid = getDetails.EmailId;
-  console.log(uuid)
+  // console.log(uuid)
   sql = 'SELECT * FROM `patients_registration` WHERE EmailId =  ? ';
   // console.log(sql);
   conn.query(sql, [uuid,true] ,(error, result) => {
-    console.log("T1")
+    // console.log('1');
+    // console.log(result[0].uuid);
       if (error) throw error
-      if(result.length != 0){
-        console.log(result.length)
+      if(result[0] !== undefined && result[0].length !== 0){
         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
         res.render('pages/patientLogin',{    //patientsDashboard
           error: errorMessage
@@ -423,13 +509,46 @@ app.post('/get_patientInfoTest',(req,res)=>{
         getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, true, password]]
             conn.query(sql,[VALUES], (error, result) => {
               if (error) throw error
+              sms(password,uuid,"+"+getDetails.number);
               res.render("pages/thankyou");
+              
               })
 
       }
       })
+ // API to send sms from JAVASCRIPT to the user using TWILIO, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+    async function sms(password,uuid,number){
+
+      // console.log('+'+ number)
+      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+      const authToken = '810a6735f604dcb58ee8066e5555b7dd'; //process.env.TWILIO_AUTH_TOKEN;
+      try{
+
+        const client = require('twilio')(accountSid, authToken,{
+          logLevel: 'debug'
+        });
+        client.messages
+              .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+              , from: '+13433074905', to: number})
+              .then(message => console.log(message.errorMessage));
+              
+      }
+      catch(err){
+        
+      }
+    //message.sid
+              }
+   // API to send sms from JAVASCRIPT to the user using TWILIO, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+              
+/* Text phone verification for Patients, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
+
+
 })
 
+
+
+/* Patient Dashboard with editable feilds, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
 app.post('/get_patientInfo', (req, res) => {
     const getDetails = req.body
@@ -445,25 +564,9 @@ app.post('/get_patientInfo', (req, res) => {
           if (error) throw error
           res.render("pages/thankyou");
           })
-    // sms();
-
-    // async function sms(){
-
-    //   const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
-    //   const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
-      
-    //   const client = require('twilio')(accountSid, authToken,{
-    //     logLevel: 'debug'
-    //   });
-      
-    //   client.messages
-    //         .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
-    //         , from: '+13433074905', to: getDetails.number})
-    //         .then(message => console.log(message.dateCreated));    //message.sid
-    //           }
 }
 )
-
+/* Patient Dashboard with editable field, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
 app.post('/get_docotorInfoTest',(req,res)=>{
 
@@ -548,7 +651,7 @@ app.post('/get_doctorInfo', (req, res) => {
       });
       
       client.messages
-            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+ password
             , from: '+13433074905', to: get_doctorInfo.MobileNo})
             .then(message => console.log(message.status));    //message.sid
               }
@@ -620,8 +723,8 @@ const nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport({
     service: "gmail",
 auth:{
-     user:'ehospital112233@gmail.com',
-     pass:'hlcvsrrzempexzhw'
+     user:'hospitaltest2@gmail.com',
+     pass:'talTest2@Hospi'
     }
   });
 
@@ -629,16 +732,17 @@ auth:{
 
 
 // Lab Registration
-
+/* Lab Registration webpage with email Notification and connection with db, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 app.post('/Lab', (req, res) => {
   const get_LabInfo = req.body;
+  console.log(get_LabInfo);
   var uniqueID = "HOS-" + Math.floor(Math.random()*90000) + 10000;
   var password = crypto.randomBytes(16).toString("hex");
   email=req.body.ConfirmEmail;
   
   var login_url = 'http://www.e-hospital.ca/signin';
   transporter.sendMail({
-    from: "ehospital112233@gmail.com", // sender address
+    from: "hospitaltest2@gmail.com", // sender address
     to:email, // list of receivers
     subject: "Your E-Lab account confirmed", // Subject line
     html: `
@@ -678,6 +782,9 @@ app.post('/Lab', (req, res) => {
   })
 }
 )
+/* Lab Registration webpage with email Notification and connection with db, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
+
 
 // app.post('/masterDashboard', (req, res) => {
 //     const email = req.body.email;
@@ -741,6 +848,7 @@ app.get('/hospitalData', (req, res) => {
 // pass: "@uOttawa5902",
 
 const twilio = require("twilio");
+const { pid } = require('process');
 
 app.get('/sendEmail', (req, res) => {
 
@@ -794,15 +902,15 @@ app.get('/sendEmail', (req, res) => {
                 port: 587,
                 secure: false, // true for 465, false for other ports
                 auth: {
-                    user: "ehospital112233@gmail.com",//add your smtp server
-                    pass: "hlcvsrrzempexzhw"//with password
+                    user: "hospitaltest2@gmail.com",//add your smtp server
+                    pass: "talTest2@Hospi"//with password
                 },
             });
 
             var login_url = 'http://www.e-hospital.ca/signin';
             // send mail with defined transport object
             let info = await transporter.sendMail({
-                from: "ehospital112233@gmail.com", // sender address
+                from: "hospitaltest2@gmail.com", // sender address
                 to: email, // list of receivers
                 subject: "Your E-Hospital account confirmed", // Subject line
                 html: `
@@ -859,11 +967,6 @@ client.messages
       .then(message => console.log(message.dateCreated));    //message.sid
         }
     })
-
-
-
-
-
 
 
 

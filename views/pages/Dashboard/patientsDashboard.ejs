@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<!-- Patient Dashboard, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */ -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,9 +20,20 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="/css/_all-skins.min.css">
+    <link rel="stylesheet" href="/css/cardio.css">
     <!-- Google Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -82,12 +93,13 @@
             </section>
 
             <!-- Main content -->
+            
             <section class="content">
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="box">
                             <div class="box-body">
-                                <table id="example2" class="table table-bordered table-hover">
+                                <table id="example2" class="table table-bordered table-hover text-lg">
                                     <thead>
                                         <tr>
                                             <th >First Name</th>
@@ -99,6 +111,7 @@
                                             <th>Location</th>
                                              <th>Height</th>
                                             <th>Weight</th>
+                                            <th>record Date</th>
 
                                         </tr>
                                     </thead>
@@ -114,7 +127,6 @@
                                             <td ><%= patient.Location %></td>
                                             <td ><%= patient.height %></td>
                                             <td ><%= patient.weight %></td>
-
                                             <td>
                                                 <a href="#"
                                                   data-mail="/patientsDashboardEdit?id=<%= patient.uuid %>"
@@ -131,22 +143,333 @@
                     </div>
                 </div>
             </section>
-            <div class="conatiner" style="margin-left: 5rem; margin-top:2rem;">
-                <section class="content text-center" style="margin-left: 30rem;">
+
+
+            <section class="ftco-section bg-light">
+                <div class="container">
+                    <div class="row justify-content-center pb-5 mb-3">
+                        <div class="col-md-7 heading-section text-center ftco-animate fadeInUp ftco-animated">
+                            <h2>Patients Profile </h2>
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class=" col-xs-6">
+                        <div class="col-md-4 ftco-animate fadeInUp ftco-animated">
+                            <div class="block-7">
+                                <div class="img" style="background-image: url(https://thumbs.dreamstime.com/z/veterinary-ecg-paper-record-electrodes-22626839.jpg);"></div>
+                                <!-- <div class="text-center p-4">
+                                    <span class="excerpt d-block">Personal</span>
+                                    <span class="price"><sup>$</sup> <span class="number">49</span> <sub>/mos</sub></span>
+                                    <ul class="pricing-text mb-5">
+                                        <li><span class="fa fa-check mr-2"></span>5 Dog Walk</li>
+                                        <li><span class="fa fa-check mr-2"></span>3 Vet Visit</li>
+                                        <li><span class="fa fa-check mr-2"></span>3 Pet Spa</li>
+                                        <li><span class="fa fa-check mr-2"></span>Free Supports</li>
+                                    </ul>
+                                    <a href="#" class="btn btn-primary d-block px-2 py-3">Get Started</a>
+                                </div> -->
+
+                <!-- Fetch ECG Data -->
+                <div class="text-center p-4">
+                    <span class="excerpt d-block">ECG Records</span>
+                    <a id="myButton" href="#" class="small-box-footer" data-mail="/patientscardio?id=<%= patient.id %>"
+                        onclick="getCardio(this);">
+                       <h4> Click Here  </h4> 
+                        <!-- <div id="myDiv"></div>                                        -->
+                        </a>
+                        <div class="row">
+
+                            <div class="col">
+                              <div class="card shadow">
+                                <div class="table-responsive">
+                                  <table class="table align-items-center table-flush">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">ECG Date</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="ecgRecords" >
+
+                                            <!-- <td>
+                                                $2,500 USD
+                                              </td>
+                                              <td>
+                                                  $2,500 USD
+                                                </td> -->
+
+                                            </tr>
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 ftco-animate fadeInUp ftco-animated">
+                            <div class="block-7">
+                                <div class="img" style="background-image: url(https://tse2.mm.bing.net/th?id=OIP.4CqZT5zQtQNZb_vvZiv1gQHaF6&pid=Api&P=0);"></div>
+                                <div class="text-center p-4">
+                                    <span class="excerpt d-block">Cardiovascular Records</span>
+                                    <!-- <span class="price"><sup>$</sup> <span class="number">79</span> <sub>/mos</sub></span>
+                                    <ul class="pricing-text mb-5">
+                                        <li><span class="fa fa-check mr-2"></span>5 Dog Walk</li>
+                                        <li><span class="fa fa-check mr-2"></span>3 Vet Visit</li>
+                                        <li><span class="fa fa-check mr-2"></span>3 Pet Spa</li>
+                                        <li><span class="fa fa-check mr-2"></span>Free Supports</li>
+                                    </ul>
+                                    <a href="#" class="btn btn-primary d-block px-2 py-3">Get Started</a> -->
+
+
+                        <!-- Fetch Cardivascular Data -->
+
+                        <a id="myButton1" href="#" class="small-box-footer" data-mail="/patientscardiovascular?id=<%= patient.id %>"
+                            onclick="patientscardiovascular(this);">
+                            <h4> Click Here</h4>
+                            <!-- <div id="myDiv"></div>                                        -->
+                            </a>
+                            <div class="row">
+
+                                <div class="col">
+                                  <div class="card shadow">
+                                    <div class="table-responsive">
+                                      <table class="table align-items-center table-flush">
+                                        <thead class="thead-light">
+                                          <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">Prediction Date</th>
+                                            <th>prediction</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="myDiv" >
+
+                                                <!-- <td>
+                                                    $2,500 USD
+                                                  </td>
+                                                  <td>
+                                                      $2,500 USD
+                                                    </td> -->
+
+                                                </tr>
+
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 ftco-animate fadeInUp ftco-animated">
+                            <div class="block-7">
+                                <div class="img" style="background-image: url(https://tse2.mm.bing.net/th?id=OIP.N3q-cOThPGnintOZ3bmBhAHaGD&pid=Api&P=0);"></div>
+                                <div class="text-center p-4">
+                                    <span class="excerpt d-block">X-ray</span>
+                                    <!-- <span class="price"><sup>$</sup> <span class="number">109</span> <sub>/mos</sub></span>
+                                    <ul class="pricing-text mb-5">
+                                        <li><span class="fa fa-check mr-2"></span>5 Dog Walk</li>
+                                        <li><span class="fa fa-check mr-2"></span>3 Vet Visit</li>
+                                        <li><span class="fa fa-check mr-2"></span>3 Pet Spa</li>
+                                        <li><span class="fa fa-check mr-2"></span>Free Supports</li>
+                                    </ul>
+                                    <a href="#" class="btn btn-primary d-block px-2 py-3">Get Started</a> -->
+
+                                    <a id="myButtonxray" href="#" class="small-box-footer" data-mail="/RetrieveXray?id=<%= patient.id %>"
+                                        onclick="patientsXray(this);">
+                                        <h4> Click here</h4>  
+                                        <!-- <div id="myDiv"></div>                                        -->
+                                        </a>
+                                        <div class="row">
+    
+                                            <div class="col">
+                                              <div class="card shadow">
+                                                <div class="table-responsive">
+                                                  <table class="table align-items-center table-flush">
+                                                    <thead class="thead-light">
+                                                      <tr>
+                                                        <th scope="col">No.</th>
+                                                        <th scope="col">Record Date</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="Xray" >
+    
+                                                            </tr>
+    
+                                                    </tbody>
+                                                  </table>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 ftco-animate fadeInUp ftco-animated">
+                            <div class="block-7">
+                                <div class="img" style="background-image: url(https://assets.yourpractice.online/2227/3d-images/endoscopic-retrograde-cholangiopancreatography.jpg);"></div>
+                                <div class="text-center p-4">
+                                    <span class="excerpt d-block">Endoscopic</span>
+                                    <!-- <span class="price"><sup>$</sup> <span class="number">109</span> <sub>/mos</sub></span>
+                                    <ul class="pricing-text mb-5">
+                                        <li><span class="fa fa-check mr-2"></span>5 Dog Walk</li>
+                                        <li><span class="fa fa-check mr-2"></span>3 Vet Visit</li>
+                                        <li><span class="fa fa-check mr-2"></span>3 Pet Spa</li>
+                                        <li><span class="fa fa-check mr-2"></span>Free Supports</li>
+                                    </ul>
+                                    <a href="#" class="btn btn-primary d-block px-2 py-3">Get Started</a> -->
+
+                                    <a id="myButtonEndoscopic" href="#" class="small-box-footer" data-mail="/RetrieveEndoscopic?id=<%= patient.id %>"
+                                        onclick="patientsEndoscopic(this);">
+                                        <h4> Click here</h4>  
+                                        <!-- <div id="myDiv"></div>                                        -->
+                                        </a>
+                                        <div class="row">
+    
+                                            <div class="col">
+                                              <div class="card shadow">
+                                                <div class="table-responsive">
+                                                  <table class="table align-items-center table-flush">
+                                                    <thead class="thead-light">
+                                                      <tr>
+                                                        <th scope="col">No.</th>
+                                                        <th scope="col">Record Date</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="Endoscopic" >
+    
+                                                            </tr>
+    
+                                                    </tbody>
+                                                  </table>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="conatiner" style="margin-left: 5rem; margin-top:2rem;">
+                <section class="content text-center">
+                    <div class="row">
+                        <div class="w-100 p-3">
                             <!-- small box -->
                             <div class="small-box bg-aqua">
-                                <div class="inner">
-                                    <h4>Patients Profile</h4>
+                                <div class="inner" >
+                                    <h4 style="margin-bottom: 0px; font-size: 250%;">Patients Profile</h4>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i
-                                        class="fa fa-arrow-circle-right"></i></a>
+
+                                <div class="row mt-5" style="margin-left: 2rem;padding-right:32rm;margin-right: 0px; margin-top:0rem;">
+                                    <div class="col-lg-3 col-xs-6">
+                                        <!-- small box -->
+                                        <div class="small-box bg-aqua">
+                                            <div class="inner">
+                                                <h4>ECG Records</h4>
+                                            </div>
+                          <a id="myButton" href="#" class="small-box-footer" data-mail="/patientscardio?id=<%= patient.id %>"
+                                    onclick="getCardio(this);">
+                                    ECG Table Records  
+                                    <!-- <div id="myDiv"></div>                                        -->
+                                    </a>
+                                    <div class="row">
+
+                                        <div class="col">
+                                          <div class="card shadow">
+                                            <div class="table-responsive">
+                                              <table class="table align-items-center table-flush">
+                                                <thead class="thead-light">
+                                                  <tr>
+                                                    <th scope="col">No.</th>
+                                                    <th scope="col">ECG Date</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr id="ecgRecords" >
+
+                                                        <!-- <td>
+                                                            $2,500 USD
+                                                          </td>
+                                                          <td>
+                                                              $2,500 USD
+                                                            </td> -->
+
+                                                        </tr>
+
+                                                </tbody>
+                                              </table>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-xs-6" style="max-width: 40%;" >
+                                        <!-- small box -->
+                                        <div class="small-box bg-aqua">
+                                            <div class="inner">
+                                                <h4>Cardiovascular Records</h4>
+                                            </div>
+                                                 <a id="myButton1" href="#" class="small-box-footer" data-mail="/patientscardiovascular?id=<%= patient.id %>"
+                                        onclick="patientscardiovascular(this);">
+                                        Cardiovascular Table Records  
+                                        <!-- <div id="myDiv"></div>                                        -->
+                                        </a>
+                                        <div class="row">
+    
+                                            <div class="col">
+                                              <div class="card shadow">
+                                                <div class="table-responsive">
+                                                  <table class="table align-items-center table-flush">
+                                                    <thead class="thead-light">
+                                                      <tr>
+                                                        <th scope="col">No.</th>
+                                                        <th scope="col">Prediction Date</th>
+                                                        <th>prediction</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="myDiv" >
+    
+    
+                                                            </tr>
+    
+                                                    </tbody>
+                                                  </table>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                            
+                                    </div>
+
+                                </div>
+                                
+
+
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-5">
-                        <div class="col-lg-3 col-xs-6">
+                    <div class="row  w-100 p-3" style="margin-left: 2rem;padding-right:32rm;margin-right: 0px; margin-top:0rem;">
+                        <div class="w-50 p-3">
                             <!-- small box -->
                             <div class="small-box bg-aqua">
                                 <div class="inner">
@@ -156,7 +479,7 @@
                                         class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xs-6">
+                        <div class="w-50 p-3">
                             <!-- small box -->
                             <div class="small-box bg-aqua">
                                 <div class="inner">
@@ -432,12 +755,12 @@
                 'paging': true,
                 'lengthChange': false,
                 'searching': false,
-                'ordering': true,
+                'ordering': false,
                 'info': true,
-                'autoWidth': false
+                'autoWidth': true
             })
         })
-
+// 
 function editPatient(identifier) {
       const appendix = $(identifier).data('mail');
       
@@ -484,6 +807,209 @@ function editPatient(identifier) {
           });
           document.getElementsByTagName("tr")[1].contentEditable =false;
     }
+
+
+   async function getCardio(endpoint) {
+ const appendix = $(endpoint).data('mail');
+ const base_url = window.location.origin;
+
+try {
+    const response = await fetch(base_url + appendix);
+    const text = await response.text();
+    const data = JSON.parse(text);
+    const dateString = data;
+   const dateOnlyString = dateString.slice(0, 10);
+
+   // program to display text 5 times
+const n = 1;
+
+// looping from i = 1 to 5
+for (let i = 1; i <= n; i++) {
+        td = "<td > "+i+" </td>";       //style='display: block;'
+        tr = "<td >"+dateOnlyString+"</td>";
+    document.getElementById("ecgRecords").innerHTML = td+tr;
+}
+
+
+
+    return data;
+  } catch (error) {
+    // console.error(error);
+    return null;
+  }
+
+}
+
+
+
+async function patientscardiovascular(endpoint) {
+
+ const appendix = $(endpoint).data('mail');
+ const base_url = window.location.origin;
+
+try {
+    const response = await fetch(base_url + appendix);
+    const text = await response.text();
+    const data = JSON.parse(text);
+    
+    const prediction_date = data.prediction_date;
+    const prediction = data.prediction;
+
+
+   const prediction_datestring = prediction_date.slice(0, 10);
+
+   // program to display text 5 times
+const n = 1;
+
+// looping from i = 1 to 5
+for (let i = 1; i <= n; i++) {
+        td = "<td > "+i+" </td>";       //style='display: block;'
+        tr = "<td >"+prediction_datestring+"</td>";
+        tg = "<td>"+prediction+"</td>";
+    document.getElementById("myDiv").innerHTML = td+tr+tg;
+}
+
+
+
+    return data;
+  } catch (error) {
+    alert(error);
+    return null;
+  }
+
+}
+
+
+
+async function patientsXray(endpoint) {
+  const appendix = $(endpoint).data('mail');
+  const base_url = window.location.origin;
+
+
+  try {
+    const response = await fetch(base_url + appendix);
+    const text = await response.text();
+    // alert(`Response: ${text}`);
+    const data = JSON.parse(text);
+    // alert(`Data: ${JSON.stringify(data)}`);
+    // text = getDatePart(text);
+
+    // text = text.local
+    // alert(text);
+    const n = 1;
+
+    for (let i = 1; i <= n; i++) {
+      td = "<td > "+i+" </td>";
+      tg = "<td>"+text+"</td>";
+      document.getElementById("Xray").innerHTML = td+tg;
+    }
+
+    return data;
+  } catch (error) {
+    console.log('Error:', error);
+    return null;
+  }
+}
+
+
+
+async function patientsEndoscopic(endpoint) {
+  const appendix = $(endpoint).data('mail');
+  const base_url = window.location.origin;
+
+  try {
+    const response = await fetch(base_url + appendix);
+    const text = await response.text();
+    alert(`Response: ${text}`);
+    const data = JSON.parse(text);
+    // alert(`Data: ${JSON.stringify(data)}`);
+    // text = getDatePart(text);
+
+    // text = text.local
+    alert(text);
+    const n = 1;
+
+    for (let i = 1; i <= n; i++) {
+      td = "<td > "+i+" </td>";
+      tg = "<td>"+text+"</td>";
+      document.getElementById("Endoscopic").innerHTML = td+tg;
+    }
+
+    return data;
+  } catch (error) {
+    console.log('Error:', error);
+    return null;
+  }
+}
+
+
+const myButton = document.getElementById('myButton');
+const myDiv = document.getElementById('ecgRecords');
+
+myButton.addEventListener('click', (event) => {
+    event.preventDefault();
+  if (myDiv.classList.contains('show')) {
+    myDiv.classList.remove('show');
+  } else {
+    myDiv.classList.add('show');
+  }
+});
+
+
+const myButton1 = document.getElementById('myButton1');
+const myDiv1 = document.getElementById('myDiv');
+
+myButton1.addEventListener('click', (event) => {
+    event.preventDefault();
+  if (myDiv1.classList.contains('show')) {
+    myDiv1.classList.remove('show');
+  } else {
+    myDiv1.classList.add('show');
+  }
+});
+    
+
+
+
+const myButtonxray = document.getElementById('myButtonxray');
+const Xray = document.getElementById('Xray');
+
+myButtonxray.addEventListener('click', (event) => {
+    event.preventDefault();
+  if (Xray.classList.contains('show')) {
+    Xray.classList.remove('show');
+  } else {
+    Xray.classList.add('show');
+  }
+});
+
+
+
+// const myButtonEndoscopic = document.getElementById('myButtonEndoscopic');
+// const Endoscopic = document.getElementById('Endoscopic');
+
+// myButtonEndoscopic.addEventListener('click', () => {
+//   if (Endoscopic.classList.contains('show')) {
+//     Endoscopic.classList.remove('show');
+//   } else {
+//     Endoscopic.classList.add('show');
+//   }
+// });
+
+
+
+const myButtonEndoscopic = document.getElementById('myButtonEndoscopic');
+const Endoscopic = document.getElementById('Endoscopic');
+
+myButtonEndoscopic.addEventListener('click', (event) => {
+  event.preventDefault(); // prevent the default behavior of scrolling to the top
+  if (Endoscopic.classList.contains('show')) {
+    Endoscopic.classList.remove('show');
+  } else {
+    Endoscopic.classList.add('show');
+  }
+});
+
 
     // $(function () {
     //       $('.patients_option').click(function(){
