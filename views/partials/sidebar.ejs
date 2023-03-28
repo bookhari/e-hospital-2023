@@ -18,6 +18,10 @@
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+.overlay {
+  position: absolute; 
+  z-index: 1;
+}
 
 :root {
     --niceblue: white;
@@ -143,7 +147,7 @@ menu#side-menu ul li.side-menu-item .svg-icon circle {
 
 <body>
    
-    <div class="flex-centered">
+    <div class="flex-centered overlay">
         <aside>
             <menu role="menu" id="side-menu">
                 <ul>

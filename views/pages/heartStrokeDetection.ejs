@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Heart Disease Prediction</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"></script>
+    <style>
+      form {
+        width: 50%;
+        margin: 0 auto;
+        text-align: left;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      label {
+        font-size: 20px;
+        color: #666;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      input[type="number"] {
+        width: 80%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        border-radius: 10px;
+      }
+
+      input[type="number"]:focus {
+        border: 3px solid #555;
+      }
+
+      .title {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 50px;
+        margin-top: 3%;
+        color: #97102f;
+        margin-bottom: 3%;
+        text-decoration: underline double;
+      }
+
+      .form {
+        border: 1px solid rgb(151,16,47, 0.3);
+        padding: 2%;
+        border-radius: 20px;
+        margin-bottom: 5%;
+      }
+
+      .flex {
+        display: flex;
+        justify-content: center;
+      }
+
+      .margintTop5 {
+        margin-top: 5%;
+      }
+    </style>
+    <script>
+      const handlePredict = async () => {
+        const apiUrl =
+          "https://heartdiseaseapimk.herokuapp.com/ml/heart_disease_GB";
+
+        const age = document.getElementById("age").value;
+        const sex = document.getElementById("sex").value;
+        const cp = document.getElementById("cp").value;
+        const trestbps = document.getElementById("trestbps").value;
+        const chol = document.getElementById("chol").value;
+        const fbs = document.getElementById("fbs").value;
+        const restecg = document.getElementById("restecg").value;
+        const thalach = document.getElementById("thalach").value;
+        const exang = document.getElementById("exang").value;
+        const oldpeak = document.getElementById("oldpeak").value;
+        const slope = document.getElementById("slope").value;
+        const ca = document.getElementById("ca").value;
+        const thal = document.getElementById("thal").value;
+
+        const inputData = [
+          Number(age),
+          Number(sex),
+          Number(cp),
+          Number(trestbps),
+          Number(chol),
+          Number(fbs),
+          Number(restecg),
+          Number(thalach),
+          Number(exang),
+          Number(oldpeak),
+          Number(slope),
+          Number(ca),
+          Number(thal),
+        ];
+
+        // console.log("INPUT DATA: ", JSON.stringify(inputData));
+
+        try {
+          const fetchResponse = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              input: inputData,
+            }),
+          });
+
+          const data = await fetchResponse.json();
+          data === "1"
+            ? (document.getElementById("output").innerHTML =
+                "Heart is at RISK!")
+            : (document.getElementById("output").innerHTML =
+                "Heart is not at RISK!");
+        } catch (err) {
+          console.log("ERROR: ", err);
+        }
+      };
+
+      const resetForm = () => {
+        document.getElementById("heartDiseaseForm").reset();
+        document.getElementById("output").innerHTML = null;
+      };
+    </script>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <h1 class="title">Heart Disease Prediction</h1>
+      <form
+        id="heartDiseaseForm"
+        onsubmit="handlePredict(); return false;"
+        onreset="resetForm();"
+        class="form">
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="age">Age:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="age" name="age" required />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="sex">Sex:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="sex" name="sex" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="cp">Chest Pain Type:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="cp" name="cp" required />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="trestbps">Resting Blood Pressure:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="trestbps" name="trestbps" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="chol">Serum Cholesterol:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="chol" name="chol" required />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="fbs">Fasting Blood Sugar:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="fbs" name="fbs" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="restecg">Resting ECG:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="restecg" name="restecg" required />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="thalach">Maximum Heart Rate Achieved:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="thalach" name="thalach" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="exang">Exercise-Induced Angina:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="exang" name="exang" required />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="oldpeak">ST Depression:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="oldpeak" name="oldpeak" step="0.01" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="slope">Slope:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="slope" name="slope" required />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="thal">Thallium:</label>
+              </div>
+              <div class="col-md-6">
+                <input type="number" id="thal" name="thal" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-9">
+                <label for="ca"
+                  >Number of Major Vessels Colored by Fluoroscopy:</label
+                >
+              </div>
+              <div class="col-md-3">
+                <input type="number" id="ca" name="ca" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row margintTop5">
+          <div class="col-md-6 flex">
+            <button type="submit" id="my-button" class="btn btn-success p-3">
+              Predict
+            </button>
+          </div>
+          <div class="col-md-6 flex">
+            <button type="reset" class="btn btn-danger p-3">Reset</button>
+          </div>
+        </div>
+        <div id="output"></div>
+        <br />
+      </form>
+    </div>
+  </body>
+</html>

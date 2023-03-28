@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang:"en">
+<head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+    
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="./images/favicon-32x32.png"
+    />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400&display=swap"
+        rel="stylesheet"
+     />
+
+     <link rel="stylesheet" type="text/css" href="/css/diabetology.css" />
+    <title>E-Hospital | Diabetology</title>
+
+    <style>
+        .c{
+            padding: 300px;
+        }
+    
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <%- include('../partials/header') -%>
+    </header>
+<script>
+    fetch(
+      "/get_diabetologyList", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    })
+    .then(data=>{return data.json()})
+    .then(res=>{console.log(res)})
+
+  </script>
+
+    <section class="appt"> 
+      <div class="container flex-jc-c">
+          <a href="/contact-us" class="button appt">Request An Appointment</a>
+        </div>
+      </div>
+      
+
+    </section>
+
+
+
+
+    <footer>
+        <%- include('../partials/footer-new') -%>
+    </footer>
+
+
+</body>
+
+
+</html>

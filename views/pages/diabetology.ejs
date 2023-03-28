@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang:"en">
+<head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+    
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="./images/favicon-32x32.png"
+    />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400&display=swap"
+        rel="stylesheet"
+     />
+
+     <link rel="stylesheet" type="text/css" href="/css/diabetology.css" />
+    <title>E-Hospital | Diabetology</title>
+
+    <style>
+        .c{
+            padding: 300px;
+        }
+    
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <%- include('../partials/header') -%>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero__image"></div>
+
+        <div class="hero__text container--pall">
+          <h1 style="margin-bottom: 1rem;">What is Diabetology? </h1>
+          <p style="margin-bottom: 1rem;">
+            Diabetology is a subspecialty of the field of endocrinology, focusing on the diagnosis and treatment of Diabetes. 
+          </p>
+
+          <h2 style="margin-top: 0.5rem; margin-bottom: 0.5rem;">Diabetes</h2>
+          <p style="margin-bottom: 0.5rem;">
+            Diabetes is a chronic disease, affecting 29% of Canadians. It occurs when the body is not able to properly convert our food into energy.
+          </p>
+
+          <p style="margin-bottom: 0.5rem;">
+            Our body uses glucose (sugar), from the carbohydrates in our food, as its primary source of energy. When we eat, glucose is released into the bloodstream, 
+            which then signals the pancreas to release the hormone, insulin. Insulin allows the glucose in the bloodstream to be moved to our cells for use.
+          </p>
+
+          <p style="margin-bottom: 1rem;">
+            For individuals with diabetes, the body is either unable to produce enough insulin, or the cells do not respond normally to the insulin, 
+            resulting in elevated levels of glucose in the bloodstream which lead to symptoms and complications of diabetes.
+          </p>
+
+          <h3 style="margin-top: 0.5rem; margin-bottom: 0.5rem;">Type 1 Diabetes</h3>
+          <p style="margin-bottom: 1rem;">
+            Type 1 Diabetes is an autoimmune disease in which the immune system attacks the cells within the pancreas that are responsible for the production of insulin, resulting in little to no insulin produced.          </p>
+
+          <h3 style="margin-top: 0.5rem; margin-bottom: 0.5rem;">Type 2 Diabetes</h3>
+          <p style="margin-bottom: 1rem;">
+            In individuals with type 2 diabetes, the body develops a resistance to the effects of insulin, which results in elevated blood glucose levels.          </p>
+
+          <h3 style="margin-top: 0.5rem; margin-bottom: 0.5rem;">Gestational Diabetes</h3>
+          <p  style="margin-bottom: 0.75rem;">
+            Gestational diabetes develops during pregnancy, typically due to insufficient insulin production. 
+            During pregnancy, the placenta produces a hormone which increases the body's insulin resistance, requiring the production of 
+            more insulin to account for elevated blood glucose levels.
+          </p>
+
+          <h3 style="margin-top: 0.5rem; margin-bottom: 0.5rem;">Prediabetes</h3>
+          <p  style="margin-bottom: 0.75rem;">
+            Prediabetes is the condition which precedes Type 2 diabetes, where the individual’s blood glucose levels are elevated, but not to the extent necessary for a Type 2 diabetes diagnosis.          </p>  
+          
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="appt"> 
+      <div class="container flex-jc-c">
+          <a href="/contact-us" class="button appt">Request An Appointment</a>
+        </div>
+      </div>
+
+    </section>
+
+
+
+    <section class="articles">
+      <div class="article__content container container--pall">
+
+        <div class="article__grid">
+          <a href="/diabetology_specialists" class="article__item">
+            <div
+              class="article__image"
+              style="background-image: url('/images/diabetology_doctors.svg')"
+            ></div>
+            <div class="article__text">
+              <div class="article__title">
+                The Team
+              </div>
+              <div class="article__description">
+                Meet the E-Hospital diabetes specialists.
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="article__item">
+            <div
+              class="article__image"
+              style="background-image: url('/images/risk_assess.svg')"
+            ></div>
+            <div class="article__text">
+              <div class="article__title">
+                Assess Your Risk
+              </div>
+              <div class="article__description">
+                Use our simple tool to determine if you are at risk of developing diabetes.
+              </div>
+            </div>
+          </a>
+
+          <a href="/ediabetes" class="article__item">
+            <div
+              class="article__image"
+              style="background-image: url('/images/manage_diab.svg')"
+            ></div>
+            <div class="article__text">
+              <div class="article__title">
+                Managing Your Diabetes
+              </div>
+              <div class="article__description">
+                Log in to our patient portal to view medications, keep track of your health metrics, and communicate with your health care providers. 
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="references">
+      <div class= "container container--pall">
+        <div class="references__text">
+          <h5>References</h5>
+           <ul style="list-style-type:none;">
+            <li>[1] Brutsaert, Erika F. “Diabetes Mellitus (DM) - Hormonal and Metabolic Disorders.” Merck Manuals Consumer Version. Merck Manuals. Accessed February 22, 2023. https://www.merckmanuals.com/home/hormonal-and-metabolic-disorders/diabetes-mellitus-dm-and-disorders-of-blood-sugar-metabolism/diabetes-mellitus-dm?query=diabetes. </li>
+            <li>[2] “Diabetes.” Centers for Disease Control and Prevention. Centers for Disease Control and Prevention, February 17, 2023. https://www.cdc.gov/diabetes/index.html. </li>
+            <li>[3] “National Diabetes Statistics Report.” Centers for Disease Control and Prevention. Centers for Disease Control and Prevention, June 29, 2022. https://www.cdc.gov/diabetes/data/statistics-report/index.html.</li>
+          </ul>
+        </div>
+       </div>
+    </section>
+
+    <footer>
+        <%- include('../partials/footer-new') -%>
+    </footer>
+
+
+</body>
+
+
+</html>
