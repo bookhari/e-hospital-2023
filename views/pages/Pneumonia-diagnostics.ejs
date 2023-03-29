@@ -1,3 +1,4 @@
+/* TaskName, code started for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
 <!DOCTYPE html>
 <html>
   
@@ -40,8 +41,11 @@
           alert(JSON.stringify(data.error));
         } else {
           console.log(`Succesful response ${JSON.stringify(data)}`);
-          console.log(`Message is: ${data.result}`);
-          $("#testResult").val(data.result);
+          console.log(`Message is: ${JSON.stringify(data)}`);
+          var st1=JSON.stringify(data);
+          str= st1.replace(/[\[\]""]+/g,'');          
+          console.log(str);        
+          $("#testResult").val(str);
         }
       },
       error: function(xhr, textStatus, errorThrown) {
@@ -55,7 +59,7 @@
   
   <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
   <%- include('../partials/header') -%>
-  <link href="/css/common-diseases-diagnostics.css" rel="stylesheet" >
+  <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
 </head>
 <body>
 
@@ -67,7 +71,7 @@
     <input type="common-diseases-diagnostics" value="Comman Disease Diagnostic Form"><br><br> -->
     <div class="header">
       <!-- <img src="https://softwaremeets.com/wp-content/uploads/cf7_software_uploads/1608721076-eHospital-Logo.png" alt="Logo">  onsubmit="return false" -->
-      <h1>Comman Disease</h1>
+      <h1>Pneumonia</h1>
       <h2>Diagnostic Form</h2>
     </div>
 
@@ -89,7 +93,6 @@
 		<select id="diseaseType" name="diseaseType" required>
 			<option value="">-- Select Disease Type --</option>
 			<option value="Pneumonia">Pneumonia</option>
-			<option value="TBD">TBD</option>
 		</select><br><br>
 
 		<label for="testType">Test Type:</label>
@@ -144,3 +147,5 @@
 
 </body>
 </html>
+
+/* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
