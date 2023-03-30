@@ -899,30 +899,6 @@ app.get('/get_diabetologyList', (req, res) => {
 })
 /* Diabetology Page, code ended for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
-app.post('/get_patientBasicHealthInfo', (req, res) => {
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
-    return;
-  }
-
-  sql = `SELECT Age, BloodGroup, Gender, height, weight FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  // console.log(sql);
-  conn.query(sql, async (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    res.send({success: result});
-  });
-
-})
-
 app.post('/recordUpdate', upload.single("image"), (req, res) => {
   // console.log(req.file);
   // console.log(req.body);
@@ -1342,7 +1318,7 @@ app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
   })
 })
 
-// This API is for update the ML prediction result to the database. 
+// This API is for updating the ML prediction result to the database. 
 app.post('/updateDisease', (req, res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const disease = req.body.disease; // the name of the disease, e.g. "pneumonia"
@@ -1365,6 +1341,7 @@ app.post('/updateDisease', (req, res) => {
   conn.query(sql, async (error, result) => {
     if (error) {
       res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     if (result.length != 1) {
@@ -1384,10 +1361,37 @@ app.post('/updateDisease', (req, res) => {
     conn.query(sql, async (error, result) => {
       if (error) {
         res.send({error:"Something wrong in MySQL."});
+        console.log(error);
         return;
       }
       res.send({success: "Submit success."});
     });
+  });
+
+})
+
+// This API is for receiveing the basic info of the patient like age and gender.
+app.post('/get_patientBasicHealthInfo', (req, res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+
+  sql = `SELECT Age, BloodGroup, Gender, height, weight FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    res.send({success: result});
   });
 
 })
