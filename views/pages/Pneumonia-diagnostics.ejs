@@ -27,16 +27,46 @@
     
   <script>
     var recordList = [];
+
+    // Run the code when the page finished loading
+    $(document).ready(function() {
+      // retrived phone number form url
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      if (!phoneNumber) {
+        alert("Np phone number.")
+      }
+
+      // Get the patient records
+      $.ajax({
+        url: "/imageRetrieveByPhoneNumber",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber, 
+          recordType: "X-Ray_Lung" // the table name that stores the record
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    });
     
+    // Display the patient records to the front end that allows doctor selected specific record for diagnose
     function display(data) {
       recordList = data;
       if (recordList.length <= 0) {
-        alert("This patient has no record.");
+        alert("This patient has no record, please do the X-Ray for the lung.");
         return;
       }
       console.log(recordList);
       let list = document.getElementById("recordList");
       
+      // Display each record
       for (let i = 0; i < recordList.length; ++i) {
         let tr = document.createElement("tr");
         let image = document.createElement("td");
@@ -49,7 +79,6 @@
         button.value = "Diagnose";
         button.index = i;
         button.setAttribute("onclick", "predict(this.index)")
-        // button.onclick = predict(record._id);
         action.appendChild(button);
         
         tr.appendChild(image);
@@ -57,18 +86,19 @@
         tr.appendChild(action);
         list.appendChild(tr);
       }
-      
     }
 
+    // Send the image to the ML api for the prediction
     async function predict(index) {
-
       console.log(recordList[index]);
 
+      // Prepare submit data
       const form = new FormData();
       const base64Response = await fetch(`data:image/jpeg;base64,${recordList[index].file.buffer}`);
       const blob = await base64Response.blob();
       form.append('image', blob, recordList[index].file.originalname);
 
+      // Send to the ML API
       $.ajax({
         url: "/connectionTesting",
         type: 'POST',
@@ -89,27 +119,29 @@
       });
     }
 
+    // Store the prediction result to the database
     function storePrediction(result, id) {
       console.log(result);
-
+      
+      // Retrieved phone number and the current date
       let params = (new URL(document.location)).searchParams;
       let phoneNumber = params.get("phoneNumber");
+      let today = new Date();
+      const offset = today.getTimezoneOffset();
+      today = new Date(today.getTime() - (offset*60*1000)).toISOString();
 
-      let today = new Date()
-      const offset = today.getTimezoneOffset()
-      today = new Date(today.getTime() - (offset*60*1000))
-
+      // Store to the database
       $.ajax({
         url: "/updateDisease",
         type: 'POST',
         data: {
           phoneNumber: phoneNumber,
-          disease: "pneumonia",
-          date: today.toISOString(),
+          disease: "pneumonia", // the table name that stores the prediction result
+          date: today,
           prediction: result.prediction,
-          accuracy: result.accuracy,
-          recordType: "X-Ray_Lung",
-          recordId: id
+          accuracy: result.accuracy, // can be null if not provided
+          recordType: "X-Ray_Lung", // can be null if no record is used for the ML prediction
+          recordId: id // can be null if no record is used for the ML prediction
         },
         success: function(data) {
           // console.log(data);
@@ -121,33 +153,6 @@
         }
       });
     }
-
-    $(document).ready(function() {
-
-      let params = (new URL(document.location)).searchParams;
-      let phoneNumber = params.get("phoneNumber");
-      if (!phoneNumber) {
-        alert("Np phone number.")
-      }
-      // console.log(phoneNumber);
-
-      $.ajax({
-        url: "/imageRetrieveByPhoneNumber",
-        type: 'POST',
-        data: {
-          phoneNumber: phoneNumber,
-          recordType: "X-Ray_Lung"
-        },
-        success: function(data) {
-          // console.log(data);
-          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
-        },
-        error: function(xhr, textStatus, errorThrown) {
-          // Handle error response from server
-          alert(textStatus + ': ' + errorThrown);
-        }
-      });
-    });
   </script>
   
   <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
