@@ -1157,43 +1157,6 @@ app.get('/ECG-Doctor',(req,res) => {
 app.get('/MS-Doctor',(req,res) => {
   res.render("pages/MS-Doctor")
 })
-
-app.get('/getRecordForMs', (req, res) => {
-  const url = require('url');
-  const querystring = require('querystring');
-  const parsedUrl = url.parse(req.url);
-  const parsedQuery = querystring.parse(parsedUrl.query);
-  const id = parsedQuery.id;
-
-  
-  const sql = 'SELECT pyramidal, cerebella, brain_stem, sensory, visual, mental, bowel_and_bladder_function, mobility FROM physical_test_ms WHERE patient_id = ?';
-  const params = [id];
-
-  
-  conn.query(sql, params, (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error executing query');
-    } else if (result.length === 0) {
-      res.status(404).send('Record not found');
-    } else {
-      const record = result[0]; 
-      const { pyramidal, cerebella, brain_stem, sensory, visual, mental, bowel_and_bladder_function, mobility } = record; 
-      const data = {
-        pyramidal,
-        cerebella,
-        brain_stem,
-        sensory,
-        visual,
-        mental,
-        bowel_and_bladder_function,
-        mobility,
-      }; 
-      res.send(data); 
-    }
-  });
-});
-
 // user: "uottawabiomedicalsystems@gmail.com", //
 // pass: "@uOttawa5902",
 
