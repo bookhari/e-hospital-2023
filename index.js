@@ -888,23 +888,25 @@ app.post('/get_doctorInfo', (req, res) => {
   }
 })
 
-app.get('/get_availableDoctors', (req, res) => {
-  sql = "SELECT Specialization, COUNT(Specialization) AS 'NumberOfDoctors' FROM doctors_registration WHERE Availability = 1 AND verification = 1 GROUP BY Specialization";
+app.get('/get_availableLabs', (req, res) => {
+  sql = "SELECT Lab_Name, Email_Id, Location1, Location2, PostalCode, City, Province, Country, uuid FROM lab_admin WHERE verification = 1 ORDER BY Lab_Name";
   conn.query(sql, (error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     res.send(result);
   })
 })
 
-app.post('/get_availableDoctorsBySpecialization', (req, res) => {
+app.post('/get_availableLabsBySpecialization', (req, res) => {
   const specialization = req.body.specialization;
   sql = `SELECT Fname, Mname, Lname, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, uuid FROM doctors_registration WHERE Availability = 1 AND verification = 1 AND Specialization = "${specialization}"`;
   conn.query(sql, (error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     res.send(result);
@@ -914,12 +916,13 @@ app.post('/get_availableDoctorsBySpecialization', (req, res) => {
 app.post('/get_appointmentList', (req, res) => {
   const uuid = req.body.id;
   sql = `SELECT appointmentDate, slot
-  from doctors_registration join doctors_appointment ON doctors_registration.id = doctors_appointment.doctor_id
-  WHERE doctors_registration.uuid = "${uuid}" AND appointmentDate = CURRENT_DATE();`;
+  FROM lab_admin join lab_appointment ON lab_admin.id = lab_appointment.lab_id
+  WHERE lab_admin.uuid = "HOS-3234510000" AND appointmentDate = CURRENT_DATE();`;
   console.log(sql);
   conn.query(sql, (error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     res.send(result);
@@ -934,7 +937,8 @@ app.post('/update_appointment', (req, res) => {
   console.log(sql);
   conn.query(sql, [uuid,true] ,(error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     if(result.length == 0){
@@ -947,7 +951,8 @@ app.post('/update_appointment', (req, res) => {
         sql = `SELECT id FROM doctors_registration WHERE uuid = "${doc_uuid}" AND verification = true`
         conn.query(sql, (error, result) => {
           if (error) {
-            res.send({error: error.sqlMessage});
+            res.send({error:"Something wrong in MySQL."});
+            console.log(error);
             return;
           }
           if(result.length == 0){
@@ -960,7 +965,8 @@ app.post('/update_appointment', (req, res) => {
             console.log(sql);
             conn.query(sql,(error, result) => {
               if (error) {
-                res.send({error: error.sqlMessage});
+                res.send({error:"Something wrong in MySQL."});
+                console.log(error);
                 return;
               }
               if (result.affectedRows == 1) {
