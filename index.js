@@ -1326,8 +1326,10 @@ app.post('/updateDisease', (req, res) => {
   const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
   const prediction = req.body.prediction; // prediction result, e.g. "diseased" or "detail disease type"
   const accuracy = req.body.accuracy; // prediction accuracy, e.g. "90%"
-  const reccordType = req.body.reccordType; // the type of the health test, e.g. "X-Ray" or "ecg"
-  const reccordId = req.body.reccordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
+  const recordType = req.body.recordType; // the type of the health test, e.g. "X-Ray" or "ecg"
+  const recordId = req.body.recordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
+
+  console.log(req.body);
 
   if (!phoneNumber || !disease || !date || !prediction) {
     res.send({error:"Missing patient phone number, disease, date, or prediction."});
@@ -1349,13 +1351,13 @@ app.post('/updateDisease', (req, res) => {
     patient_id = result[0].id;
 
     sql = `INSERT into ${disease} (patient_id, prediction_date, prediction, accuracy, record_type, record_id)
-    VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${reccordType?"\""+reccordType+"\"":"NULL"}, ${reccordId?"\""+reccordId+"\"":"NULL"})
+    VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${recordType?"\""+recordType+"\"":"NULL"}, ${recordId?"\""+recordId+"\"":"NULL"})
     ON DUPLICATE KEY 
     UPDATE prediction_date = "${date}", 
     prediction = "${prediction}",
     accuracy = ${accuracy?"\""+accuracy+"\"":"NULL"},
-    record_type = ${reccordType?"\""+reccordType+"\"":"NULL"},
-    record_id = ${reccordId?"\""+reccordId+"\"":"NULL"};`;
+    record_type = ${recordType?"\""+recordType+"\"":"NULL"},
+    record_id = ${recordId?"\""+recordId+"\"":"NULL"};`;
     conn.query(sql, async (error, result) => {
       if (error) {
         res.send({error:"Something wrong in MySQL."});
@@ -1465,6 +1467,7 @@ app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
   conn.query(sql, async (error, result) => {
     if (error) {
       res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     if (result.length != 1) {
@@ -1502,7 +1505,12 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request received by test api.");
   console.log(req.file);
   console.log(req.body);
-  res.send({prediction: "Request received by test api."});
+  if (req.file) {
+    res.send({prediction: "File received by test api.", accuracy: "100%"});
+  } else {
+    res.send({prediction: "Request received by test api.", accuracy: "100%"});
+  }
+  
 })
 
 /**
