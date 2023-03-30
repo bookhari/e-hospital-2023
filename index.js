@@ -888,6 +888,7 @@ app.post('/get_doctorInfo', (req, res) => {
   }
 })
 
+// Get a list of available labs
 app.get('/get_availableLabs', (req, res) => {
   sql = "SELECT Lab_Name, Email_Id, Location1, Location2, PostalCode, City, Province, Country, uuid FROM lab_admin WHERE verification = 1 ORDER BY Lab_Name";
   conn.query(sql, (error, result) => {
@@ -900,24 +901,17 @@ app.get('/get_availableLabs', (req, res) => {
   })
 })
 
-app.post('/get_availableLabsBySpecialization', (req, res) => {
-  const specialization = req.body.specialization;
-  sql = `SELECT Fname, Mname, Lname, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, uuid FROM doctors_registration WHERE Availability = 1 AND verification = 1 AND Specialization = "${specialization}"`;
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    res.send(result);
-  })
-})
-
+// Get the appointment schedule of the specific lab
 app.post('/get_appointmentList', (req, res) => {
   const uuid = req.body.id;
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
   sql = `SELECT appointmentDate, slot
   FROM lab_admin join lab_appointment ON lab_admin.id = lab_appointment.lab_id
-  WHERE lab_admin.uuid = "HOS-3234510000" AND appointmentDate = CURRENT_DATE();`;
+  WHERE lab_admin.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
   console.log(sql);
   conn.query(sql, (error, result) => {
     if (error) {
@@ -929,8 +923,9 @@ app.post('/get_appointmentList', (req, res) => {
   })
 })
 
+// Get the appointment schedule of the specific lab
 app.post('/update_appointment', (req, res) => {
-  const doc_uuid = req.body.doc_id;
+  const lab_uuid = req.body.lab_id;
   const uuid = req.body.id;
   const password = req.body.password;
   sql = 'SELECT * FROM `patients_registration` WHERE uuid = ? AND verification = ?';
@@ -948,7 +943,7 @@ app.post('/update_appointment', (req, res) => {
       if (result[0].uuid === uuid && result[0].password === password) {
         // Correct patients
         const patient_id = result[0].id;
-        sql = `SELECT id FROM doctors_registration WHERE uuid = "${doc_uuid}" AND verification = true`
+        sql = `SELECT id FROM lab_admin WHERE uuid = "${lab_uuid}" AND verification = true`
         conn.query(sql, (error, result) => {
           if (error) {
             res.send({error:"Something wrong in MySQL."});
@@ -956,12 +951,12 @@ app.post('/update_appointment', (req, res) => {
             return;
           }
           if(result.length == 0){
-            res.send({error: "No valid doctor is using this email. Please Check."});
+            res.send({error: "No valid lab match in the database."});
             return;
           } else {
             const date = req.body.date;
             const slot = req.body.slot;
-            sql = `INSERT INTO doctors_appointment (doctor_id, patient_id, appointmentDate, slot)  VALUES (${result[0].id}, ${patient_id}, "${date}", ${slot})`;
+            sql = `INSERT INTO lab_appointment (lab_id, patient_id, appointmentDate, slot)  VALUES (${result[0].id}, ${patient_id}, "${date}", ${slot})`;
             console.log(sql);
             conn.query(sql,(error, result) => {
               if (error) {
@@ -985,32 +980,46 @@ app.post('/update_appointment', (req, res) => {
   })
 })
 
+// Get the appointment list and the lab info for the specific patient
 app.post('/check_patientAppointment', (req, res) => {
   const uuid = req.body.id;
-  sql = `SELECT doctors_registration.Fname, doctors_registration.Mname, doctors_registration.Lname, doctors_registration.MobileNumber, doctors_registration.Location1, doctors_registration.Location2, doctors_registration.City, appointmentDate, slot
-  FROM doctors_registration JOIN doctors_appointment JOIN patients_registration 
-  ON doctors_registration.id = doctors_appointment.doctor_id AND patients_registration.id = doctors_appointment.patient_id
-  WHERE patients_registration.uuid = "${uuid}" AND appointmentDate = CURRENT_DATE();`;
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
+  sql = `SELECT lab_admin.Lab_Name, lab_admin.Email_Id, lab_admin.Location1, lab_admin.Location2, lab_admin.City, lab_admin.Province, lab_admin.Country, appointmentDate, slot
+  FROM lab_admin JOIN lab_appointment JOIN patients_registration 
+  ON lab_admin.id = lab_appointment.lab_id AND patients_registration.id = lab_appointment.patient_id
+  WHERE patients_registration.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
   console.log(sql);
   conn.query(sql, (error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     res.send(result);
   })
 })
 
-app.post('/check_doctorAppointment', (req, res) => {
+// Get the appointment list and the patient info for the specific lab
+app.post('/check_labAppointment', (req, res) => {
   const uuid = req.body.id;
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
   sql = `SELECT patients_registration.FName, patients_registration.MName, patients_registration.LName, patients_registration.MobileNumber, appointmentDate, slot
-  FROM doctors_registration JOIN doctors_appointment JOIN patients_registration 
-  ON doctors_registration.id = doctors_appointment.doctor_id AND patients_registration.id = doctors_appointment.patient_id
-  WHERE doctors_registration.uuid = "${uuid}" AND appointmentDate = CURRENT_DATE();`;
+  FROM lab_admin JOIN lab_appointment JOIN patients_registration 
+  ON lab_admin.id = lab_appointment.lab_id AND patients_registration.id = lab_appointment.patient_id
+  WHERE lab_admin.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
   console.log(sql);
   conn.query(sql, (error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     res.send(result);
@@ -1021,7 +1030,8 @@ app.get('/get_availableDentists', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
   conn.query(sql, (error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     res.send(result);
@@ -1037,7 +1047,8 @@ app.post('/update_availability', (req, res) => {
   console.log(sql)
   conn.query(sql,(error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     if (result.affectedRows == 1) {
