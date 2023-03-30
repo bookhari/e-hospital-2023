@@ -899,6 +899,29 @@ app.get('/get_diabetologyList', (req, res) => {
 })
 /* Diabetology Page, code ended for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
+app.post('/get_patientBasicHealthInfo', (req, res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+
+  sql = `SELECT Age, BloodGroup, Gender, height, weight FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    res.send({success: result});
+  });
+
+})
 
 app.post('/recordUpdate', upload.single("image"), (req, res) => {
   // console.log(req.file);
