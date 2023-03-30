@@ -1151,8 +1151,12 @@ app.get('/MS-diagnoses', (req, res) => {
 app.get('/ECG-diagnoses', (req, res) => {
   res.render("pages/ECG-diagnoses")
 })
-
-
+app.get('/ECG-Doctor',(req,res) => {
+  res.render("pages/ECG-Doctor")
+})
+app.get('/MS-Doctor',(req,res) => {
+  res.render("pages/MS-Doctor")
+})
 // user: "uottawabiomedicalsystems@gmail.com", //
 // pass: "@uOttawa5902",
 
