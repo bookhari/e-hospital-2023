@@ -1069,7 +1069,8 @@ app.get('/get_diabetologyList', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
   conn.query(sql, (error, result) => {
     if (error) {
-      res.send({error: error.sqlMessage});
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     res.send(result);
