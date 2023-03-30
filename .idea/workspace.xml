@@ -2,26 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="490e2f1d-ca71-4c00-9910-93e98d112729" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/public/css/diabetesmlfrontend.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/DocProfile.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/ECG.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/diabetology_banner.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/pages/DiabetologyDiagnostics.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/pages/ECG-diagnoses.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/pages/diabetology_specialists.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/pages/searchpatient.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/pages/specialities.ejs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/pages/liver-direct-prediction.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/diabetology.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/diabetology.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/Dashboard/DoctorDashBoard.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/Dashboard/DoctorDashBoard.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/contact-us.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/contact-us.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/diabetology.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/diabetology.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/diagnostic-depart.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/diagnostic-depart.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/doctorLogin.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/doctorLogin.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/pages/liver-prediction.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/liver-prediction.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/pages/searchpatient.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/searchpatient.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,12 +51,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/views/pages" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/views/pages" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/views/pages" />
     </key>
@@ -119,7 +107,7 @@
       <workItem from="1677687050573" duration="385000" />
       <workItem from="1677687439973" duration="2506000" />
       <workItem from="1678733688953" duration="46000" />
-      <workItem from="1679360076378" duration="8920000" />
+      <workItem from="1679360076378" duration="25371000" />
     </task>
     <servers />
   </component>

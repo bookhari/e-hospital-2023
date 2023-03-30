@@ -12,12 +12,15 @@ const FormData = require('form-data');
 const memoryStorage = multer.memoryStorage()
 const upload = multer({ storage: memoryStorage })
 
+
 const port = process.env.PORT || 5000;
+
 
 /* Please use comments to identify your work thankyou */
 
 var sql = '';
 var crypto = require('crypto')
+
 
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
@@ -174,8 +177,12 @@ app.get('/psychology', (req, res) => {
 app.get('/psychologyQuestionnaire', (req, res) => {
   res.render("pages/psychologyQuestionnaire");
 })
+
 app.get('/liver', (req, res) => {
   res.render("pages/liver-prediction");
+})
+app.get('/liver2', (req, res) => {
+  res.render("pages/liver-direct-prediction");
 })
 
 /* TaskName -Heart Disease prediction using Machine learning

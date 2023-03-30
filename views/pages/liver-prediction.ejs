@@ -218,13 +218,14 @@ tr:nth-child(even) {
             </div>
 
             <div class="card1">
-                <div class="patientInfo">Histories</div>
+                <div class="patientInfo">History</div>
                 <button class="btn btn-success mt-3 mb-3" id="myButton3">Get History</button>
                 <input type="text" id="searchInput" placeholder="Search for patients...">
                    <table id="patient-table">
                       <thead class="hidden">
                         <tr>
                           <th>ID</th>
+                          <th>Patient ID</th>
                           <th>Name</th>
                           <th>Age</th>
                           <th>Gender</th>
@@ -261,7 +262,7 @@ tr:nth-child(even) {
 
 
     // const baseURL = 'https://e-hospital-liver.herokuapp.com'
-    const baseURL = 'http://127.0.0.1:5689'
+    const baseURL = 'http://127.0.0.1:53124'
     const btn = document.getElementById("myButton");
     const btn2 = document.getElementById("myButton2");
     const btn3 = document.getElementById("myButton3");
@@ -285,7 +286,7 @@ tr:nth-child(even) {
 
           // Loop through rows and hide those that don't match the search query
           rows.forEach(row => {
-            let patientName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+            let patientName = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
             if (patientName.includes(input)) {
               row.style.display = "";
             } else {

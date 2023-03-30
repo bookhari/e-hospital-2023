@@ -120,7 +120,9 @@ body {
                         </tr>
                         <tr>
                             <td><button><a href="diagnostic-depart?id=<%= entry.id %>">Run Diagonostics</a></button></td>
-                            
+                            <% if (entry.id === 11) { %>
+                            <td><button><a href="liver2?id=<%= entry.id %>">Run Liver Diagnostics</a></button></td>
+                            <% } %>
                         </tr>
                     </tbody>
                     <% }) %> 
