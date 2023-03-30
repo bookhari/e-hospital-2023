@@ -905,6 +905,11 @@ app.get('/get_availableLabs', (req, res) => {
 app.post('/get_appointmentList', (req, res) => {
   const uuid = req.body.id;
 
+  if (!uuid) {
+    res.send({error:"Missing lab uuid."});
+    return;
+  }
+
   let today = new Date()
   const offset = today.getTimezoneOffset()
   today = new Date(today.getTime() - (offset*60*1000))
@@ -928,6 +933,18 @@ app.post('/update_appointment', (req, res) => {
   const lab_uuid = req.body.lab_id;
   const uuid = req.body.id;
   const password = req.body.password;
+  const date = req.body.date;
+  const slot = req.body.slot;
+
+  if (!lab_uuid || !uuid || !password) {
+    res.send({error:"Missing lab uuid, patient uuid, or patient password."});
+    return;
+  }
+  if (!date || !slot) {
+    res.send({error:"Missing appointment date or slot."});
+    return;
+  }
+
   sql = 'SELECT * FROM `patients_registration` WHERE uuid = ? AND verification = ?';
   console.log(sql);
   conn.query(sql, [uuid,true] ,(error, result) => {
@@ -954,8 +971,6 @@ app.post('/update_appointment', (req, res) => {
             res.send({error: "No valid lab match in the database."});
             return;
           } else {
-            const date = req.body.date;
-            const slot = req.body.slot;
             sql = `INSERT INTO lab_appointment (lab_id, patient_id, appointmentDate, slot)  VALUES (${result[0].id}, ${patient_id}, "${date}", ${slot})`;
             console.log(sql);
             conn.query(sql,(error, result) => {
@@ -984,6 +999,11 @@ app.post('/update_appointment', (req, res) => {
 app.post('/check_patientAppointment', (req, res) => {
   const uuid = req.body.id;
 
+  if (!uuid) {
+    res.send({error:"Missing patient uuid."});
+    return;
+  }
+
   let today = new Date()
   const offset = today.getTimezoneOffset()
   today = new Date(today.getTime() - (offset*60*1000))
@@ -1006,6 +1026,11 @@ app.post('/check_patientAppointment', (req, res) => {
 // Get the appointment list and the patient info for the specific lab
 app.post('/check_labAppointment', (req, res) => {
   const uuid = req.body.id;
+
+  if (!uuid) {
+    res.send({error:"Missing lab uuid."});
+    return;
+  }
 
   let today = new Date()
   const offset = today.getTimezoneOffset()
