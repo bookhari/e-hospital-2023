@@ -33,9 +33,6 @@
       // retrived phone number form url
       let params = (new URL(document.location)).searchParams;
       let phoneNumber = params.get("phoneNumber");
-      if (!phoneNumber) {
-        alert("Np phone number.")
-      }
 
       // Get the patient records
       $.ajax({
