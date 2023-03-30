@@ -152,6 +152,9 @@ app.get('/ediabetes', (req, res) => {
 app.get('/diabetology_specialists', (req, res) => {
   res.render("pages/diabetology_specialists");
 })
+app.get('/DiabetologyDiagnostics', (req, res) => {
+  res.render("pages/DiabetologyDiagnostics");
+})
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })
@@ -801,44 +804,8 @@ app.get('/patientsDashboardEdit', (req, res) => {
 })
 /* Patient Dashboard with Editable fields, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
-// app.post('/patientsDashboardEditTest', (req, res) => {
-//   const uuid = req.body.email;
-//   const password = req.body.password;
-//   const Fname = req.body.Fname;
 
-//   sql = 'SELECT * FROM `patients_registration` WHERE uuid =  ? AND verification = ?';
-//   console.log(sql);
-//   conn.query(sql, [uuid,true] ,(error, result) => {
-//       if (error) throw error
-//       if(result.length == 0){
-//         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-//         res.render('pages/patientLogin',{    //patientsDashboard
-//           error: errorMessage
-//         })
-//       } else {
-//       if (result[0].uuid === uuid && result[0].password === password) {
-//         var patients_data = result[0];
-        
-//          sql = "UPDATE patients_registration SET FName = ? WHERE uuid =  ? AND verification = ?";
-//         conn.query(sql,[Fname,uuid,true],(error, result) => {
-          
-//           res.render("pages/Dashboard/patientsDashboard", {
-//             patient: patients_data,
-//           });
-//       })
-//         }
-//         else {
-//           var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-//           res.render('pages/patientLogin',{
-//             error: errorMessage
-//           })
-//         }
-//       }
-//       })
-// })
-
-
-
+// Text Phone verification for Patients, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
 app.post('/get_patientInfoTest',(req,res)=>{
   
@@ -848,7 +815,7 @@ app.post('/get_patientInfoTest',(req,res)=>{
   sql = 'SELECT * FROM `patients_registration` WHERE EmailId =  ? ';
   // console.log(sql);
   conn.query(sql, [uuid,true] ,(error, result) => {
-    console.log("T1")
+    console.log("T1");
       if (error) throw error
       if(result.length != 0){
         console.log(result.length)
@@ -873,12 +840,28 @@ app.post('/get_patientInfoTest',(req,res)=>{
               if (error) throw error
               res.render("pages/thankyou");
               })
+              sms(uuid,password,getDetails.number);
 
       }
       })
 })
 
+// API for sending sms from TWILIO website to the patients' phone, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+    async function sms(uuid,password,number){
 
+      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+      const authToken = 'a7892481b91728822913e3b608c21a43'; //process.env.TWILIO_AUTH_TOKEN;
+      
+      const client = require('twilio')(accountSid, authToken,{
+        logLevel: 'debug'
+      });
+      
+      client.messages
+            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+            , from: '+13433074905', to: number})
+            .then(message => console.log(message.dateCreated));    //message.sid
+              }
+// Text Phone verification for Patients, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
 /* Patient Dashboard with editable feilds, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
@@ -898,20 +881,7 @@ app.post('/get_patientInfo', (req, res) => {
           })
     // sms();
 
-    // async function sms(){
 
-    //   const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
-    //   const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
-      
-    //   const client = require('twilio')(accountSid, authToken,{
-    //     logLevel: 'debug'
-    //   });
-      
-    //   client.messages
-    //         .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
-    //         , from: '+13433074905', to: getDetails.number})
-    //         .then(message => console.log(message.dateCreated));    //message.sid
-    //           }
 }
 )
 /* Patient Dashboard with editable field, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
@@ -1402,6 +1372,32 @@ app.get('/sendEmail', (req, res) => {
 
 
 
+// This API is for checking the authorized patient list of the doctor
+app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
+  const uuid = req.body.uuid;
+  const password = req.body.password;
+
+  // Check parameters
+  if (!uuid || !password) {
+    res.send({error:"Missing doctor credential."});
+    return;
+  }
+
+  sql = `SELECT id FROM doctors_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  var doctor_id = 0;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.length == 0) {
+      res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
+      return;
+    }}
+    
+    )
+  })
 
 
 
@@ -1439,17 +1435,64 @@ app.get('/sendEmail', (req, res) => {
 
 // })
 
+// This is the MySQL health test search API
+app.post('/healthTestRetrieveByPhoneNumber', async (req,res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const recordType = req.body.recordType; // the record type, e.g. "ecg", this represents the table name in the database
+
+  // Check parameters
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number."});
+    return;
+  }
+  if (!recordType) {
+    res.send({error:"Missing record type."});
+    return;
+  }
+
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    sql = `SELECT * FROM ${recordType} WHERE patient_id = "${patient_id}" ORDER BY RecordDate DESC`
+    conn.query(sql, async (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        return;
+      }
+
+      var temp = removeKey(result,"patient_id");
+      res.send({success:temp});
+    });
+  });
+})
+
 // This is a MongoDB import API template
 app.post('/imageUpload', upload.single("image"), async (req,res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
   const recordDate = req.body.recordDate; // record date, e.g. "2023-03-01 09:00:00"
 
-  // Check patient identity
+  // Check parameters
   if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
+    res.send({error:"Missing patient phone number."});
     return;
   }
+  if (!recordType || !recordDate) {
+    res.send({error:"Missing record type or record date."});
+    return;
+  }
+
   var patient_id = 0;
   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
   // console.log(sql);
@@ -1474,11 +1517,16 @@ app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
-  // Check patient identity
+  // Check parameters
   if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
+    res.send({error:"Missing patient phone number."});
     return;
   }
+  if (!recordType) {
+    res.send({error:"Missing record type."});
+    return;
+  }
+
   var patient_id = 0;
   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
   console.log(sql);
@@ -1503,6 +1551,16 @@ app.post('/imageRetrieveByRecordId', async (req,res) => {
   const _id = req.body._id; // record id, e.g. "640b68a96d5b6382c0a3df4c"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
+  // Check parameters
+  if (!_id) {
+    res.send({error:"Missing record id."});
+    return;
+  }
+  if (!recordType) {
+    res.send({error:"Missing record type."});
+    return;
+  }
+
   const MongoResult = await imageRetrieveByRecordId(_id, recordType);
   res.send(MongoResult);
 })
@@ -1515,6 +1573,18 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   res.send({prediction: "Request received by test api."});
 })
 
+/**
+ * Remove the sensitive field from the result.
+ * @param {*} result The result from the database.
+ * @param {*} key The field that is sensitive.
+ * @returns The result without the sensitive field.
+ */
+function removeKey(result, key) {
+  for (let i = 0; i < result.length; i++) {
+    delete result[i][key];
+  }
+  return result;
+}
 
 /**
  * This is the function that updates a single file (image) to the patient record in MongoDB.
