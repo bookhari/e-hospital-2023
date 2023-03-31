@@ -21,6 +21,25 @@
   <link href="css/brain-diagnostics.css" rel="stylesheet" type="text/css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #39c7e3;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
   <script>
     var recordList = [];
 
@@ -62,7 +81,19 @@
       for (let i = 0; i < recordList.length; ++i) {
         let tr = document.createElement("tr");
         let image = document.createElement("td");
-        image.innerHTML = "Will be replaced by image"; //recordList[i].image
+        // Extract the image data from the buffer
+        const imageData = recordList[i].file.buffer;
+
+        // Create a data URL from the image data
+        const dataURL = `data:image/jpeg;base64,${imageData}`;
+
+        // Create an img element and set its src attribute to the data URL
+        const img = document.createElement('img');
+        img.src = dataURL;
+        img.width = 150;
+        img.height = 150;
+        image.appendChild(img)
+        
         let recordDate = document.createElement("td");
         recordDate.innerHTML = recordList[i].RecordDate;
         let action = document.createElement("td");
