@@ -43,7 +43,6 @@
           recordType: "X-Ray_Lung" // the table name that stores the record
         },
         success: function(data) {
-          // console.log(data);
           data.error ? alert(JSON.stringify(data.error)) : display(data.success);
         },
         error: function(xhr, textStatus, errorThrown) {
@@ -62,12 +61,24 @@
       }
       console.log(recordList);
       let list = document.getElementById("recordList");
-      
       // Display each record
       for (let i = 0; i < recordList.length; ++i) {
         let tr = document.createElement("tr");
         let image = document.createElement("td");
-        image.innerHTML = "Will be replace by image";
+        //let img = document.createElement("img");
+      // Extract the image data from the buffer
+        const imageData = recordList[i].file.buffer;
+
+        // Create a data URL from the image data
+        const dataURL = `data:image/jpeg;base64,${imageData}`;
+
+        // Create an img element and set its src attribute to the data URL
+        const img = document.createElement('img');
+        img.src = dataURL;
+        img.width = 150;
+        img.height = 150;
+        //image.innerHTML = "Will be replace by imagee";
+        image.appendChild(img)
         let recordDate = document.createElement("td");
         recordDate.innerHTML = recordList[i].RecordDate;
         let action = document.createElement("td");
