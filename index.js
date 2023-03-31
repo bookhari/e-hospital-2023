@@ -899,7 +899,6 @@ app.get('/get_diabetologyList', (req, res) => {
 })
 /* Diabetology Page, code ended for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
-
 app.post('/recordUpdate', upload.single("image"), (req, res) => {
   // console.log(req.file);
   // console.log(req.body);
@@ -1323,15 +1322,17 @@ app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
   })
 })
 
-// This API is for update the ML prediction result to the database. 
+// This API is for updating the ML prediction result to the database. 
 app.post('/updateDisease', (req, res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const disease = req.body.disease; // the name of the disease, e.g. "pneumonia"
   const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
   const prediction = req.body.prediction; // prediction result, e.g. "diseased" or "detail disease type"
   const accuracy = req.body.accuracy; // prediction accuracy, e.g. "90%"
-  const reccordType = req.body.reccordType; // the type of the health test, e.g. "X-Ray" or "ecg"
-  const reccordId = req.body.reccordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
+  const recordType = req.body.recordType; // the type of the health test, e.g. "X-Ray" or "ecg"
+  const recordId = req.body.recordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
+
+  console.log(req.body);
 
   if (!phoneNumber || !disease || !date || !prediction) {
     res.send({error:"Missing patient phone number, disease, date, or prediction."});
@@ -1344,6 +1345,7 @@ app.post('/updateDisease', (req, res) => {
   conn.query(sql, async (error, result) => {
     if (error) {
       res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     if (result.length != 1) {
@@ -1353,20 +1355,47 @@ app.post('/updateDisease', (req, res) => {
     patient_id = result[0].id;
 
     sql = `INSERT into ${disease} (patient_id, prediction_date, prediction, accuracy, record_type, record_id)
-    VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${reccordType?"\""+reccordType+"\"":"NULL"}, ${reccordId?"\""+reccordId+"\"":"NULL"})
+    VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${recordType?"\""+recordType+"\"":"NULL"}, ${recordId?"\""+recordId+"\"":"NULL"})
     ON DUPLICATE KEY 
     UPDATE prediction_date = "${date}", 
     prediction = "${prediction}",
     accuracy = ${accuracy?"\""+accuracy+"\"":"NULL"},
-    record_type = ${reccordType?"\""+reccordType+"\"":"NULL"},
-    record_id = ${reccordId?"\""+reccordId+"\"":"NULL"};`;
+    record_type = ${recordType?"\""+recordType+"\"":"NULL"},
+    record_id = ${recordId?"\""+recordId+"\"":"NULL"};`;
     conn.query(sql, async (error, result) => {
       if (error) {
         res.send({error:"Something wrong in MySQL."});
+        console.log(error);
         return;
       }
       res.send({success: "Submit success."});
     });
+  });
+
+})
+
+// This API is for receiveing the basic info of the patient like age and gender.
+app.post('/get_patientBasicHealthInfo', (req, res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+
+  sql = `SELECT Age, BloodGroup, Gender, height, weight FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    res.send({success: result});
   });
 
 })
@@ -1469,6 +1498,7 @@ app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
   conn.query(sql, async (error, result) => {
     if (error) {
       res.send({error:"Something wrong in MySQL."});
+      console.log(error);
       return;
     }
     if (result.length != 1) {
@@ -1506,7 +1536,12 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request received by test api.");
   console.log(req.file);
   console.log(req.body);
-  res.send({prediction: "Request received by test api."});
+  if (req.file) {
+    res.send({prediction: "File received by test api.", accuracy: "100%"});
+  } else {
+    res.send({prediction: "Request received by test api.", accuracy: "100%"});
+  }
+  
 })
 
 /**
