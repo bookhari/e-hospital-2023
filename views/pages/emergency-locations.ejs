@@ -30,9 +30,9 @@
 
     <link
       rel="stylesheet"
-      href="https://js.arcgis.com/4.21/esri/themes/light/main.css"
+      href="https://js.arcgis.com/4.26/esri/themes/light/main.css"
     />
-    <script src="https://js.arcgis.com/4.21/"></script>
+    <script src="https://js.arcgis.com/4.26/"></script>
 
     <script>
       // Import all requirements.
@@ -45,20 +45,36 @@
         "esri/widgets/Locate",
         "esri/Graphic",
         "esri/rest/route",
+        "esri/layers/GraphicsLayer",
         "esri/rest/support/RouteParameters",
         "esri/rest/support/FeatureSet",
-      ], function (esriConfig, Map, MapView, locator, Graphic, Locate, RouteParameters, FeatureSet, route) {
+      ], function (
+        esriConfig,
+        Map,
+        MapView,
+        locator,
+        Graphic,
+        Locate,
+        RouteParameters,
+        FeatureSet,
+        route,
+        GraphicsLayer
+      ) {
         esriConfig.apiKey =
           "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd-RXNWi44KwDM-SeN4GldsP8QiTHPeX";
-        const map = new Map({
-          basemap: "arcgis-navigation",
-        });
 
         const routeLayer = new GraphicsLayer();
+
+        const map = new Map({
+          basemap: "arcgis-navigation",
+
+          // layers: [routeLayer], // Add the route layer to the map
+        });
+
         const view = new MapView({
           container: "viewDiv",
           map: map,
-          center: [-75.701044, 45.417187], //Longitude, latitude
+          center: [-117.195, 34.057],
           zoom: 13,
         });
 
@@ -77,9 +93,7 @@
           "Hospital",
           "Pharmacy",
           "Emergency",
-          "Community Health Centre",
           "Doctor",
-          "Appletree",
         ];
 
         const select = document.createElement("select", "");
@@ -98,105 +112,141 @@
 
         view.ui.add(select, "top-right");
 
-        const locatorUrl =
-          "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
-        const routeUrl =
-          "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+        // const locatorUrl =
+        //   "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+        // const routeUrl =
+        //   "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
 
-        // Find places and add them to the map
-        function findPlaces(category, pt) {
-          locator
-            .addressToLocations(locatorUrl, {
-              location: pt,
-              categories: [category],
-              maxLocations: 25,
-              outFields: ["Place_addr", "PlaceName"],
-            })
+        // // Find places and add them to the map
+        // function findPlaces(category, pt) {
+        //   locator
+        //     .addressToLocations(locatorUrl, {
+        //       location: pt,
+        //       categories: [category],
+        //       maxLocations: 25,
+        //       outFields: ["Place_addr", "PlaceName"],
+        //     })
 
-            .then(function (results) {
-              view.popup.close();
-              view.graphics.removeAll();
+        //     .then(function (results) {
+        //       view.popup.close();
+        //       view.graphics.removeAll();
 
-              results.forEach(function (result) {
-                view.graphics.add(
-                  new Graphic({
-                    attributes: result.attributes, // Data attributes returned
-                    geometry: result.location, // Point returned
-                    symbol: {
-                      type: "simple-marker",
-                      color: "red",
-                      size: "12px",
-                      outline: {
-                        color: "black",
-                        width: "2px",
-                      },
-                    },
+        //       results.forEach(function (result) {
+        //         view.graphics.add(
+        //           new Graphic({
+        //             attributes: result.attributes, // Data attributes returned
+        //             geometry: result.location, // Point returned
+        //             symbol: {
+        //               type: "simple-marker",
+        //               color: "red",
+        //               size: "12px",
+        //               outline: {
+        //                 color: "black",
+        //                 width: "2px",
+        //               },
+        //             },
 
-                    popupTemplate: {
-                      title: "{PlaceName}", // Data attribute names
-                      content: "{Place_addr}",
-                    },
-                  })
-                );
-              });
-            });
-        }
+        //             popupTemplate: {
+        //               title: "{PlaceName}", // Data attribute names
+        //               content: "{Place_addr}",
+        //             },
+        //           })
+        //         );
+        //       });
+        //     });
+        // }
 
-        function addGraphic(type, point) {
-          const graphic = new Graphic({
-            symbol: {
-              type: "simple-marker",
-              color: type === "origin" ? "white" : "black",
-              size: "8px",
-            },
-            geometry: point,
-          });
-          view.graphics.add(graphic);
-        }
+        // function addGraphic(type, point) {
+        //   const graphic = new Graphic({
+        //     symbol: {
+        //       type: "simple-marker",
+        //       color: type === "origin" ? "white" : "black",
+        //       size: "8px",
+        //     },
+        //     geometry: point,
+        //   });
+        //   view.graphics.add(graphic);
+        // }
 
-        function getRoute() {
-          const routeParams = new RouteParameters({
-            // stops: new FeatureSet({
-            //   features: view.graphics.toArray(),
-            // }),
-          });
+        // const stopSymbol = {
+        //   type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+        //   style: "cross",
+        //   size: 15,
+        //   outline: {
+        //     // autocasts as new SimpleLineSymbol()
+        //     width: 4,
+        //   },
+        // };
 
-          route.solve(routeUrl, routeParams).then(function (data) {
-            data.routeResults.forEach(function (result) {
-              result.route.symbol = {
-                type: "simple-line",
-                color: [5, 150, 255],
-                width: 3,
-              };
-              view.graphics.add(result.route);
-            });
-          });
-        }
+        // // Define the symbology used to display the route
+        // const routeSymbol = {
+        //   type: "simple-line", // autocasts as SimpleLineSymbol()
+        //   color: [0, 0, 255, 0.5],
+        //   width: 5,
+        // };
+        // function getRoute() {
+        //   const routeParams = new RouteParameters({
+        //     // stops: new FeatureSet({
+        //     //   features: view.graphics.toArray(),
+        //     // }),
+        //   });
+        // }
+        // route.solve(routeUrl, routeParams).then(function (data) {
+        //   data.routeResults.forEach(function (result) {
+        //     result.route.symbol = {
+        //       type: "simple-line",
+        //       color: [5, 150, 255],
+        //       width: 3,
+        //     };
+        //     view.graphics.add(result.route);
+        //   });
+        // });
+
+        // const routeParams = new RouteParameters({
+        //   // An authorization string used to access the routing service
+        //   apiKey:
+        //     "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd",
+        //   stops: FeatureSet,
+        //   outSpatialReference: {
+        //     // autocasts as new SpatialReference()
+        //     wkid: 3857,
+        //   },
+        // });
 
         // Search for places in center of map
-        view.watch("stationary", function (val) {
-          if (val) {
-            findPlaces(select.value, view.center);
-          }
-        });
+        // view.watch("stationary", function (val) {
+        //   if (val) {
+        //     findPlaces(select.value, view.center);
+        //   }
+        // });
 
         // Listen for category changes and find places
-        select.addEventListener("change", function (event) {
-          findPlaces(event.target.value, view.center);
-        });
+        //   select.addEventListener("change", function (event) {
+        //     findPlaces(event.target.value, view.center);
+        //   });
 
-        view.on("click", function (event) {
+        //   view.on("click", addStop);
 
-          if (view.graphics.length === 0) {
-            addGraphic("origin", event.mapPoint);
-          } else if (view.graphics.length === 1) {
-            addGraphic("destination", event.mapPoint);
-            getRoute(); // Call the route service
-          } else {
-            view.graphics.removeAll();
-            addGraphic("origin", event.mapPoint);
-          }
-        });
+        //   function addStop(event) {
+        //     // Add a point at the location of the map click
+        //     const stop = new Graphic({
+        //       geometry: event.mapPoint,
+        //       symbol: stopSymbol
+        //     });
+        //     routeLayer.add(stop);
+
+        //     // Execute the route if 2 or more stops are input
+        //     routeParams.stops.features.push(stop);
+        //     if (routeParams.stops.features.length >= 2) {
+        //       route.solve(routeUrl, routeParams).then(showRoute);
+        //     }
+        //   }
+        //   // Adds the solved route to the map as a graphic
+        //   function showRoute(data) {
+        //     const routeResult = data.routeResults[0].route;
+        //     routeResult.symbol = routeSymbol;
+        //     routeLayer.add(routeResult);
+        //   }
       });
     </script>
   </head>
