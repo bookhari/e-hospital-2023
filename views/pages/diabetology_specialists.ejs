@@ -129,7 +129,9 @@
       
 var res = {};
 
-       fetch( 'http://localhost:5000/get_diabetologyList')
+    //   fetch( 'http://localhost:5000/get_diabetologyList')
+       fetch( '/get_diabetologyList')
+
         .then((response) => response.json())
         .then((data) => 
             populate(data)
