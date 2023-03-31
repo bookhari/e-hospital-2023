@@ -167,12 +167,28 @@ app.get('/kidney-diagnostic', (req, res) => {
 app.get('/brain', (req, res) => {
   res.render("pages/brain");
 })
+/* Psychology, code started for adding route to Psychology Page (Alexis McCreath Frangakis, Parisa Nikbakht)
+   Group 8, Course-BMG5111, Winter 2023
+*/
 app.get('/psychology', (req, res) => {
   res.render("pages/psychology");
 })
 app.get('/psychologyQuestionnaire', (req, res) => {
   res.render("pages/psychologyQuestionnaire");
 })
+app.get('/psychologyDiagnosisQuestionnaires', (req, res) => {
+  res.render("pages/psychologyDiagnosisQuestionnaires");
+})
+app.get('/psychologyDiagnosisQuestionnaires/patientID=:patientID&type=:type', (req, res) => {  
+  const { patientID, type } = req.query; 
+  res.render("pages/psychologyDiagnosisQuestionnaires", { patientID, type });
+})
+app.get('/psychologyDiagnosis', (req, res) => {
+  res.render("pages/psychologyDiagnosis");
+})
+/* Psychology - code ended for adding route to Psychology Page Alexis McCreath Frangakis, Parisa Nikbakht)
+   Group 8, Course-BMG5111, Winter 2023 */
+
 app.get('/liver', (req, res) => {
   res.render("pages/liver-prediction");
 })
@@ -1485,6 +1501,95 @@ app.post('/updateDisease', (req, res) => {
 //   });
 
 // })
+
+
+/* Psychology, code started for logging info into database from psychology Questionnaire, also for finding the patient ID and showing results to the doctor. (Alexis McCreath Frangakis, Parisa Nikbakht)
+   Group 8, Course-BMG5111, Winter 2023
+*/
+app.post('/psychologyQuestionnaire', (req, res) => {
+  const getDetails = req.body
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
+  const date = new Date();
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+  
+    patient_id = result[0].id;  
+    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`) VALUES ?";
+    var VALUES = [[patient_id, phoneNumber, date, getDetails.sex, getDetails.language,
+     getDetails.treatment_setting, getDetails.age_group, getDetails.type_of_therapy, getDetails.psychological_treatment,
+     getDetails.time_frame, getDetails.frequency, getDetails.cost]]
+
+    conn.query(sql, [VALUES], (error, result) => {
+      if (error) throw error
+      let params1 = encodeURIComponent(patient_id)
+      let params2 = encodeURIComponent(getDetails.type_of_therapy)
+      console.log("/psychologyDiagnosisQuestionnaires/patientID="+params1+"&type="+params2)
+      res.redirect("/psychologyDiagnosisQuestionnaires/patientID="+params1+"&type="+params2);
+    })
+  })
+})
+
+// This is the MySQL health test search API
+app.post('/psychologyDiagnosis', async (req,res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const recordType = req.body.recordType; // the record type, e.g. "ecg", this represents the table name in the database
+
+  // Check parameters
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number."});
+    return;
+  }
+  if (!recordType) {
+    res.send({error:"Missing record type."});
+    return;
+  }
+
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      console.log()
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    sql = `SELECT * FROM ${recordType} WHERE patient_id = "${patient_id}" ORDER BY date DESC`
+    conn.query(sql, async (error, result) => {
+      if (error) {
+        console.log()
+        res.send({error:"Something wrong in MySQL."});
+        return;
+      }
+
+      var temp = removeKey(result,"patient_id");
+      res.send({success:temp});
+    });
+  });
+})
+/* Psychology - code ended for logging info into database from psychology Questionnaire, also for finding the patient ID and showing results to the doctor. (Alexis McCreath Frangakis, Parisa Nikbakht)
+   Group 8, Course-BMG5111, Winter 2023 */
 
 // This API is for receiveing the basic info of the patient like age and gender.
 app.post('/get_patientBasicHealthInfo', (req, res) => {

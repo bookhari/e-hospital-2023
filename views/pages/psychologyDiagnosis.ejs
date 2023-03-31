@@ -1,0 +1,189 @@
+<!-- Psychology, code started for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
+
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <title>Patient Information Form</title>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+  <style>
+    table, th, td {
+      border:1px solid black;
+    }
+    </style>
+    
+  <script>
+    var recordList = [];
+
+    // Run the code when the page finished loading
+    $(document).ready(function() {
+      // retrived phone number form url
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+
+      // Get the patient records
+      $.ajax({
+        url: "/psychologyDiagnosis",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber, 
+          recordType: "psychology_patients" // the table name that stores the record
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    });
+    
+    // Display the patient records to the front end that allows doctor selected specific record for diagnose
+    function display(data) {
+      recordList = data;
+      if (recordList.length <= 0) {
+        alert("This patient has no record, please tell the patient to take the psychologist questionnaire and the psychologist diagnosis questionnaire.");
+        return;
+      }
+      console.log(recordList);
+      let list = document.getElementById("recordList");
+      // Display each record
+      for (let i = 0; i < recordList.length; ++i) {
+        let tr = document.createElement("tr");
+        //let image = document.createElement("td");
+        //image.innerHTML = "Will be replace by image";
+        let recordDate = document.createElement("td");
+        recordDate.innerHTML = new Date(recordList[i].date);       
+        let therapy = document.createElement("td");
+        therapy.innerHTML = recordList[i].type_of_therapy;
+        console.log(recordList[i].type_of_therapy)
+        if (recordList[i].type_of_therapy == 1) {
+            therapy.innerHTML = "Depression";
+        }
+        let action = document.createElement("td");
+        let button = document.createElement("input");
+        button.type = "button";
+        button.value = "Diagnose";
+        button.index = i;
+        button.setAttribute("onclick", "predict(this.index)")
+        action.appendChild(button);
+        
+        //tr.appendChild(image);
+        tr.appendChild(recordDate);
+        tr.appendChild(therapy);
+        tr.appendChild(action);
+        list.appendChild(tr);
+      }
+    }
+    
+    // Send the image to the ML api for the prediction
+    async function predict(index) {
+      console.log(recordList[index]);
+
+      // Prepare submit data
+      const form = new FormData();
+      const base64Response = await fetch(`data:image/jpeg;base64,${recordList[index].file.buffer}`);
+      const blob = await base64Response.blob();
+      form.append('image', blob, recordList[index].file.originalname);
+
+      // Send to the ML API
+      $.ajax({
+        url: "/connectionTesting",
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        data: form,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
+          storePrediction(data, recordList[index]._id);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    }
+
+    // Store the prediction result to the database
+    function storePrediction(result, id) {
+      console.log(result);
+      
+      // Retrieved phone number and the current date
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      let today = new Date();
+      const offset = today.getTimezoneOffset();
+      today = new Date(today.getTime() - (offset*60*1000)).toISOString();
+
+      // Store to the database
+      $.ajax({
+        url: "/updateDisease",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber,
+          disease: "pneumonia", // the table name that stores the prediction result
+          date: today,
+          prediction: result.prediction,
+          accuracy: result.accuracy, // can be null if not provided
+          recordType: "psychology_patients", // can be null if no record is used for the ML prediction
+          recordId: id // can be null if no record is used for the ML prediction
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    }
+  </script>
+  
+  <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
+  <%- include('../partials/header') -%>
+  <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
+</head>
+<body>
+  <div class="container" style="padding-top: 40px;margin:0 auto;">
+    <table id="recordList" class="center" style="margin-top:50px; width:50%; margin-bottom:50px;margin-left: auto;margin-right: auto;">
+      <tr>
+        <th>Record Date</th>
+        <th>Therapy Type</th>
+        <th>Action</th>
+      </tr>
+
+    </table>
+  </div>
+  <div> 
+    <footer>
+  <%- include('../partials/footer-new') -%>
+  
+  </footer>
+  </div> 
+  
+
+</body>
+</html>
+
+<!--  Psychology - code ended for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht)
+   Group 8, Course-BMG5111, Winter 2023 -->
