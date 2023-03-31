@@ -77,6 +77,20 @@ h3 {
   margin-top: 0px;
 }
 
+h0 {
+  font-size: 2.31rem;
+  margin-bottom: 1.5rem;
+  padding: 2px;
+  font-weight: 300;
+  font-family: 'Raleway', sans-serif;
+  color: #24253f;
+}
+@media (min-width: 64em) {
+  h0 {
+    font-size: 3.25rem;
+  }
+}
+
 h1 {
   font-size: 2.31rem;
   margin-bottom: 1.5rem;
@@ -179,7 +193,7 @@ a:hover {
 button,
 .button {
   padding: 1.5rem 4.5rem;
-  background-image: linear-gradient(to right, hsl(233, 26%, 24%), hsl(233, 29%, 49%));
+  background-image: linear-gradient(to right, hsl(0, 0%, 15%), hsl(0, 0%, 33%));
   border: 0;
   border-radius: 30px;
   cursor: pointer;
@@ -290,7 +304,7 @@ button,
 }
 
 .hero {
-  background-color: hsl(0, 0%, 98%);
+  background-color: hsl(0, 0%, 100%);
 }
 @media (min-width: 64em) {
   .hero .container {
@@ -377,7 +391,7 @@ button,
 
 .appt {
   display: flex;
-  background-color: hsl(0, 0%, 98%);
+  background-color: hsl(0, 0%, 100%);
   align-content: center;
   justify-content: center;
 }
@@ -472,7 +486,7 @@ button,
 }
 
 .articles {
-  background-color: hsl(0, 0%, 98%);
+  background-color: hsl(0, 0%, 100%);
 }
 
 .article__grid {
@@ -530,7 +544,7 @@ button,
 }
 
 .references {
-  background-color: hsl(0, 0%, 98%);
+  background-color: hsl(0, 0%, 100%);
   font-size: small;
 }
 @media (min-width: 64em) {
@@ -555,6 +569,219 @@ button,
     text-align: left;
   }
 }
+
+.footer {
+  background-color: hsl(233, 26%, 24%);
+  color: hsl(0, 0%, 100%);
+  padding: 2.5rem;
+  text-align: center;
+}
+@media (min-width: 64em) {
+  .footer .container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 3fr;
+    grid-template-rows: 1fr auto;
+    grid-template-areas: "logo links1 links2 cta" "social links1 links2 copyright";
+    gap: 1rem;
+    justify-items: start;
+  }
+}
+.footer a {
+  color: hsl(0, 0%, 100%);
+}
+.footer__logo {
+  display: inline-block;
+}
+@media (max-width: 63.9375em) {
+  .footer__logo {
+    margin-bottom: 1.875rem;
+  }
+}
+@media (min-width: 64em) {
+  .footer__logo {
+    grid-area: logo;
+  }
+}
+@media (max-width: 63.9375em) {
+  .footer__social {
+    margin-bottom: 1.875rem;
+  }
+}
+@media (min-width: 64em) {
+  .footer__social {
+    grid-area: social;
+    align-self: end;
+  }
+}
+.footer__social a {
+  display: inline-block;
+  height: 1.25rem;
+}
+.footer__social a svg path {
+  transition: fill 150ms ease-in-out;
+}
+.footer__social a:hover svg path {
+  fill: hsl(233, 29%, 49%);
+}
+.footer__social a:not(:last-child) {
+  margin-right: 1rem;
+}
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9375rem;
+}
+@media (min-width: 64em) {
+  .footer__links {
+    justify-content: space-between;
+    align-items: start;
+  }
+}
+@media (min-width: 64em) {
+  .footer__links.col1 {
+    grid-area: links1;
+  }
+}
+@media (max-width: 63.9375em) {
+  .footer__links.col2 {
+    margin-bottom: 1.875rem;
+  }
+}
+@media (min-width: 64em) {
+  .footer__links.col2 {
+    grid-area: links2;
+  }
+}
+.footer__links a {
+  line-height: 2.25;
+  transition: color 150ms ease-in-out;
+}
+.footer__links a:hover {
+  color: hsl(233, 29%, 49%);
+}
+@media (min-width: 64em) {
+  .footer__cta {
+    grid-area: cta;
+    text-align: right;
+    justify-self: end;
+  }
+}
+@media (max-width: 63.9375em) {
+  .footer__cta a.button {
+    margin-bottom: 1.875rem;
+  }
+}
+.footer__copyright {
+  font-size: 0.8125rem;
+  color: hsl(233, 8%, 62%);
+}
+@media (min-width: 64em) {
+  .footer__copyright {
+    grid-area: copyright;
+    align-self: end;
+    justify-self: end;
+  }
+}
+.footer .attribution {
+  margin-top: 4rem;
+  font-size: 0.875rem;
+}/*# sourceMappingURL=style.css.map */
+
+
+
+.banner {
+  background-color: hsl(0, 0%, 100%);
+  background-image: url("/images/diabetology_banner.jpeg");
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 10rem;
+}
+@media (min-width: 64em) {
+  .banner .container {
+    display: flex;
+    align-items: center;
+  }
+}
+.banner__image {
+  position: relative;
+  background-image: url("/images/diabetology_banner.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 17.5rem;
+}
+@media (min-width: 40em) {
+  .banner__image {
+    min-height: 25rem;
+    background-position: center 100%;
+  }
+}
+@media (min-width: 64em) {
+  .banner__image {
+    flex: 3;
+    order: 2;
+    height: 41rem;
+    background-image: none;
+  }
+}
+@media (min-width: 64em) {
+  .banner__image::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    background-image: url("/images/diabetology_banner.jpeg");
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    width: 150%;
+    background-size: 122%;
+    background-position: 0% 83%;
+  }
+}
+.banner__image::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/diabetology_banner.jpeg");
+  background-size: 93%;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+@media (min-width: 40em) {
+  .banner__image::after {
+    background-size: 52%;
+  }
+}
+@media (min-width: 64em) {
+  .banner__image::after {
+    width: 120%;
+    height: 122%;
+    background-size: 94%;
+    background-position: center 150%;
+    left: 22%;
+  }
+}
+.banner__text {
+  text-align: center;
+}
+@media (min-width: 64em) {
+  .banner {
+    flex: 3.5;
+    order: 1;
+    text-align: left;
+  }
+}
+@media (min-width: 64em) {
+  .banner__cta {
+    grid-area: cta;
+    text-align: left;
+    justify-self: center;
+  }
+}
+
 
 .footer {
   background-color: hsl(233, 26%, 24%);
