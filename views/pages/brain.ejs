@@ -1,3 +1,4 @@
+/* Enrico, Apeksha, Tarin
 <!DOCTYPE html>
 <html lang="en-CA">
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -21,32 +22,129 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
-    $(document).ready(function() 
-    {
-      $('#patientForm').submit(function(event) {
-        event.preventDefault(); // Prevent default form submission
-        var formData = new FormData(this);
+    var recordList = [];
 
-        $.ajax({
-          url: "/recordUpdate",
-          type: 'POST',
-          data: formData,
-          dataType: 'json',
-          processData: false,
-          contentType: false,
-          success: function(data) {
-            console.log(`Succesful response ${JSON.stringify(data)}`);
-            // Handle successful response from server
-            console.log(`Message is: ${data.result}`);
-            $("#testResult").val(data.result);
-          },
-          error: function(xhr, textStatus, errorThrown) {
-            // Handle error response from server
-            alert(textStatus + ': ' + errorThrown);
-          }
-        });
+    $(document).ready(function() {
+      // retrived phone number form url
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+
+      // Get the patient records
+      $.ajax({
+        url: "/imageRetrieveByPhoneNumber",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber, 
+          recordType: "MRI_Brain" // the table name that stores the record
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
       });
     });
+    
+    // Display the patient records to the front end that allows doctor selected specific record for diagnose
+    function display(data) {
+      recordList = data;
+      if (recordList.length <= 0) {
+        alert("This patient has no record, please do the MRI scan of the brain.");
+        return;
+      }
+      console.log(recordList);
+      let list = document.getElementById("recordList");
+      
+      // Display each record
+      for (let i = 0; i < recordList.length; ++i) {
+        let tr = document.createElement("tr");
+        let image = document.createElement("td");
+        image.innerHTML = "Will be replaced by image"; //recordList[i].image
+        let recordDate = document.createElement("td");
+        recordDate.innerHTML = recordList[i].RecordDate;
+        let action = document.createElement("td");
+        let button = document.createElement("input");
+        button.type = "button";
+        button.value = "Diagnose";
+        button.index = i;
+        button.setAttribute("onclick", "predict(this.index)")
+        action.appendChild(button);
+        
+        tr.appendChild(image);
+        tr.appendChild(recordDate);
+        tr.appendChild(action);
+        list.appendChild(tr);
+      }
+    }
+
+    // Send the image to the ML api for the prediction
+    async function predict(index) {
+      console.log(recordList[index]);
+
+      // Prepare submit data
+      const form = new FormData();
+      const base64Response = await fetch(`data:image/jpeg;base64,${recordList[index].file.buffer}`);
+      const blob = await base64Response.blob();
+      form.append('image', blob, recordList[index].file.originalname);
+
+      // Send to the ML API
+      $.ajax({
+        url: "/connectionTesting",
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        data: form,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
+          storePrediction(data, recordList[index]._id);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    }
+
+    // Store the prediction result to the database
+    function storePrediction(result, id) {
+      console.log(result);
+      
+      // Retrieved phone number and the current date
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      let today = new Date();
+      const offset = today.getTimezoneOffset();
+      today = new Date(today.getTime() - (offset*60*1000)).toISOString();
+
+      // Store to the database
+      $.ajax({
+        url: "/updateDisease",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber,
+          disease: "brain_tumor", // the table name that stores the prediction result
+          date: today,
+          prediction: result.prediction,
+          accuracy: result.accuracy, // can be null if not provided
+          recordType: "MRI_Brain", // can be null if no record is used for the ML prediction
+          recordId: id // can be null if no record is used for the ML prediction
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    }
   </script>
   <%- include('../partials/header') -%>
 
@@ -73,90 +171,18 @@
                       <div data-ux="Block" data-aid="CONTACT_FORM_CONTAINER_REND" class="x-el x-el-div c1-1 c1-2 c1-1w c1-1v c1-b c1-c c1-d c1-e c1-f c1-g">
                         <form id="patientForm" data-ux="Form" action="/recordUpdate" method="post" enctype="multipart/form-data" class="x-el x-el-form c1-1 c1-2 c1-2f c1-b c1-c c1-d c1-e c1-f c1-g">
 
-                          <!--first name field-->
-                          <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
-                            <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
-                              <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL" class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
-                                <input name="firstName" type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel" id="firstName" placeholder="First Name of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha" class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
-                                <label data-ux="InputFloatLabelLabel" for="input5388" data-typography="InputAlpha" class="x-el x-el-label c1-1 c1-2 c1-1o c1-1b c1-1c c1-4g c1-8e c1-8f c1-8g c1-8h c1-b c1-82 c1-42 c1-43 c1-8d c1-45 c1-46 c1-47 c1-48">
-                                  First Name
-                                </label>
-                              </div>
-                            </div>
+                          <!-- table -->
+                          <div class="container" style="padding-top: 40px;">
+                            <table id="recordList" style="width:100%">
+                              <tr>
+                                <th>Record</th>
+                                <th>Record Date</th>
+                                <th>Action</th>
+                              </tr>
+                        
+                            </table>
                           </div>
 
-                          <!--last name field-->
-                          <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
-                            <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
-                              <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL" class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
-                                <input name="lastName" type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel" id="lastName" placeholder="Last name of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha" class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
-                                <label data-ux="InputFloatLabelLabel" for="input5388" data-typography="InputAlpha" class="x-el x-el-label c1-1 c1-2 c1-1o c1-1b c1-1c c1-4g c1-8e c1-8f c1-8g c1-8h c1-b c1-82 c1-42 c1-43 c1-8d c1-45 c1-46 c1-47 c1-48">
-                                  Last Name
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!--email field-->
-                          <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
-                            <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
-                              <div data-ux="InputFloatLabel" type="text" data-aid="CONTACT_FORM_EMAIL" class="x-el x-el-div c1-1 c1-2 c1-3o c1-b c1-c c1-d c1-e c1-f c1-g">
-                                <input name="email" id="email" type="text" role="textbox" aria-multiline="false" data-ux="InputFloatLabel" placeholder="Email of patient" data-aid="CONTACT_FORM_EMAIL" data-typography="InputAlpha" class="x-el x-el-input c1-1 c1-2 c1-h c1-7v c1-4 c1-7w c1-7x c1-7y c1-7z c1-80 c1-4e c1-4f c1-81 c1-2m c1-57 c1-b c1-82 c1-42 c1-43 c1-83 c1-84 c1-85 c1-86 c1-87 c1-88 c1-89 c1-8a c1-8b c1-8c c1-8d c1-45 c1-46 c1-47 c1-48" />
-                                <label data-ux="InputFloatLabelLabel" for="input5388" data-typography="InputAlpha" class="x-el x-el-label c1-1 c1-2 c1-1o c1-1b c1-1c c1-4g c1-8e c1-8f c1-8g c1-8h c1-b c1-82 c1-42 c1-43 c1-8d c1-45 c1-46 c1-47 c1-48">
-                                  Email
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!--disease type-->
-                          <label for="disease type">disease type:</label>
-                          <div class="dropdown">
-                            <select name="diseaseType" id="diseaseType">
-                              <option value="Default" selected disabled>Select a disease type</option>
-                              <option value="Glioma">Glioma</option>
-                              <option value="Alzheimers">Alzheimers</option>
-                            </select>
-                          </div>
-                          <br>
-                          <!--test type-->
-                          <label for="test type">test type:</label>
-                          <div class="dropdown">
-                            <select name="testType" id="testType">
-                              <option value="" selected disabled>Select a test type</option>
-                              <option value="X-ray">X-ray</option>
-                              <option value="MRI">MRI</option>
-                              <option value="CT Scan">CT Scan</option>
-                            </select>
-                          </div>
-                          <br>
-
-                          <!--test date-->
-                          <div class="form-group">
-                            <label for="date">Select the date of the test:</label>
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                              </div>
-                              <input type="date" class="form-control" id="date" name="date">
-                            </div>
-                          </div>
-
-                          <!--image upload-->
-                          <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
-                            <label data-ux-btn="primary" data-ux="ButtonPrimary" for="file"></label>
-                            <input id="image" name="image" color="PRIMARY" fill="GHOST" shape="SQUARE" decoration="LINES" shadow="NONE" data-typography="ButtonAlpha" class="x-el x-el-button" type="file" id="image" name="image" accept="image/*" />
-                          </div>
-
-
-                          <!-- Test Result -->
-                          <label for="testResult">Test Result:</label>
-                          <input type="text" id="testResult" name="testResult" disabled="disabled" required><br><br>
-
-                          <!--button-->
-                          <div data-ux="Block" class="x-el x-el-div c1-1 c1-2 c1-7u c1-b c1-c c1-d c1-e c1-f c1-g">
-                            <input type="submit" value="Submit" data-ux-btn="primary" data-ux="ButtonPrimary" color="PRIMARY" fill="GHOST" shape="SQUARE" decoration="LINES" shadow="NONE" data-aid="CONTACT_SUBMIT_BUTTON_REND" state="default" data-typography="ButtonAlpha" class="x-el x-el-button c1-3w c1-1x c1-1d c1-57 c1-8j c1-13 c1-1w c1-1v c1-1a c1-1c c1-1b c1-3o c1-t c1-4 c1-4e c1-4f c1-51 c1-53 c1-8k c1-2m c1-2k c1-26 c1-8l c1-8m c1-8n c1-56 c1-8o c1-b c1-49 c1-65 c1-42 c1-8p c1-8q c1-8r c1-8s c1-8t c1-8u c1-8v c1-8w c1-8x c1-8y c1-8z c1-90 c1-91 c1-92 c1-93 c1-94 c1-45 c1-46 c1-47 c1-48" />
-                          </div>
                       </div>
                     </div>
                     </form>
