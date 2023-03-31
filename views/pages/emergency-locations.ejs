@@ -14,8 +14,8 @@
         width: 10%;
         float: left;
         background: rgb(36, 80, 100);
-        padding: 20%;
-        margin: 4em;
+        padding: 10%;
+        margin: 2em;
       }
 
       .MapDiv {
@@ -23,17 +23,19 @@
         width: 1000px;
         float: right;
         padding: 20%;
+        margin: 4em;
       }
     </style>
     <title>Emergency Locations</title>
 
     <link
       rel="stylesheet"
-      href="https://js.arcgis.com/4.26/esri/themes/light/main.css"
+      href="https://js.arcgis.com/4.21/esri/themes/light/main.css"
     />
-    <script src="https://js.arcgis.com/4.26/"></script>
+    <script src="https://js.arcgis.com/4.21/"></script>
 
     <script>
+      // Import all requirements.
       require([
         "esri/config",
         "esri/Map",
@@ -45,13 +47,14 @@
         "esri/rest/route",
         "esri/rest/support/RouteParameters",
         "esri/rest/support/FeatureSet",
-      ], function (esriConfig, Map, MapView, locator, Graphic, Locate) {
+      ], function (esriConfig, Map, MapView, locator, Graphic, Locate, RouteParameters, FeatureSet, route) {
         esriConfig.apiKey =
           "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd-RXNWi44KwDM-SeN4GldsP8QiTHPeX";
         const map = new Map({
           basemap: "arcgis-navigation",
         });
 
+        const routeLayer = new GraphicsLayer();
         const view = new MapView({
           container: "viewDiv",
           map: map,
@@ -73,6 +76,9 @@
           "Choose a place type...",
           "Hospital",
           "Pharmacy",
+          "Emergency",
+          "Community Health Centre",
+          "Doctor",
           "Appletree",
         ];
 
@@ -96,8 +102,6 @@
           "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
         const routeUrl =
           "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
-
-        view.on("click", function (event) {});
 
         // Find places and add them to the map
         function findPlaces(category, pt) {
@@ -138,6 +142,37 @@
             });
         }
 
+        function addGraphic(type, point) {
+          const graphic = new Graphic({
+            symbol: {
+              type: "simple-marker",
+              color: type === "origin" ? "white" : "black",
+              size: "8px",
+            },
+            geometry: point,
+          });
+          view.graphics.add(graphic);
+        }
+
+        function getRoute() {
+          const routeParams = new RouteParameters({
+            // stops: new FeatureSet({
+            //   features: view.graphics.toArray(),
+            // }),
+          });
+
+          route.solve(routeUrl, routeParams).then(function (data) {
+            data.routeResults.forEach(function (result) {
+              result.route.symbol = {
+                type: "simple-line",
+                color: [5, 150, 255],
+                width: 3,
+              };
+              view.graphics.add(result.route);
+            });
+          });
+        }
+
         // Search for places in center of map
         view.watch("stationary", function (val) {
           if (val) {
@@ -148,6 +183,19 @@
         // Listen for category changes and find places
         select.addEventListener("change", function (event) {
           findPlaces(event.target.value, view.center);
+        });
+
+        view.on("click", function (event) {
+
+          if (view.graphics.length === 0) {
+            addGraphic("origin", event.mapPoint);
+          } else if (view.graphics.length === 1) {
+            addGraphic("destination", event.mapPoint);
+            getRoute(); // Call the route service
+          } else {
+            view.graphics.removeAll();
+            addGraphic("origin", event.mapPoint);
+          }
         });
       });
     </script>
