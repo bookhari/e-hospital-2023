@@ -1,4 +1,4 @@
-/* TaskName, code started for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
+<!-- /* TaskName, code started for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */ -->
 <!DOCTYPE html>
 <html>
   
@@ -33,7 +33,7 @@
       // retrived phone number form url
       let params = (new URL(document.location)).searchParams;
       let phoneNumber = params.get("phoneNumber");
-
+  // was "phoneNumber"
       // Get the patient records
       $.ajax({
         url: "/imageRetrieveByPhoneNumber",
@@ -97,7 +97,7 @@
 
       // Send to the ML API
       $.ajax({
-        url: "/connectionTesting",
+        url: "https://lfsrepo-mlmodel-pneumonia.herokuapp.com/predict",
         type: 'POST',
         enctype: 'multipart/form-data',
         data: form,
@@ -157,7 +157,16 @@
   <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
 </head>
 <body>
+  <div class="header">
+   
+    <h1>Pneumonia Diagnostics</h1>
+   
+  </div>
 
+  <div class="header2">
+    <h3>Patient's Information</h3>
+   
+  </div>
   <div class="container" style="padding-top: 40px;">
     <table id="recordList" style="width:100%">
       <tr>
@@ -179,4 +188,4 @@
 </body>
 </html>
 
-/* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
+<!-- /* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Med 2023 */ -->
