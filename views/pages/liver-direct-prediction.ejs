@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en-CA">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+
+
+
+
+<head>
+
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+</head>
+
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .title {
+      margin-top: 60px;
+        gap: 1rem;
+    }
+
+    .loader_wrapper{
+        display: flex;
+        margin-top: 1rem;
+    }
+
+    .loader {
+      border: 16px solid #f3f3f3; /* Light grey */
+      border-top: 16px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    #predicting {
+      margin-top: 80px;
+      font-size: 24px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #result {
+        margin: 1rem 1rem;
+        background-color: rgba(178, 183, 206, 0.4);
+        border-radius: 12px;
+        font-size: 24px;
+        width: 350px;
+        height: 150px;
+        display: none;
+        line-height: 50px; /* 设置行高 */
+        text-align: center; /* 让文字水平居中 */
+        vertical-align: middle; /* 让文字垂直居中 */
+
+    }
+
+    .main {
+      margin: 60px 100px 0;
+      min-height: calc(100vh - 500px);
+      display: flex;
+      flex-direction: row;
+    }
+
+    .main2{
+      display: flex;
+      gap: 5rem;
+    }
+
+    .displayArea{
+        margin-top: 60px;
+        height: 100%;
+        /*border: 1px solid green;*/
+        width: 50vw;
+    }
+
+      #patientTable td {
+    font-style: italic;
+  }
+
+  </style>
+
+
+<%- include('../partials/header') -%>
+<body onload="getLiverDiseaseInfo()">
+
+  <div class="main">
+    <div class="main2">
+      <div>
+          <h1 class="title">Liver Prediction Result:</h1>
+            <div class="loader_wrapper">
+
+              <div class="loader" id="loader"></div>
+                <div id="predicting">Predicting Liver Diseases...</div>
+            </div>
+          <div id="result" style="display: none;"></div>
+      </div>
+      <div class="displayArea">
+        <h3>Patient Information</h3>
+        <table id="patientTable">
+    <tbody>
+      <tr>
+        <td>Name:</td>
+        <td id="name"></td>
+      </tr>
+      <tr>
+        <td>Age:</td>
+        <td id="age"></td>
+      </tr>
+      <tr>
+        <td>Gender:</td>
+        <td id="gender"></td>
+      </tr>
+      <tr>
+        <td>Total Bilirubin:</td>
+        <td id="totalBilirubin"></td>
+      </tr>
+      <tr>
+        <td>Direct Bilirubin:</td>
+        <td id="directBilirubin"></td>
+      </tr>
+      <tr>
+        <td>Alkaline Phosphatase:</td>
+        <td id="alkalinePhosphatase"></td>
+      </tr>
+      <tr>
+        <td>Alanine Aminotransferase:</td>
+        <td id="alanineAminotransferase"></td>
+      </tr>
+      <tr>
+        <td>Aspartate Aminotransferase:</td>
+        <td id="aspartateAminotransferase"></td>
+      </tr>
+      <tr>
+        <td>Total Proteins:</td>
+        <td id="totalProteins"></td>
+      </tr>
+      <tr>
+        <td>Albumin:</td>
+        <td id="albumin"></td>
+      </tr>
+      <tr>
+        <td>Albumin and Globulin Ratio:</td>
+        <td id="albuminAndGlobulinRatio"></td>
+      </tr>
+    </tbody>
+  </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Get the ID from the URL query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    // const baseURL = 'https://e-hospital-liver.herokuapp.com'
+    const baseURL = 'http://127.0.0.1:5000'
+    // Show the loader for a few seconds before making the HTTP request
+    setTimeout(() => {
+      // Make the HTTP request to the backend
+      fetch(`${baseURL}/predict_liver_disease_direct/${id}`)
+        .then(response => response.text())
+        .then(result => {
+          // Hide the loader and display the result
+          document.getElementById("predicting").style.display = "none";
+          document.getElementById("loader").style.display = "none";
+          document.getElementById("result").style.display = "block";
+          document.getElementById("result").innerHTML = result;
+        })
+        .catch(error => console.error(error));
+    }, 2000); // Wait for 3 seconds before making the request
+
+
+    function getLiverDiseaseInfo() {
+      // Send a GET request to the backend API
+      fetch(`${baseURL}/get_liver_disease_direct/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          // Update the HTML table with the response data
+          document.getElementById('name').textContent = data[0];
+          document.getElementById('age').textContent = data[1];
+          document.getElementById('gender').textContent = data[2];
+          document.getElementById('totalBilirubin').textContent = data[3];
+          document.getElementById('directBilirubin').textContent = data[4];
+          document.getElementById('alkalinePhosphatase').textContent = data[5];
+          document.getElementById('alanineAminotransferase').textContent = data[6];
+          document.getElementById('aspartateAminotransferase').textContent = data[7];
+          document.getElementById('totalProteins').textContent = data[8];
+          document.getElementById('albumin').textContent = data[9];
+          document.getElementById('albuminAndGlobulinRatio').textContent = data[10];
+        })
+        .catch(error => console.error(error));
+    }
+  </script>
+
+</body>
+<%- include('../partials/footer-new') -%>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
