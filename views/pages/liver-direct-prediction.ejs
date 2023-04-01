@@ -31,7 +31,7 @@
     }
 
     .title {
-      margin-top: 100px;
+      margin-top: 60px;
         gap: 1rem;
     }
 
@@ -64,7 +64,7 @@
         background-color: rgba(178, 183, 206, 0.4);
         border-radius: 12px;
         font-size: 24px;
-        width: 400px;
+        width: 350px;
         height: 150px;
         display: none;
         line-height: 50px; /* 设置行高 */
@@ -76,24 +76,96 @@
     .main {
       margin: 60px 100px 0;
       min-height: calc(100vh - 500px);
+      display: flex;
+      flex-direction: row;
     }
 
+    .main2{
+      display: flex;
+      gap: 5rem;
+    }
+
+    .displayArea{
+        margin-top: 60px;
+        height: 100%;
+        /*border: 1px solid green;*/
+        width: 50vw;
+    }
+
+      #patientTable td {
+    font-style: italic;
+  }
 
   </style>
 
 
 <%- include('../partials/header') -%>
-<body>
+<body onload="getLiverDiseaseInfo()">
 
   <div class="main">
-    <h1 class="title">Liver Prediction Result:</h1>
-      <div class="loader_wrapper">
+    <div class="main2">
+      <div>
+          <h1 class="title">Liver Prediction Result:</h1>
+            <div class="loader_wrapper">
 
-        <div class="loader" id="loader"></div>
-          <div id="predicting">Predicting Liver Diseases...</div>
+              <div class="loader" id="loader"></div>
+                <div id="predicting">Predicting Liver Diseases...</div>
+            </div>
+          <div id="result" style="display: none;"></div>
       </div>
+      <div class="displayArea">
+        <h3>Patient Information</h3>
+        <table id="patientTable">
+    <tbody>
+      <tr>
+        <td>Name:</td>
+        <td id="name"></td>
+      </tr>
+      <tr>
+        <td>Age:</td>
+        <td id="age"></td>
+      </tr>
+      <tr>
+        <td>Gender:</td>
+        <td id="gender"></td>
+      </tr>
+      <tr>
+        <td>Total Bilirubin:</td>
+        <td id="totalBilirubin"></td>
+      </tr>
+      <tr>
+        <td>Direct Bilirubin:</td>
+        <td id="directBilirubin"></td>
+      </tr>
+      <tr>
+        <td>Alkaline Phosphatase:</td>
+        <td id="alkalinePhosphatase"></td>
+      </tr>
+      <tr>
+        <td>Alanine Aminotransferase:</td>
+        <td id="alanineAminotransferase"></td>
+      </tr>
+      <tr>
+        <td>Aspartate Aminotransferase:</td>
+        <td id="aspartateAminotransferase"></td>
+      </tr>
+      <tr>
+        <td>Total Proteins:</td>
+        <td id="totalProteins"></td>
+      </tr>
+      <tr>
+        <td>Albumin:</td>
+        <td id="albumin"></td>
+      </tr>
+      <tr>
+        <td>Albumin and Globulin Ratio:</td>
+        <td id="albuminAndGlobulinRatio"></td>
+      </tr>
+    </tbody>
+  </table>
+      </div>
+    </div>
 
-    <div id="result" style="display: none;"></div>
   </div>
 
   <script>
@@ -101,10 +173,12 @@
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
+    // const baseURL = 'https://e-hospital-liver.herokuapp.com'
+    const baseURL = 'http://127.0.0.1:5000'
     // Show the loader for a few seconds before making the HTTP request
     setTimeout(() => {
       // Make the HTTP request to the backend
-      fetch(`http://127.0.0.1:53124/predict_liver_disease_direct/${id}`)
+      fetch(`${baseURL}/predict_liver_disease_direct/${id}`)
         .then(response => response.text())
         .then(result => {
           // Hide the loader and display the result
@@ -115,6 +189,28 @@
         })
         .catch(error => console.error(error));
     }, 2000); // Wait for 3 seconds before making the request
+
+
+    function getLiverDiseaseInfo() {
+      // Send a GET request to the backend API
+      fetch(`${baseURL}/get_liver_disease_direct/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          // Update the HTML table with the response data
+          document.getElementById('name').textContent = data[0];
+          document.getElementById('age').textContent = data[1];
+          document.getElementById('gender').textContent = data[2];
+          document.getElementById('totalBilirubin').textContent = data[3];
+          document.getElementById('directBilirubin').textContent = data[4];
+          document.getElementById('alkalinePhosphatase').textContent = data[5];
+          document.getElementById('alanineAminotransferase').textContent = data[6];
+          document.getElementById('aspartateAminotransferase').textContent = data[7];
+          document.getElementById('totalProteins').textContent = data[8];
+          document.getElementById('albumin').textContent = data[9];
+          document.getElementById('albuminAndGlobulinRatio').textContent = data[10];
+        })
+        .catch(error => console.error(error));
+    }
   </script>
 
 </body>
