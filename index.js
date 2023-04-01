@@ -231,6 +231,12 @@ app.get('/symptoms-checker', (req, res) => {
 app.get('/index', (req, res) => {
   res.render("pages/index");
 })
+app.get('/labform', (req, res) => { //Christina&Sanika
+  res.render("pages/labform");
+})
+app.get('/labtest', (req, res) => { //Christina&Sanika
+  res.render("pages/labtest");
+})
 app.get('/labapp', (req, res) => { //Christina&Sanika
   res.render("pages/labapp");
 })
