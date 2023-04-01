@@ -117,7 +117,8 @@
         cache: false,
         success: function(data) {
           // console.log(data);
-          data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
+          // data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
+          data.error ? alert(JSON.stringify(data.error)) : null;
           storePrediction(data, recordList[index]._id);
           console.log(`Succesful response ${JSON.stringify(data)}`);
           console.log(`Message is: ${JSON.stringify(data)}`);
