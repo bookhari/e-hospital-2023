@@ -1,6 +1,1492 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-CA">
+  <meta
+    http-equiv="content-type"
+    content="text/html;charset=utf-8"
+  /><!-- /Added by HTTrack -->
+
   <head>
+    <meta charSet="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>E-Hospital</title>
+    <meta name="author" content="E-Hospital" />
+    <%- include('../partials/header') -%>
+
+    <style>
+      /*
+Copyright (c) 2011 by Sorkin Type Co (www.sorkintype.com eben@eyebytes.com), with Reserved Font Name "Fjalla"
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL
+
+—————————————————————————————-
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+—————————————————————————————-
+*/
+      @font-face {
+        font-family: "Fjalla One";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(https://img1.wsimg.com/gfonts/s/fjallaone/v13/Yq6R-LCAWCX3-6Ky7FAFrOF6lw.ttf)
+          format("truetype");
+      }
+
+      /*
+Copyright 2010, 2012, 2014 Adobe Systems Incorporated (http://www.adobe.com/), with Reserved Font Name Source.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL
+
+—————————————————————————————-
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+—————————————————————————————-
+*/
+      @font-face {
+        font-family: "Source Sans Pro";
+        font-style: italic;
+        font-weight: 300;
+        font-display: swap;
+        src: url(https://img1.wsimg.com/gfonts/s/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkids18E.ttf)
+          format("truetype");
+      }
+
+      @font-face {
+        font-family: "Source Sans Pro";
+        font-style: italic;
+        font-weight: 400;
+        font-display: swap;
+        src: url(https://img1.wsimg.com/gfonts/s/sourcesanspro/v21/6xK1dSBYKcSV-LCoeQqfX1RYOo3qPZ7nsDc.ttf)
+          format("truetype");
+      }
+
+      @font-face {
+        font-family: "Source Sans Pro";
+        font-style: italic;
+        font-weight: 700;
+        font-display: swap;
+        src: url(https://img1.wsimg.com/gfonts/s/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZclSds18E.ttf)
+          format("truetype");
+      }
+
+      @font-face {
+        font-family: "Source Sans Pro";
+        font-style: normal;
+        font-weight: 300;
+        font-display: swap;
+        src: url(https://img1.wsimg.com/gfonts/s/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwlxdr.ttf)
+          format("truetype");
+      }
+
+      @font-face {
+        font-family: "Source Sans Pro";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(https://img1.wsimg.com/gfonts/s/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7g.ttf)
+          format("truetype");
+      }
+
+      @font-face {
+        font-family: "Source Sans Pro";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url(https://img1.wsimg.com/gfonts/s/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdr.ttf)
+          format("truetype");
+      }
+    </style>
+    <style data-glamor="cxs-default-sheet">
+      .x .c1-1 {
+        letter-spacing: normal
+      }
+
+      .x .c1-2 {
+        text-transform: none
+      }
+
+      .x .c1-3 {
+        background-color: rgb(255, 255, 255)
+      }
+
+      .x .c1-4 {
+        width: 100%
+      }
+
+      .x .c1-5>div {
+        position: relative
+      }
+
+      .x .c1-6>div {
+        overflow: hidden
+      }
+
+      .x .c1-7>div {
+        margin-top: auto
+      }
+
+      .x .c1-8>div {
+        margin-right: auto
+      }
+
+      .x .c1-9>div {
+        margin-bottom: auto
+      }
+
+      .x .c1-a>div {
+        margin-left: auto
+      }
+
+      .x .c1-b {
+        font-family: 'Source Sans Pro', arial, sans-serif
+      }
+
+      .x .c1-c {
+        font-size: 16px
+      }
+
+      .x .c1-h {
+        background-color: rgb(246, 246, 246)
+      }
+
+      .x .c1-i {
+        padding-top: 56px
+      }
+
+      .x .c1-j {
+        padding-bottom: 56px
+      }
+
+      .x .c1-k {
+        padding: 0px !important
+      }
+
+      .x .c1-l {
+        z-index: 1
+      }
+
+      .x .c1-o {
+        background-color: rgba(255, 255, 255, 0.9)
+      }
+
+      .x .c1-p {
+        margin-left: auto
+      }
+
+      .x .c1-q {
+        margin-right: auto
+      }
+
+      .x .c1-r {
+        padding-left: 24px
+      }
+
+      .x .c1-s {
+        padding-right: 24px
+      }
+
+      .x .c1-t {
+        max-width: 100%
+      }
+
+      .x .c1-u {
+        padding-top: 16px
+      }
+
+      .x .c1-v {
+        padding-bottom: 16px
+      }
+
+      .x .c1-11 {
+        flex-wrap: nowrap
+      }
+
+      .x .c1-12 {
+        display: flex
+      }
+
+      .x .c1-13 {
+        align-items: center
+      }
+
+      .x .c1-14 {
+        text-align: left
+      }
+
+      .x .c1-15 {
+        justify-content: left
+      }
+
+      .x .c1-16 {
+        width: 15%
+      }
+
+      .x .c1-17 {
+        flex-shrink: 0
+      }
+
+      .x .c1-18 {
+        letter-spacing: inherit
+      }
+
+      .x .c1-19 {
+        text-transform: inherit
+      }
+
+      .x .c1-1a {
+        text-decoration: none
+      }
+
+      .x .c1-1b {
+        word-wrap: break-word
+      }
+
+      .x .c1-1c {
+        overflow-wrap: break-word
+      }
+
+      .x .c1-1d {
+        cursor: pointer
+      }
+
+      .x .c1-1e {
+        justify-content: flex-start
+      }
+
+      .x .c1-1f {
+        border-top: 0px
+      }
+
+      .x .c1-1g {
+        border-right: 0px
+      }
+
+      .x .c1-1h {
+        border-bottom: 0px
+      }
+
+      .x .c1-1i {
+        border-left: 0px
+      }
+
+      .x .c1-1j {
+        color: rgb(27, 27, 27)
+      }
+
+      .x .c1-1k {
+        font-weight: inherit
+      }
+
+      .x .c1-1l:hover {
+        color: rgb(108, 120, 130)
+      }
+
+      .x .c1-1m:active {
+        color: rgb(45, 49, 52)
+      }
+
+      .x .c1-1n {
+        color: inherit
+      }
+
+      .x .c1-1o {
+        display: inline-block
+      }
+
+      .x .c1-1p {
+        vertical-align: top
+      }
+
+      .x .c1-1q {
+        padding-top: 6px
+      }
+
+      .x .c1-1r {
+        padding-right: 6px
+      }
+
+      .x .c1-1s {
+        padding-bottom: 6px
+      }
+
+      .x .c1-1t {
+        padding-left: 6px
+      }
+
+      .x .c1-1u {
+        width: 70%
+      }
+
+      .x .c1-1v {
+        text-align: center
+      }
+
+      .x .c1-1w {
+        justify-content: center
+      }
+
+      .x .c1-1x {
+        text-transform: uppercase
+      }
+
+      .x .c1-1y {
+        font-family: 'Fjalla One', arial, sans-serif
+      }
+
+      .x .c1-1z {
+        max-width: calc(100% - 0.1px)
+      }
+
+      .x .c1-24 {
+        display: inline
+      }
+
+      .x .c1-25 {
+        width: auto
+      }
+
+      .x .c1-26 {
+        color: rgb(108, 120, 130)
+      }
+
+      .x .c1-27:hover {
+        color: rgb(66, 71, 76)
+      }
+
+      .x .c1-28 {
+        padding-top: 0px
+      }
+
+      .x .c1-29 {
+        padding-right: 0px
+      }
+
+      .x .c1-2a {
+        padding-bottom: 0px
+      }
+
+      .x .c1-2b {
+        padding-left: 0px
+      }
+
+      .x .c1-2c {
+        [object -object]: 0px
+      }
+
+      .x .c1-2e {
+        margin-top: 0
+      }
+
+      .x .c1-2f {
+        margin-bottom: 0
+      }
+
+      .x .c1-2g {
+        vertical-align: middle
+      }
+
+      .x .c1-2h {
+        aspect-ratio: 1 / 1
+      }
+
+      .x .c1-2i {
+        object-fit: contain
+      }
+
+      .x .c1-2j {
+        height: 80px
+      }
+
+      .x .c1-2k {
+        background-color: transparent
+      }
+
+      .x .c1-2l {
+        transition: max-height .5s
+      }
+
+      .x .c1-2m {
+        border-radius: 0px
+      }
+
+      .x .c1-34 {
+        justify-content: flex-end
+      }
+
+      .x .c1-35 {
+        line-height: 0
+      }
+
+      .x .c1-38 {
+        display: none
+      }
+
+      .x .c1-3c {
+        width: 25%
+      }
+
+      .x .c1-3d {
+        flex-grow: 0
+      }
+
+      .x .c1-3e {
+        [object -object]:
+      }
+
+      .x .c1-3g {
+        width: 50%
+      }
+
+      .x .c1-3h {
+        line-height: 24px
+      }
+
+      .x .c1-3i {
+        white-space: nowrap
+      }
+
+      .x .c1-3j {
+        margin-left: 0
+      }
+
+      .x .c1-3k {
+        margin-right: 0
+      }
+
+      .x .c1-3l {
+        -webkit-margin-before: 0
+      }
+
+      .x .c1-3m {
+        -webkit-margin-after: 0
+      }
+
+      .x .c1-3n {
+        -webkit-padding-start: 0
+      }
+
+      .x .c1-3o {
+        position: relative
+      }
+
+      .x .c1-3p {
+        color: rgb(94, 94, 94)
+      }
+
+      .x .c1-3q {
+        margin-bottom: none
+      }
+
+      .x .c1-3r {
+        list-style: none
+      }
+
+      .x .c1-3s {
+        padding-left: 32px
+      }
+
+      .x .c1-3t {
+        visibility: hidden
+      }
+
+      .x .c1-3u:first-child {
+        margin-left: 0
+      }
+
+      .x .c1-3v:first-child {
+        padding-left: 0
+      }
+
+      .x .c1-3w {
+        letter-spacing: 0.125em
+      }
+
+      .x .c1-3x {
+        display: block
+      }
+
+      .x .c1-3y {
+        margin-left: -6px
+      }
+
+      .x .c1-3z {
+        margin-right: -6px
+      }
+
+      .x .c1-40 {
+        margin-top: -6px
+      }
+
+      .x .c1-41 {
+        margin-bottom: -6px
+      }
+
+      .x .c1-42 {
+        font-size: 14px
+      }
+
+      .x .c1-43 {
+        font-weight: 400
+      }
+
+      .x .c1-44:active {
+        color: rgb(108, 120, 130)
+      }
+
+      .x .c1-49 {
+        font-weight: 700
+      }
+
+      .x .c1-4a {
+        transition: transform .33s ease-in-out
+      }
+
+      .x .c1-4b {
+        transform: rotate(0deg)
+      }
+
+      .x .c1-4c {
+        border-radius: 4px
+      }
+
+      .x .c1-4d {
+        box-shadow: 0 3px 6px 3px rgba(0, 0, 0, 0.24)
+      }
+
+      .x .c1-4e {
+        padding-left: 16px
+      }
+
+      .x .c1-4f {
+        padding-right: 16px
+      }
+
+      .x .c1-4g {
+        position: absolute
+      }
+
+      .x .c1-4h {
+        right: 0px
+      }
+
+      .x .c1-4i {
+        top: 32px
+      }
+
+      .x .c1-4j {
+        max-height: 45vh
+      }
+
+      .x .c1-4k {
+        overflow-y: auto
+      }
+
+      .x .c1-4l {
+        z-index: 1003
+      }
+
+      .x .c1-4o:last-child {
+        margin-bottom: 0
+      }
+
+      .x .c1-4p {
+        margin-top: 8px
+      }
+
+      .x .c1-4q {
+        margin-bottom: 8px
+      }
+
+      .x .c1-4r {
+        line-height: 1.5
+      }
+
+      .x .c1-4u {
+        transition:
+      }
+
+      .x .c1-4v {
+        transform:
+      }
+
+      .x .c1-4w {
+        top: initial
+      }
+
+      .x .c1-4x {
+        max-height: none
+      }
+
+      .x .c1-4y {
+        width: 240px
+      }
+
+      .x .c1-4z {
+        color: inherit !important
+      }
+
+      .x .c1-50 {
+        margin-bottom: 16px
+      }
+
+      .x .c1-51 {
+        padding-top: 8px
+      }
+
+      .x .c1-52 {
+        padding-right: 8px
+      }
+
+      .x .c1-53 {
+        padding-bottom: 8px
+      }
+
+      .x .c1-54 {
+        padding-left: 8px
+      }
+
+      .x .c1-55 {
+        border-color: rgb(226, 226, 226)
+      }
+
+      .x .c1-56 {
+        border-bottom-width: 1px
+      }
+
+      .x .c1-57 {
+        border-style: solid
+      }
+
+      .x .c1-58 {
+        margin-top: 16px
+      }
+
+      .x .c1-59 dropdown {
+        position: absolute
+      }
+
+      .x .c1-5a dropdown {
+        right: 0px
+      }
+
+      .x .c1-5b dropdown {
+        top: initial
+      }
+
+      .x .c1-5c dropdown {
+        white-space: nowrap
+      }
+
+      .x .c1-5d dropdown {
+        max-height: none
+      }
+
+      .x .c1-5e dropdown {
+        overflow-y: auto
+      }
+
+      .x .c1-5f dropdown {
+        display: none
+      }
+
+      .x .c1-5g dropdown {
+        z-index: 1003
+      }
+
+      .x .c1-5h dropdown {
+        width: 240px
+      }
+
+      .x .c1-5k listItem {
+        display: block
+      }
+
+      .x .c1-5l listItem {
+        text-align: left
+      }
+
+      .x .c1-5m listItem {
+        margin-bottom: 0
+      }
+
+      .x .c1-5n separator {
+        margin-top: 16px
+      }
+
+      .x .c1-5o separator {
+        margin-bottom: 16px
+      }
+
+      .x .c1-5p {
+        position: fixed
+      }
+
+      .x .c1-5q {
+        top: 0px
+      }
+
+      .x .c1-5r {
+        height: 100%
+      }
+
+      .x .c1-5s {
+        z-index: 10002
+      }
+
+      .x .c1-5t {
+        -webkit-overflow-scrolling: touch
+      }
+
+      .x .c1-5u {
+        transform: translateX(-249vw)
+      }
+
+      .x .c1-5v {
+        overscroll-behavior: contain
+      }
+
+      .x .c1-5w {
+        box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2)
+      }
+
+      .x .c1-5x {
+        transition: transform .3s ease-in-out
+      }
+
+      .x .c1-5y {
+        overflow: hidden
+      }
+
+      .x .c1-5z {
+        flex-direction: column
+      }
+
+      .x .c1-60 {
+        padding-bottom: 32px
+      }
+
+      .x .c1-65 {
+        text-shadow: none
+      }
+
+      .x .c1-66 {
+        line-height: 1.3em
+      }
+
+      .x .c1-67 {
+        font-style: normal
+      }
+
+      .x .c1-68 {
+        top: 15px
+      }
+
+      .x .c1-69 {
+        right: 15px
+      }
+
+      .x .c1-6a {
+        font-size: 28px
+      }
+
+      .x .c1-6f {
+        overflow-x: hidden
+      }
+
+      .x .c1-6g {
+        overscroll-behavior: none
+      }
+
+      .x .c1-6h {
+        margin-bottom: 32px
+      }
+
+      .x .c1-6i> :not(:first-child) {
+        margin-top: 16px
+      }
+
+      .x .c1-6j {
+        border-color: rgba(185, 185, 185, 0.5)
+      }
+
+      .x .c1-6k {
+        border-bottom-width: 1px
+      }
+
+      .x .c1-6l {
+        border-bottom-style: solid
+      }
+
+      .x .c1-6m:last-child {
+        border-bottom: 0
+      }
+
+      .x .c1-6n {
+        min-width: 200px
+      }
+
+      .x .c1-6o {
+        justify-content: space-between
+      }
+
+      .x .c1-6p {
+        font-size: 22px
+      }
+
+      .x .c1-6v {
+        cursor: auto
+      }
+
+      .x .c1-6w {
+        line-height: 1.4
+      }
+
+      .x .c1-6x {
+        margin-bottom: 40px
+      }
+
+      .x .c1-6y {
+        text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2)
+      }
+
+      .x .c1-70 {
+        font-size: unset
+      }
+
+      .x .c1-71 {
+        font-family: unset
+      }
+
+      .x .c1-72 {
+        letter-spacing: unset
+      }
+
+      .x .c1-73 {
+        text-transform: unset
+      }
+
+      .x .c1-74 {
+        box-sizing: border-box
+      }
+
+      .x .c1-75 {
+        flex-direction: row
+      }
+
+      .x .c1-76 {
+        flex-wrap: wrap
+      }
+
+      .x .c1-77 {
+        margin-right: -12px
+      }
+
+      .x .c1-78 {
+        margin-left: -12px
+      }
+
+      .x .c1-7d {
+        flex-grow: 1
+      }
+
+      .x .c1-7e {
+        flex-shrink: 1
+      }
+
+      .x .c1-7f {
+        flex-basis: 0%
+      }
+
+      .x .c1-7g {
+        padding-right: 12px
+      }
+
+      .x .c1-7h {
+        padding-left: 12px
+      }
+
+      .x .c1-7s {
+        line-height: 1.25
+      }
+
+      .x .c1-7t {
+        margin-bottom: 24px
+      }
+
+      .x .c1-7u {
+        padding-bottom: 24px
+      }
+
+      .x .c1-7v {
+        border-color: rgb(218, 218, 218)
+      }
+
+      .x .c1-7w {
+        border-top-width: 0px
+      }
+
+      .x .c1-7x {
+        border-right-width: 0px
+      }
+
+      .x .c1-7y {
+        border-bottom-width: 0px
+      }
+
+      .x .c1-7z {
+        border-left-width: 0px
+      }
+
+      .x .c1-80 {
+        padding-bottom: 7px
+      }
+
+      .x .c1-81 {
+        padding-top: 23px
+      }
+
+      .x .c1-82 {
+        color: rgb(71, 71, 71)
+      }
+
+      .x .c1-83::placeholder {
+        color: inherit
+      }
+
+      .x .c1-84:focus {
+        outline: none
+      }
+
+      .x .c1-85:focus {
+        box-shadow: inset 0 0 0 1px currentColor
+      }
+
+      .x .c1-86:focus+label {
+        font-size: 12px
+      }
+
+      .x .c1-87:focus+label {
+        top: 8px
+      }
+
+      .x .c1-88:focus+label {
+        color: rgb(102, 115, 125)
+      }
+
+      .x .c1-89:not([value=""])+label {
+        font-size: 12px
+      }
+
+      .x .c1-8a:not([value=""])+label {
+        top: 8px
+      }
+
+      .x .c1-8b:not([value=""])+label {
+        color: rgb(102, 115, 125)
+      }
+
+      .x .c1-8c::-webkit-input-placeholder {
+        color: inherit
+      }
+
+      .x .c1-8e {
+        top: 30%
+      }
+
+      .x .c1-8f {
+        left: 15px
+      }
+
+      .x .c1-8g {
+        transition: all .15s ease
+      }
+
+      .x .c1-8h {
+        pointer-events: none
+      }
+
+      .x .c1-8i {
+        resize: vertical
+      }
+
+      .x .c1-8j {
+        display: inline-flex
+      }
+
+      .x .c1-8k {
+        min-height: 56px
+      }
+
+      .x .c1-8l {
+        border-color: currentColor
+      }
+
+      .x .c1-8m {
+        border-top-width: 1px
+      }
+
+      .x .c1-8n {
+        border-right-width: 1px
+      }
+
+      .x .c1-8o {
+        border-left-width: 1px
+      }
+
+      .x .c1-8p:hover {
+        color: rgb(15, 15, 15)
+      }
+
+      .x .c1-8q:hover {
+        background-color: rgb(204, 211, 217)
+      }
+
+      .x .c1-8r:hover {
+        border-color: rgb(204, 211, 217)
+      }
+
+      .x .c1-8s:before {
+        margin-right: 8px
+      }
+
+      .x .c1-8t:before {
+        content: ""
+      }
+
+      .x .c1-8u:before {
+        display: inline-block
+      }
+
+      .x .c1-8v:before {
+        height: 0.1px
+      }
+
+      .x .c1-8w:before {
+        width: 18px
+      }
+
+      .x .c1-8x:before {
+        border-top: 1px solid !important
+      }
+
+      .x .c1-8y:after {
+        margin-left: 8px
+      }
+
+      .x .c1-8z:after {
+        content: ""
+      }
+
+      .x .c1-90:after {
+        display: inline-block
+      }
+
+      .x .c1-91:after {
+        height: 0.1px
+      }
+
+      .x .c1-92:after {
+        width: 18px
+      }
+
+      .x .c1-93:after {
+        border-top: 1px solid !important
+      }
+
+      .x .c1-95 {
+        color: rgb(89, 89, 89)
+      }
+
+      .x .c1-96 {
+        font-size: 12px
+      }
+
+      .x .c1-9b {
+        margin-bottom: -24px
+      }
+
+      .x .c1-9e {
+        margin-top: 40px
+      }
+
+      .x .c1-9f>p>ol {
+        text-align: left
+      }
+
+      .x .c1-9g>p>ol {
+        display: block
+      }
+
+      .x .c1-9h>p>ol {
+        padding-left: 1.3em
+      }
+
+      .x .c1-9i>p>ol {
+        margin-left: 16px
+      }
+
+      .x .c1-9j>p>ol {
+        margin-right: 16px
+      }
+
+      .x .c1-9k>p>ol {
+        margin-top: auto
+      }
+
+      .x .c1-9l>p>ol {
+        margin-bottom: auto
+      }
+
+      .x .c1-9m>p>ul {
+        text-align: left
+      }
+
+      .x .c1-9n>p>ul {
+        display: block
+      }
+
+      .x .c1-9o>p>ul {
+        padding-left: 1.3em
+      }
+
+      .x .c1-9p>p>ul {
+        margin-left: 16px
+      }
+
+      .x .c1-9q>p>ul {
+        margin-right: 16px
+      }
+
+      .x .c1-9r>p>ul {
+        margin-top: auto
+      }
+
+      .x .c1-9s>p>ul {
+        margin-bottom: auto
+      }
+
+      .x .c1-9t>ul {
+        text-align: left
+      }
+
+      .x .c1-9u>ul {
+        display: block
+      }
+
+      .x .c1-9v>ul {
+        padding-left: 1.3em
+      }
+
+      .x .c1-9w>ul {
+        margin-left: 16px
+      }
+
+      .x .c1-9x>ul {
+        margin-right: 16px
+      }
+
+      .x .c1-9y>ul {
+        margin-top: auto
+      }
+
+      .x .c1-9z>ul {
+        margin-bottom: auto
+      }
+
+      .x .c1-a0>ol {
+        text-align: left
+      }
+
+      .x .c1-a1>ol {
+        display: block
+      }
+
+      .x .c1-a2>ol {
+        padding-left: 1.3em
+      }
+
+      .x .c1-a3>ol {
+        margin-left: 16px
+      }
+
+      .x .c1-a4>ol {
+        margin-right: 16px
+      }
+
+      .x .c1-a5>ol {
+        margin-top: auto
+      }
+
+      .x .c1-a6>ol {
+        margin-bottom: auto
+      }
+
+      .x .c1-a7 {
+        font-size: inherit !important
+      }
+
+      .x .c1-a8 {
+        line-height: inherit
+      }
+
+      .x .c1-a9 {
+        font-style: italic
+      }
+
+      .x .c1-aa {
+        text-decoration: line-through
+      }
+
+      .x .c1-ab {
+        text-decoration: underline
+      }
+
+      .x .c1-ac> :last-child {
+        margin-bottom: 0
+      }
+
+      .x .c1-ad {
+        background-color: rgb(204, 211, 217)
+      }
+
+      .x .c1-af {
+        color: rgb(0, 0, 0)
+      }
+
+      .x .c1-ag {
+        flex-basis: 100%
+      }
+
+      .x .c1-aj {
+        color: rgb(52, 53, 54)
+      }
+
+      .x .c1-am {
+        color: rgb(22, 22, 22)
+      }
+
+      .x .c1-an:hover {
+        color: rgb(64, 64, 64)
+      }
+
+      .x .c1-ao:active {
+        color: rgb(15, 15, 15)
+      }
+
+      .x .c1-ap {
+        right: 0px
+      }
+
+      .x .c1-aq {
+        z-index: 10000
+      }
+
+      .x .c1-ar {
+        height: auto
+      }
+
+      .x .c1-as {
+        transition: all 1s ease-in
+      }
+
+      .x .c1-at {
+        box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.3)
+      }
+
+      .x .c1-au {
+        contain: content
+      }
+
+      .x .c1-av {
+        bottom: -500px
+      }
+
+      .x .c1-aw {
+        padding-top: 24px
+      }
+
+      .x .c1-b4 {
+        max-height: 300px
+      }
+
+      .x .c1-b5 {
+        color: rgb(56, 58, 59)
+      }
+
+      .x .c1-b7 {
+        margin-top: 24px
+      }
+
+      .x .c1-b8 {
+        margin-bottom: 4px
+      }
+
+      .x .c1-b9 {
+        word-break: break-word
+      }
+
+      .x .c1-ba {
+        flex-basis: 50%
+      }
+
+      .x .c1-bb {
+        padding-top: 4px
+      }
+
+      .x .c1-bc {
+        padding-bottom: 4px
+      }
+
+      .x .c1-bd {
+        min-height: 40px
+      }
+
+      .x .c1-be:nth-child(2) {
+        margin-left: 24px
+      }
+
+      .x .c1-bf:hover {
+        color: rgb(219, 219, 219)
+      }
+
+      .x .c1-bg:hover {
+        background-color: rgb(22, 22, 22)
+      }
+
+      .x .c1-bh:hover {
+        border-color: rgb(22, 22, 22)
+      }
+
+      .x .c1-bi {
+        right: 24px
+      }
+
+      .x .c1-bj {
+        bottom: 24px
+      }
+
+      .x .c1-bk {
+        z-index: 9999
+      }
+
+      .x .c1-bl {
+        width: 65px
+      }
+
+      .x .c1-bm {
+        height: 65px
+      }
+
+      .x .c1-bo {
+        border-radius: 50%
+      }
+
+      .x .c1-bp {
+        box-shadow: 0px 3px 18px rgba(0, 0, 0, 0.25)
+      }
+
+      .x .c1-bq {
+        transform: translateZ(0)
+      }
+
+      .x .c1-br {
+        color: rgb(15, 15, 15)
+      }
+    </style>
+    <style data-glamor="cxs-xs-sheet">
+      @media (max-width: 767px) {
+        .x .c1-m {
+          padding-top: 40px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-n {
+          padding-bottom: 40px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-20 {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-21 {
+          display: flex;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-22 {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-2n {
+          height: 96px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-2o {
+          max-width: 224px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-2p {
+          display: block;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-2q {
+          max-height: 80px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-2r {
+          margin-top: 0;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-2s {
+          margin-right: auto;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-2t {
+          margin-bottom: 0;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-2u {
+          margin-left: auto;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-8d {
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .x .c1-ae {
+          padding-bottom: 32px;
+        }
+      }
+    </style>
+
+    </style>
     <style>
       .Address-box {
         width: 100%;
@@ -26,238 +1512,342 @@
         margin: 4em;
       }
     </style>
-    <title>Emergency Locations</title>
+    <script>
+      "use strict";
+    </script>
+  </head>
 
+  <body class="x x-fonts-fjalla-one">
+    <div
+      id="layout-84-e-67726-d-5-dd-4591-ba-17-0-d-8628-d-44-ded"
+      class="layout layout-layout layout-layout-layout-19 locale-en-CA lang-en"
+    >
+      <div
+        data-ux="Page"
+        id="page-5333"
+        class="x-el x-el-div x-el c1-1 c1-2 c1-3 c1-4 c1-5 c1-6 c1-7 c1-8 c1-9 c1-a c1-b c1-c c1-d c1-e c1-f c1-g c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g"
+      >
+        <div
+          data-ux="Block"
+          class="x-el x-el-div page-inner c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g"
+        >
+          <div
+            id="b639448c-0c69-4bc5-9a31-6dbcdc7176cf"
+            class="widget widget-contact widget-contact-contact-3"
+          >
+            <div
+              data-ux="Widget"
+              role="region"
+              id="b639448c-0c69-4bc5-9a31-6dbcdc7176cf"
+              class="x-el x-el-div x-el c1-1 c1-2 c1-3 c1-b c1-c c1-d c1-e c1-f c1-g c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g"
+            >
+              <div>
+                <section
+                  data-ux="Section"
+                  class="x-el x-el-section c1-1 c1-2 c1-3 c1-i c1-j c1-3o c1-b c1-c c1-m c1-n c1-d c1-e c1-f c1-g"
+                >
+                  <div
+                    data-ux="Container"
+                    class="x-el x-el-div c1-1 c1-2 c1-p c1-q c1-r c1-s c1-t c1-b c1-c c1-61 c1-d c1-62 c1-e c1-63 c1-f c1-64 c1-g"
+                  >
+                    <h1
+                      role="heading"
+                      aria-level="1"
+                      data-ux="SectionHeading"
+                      data-aid="CONTACT_SECTION_TITLE_REND"
+                      data-promoted-from="2"
+                      data-order="0"
+                      data-typography="HeadingBeta"
+                      class="x-el x-el-h1 c1-1 c1-1x c1-1b c1-1c c1-6w c1-3j c1-3k c1-2e c1-6x c1-1v c1-1y c1-6a c1-1j c1-43 c1-6y c1-6b c1-6z c1-6c c1-6d c1-6e"
+                    >
+                      <br />
+                      <span data-ux="Element" class=""
+                        >Emergency Locations</span
+                      >
+                    </h1>
+                    <!-- <form class="Address-box" id="Address-box">
+                      <input type="text" id="location" name="location" />
+                      <button type="submit">Search</button>
+                    </form> -->
+                    <div class="LocationsDiv"></div>
+                    <div id="viewDiv" class="MapDiv"></div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      ("IntersectionObserver" in window &&
+        "Intl" in window &&
+        "Locale" in window.Intl) ||
+        document.write(
+          `\x3Cscript src="../img1.wsimg.com/poly/v3/polyfill.mincc30.js?rum=0&amp;unknown=polyfill&amp;flags=gated&amp;features=Intl.~locale.en-CA">\x3C/script>`
+        );
+    </script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-BF2FDR6KMM"
+      crossorigin
+    ></script>
+    <script>
+      "use strict";
+      window["ga-disable-G-BF2FDR6KMM"] = true;
+      window.dataLayer = window.dataLayer || [];
+      window._commercegaID = "G-BF2FDR6KMM";
+
+      window.gtag = window.gtag || function () {
+          window.dataLayer.push(arguments);
+        };
+
+      gtag("js", new Date());
+      gtag("set", "developer_id.dZTZmYj", true);
+      gtag("config", "G-BF2FDR6KMM");
+    </script>
     <link
       rel="stylesheet"
       href="https://js.arcgis.com/4.26/esri/themes/light/main.css"
     />
-    <script src="https://js.arcgis.com/4.26/"></script>
-
-    <script>
-      // Import all requirements.
-      require([
-        "esri/config",
-        "esri/Map",
-        "esri/views/MapView",
-        "esri/rest/locator",
-        "esri/Graphic",
-        "esri/widgets/Locate",
-        "esri/Graphic",
-        "esri/rest/route",
-        "esri/layers/GraphicsLayer",
-        "esri/rest/support/RouteParameters",
-        "esri/rest/support/FeatureSet",
-      ], function (
-        esriConfig,
-        Map,
-        MapView,
-        locator,
-        Graphic,
-        Locate,
-        RouteParameters,
-        FeatureSet,
-        route,
-        GraphicsLayer
-      ) {
-        esriConfig.apiKey =
-          "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd-RXNWi44KwDM-SeN4GldsP8QiTHPeX";
-
-        const routeLayer = new GraphicsLayer();
-
-        const map = new Map({
-          basemap: "arcgis-navigation",
-
-          // layers: [routeLayer], // Add the route layer to the map
-        });
-
-        const view = new MapView({
-          container: "viewDiv",
-          map: map,
-          center: [-117.195, 34.057],
-          zoom: 13,
-        });
-
-        const locate = new Locate({
-          view: view,
-          useHeadingEnabled: false,
-          goToOverride: function (view, options) {
-            options.target.scale = 1500;
-            return view.goTo(options.target);
-          },
-        });
-        view.ui.add(locate, "top-left");
-
-        const places = [
-          "Choose a place type...",
-          "Hospital",
-          "Pharmacy",
-          "Emergency",
-          "Doctor",
-        ];
-
-        const select = document.createElement("select", "");
-        select.setAttribute("class", "esri-widget esri-select");
-        select.setAttribute(
-          "style",
-          "width: 175px; font-family: 'Avenir Next W00'; font-size: 1em"
-        );
-
-        places.forEach(function (p) {
-          const option = document.createElement("option");
-          option.value = p;
-          option.innerHTML = p;
-          select.appendChild(option);
-        });
-
-        view.ui.add(select, "top-right");
-
-        // const locatorUrl =
-        //   "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
-        // const routeUrl =
-        //   "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
-
-        // // Find places and add them to the map
-        // function findPlaces(category, pt) {
-        //   locator
-        //     .addressToLocations(locatorUrl, {
-        //       location: pt,
-        //       categories: [category],
-        //       maxLocations: 25,
-        //       outFields: ["Place_addr", "PlaceName"],
-        //     })
-
-        //     .then(function (results) {
-        //       view.popup.close();
-        //       view.graphics.removeAll();
-
-        //       results.forEach(function (result) {
-        //         view.graphics.add(
-        //           new Graphic({
-        //             attributes: result.attributes, // Data attributes returned
-        //             geometry: result.location, // Point returned
-        //             symbol: {
-        //               type: "simple-marker",
-        //               color: "red",
-        //               size: "12px",
-        //               outline: {
-        //                 color: "black",
-        //                 width: "2px",
-        //               },
-        //             },
-
-        //             popupTemplate: {
-        //               title: "{PlaceName}", // Data attribute names
-        //               content: "{Place_addr}",
-        //             },
-        //           })
-        //         );
-        //       });
-        //     });
-        // }
-
-        // function addGraphic(type, point) {
-        //   const graphic = new Graphic({
-        //     symbol: {
-        //       type: "simple-marker",
-        //       color: type === "origin" ? "white" : "black",
-        //       size: "8px",
-        //     },
-        //     geometry: point,
-        //   });
-        //   view.graphics.add(graphic);
-        // }
-
-        // const stopSymbol = {
-        //   type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-        //   style: "cross",
-        //   size: 15,
-        //   outline: {
-        //     // autocasts as new SimpleLineSymbol()
-        //     width: 4,
-        //   },
-        // };
-
-        // // Define the symbology used to display the route
-        // const routeSymbol = {
-        //   type: "simple-line", // autocasts as SimpleLineSymbol()
-        //   color: [0, 0, 255, 0.5],
-        //   width: 5,
-        // };
-        // function getRoute() {
-        //   const routeParams = new RouteParameters({
-        //     // stops: new FeatureSet({
-        //     //   features: view.graphics.toArray(),
-        //     // }),
-        //   });
-        // }
-        // route.solve(routeUrl, routeParams).then(function (data) {
-        //   data.routeResults.forEach(function (result) {
-        //     result.route.symbol = {
-        //       type: "simple-line",
-        //       color: [5, 150, 255],
-        //       width: 3,
-        //     };
-        //     view.graphics.add(result.route);
-        //   });
-        // });
-
-        // const routeParams = new RouteParameters({
-        //   // An authorization string used to access the routing service
-        //   apiKey:
-        //     "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd",
-        //   stops: FeatureSet,
-        //   outSpatialReference: {
-        //     // autocasts as new SpatialReference()
-        //     wkid: 3857,
-        //   },
-        // });
-
-        // Search for places in center of map
-        // view.watch("stationary", function (val) {
-        //   if (val) {
-        //     findPlaces(select.value, view.center);
-        //   }
-        // });
-
-        // Listen for category changes and find places
-        //   select.addEventListener("change", function (event) {
-        //     findPlaces(event.target.value, view.center);
-        //   });
-
-        //   view.on("click", addStop);
-
-        //   function addStop(event) {
-        //     // Add a point at the location of the map click
-        //     const stop = new Graphic({
-        //       geometry: event.mapPoint,
-        //       symbol: stopSymbol
-        //     });
-        //     routeLayer.add(stop);
-
-        //     // Execute the route if 2 or more stops are input
-        //     routeParams.stops.features.push(stop);
-        //     if (routeParams.stops.features.length >= 2) {
-        //       route.solve(routeUrl, routeParams).then(showRoute);
-        //     }
-        //   }
-        //   // Adds the solved route to the map as a graphic
-        //   function showRoute(data) {
-        //     const routeResult = data.routeResults[0].route;
-        //     routeResult.symbol = routeSymbol;
-        //     routeLayer.add(routeResult);
-        //   }
-      });
-    </script>
-  </head>
-  <body>
-    <h1>Find Nearby Hospitals</h1>
-    <form class="Address-box" id="Address-box">
-      <label for="location">Enter Your Location:</label>
-      <input type="text" id="location" name="location" />
-      <button type="submit">Search</button>
-    </form>
-    <div class="LocationsDiv"></div>
-    <div id="viewDiv" class="MapDiv"></div>
   </body>
+  <script src="https://js.arcgis.com/4.26/"></script>
+
+  <script>
+    // Import all requirements.
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/rest/locator",
+      "esri/Graphic",
+      "esri/widgets/Locate",
+      "esri/Graphic",
+      "esri/rest/route",
+      "esri/layers/GraphicsLayer",
+      "esri/rest/support/RouteParameters",
+      "esri/rest/support/FeatureSet",
+    ], function (
+      esriConfig,
+      Map,
+      MapView,
+      locator,
+      Graphic,
+      Locate,
+      RouteParameters,
+      FeatureSet,
+      route,
+      GraphicsLayer
+    ) {
+      esriConfig.apiKey =
+        "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd-RXNWi44KwDM-SeN4GldsP8QiTHPeX";
+
+      const routeLayer = new GraphicsLayer();
+
+      const map = new Map({
+        basemap: "arcgis-navigation",
+        // layers: [routeLayer], // Add the route layer to the map
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-117.195, 34.057],
+        zoom: 13,
+      });
+
+      const locate = new Locate({
+        view: view,
+        useHeadingEnabled: false,
+        goToOverride: function (view, options) {
+          options.target.scale = 1500;
+          return view.goTo(options.target);
+        },
+      });
+      view.ui.add(locate, "top-left");
+
+      const places = [
+        "Choose a place type...",
+        "Hospital",
+        "Pharmacy",
+      ];
+
+      const select = document.createElement("select", "");
+      select.setAttribute("class", "esri-widget esri-select");
+      select.setAttribute(
+        "style",
+        "width: 175px; font-family: 'Avenir Next W00'; font-size: 1em"
+      );
+
+      places.forEach(function (p) {
+        const option = document.createElement("option");
+        option.value = p;
+        option.innerHTML = p;
+        select.appendChild(option);        
+      });
+
+      view.ui.add(select, "top-right");
+
+      const locatorUrl =
+        "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+      const routeUrl =
+        "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+
+      // Find places and add them to the map
+      function findPlaces(category, pt) {
+        locator
+          .addressToLocations(locatorUrl, {
+            location: pt,
+            categories: [category],
+            maxLocations: 25,
+            outFields: ["Place_addr", "PlaceName"],
+          })
+
+          .then(function (results) {
+            view.popup.close();
+            view.graphics.removeAll();
+
+            results.forEach(function (result) {
+              view.graphics.add(
+                new Graphic({
+                  attributes: result.attributes, // Data attributes returned
+                  geometry: result.location, // Point returned
+                  symbol: {
+                    type: "simple-marker",
+                    color: "red",
+                    size: "12px",
+                    outline: {
+                      color: "black",
+                      width: "2px",
+                    },
+                  },
+
+                  popupTemplate: {
+                    title: "{PlaceName}", // Data attribute names
+                    content: "{Place_addr}",
+                  },
+                })
+              );
+            });
+          });
+      }
+
+      function addGraphic(type, point) {
+        const graphic = new Graphic({
+          symbol: {
+            type: "simple-marker",
+            color: type === "origin" ? "white" : "black",
+            size: "8px",
+          },
+          geometry: point,
+        });
+        view.graphics.add(graphic);
+      }
+
+      const stopSymbol = {
+        type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+        style: "cross",
+        size: 15,
+        outline: {
+          // autocasts as new SimpleLineSymbol()
+          width: 4,
+        },
+      };
+
+      // Search for places in center of map
+      view.watch("stationary", function (val) {
+        if (val) {
+          findPlaces(select.value, view.center);
+        }
+      });
+
+      // Listen for category changes and find places
+        select.addEventListener("change", function (event) {
+          findPlaces(event.target.value, view.center);
+      });
+
+      view.on("click", function(event){
+
+if (view.graphics.length === 0) {
+  addGraphic("origin", event.mapPoint);
+} else if (view.graphics.length === 1) {
+  addGraphic("destination", event.mapPoint);
+
+  getRoute(); // Call the route service
+
+} else {
+  view.graphics.removeAll();
+  addGraphic("origin",event.mapPoint);
+}
+
+});
+
+function addGraphic(type, point) {
+const graphic = new Graphic({
+  symbol: {
+    type: "simple-marker",
+    color: (type === "origin") ? "white" : "black",
+    size: "8px"
+  },
+  geometry: point
+});
+view.graphics.add(graphic);
+}
+
+function getRoute() {
+const routeParams = new RouteParameters({
+  stops: new FeatureSet({
+    features: view.graphics.toArray()
+  }),
+
+  returnDirections: true
+
+});
+
+route.solve(routeUrl, routeParams)
+  .then(function(data) {
+    data.routeResults.forEach(function(result) {
+      result.route.symbol = {
+        type: "simple-line",
+        color: [5, 150, 255],
+        width: 3
+      };
+      view.graphics.add(result.route);
+    });
+
+    // Display directions
+   if (data.routeResults.length > 0) {
+     const directions = document.createElement("ol");
+     directions.classList = "esri-widget esri-widget--panel esri-directions__scroller";
+     directions.style.marginTop = "0";
+     directions.style.padding = "15px 15px 15px 30px";
+     const features = data.routeResults[0].directions.features;
+
+     // Show each direction
+     features.forEach(function(result,i){
+       const direction = document.createElement("li");
+       direction.innerHTML = result.attributes.text + " (" + result.attributes.length.toFixed(2) + " miles)";
+       directions.appendChild(direction);
+     });
+
+    view.ui.empty("top-right");
+    view.ui.add(directions, "top-right");
+
+   }
+
+  })
+
+  .catch(function(error){
+      console.log(error);
+  })
+
+}
+
+
+
+
+
+    });
+  </script>
+  <footer><%- include('../partials/footer-new') -%></footer>
 </html>
