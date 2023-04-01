@@ -181,7 +181,7 @@
                   </div>
               </div>
               <div class="button">
-                  <input type="submit" value="Submit" onclick="checkAnswer(); otherQuestionnaire()">
+                  <input type="submit" value="Submit" onclick="checkAnswer();">
               </div>
           </form>
       </div>
@@ -190,7 +190,7 @@
 
 <script>
   var answers = ['','','','','','','','',''];
-  const date = new Date( Date.now() );
+  //const date = new Date( Date.now() );
 
   function checkAnswer() {
     var q1SelectedOption = document.querySelector('input[name="sex"]:checked');
@@ -202,7 +202,6 @@
     var q7SelectedOption = document.querySelector('input[name="time_frame"]:checked');
     var q8SelectedOption = document.querySelector('input[name="frequency"]:checked');
     var q9SelectedOption = document.querySelector('input[name="cost"]:checked');
-    
 
     answers[1] = q1SelectedOption.value;
     answers[2] = q2SelectedOption.value;
@@ -214,216 +213,49 @@
     answers[8] = q8SelectedOption.value;
     answers[9] = q9SelectedOption.value;
 
-    
+    // Define the Information of Dr.s database
+    var doctors = [[]];
+    fetch('/get_psychologistsinfo')
+      .then((data) => populate(data));
+
+    function populate(res) {
+      doctors = [];
+      for (var i = 0; i < res.length; i++) {
+        doctors.push([        res[i].dr_name,
+          res[i].sex,
+          res[i].language,
+          res[i].treatment_type,
+          res[i].age_group,
+          res[i].type_of_therapy,
+          res[i].psychological_treatment,
+          res[i].time_frame,
+          res[i].frequency,
+          res[i].cost
+        ]);
+      }
+    }
+
     var numSame = 0;
     var x = 0;
 
-    for (var i = 0; i < DrNames.length; i++) {
+    for (var i = 0; i < doctors.length; i++) {
       var cam = 0;
-      for (var j = 0; j < DrNames[i].length; j++) {
-       if (answers[j] ===  DrNames[i][j]) {
-       cam++;
-           }
-       }
-       if (numSame < cam){
-          numSame = cam;
-          x = i;
-
-          }
-    }
-
-      document.getElementById("result").value = names[x];
-      
-   
-  }
-  
-</script>  
-<input type="text" id="result" readonly>
-
-<script>
-  var answers = ['','','','','','','','',''];
-  
-  function checkAnswer() {
-    var q1SelectedOption = document.querySelector('input[name="phoneNumber"]:checked');
-    var q2SelectedOption = document.querySelector('input[name="sex"]:checked');
-    var q3SelectedOption = document.querySelector('input[name="language"]:checked');
-    var q4SelectedOption = document.querySelector('input[name="treatment_setting"]:checked');
-    var q5SelectedOption = document.querySelector('input[name="age_group"]:checked');
-    var q6SelectedOption = document.querySelector('input[name="type_of_therapy"]:checked');
-    var q7SelectedOption = document.querySelector('input[name="psychological_treatment"]:checked');
-    var q8SelectedOption = document.querySelector('input[name="time_frame"]:checked');
-    var q9SelectedOption = document.querySelector('input[name="frequency"]:checked');
-    var q10SelectedOption = document.querySelector('input[name="cost"]:checked');
-    
-
-    answers[1] = q1SelectedOption.value;
-    answers[2] = q2SelectedOption.value;
-    answers[3] = q3SelectedOption.value;
-    answers[4] = q4SelectedOption.value;
-    answers[5] = q5SelectedOption.value;
-    answers[6] = q6SelectedOption.value;
-    answers[7] = q7SelectedOption.value;
-    answers[8] = q8SelectedOption.value;
-    answers[9] = q9SelectedOption.value;
-    answers[10] = q10SelectedOption.value;
-   
-
-    
-    var numSame = 0;
-    var x = 0;
-
-    for (var i = 0; i < DrNames.length; i++) {
-      var cam = 0;
-      for (var j = 0; j < DrNames[i].length; j++) {
-       if (answers[j] ===  DrNames[i][j]) {
-       cam++;
-           }
-       }
-       if (numSame < cam){
-          numSame = cam;
-          x = i;
-
-          }
-    }
-
-      document.getElementById("result").innerHTML = names[x];
-      
-  }
-  
-</script>  
-<input type="text" id="result" readonly>
-
-<script>
-// Define the Information of Dr.s database
-var Emily = ['Female', 'English', 'Online therapy', 'No Peference', 'Depression', 'Behavioral therapy', 'Evening', 'Weekly', 'Less than $100 per session'];
-var William = ['Male', 'French', 'Hybrid (a mix of in-person and online)', 'Children and Adolescents', 'Anxiety', 'Cognitive therapy', 'Morning', 'Bi-weekly', '$100-$150 per session'];
-var Charlotte = ['Female', 'English', 'Online therapy', 'Adults', 'Relationship Issues', 'Cognitive therapy', 'Morning', 'Bi-weekly', '$100-$150 per session'];
-var James = ['Male', 'French', 'Hybrid (a mix of in-person and online)', 'Children and Adolescents', 'Anxiety', 'Psychodynamic therapy', 'Evening', 'Monthly', 'More than $150 per session'];
-var Olivia = ['Female', 'English', 'Online therapy', 'Children and Adolescents', 'Depression', 'Cognitive therapy', 'Afternoon', 'Bi-weekly', '$100-$150 per session'];
-var Benjamin = ['Male', 'ENglish', 'Online therapy', 'Children and Adolescents', 'Anxiety', 'Cognitive therapy', 'Morning', 'Weekly', 'More than $150 per session'];
-var Sophia = ['Female', 'English', 'In-person therapy', 'Children and Adolescents', 'Anxiety', 'Psychodynamic therapy', 'Afternoon', 'Bi-weekly', 'Less than $100 per session'];
-var Henry = ['Male', 'a', 'French', 'Online therapy', 'Children and Adolescents', 'Relationship Issues', 'Cognitive therapy', 'Afternoon', '$100-$150 per session'];
-var Isabella = ['Female', 'English', 'Online therapy', 'No Preference', 'Relationship Issues', 'Psychodynamic therapy', 'Morning', 'Monthly', '$100-$150 per session'];
-var Edward = ['Male', 'French', 'In-person therapy', 'Adults', 'Relationship Issues', 'Psychodynamic therapy', 'Afternoon', 'Monthly', 'Less than $100 per session'];
-
-var DrNames = [Emily, William, Charlotte, James, Olivia, Benjamin, Sophia, Henry, Isabella, Edward];
-var names = ['Emily', 'William', 'Charlotte', 'James', 'Olivia', 'Benjamin', 'Sophia', 'Henry', 'Isabella', 'Edward'];
-
-</script>
-
-<script>
-    function otherQuestionnaires(){
-        if (input[name="studentAns"] == "Yes"){
-            if (q5SelectedOption == "Depression") {
-                <div class="container">
-                    <div class="title">Depression Questionnaire </div>
-                    <p id="log" style="
-                    color:black; 
-                    font-weight: bold;
-                    font-size: larger;
-                    text-align: left;">
-                    <input type="text" id="result" readonly/>
-                    </p>
-                    <div class="content">
-                    
-                        <form action="/psychologyDiagnosisQuestionnaire" method="post">
-                            <div class="user-details">
-                            <div class="input-box">
-                                <span class="details">Mobile Number</span>
-                                <input name="phoneNumber" type="text" id="phoneNumber" placeholder="Enter Your Mobile Number"/>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">This is a test!</span>
-                                <select name="sex" id="sex">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value>Male</option>
-                                    <option value>Female</option>
-                                    <option value>No Preference</option>
-                                </select>
-                            </div>
-                            <div class="input-box">                       
-                                <span class="details">What is your preferred language for therapy sessions?</span>
-                                <select name="language" id="language">
-                                <option value="" disabled selected>Select</option>
-                                <option value>French</option>
-                                <option value>English</option>
-                                <option value>No Preference</option>
-                                </select>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">What type of treatment setting do you prefer?</span>
-                                <select name="treatment_setting" id="treatment_setting">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value>In-person therapy</option>
-                                    <option value>Online therapy</option>
-                                    <option value>Hybrid (a mix of in-person and online)</option>
-                                </select>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">Are you looking for a therapist who focuses on a specific age group?</span>
-                                <select name="age_group" id="age_group">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value>Children and Adolescents</option>
-                                    <option value>Adults</option>
-                                    <option value>No Preference</option>
-                                </select>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">What is your primary concern that you want to address with a pscyhologist?</span>
-                                <select name="type_of_therapy" id="type_of_therapy">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value>Depression</option>
-                                    <option value>Anxiety</option>
-                                    <option value>Relationship Issues</option>
-                                </select>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">Do you have a preference for a specific type of psychological treatment modality or what type of therapy you are interested in?</span>
-                                <select name="psychological_treatment" id="psychological_treatment">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value>Psychodynamic therapy</option>
-                                    <option value>Behavioral therapy</option>
-                                    <option value>Cognitive therapy</option>
-                                </select>
-                            </div>
-
-                            <div class="input-box">
-                                <span class="details">What is your preferred time frame for therapy sessions?</span>
-                                <select name="time_frame" id="time_frame">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value>Morning</option>
-                                    <option value>Afternoon</option>
-                                    <option value>Evening</option>
-                                </select>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">How frequently would you like to attend therapy sessions?</span>
-                                <select name="frequency" id="frequency">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value>Weekly</option>
-                                    <option value>Bi-weekly</option>
-                                    <option value>Monthly</option>
-                                </select>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">What is your budget for therapy sessions?</span>
-                                <select name="cost" id="cost">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value>Less than $100 per session</option>
-                                    <option value>$100-$150 per session</option>
-                                    <option value>More than $150 per session</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="button">
-                            <input type="submit" value="Submit" onclick="checkAnswer(); otherQuestionnaire()"/>
-                        </div>
-                    </form>
-                </div>
-                </div>
-            }
+      for (var j = 1; j < answers.length; j++) {
+        if (answers[j] === doctors[i][j]) {
+          cam++;
         }
+      }
+      if (numSame < cam) {
+        numSame = cam;
+        x = i;
+      }
     }
-</script>
 
+    //document.getElementById("result").value = doctors[x][0];
+    //document.getElementById("result").innerHTML = doctors[x][0];
+    console.log(doctors[x][0]);
+    var chosen_dr = doctors[x][0];
+  }
+</script>
 </body>
+</html>
