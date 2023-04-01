@@ -850,7 +850,7 @@ app.post('/get_patientInfoTest',(req,res)=>{
     async function sms(uuid,password,number){
 
       const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
-      const authToken = 'a7892481b91728822913e3b608c21a43'; //process.env.TWILIO_AUTH_TOKEN;
+      const authToken = '5589b3a47f698ac1942197b62b0082c9'; //process.env.TWILIO_AUTH_TOKEN;
       
       const client = require('twilio')(accountSid, authToken,{
         logLevel: 'debug'
