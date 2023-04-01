@@ -1,0 +1,124 @@
+<style>
+    .outer{
+      margin: 60px 10rem 0;
+    }
+    .outer1{
+      padding-top: 3rem;
+    }
+  
+    .input-box {
+      width: 100%;
+      background-color: rgb(249, 250, 252);
+      padding: 20px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      border: 1px solid rgb(252, 252, 252);
+      border-radius: 5px;
+  }
+  
+  .input-box .details {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+      color: rgb(17, 2, 2);
+  }
+  
+  .submitBtn {
+    width: 20%;
+    color: #fff;
+    border: none;
+    margin: 0 auto;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    background: linear-gradient(-135deg, #100d0de9, #000000);
+    transition: all 0.3s ease;
+  }
+  
+  .result-box {
+    width: 100%;
+    padding: 10px;
+    position: center;
+    margin-top: 0px;
+    background-color: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+      text-align: left;
+    }
+  
+  </style>
+  
+  
+  <!DOCTYPE html>
+  <head>
+    <meta charSet="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register | E-Hospital</title>
+    <meta name="author" content="E-Hospital" />
+  
+    <meta property="og:url" content="register.html" />
+    <meta property="og:site_name" content="E-Hospital" />
+    <meta property="og:title" content="E-Hospital" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+    <meta property="og:locale" content="en_CA" />
+    <link href="css/login.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  </head>
+  
+  
+  <body>
+    <%- include('../partials/header') -%>
+    <div class="outer">
+    <button class="submitBtn" onclick="submit()">Show the result</button>
+    <div class="result-box">
+      <label for="diagnose">Test Result:</label>
+      <br> 
+      <input type="text" id="diagnose" name="diagnose" placeholder="Result is here" \
+      style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 100%; font-size: 15px; font-weight: 500;
+      color: #ae2727;
+      animation: fadeIn 1s ease-in;box-sizing: border-box; 
+       margin-top: 10px;" disabled="disabled" required>
+     </div>
+          </form>
+        </div>
+    </div>
+  
+  
+  
+  <%- include('../partials/footer-new') -%>
+  <script>
+  
+  
+  function submit() {
+           const urlParams=new URLSearchParams(window.location.search);
+           const id=urlParams.get('id');
+            $.ajax({
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
+                method: 'GET',
+                url: `https://e-hospital-liver.herokuapp.com/predict_MS_direct/${id}`,
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: true,
+                success: function (data) {
+                    // Get and display the result
+                    console.log('Success!',  data );
+                    //const diagnose = data;
+                    const diagnose = data;
+                    console.log(diagnose)
+                    $("#diagnose").val(diagnose);
+                },
+                error: function () {
+                    console.log('error');
+                },
+            });
+            return true
+    }
+    
+  </script>
+  
+  </body>

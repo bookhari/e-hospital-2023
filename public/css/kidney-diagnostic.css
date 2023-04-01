@@ -112,4 +112,46 @@
       padding: 8px;
     }
   }
+
+  /* Set styles for the container */
+.container {
+  margin-top: 40px;
+  width: 100%;
+}
+
+/* Set styles for the table */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Set styles for the table header */
+th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px 15px;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Set styles for the table rows */
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+/* Set styles for the table cells */
+td {
+  padding: 10px 15px;
+  font-size: 16px; /* increase font size */
+}
+
+/* Set hover styles for the table rows */
+tr:hover {
+  background-color: #f5f5f5;
+}
   /* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */

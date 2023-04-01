@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- FontAwesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+</head>
+
+<style>
+/* Import Font Dancing Script */
+@import url(https://fonts.googleapis.com/css?family=Dancing+Script);
+
+* {
+    margin: 0;
+}
+
+body {
+    background-color: #e8f5ff;
+    font-family: Arial;
+    overflow: hidden;
+}
+
+
+/* Main */
+.main {
+    margin-top: 2%;
+    margin-left: 29%;
+    font-size: 28px;
+    padding: 0 10px;
+    width: 58%;
+}
+
+.main h2 {
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.main .card {
+    background-color: #fff;
+    border-radius: 18px;
+    box-shadow: 1px 1px 8px 0 grey;
+    height: auto;
+    margin-bottom: 20px;
+    padding: 20px 0 20px 50px;
+}
+
+.main .card table {
+    border: none;
+    font-size: 16px;
+    height: 270px;
+    width: 80%;
+}
+
+.edit {
+    position: absolute;
+    color: #e7e7e8;
+    right: 14%;
+}
+
+</style>
+<body>
+<!-- Main -->
+    <div class="main">
+        <h2>Patient Information</h2>
+        <div class="card">
+            <div class="card-body">
+                <i class="fa fa-pen fa-xs edit"></i>
+                <table>
+                    <tbody>
+                        <% data.forEach(entry => { %>
+
+                        <tr>
+                            <td>ID</td>
+                            <td>:</td>
+                            <td><%= entry.id %></td>
+                        </tr>
+                            
+                        <tr>
+                            <td>First Name</td>
+                            <td>:</td>
+                            <td><%= entry.FName %></td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td>:</td>
+                            <td><%= entry.LName %></td>
+                        </tr>
+                        <tr>
+                            <td>Age</td>
+                            <td>:</td>
+                            <td><%= entry.Age %></td>
+                        </tr>
+                        <tr>
+                            <td>Blood Group</td>
+                            <td>:</td>
+                            <td><%= entry.BloodGroup %></td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Number</td>
+                            <td>:</td>
+                            <td><%= entry.MobileNumber %></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>:</td>
+                            <td><%= entry.EmailId %></td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>:</td>
+                            <td><%= entry.Address %></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="diagnostic-depart?phoneNumber=<%= entry.MobileNumber %>">Run Diagonostics</a></button></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="Pneumonia-diagnostics?phoneNumber=<%= entry.MobileNumber %>">Run Pneumonia Diagonostics</a></button></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="kidney-diagnostic?phoneNumber=<%= entry.MobileNumber %>">Run Kidney Stones Diagonostics</a></button></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="ECG-Doctor?id=<%= entry.id %>">ECG Diagonostics</a></button></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="MS-Doctor?id=<%= entry.id %>">MS Diagonostics</a></button></td>
+                        </tr>
+                    </tbody>
+                    <% }) %> 
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- End -->
+</body>
+</html>
+
