@@ -1,0 +1,241 @@
+.symptom-checker-body{
+  min-height: 115vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+  margin-top: 50px;
+  margin-left: 300px;
+  margin-right: 300px;
+  margin-bottom: 50px;
+}
+
+/* Form style */
+#msform{
+    width: 1000px;
+    height: 700px;
+    margin: 50px auto;
+    /* text-align: center; */
+    position:relative;
+    
+}
+#msform fieldset{
+    background: white;
+    border: 0 none;
+    border-radius: 5px;
+    box-shadow: 0 0 15px 1px;
+    padding: 20px 30px;
+
+    box-sizing: border-box;
+	width: 80%;
+	margin: 0 10%;
+    position: absolute;
+}
+#msform fieldset:not(:first-of-type){
+    display: none;
+}
+/* #msform input, #msform textarea{
+    padding: 15px;
+    border: 1px solid;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 13px;
+} */
+.radio-gender{
+    text-align: center;
+    padding-left: 180px;
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+.genderbox{
+    position: relative;
+    width: 150px;
+    height: 100px;
+    margin: 20px;
+    float:left;
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+.genderbox div{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 30px;
+    padding: 20px 0;
+    transition: 0.5s ease;
+}
+.genderbox input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 100px;
+    opacity: 0;
+    cursor: pointer;
+}
+input[type=radio]:checked~div{
+    background-color: #4070F4;
+}
+
+.slidecontainer{
+    width: 100%;
+}
+.sliderage {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+  
+.sliderage:hover {
+    opacity: 1;
+}
+  
+.sliderage::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4070F4;
+    cursor: pointer;
+}
+  
+.sliderage::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4070F4;
+    cursor: pointer;
+}
+
+#msform .action-button{
+    width: 100px;
+    text-align: center;
+    background-color: #4070F4;
+    font-size: 16px;
+    color: #FFF;
+    border: 0 none;
+    border-radius: 1px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px;
+    transition: all 0.3s ease;
+}
+#msform .action-button:hover{
+    background: #265DF2;
+}
+.symptombox{
+    position: relative;
+    width: 100px;
+    height: 60px;
+    margin: 5px;
+    float: left;
+    border: 2px solid;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+.symptombox div{
+    padding-top: 10px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    line-height: 20px;
+    transition: 0.5s ease;
+}
+.symptombox input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 60px;
+    opacity: 0;
+    cursor: pointer;
+}
+input[type=checkbox]:checked~div{
+    background-color: #4070F4;
+}
+
+/* Progress bar */
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    counter-reset: step;
+}
+/*progressbar*/
+#progressbar {
+	margin-bottom: 30px;
+	overflow: hidden;
+	/*CSS counters to number the steps*/
+	counter-reset: step;
+}
+#progressbar li {
+	list-style-type: none;
+	color: red;
+	text-transform: uppercase;
+	font-size: 20px;
+	width: 25%;
+	float: left;
+	position: relative;
+}
+#progressbar li:before {
+	content: counter(step);
+	counter-increment: step;
+	width: 30px;
+	line-height: 30px;
+	display: block;
+	font-size: 20px;
+	color: #333;
+	background: white;
+	border-radius: 50%;
+	margin: 0 auto 5px auto;
+}
+/*progressbar connectors*/
+#progressbar li:after {
+	content: '';
+	width: 90%;
+	height: 4px;
+	background: white;
+	position: absolute;
+	left: -44%;
+	top: 12.5px;
+	z-index: 1; 
+}
+#progressbar li:first-child:after {
+	/*connector not needed before the first step*/
+	content: none; 
+}
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before,  #progressbar li.active:after{
+	background: #4070F4;
+	color: white;
+}
+.diseasecol{
+    width:400px;
+    font-weight: bold;
+    padding-left: 200px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.percentagecol{
+    width:400px;
+    padding-right: 50px;
+    color:black;
+    text-align: center;
+}
+.percentagebar{
+    width: 100%;
+}
