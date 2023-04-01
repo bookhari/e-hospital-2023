@@ -40,7 +40,7 @@
         type: 'POST',
         data: {
           phoneNumber: phoneNumber, 
-          recordType: "CT-Scan_Abdonmen" // the table name that stores the record
+          recordType: "CT-Scan_Abdomen" // the table name that stores the record
         },
         success: function(data) {
           // console.log(data);
@@ -53,8 +53,8 @@
       });
     });
     
-    // Display the patient records to the front end that allows doctor selected specific record for diagnose
-    function display(data) {
+   // Display the patient records to the front end that allows doctor selected specific record for diagnose
+   function display(data) {
       recordList = data;
       if (recordList.length <= 0) {
         alert("This patient has no record, please do the X-Ray for the lung.");
@@ -62,12 +62,24 @@
       }
       console.log(recordList);
       let list = document.getElementById("recordList");
-      
       // Display each record
       for (let i = 0; i < recordList.length; ++i) {
         let tr = document.createElement("tr");
         let image = document.createElement("td");
-        image.innerHTML = "Will be replace by image";
+        //let img = document.createElement("img");
+      // Extract the image data from the buffer
+        const imageData = recordList[i].file.buffer;
+
+        // Create a data URL from the image data
+        const dataURL = `data:image/jpeg;base64,${imageData}`;
+
+        // Create an img element and set its src attribute to the data URL
+        const img = document.createElement('img');
+        img.src = dataURL;
+        img.width = 150;
+        img.height = 150;
+        //image.innerHTML = "Will be replace by imagee";
+        image.appendChild(img)
         let recordDate = document.createElement("td");
         recordDate.innerHTML = recordList[i].RecordDate;
         let action = document.createElement("td");
@@ -137,7 +149,7 @@
           date: today,
           prediction: result.prediction,
           accuracy: result.accuracy, // can be null if not provided
-          recordType: "CT-Scan_Abdonmen", // can be null if no record is used for the ML prediction
+          recordType: "CT-Scan_Abdomen", // can be null if no record is used for the ML prediction
           recordId: id // can be null if no record is used for the ML prediction
         },
         success: function(data) {
