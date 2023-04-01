@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css">
+
+</head>
+<style>
+  select {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  select:focus {
+    border-color: #9b59b6;
+  }
+
+  .spinner {
+    border: 5px solid #9b59b6;
+    border-top-color: #9b59b6;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .black-button {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .black-button input[type="submit"] {
+    background: linear-gradient(-135deg, #747474, rgb(0, 0, 0));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 400px;
+    width: 300px;
+
+  }
+
+  .black-button input[type="submit"]:hover {
+    background: linear-gradient(-135deg, #000000, #747474);
+  }
+</style>
+
+<body>
+<%- include('../partials/header') -%>
+
+<script> // get the URL parameters    
+    //const urlParams = new URLSearchParams(window.location.search); // extract the parameter values    
+    //const patientID = urlParams.get('patientID'); 
+    //const type = urlParams.get('type'); // update the page with the parameter values    
+    //const patientIDHeading = document.createElement('h2'); 
+    //patientID.innerText = `Patient ID: ${patientID}`; 
+    //document.body.appendChild(patientID); 
+    //const typeHeading = document.createElement('h2'); 
+   // typeHeading.innerText = `Type: ${type}`; 
+    //document.body.appendChild(typeHeading); 
+    // <%= patientID %> </h1>
+    //<h2>Questionnaire Type: <%= type %> </h2>
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const result = Number(urlParams.get('result')); 
+    console.log(patientID, type)
+    //const { patientID, type } = req.query; 
+</script>
+<h1>Welcome, patient <%= patientID %>!</h1>
+<form id="addquestionnaire">
+    <label for="doQuestionnaire">Based on your the primary concern you selected, would you like to complete an additional questionnaire that could help your healthcare provider assist you in diagnosis? Patient ID: patientID</label>
+    <select name="studentAns" id="studentAns">
+      <option value="-">-</option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+    <input type="submit" value="Submit" onclick="otherQuestionnaires()"/>
+</form>
+
+<script>
+    function otherQuestionnaires(){
+        if (input[name="studentAns"] == "Yes"){
+            if (q5SelectedOption == "1") {
+                <div class="container">
+                    <div class="title">Depression Questionnaire </div>
+                    <p id="log" style="
+                    color:black; 
+                    font-weight: bold;
+                    font-size: larger;
+                    text-align: left;">
+                    <input type="text" id="result" readonly/>
+                    </p>
+                    <div class="content">
+                    
+                        <form action="/psychologyDiagnosisQuestionnaires" method="post">
+                            <div class="user-details">
+                            <div class="input-box">
+                                <span class="details">Mobile Number</span>
+                                <input name="phoneNumber" type="text" id="phoneNumber" placeholder="Enter Your Mobile Number"/>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">This is a test!</span>
+                                <select name="sex" id="sex">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value>Male</option>
+                                    <option value>Female</option>
+                                    <option value>No Preference</option>
+                                </select>
+                            </div>
+                            <div class="input-box">                       
+                                <span class="details">What is your preferred language for therapy sessions?</span>
+                                <select name="language" id="language">
+                                <option value="" disabled selected>Select</option>
+                                <option value>French</option>
+                                <option value>English</option>
+                                <option value>No Preference</option>
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">What type of treatment setting do you prefer?</span>
+                                <select name="treatment_setting" id="treatment_setting">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value>In-person therapy</option>
+                                    <option value>Online therapy</option>
+                                    <option value>Hybrid (a mix of in-person and online)</option>
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">Are you looking for a therapist who focuses on a specific age group?</span>
+                                <select name="age_group" id="age_group">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value>Children and Adolescents</option>
+                                    <option value>Adults</option>
+                                    <option value>No Preference</option>
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">What is your primary concern that you want to address with a pscyhologist?</span>
+                                <select name="type_of_therapy" id="type_of_therapy">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value>Depression</option>
+                                    <option value>Anxiety</option>
+                                    <option value>Relationship Issues</option>
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">Do you have a preference for a specific type of psychological treatment modality or what type of therapy you are interested in?</span>
+                                <select name="psychological_treatment" id="psychological_treatment">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value>Psychodynamic therapy</option>
+                                    <option value>Behavioral therapy</option>
+                                    <option value>Cognitive therapy</option>
+                                </select>
+                            </div>
+
+                            <div class="input-box">
+                                <span class="details">What is your preferred time frame for therapy sessions?</span>
+                                <select name="time_frame" id="time_frame">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value>Morning</option>
+                                    <option value>Afternoon</option>
+                                    <option value>Evening</option>
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">How frequently would you like to attend therapy sessions?</span>
+                                <select name="frequency" id="frequency">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value>Weekly</option>
+                                    <option value>Bi-weekly</option>
+                                    <option value>Monthly</option>
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">What is your budget for therapy sessions?</span>
+                                <select name="cost" id="cost">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value>Less than $100 per session</option>
+                                    <option value>$100-$150 per session</option>
+                                    <option value>More than $150 per session</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="button">
+                            <input type="submit" value="Submit" onclick="checkAnswer(); otherQuestionnaire()"/>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            }
+        }
+    }
+</script>
+</body>
+
