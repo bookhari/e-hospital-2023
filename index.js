@@ -1165,6 +1165,17 @@ app.post('/check_labAppointment', (req, res) => {
   })
 })
 
+app.get('/get_availableDoctors', (req, res) => {
+  sql = "SELECT Specialization, COUNT(Specialization) AS 'NumberOfDoctors' FROM doctors_registration WHERE Availability = 1 AND verification = 1 GROUP BY Specialization";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
+    res.send(result);
+  })
+})
+
 app.get('/get_availableDentists', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
   conn.query(sql, (error, result) => {
