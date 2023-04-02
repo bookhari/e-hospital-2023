@@ -59,19 +59,45 @@
       100% { transform: rotate(360deg); }
     }
 
+    /*#result {*/
+    /*    margin: 1rem 1rem;*/
+    /*    background-color: rgba(178, 183, 206, 0.4);*/
+    /*    border-radius: 12px;*/
+    /*    font-size: 24px;*/
+    /*    width: 350px;*/
+    /*    height: 150px;*/
+    /*    display: none;*/
+    /*    line-height: 50px; !* 设置行高 *!*/
+    /*    text-align: center; !* 让文字水平居中 *!*/
+    /*    vertical-align: middle; !* 让文字垂直居中 *!*/
+    /*}*/
     #result {
-        margin: 1rem 1rem;
-        background-color: rgba(178, 183, 206, 0.4);
-        border-radius: 12px;
-        font-size: 24px;
-        width: 350px;
-        height: 150px;
-        display: none;
-        line-height: 50px; /* 设置行高 */
-        text-align: center; /* 让文字水平居中 */
-        vertical-align: middle; /* 让文字垂直居中 */
+  margin: 1rem 1rem;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  width: 350px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 
-    }
+#result h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+#result p {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+}
+
 
     .main {
       margin: 60px 100px 0;
@@ -83,6 +109,7 @@
     .main2{
       display: flex;
       gap: 5rem;
+      margin-bottom: 3rem;
     }
 
     .displayArea{
@@ -95,6 +122,31 @@
       #patientTable td {
     font-style: italic;
   }
+      #patientTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#patientTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#patientTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#patientTable tr:hover {
+  background-color: #ddd;
+}
+
+#patientTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
 
   </style>
 
@@ -114,7 +166,7 @@
           <div id="result" style="display: none;"></div>
       </div>
       <div class="displayArea">
-        <h3>Patient Information</h3>
+        <h3 style="margin-bottom: 1rem">Patient Information</h3>
         <table id="patientTable">
     <tbody>
       <tr>
@@ -161,6 +213,10 @@
         <td>Albumin and Globulin Ratio:</td>
         <td id="albuminAndGlobulinRatio"></td>
       </tr>
+      <tr>
+        <td>Record Date:</td>
+        <td id="recordDate"></td>
+      </tr>
     </tbody>
   </table>
       </div>
@@ -173,8 +229,13 @@
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
+    if(id < 152 || id > 166) {
+      alert("No record for this patient, redirecting to general diagnostic page for manual inputs.")
+      window.location.replace(`/liver?id=${id}`);
+    }
+
     const baseURL = 'https://e-hospital-liver.herokuapp.com'
-    // const baseURL = 'http://127.0.0.1:5000'
+    // const baseURL = 'http://127.0.0.1:62201'
     // Show the loader for a few seconds before making the HTTP request
     setTimeout(() => {
       // Make the HTTP request to the backend
@@ -187,8 +248,13 @@
           document.getElementById("result").style.display = "block";
           document.getElementById("result").innerHTML = result;
         })
-        .catch(error => console.error(error));
-    }, 2000); // Wait for 3 seconds before making the request
+        .catch(error => {
+          document.getElementById("predicting").style.display = "none";
+          document.getElementById("loader").style.display = "none";
+          document.getElementById("result").style.display = "block";
+          document.getElementById("result").innerHTML = "No record for this patient";
+        });
+    }, 1500); // Wait for 3 seconds before making the request
 
 
     function getLiverDiseaseInfo() {
@@ -208,6 +274,7 @@
           document.getElementById('totalProteins').textContent = data[8];
           document.getElementById('albumin').textContent = data[9];
           document.getElementById('albuminAndGlobulinRatio').textContent = data[10];
+          document.getElementById('recordDate').textContent = data[11];
         })
         .catch(error => console.error(error));
     }
