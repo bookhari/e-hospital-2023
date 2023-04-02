@@ -295,6 +295,9 @@
 
     // Search for places in center of map
     view.watch("stationary", function (val) {
+      for (let i = table.rows.length - 1; i > 0; i--) {
+        table.deleteRow(i);
+      }
       if (val) {
         findPlaces(select.value, view.center);
       }
@@ -319,56 +322,5 @@
       });
       view.graphics.add(graphic);
     }
-
-    // function getRoute() {
-    //   const routeParams = new RouteParameters({
-    //     stops: new FeatureSet({
-    //       features: view.graphics.toArray(),
-    //     }),
-
-    //     returnDirections: true,
-    //   });
-
-    //   route
-    //     .solve(routeUrl, routeParams)
-    //     .then(function (data) {
-    //       data.routeResults.forEach(function (result) {
-    //         result.route.symbol = {
-    //           type: "simple-line",
-    //           color: [5, 150, 255],
-    //           width: 3,
-    //         };
-    //         view.graphics.add(result.route);
-    //       });
-
-    //       // Display directions
-    //       if (data.routeResults.length > 0) {
-    //         const directions = document.createElement("ol");
-    //         directions.classList =
-    //           "esri-widget esri-widget--panel esri-directions__scroller";
-    //         directions.style.marginTop = "0";
-    //         directions.style.padding = "15px 15px 15px 30px";
-    //         const features = data.routeResults[0].directions.features;
-
-    //         // Show each direction
-    //         features.forEach(function (result, i) {
-    //           const direction = document.createElement("li");
-    //           direction.innerHTML =
-    //             result.attributes.text +
-    //             " (" +
-    //             result.attributes.length.toFixed(2) +
-    //             " miles)";
-    //           directions.appendChild(direction);
-    //         });
-
-    //         view.ui.empty("top-right");
-    //         view.ui.add(directions, "top-right");
-    //       }
-    //     })
-
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
-    // }
   });
 </script>
