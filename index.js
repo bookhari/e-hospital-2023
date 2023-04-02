@@ -72,6 +72,10 @@ app.get('/AlzheimersDiagnostics', (req, res) => {
   res.render("pages/AlzheimersDiagnostics");
 })
 
+app.get('/BrainTumorDiagnostics', (req, res) => {
+  res.render("pages/BrainTumorDiagnostics");
+})
+
 app.get('/Login', (req, res) => {
   errorMessage = '';
   res.render("pages/logina8b9",{

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>Brain Tumor Diagnostics | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+  <meta property="og:url" content="BrainTumorDiagnostics.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="Brain Tumor Diagnostics | E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_CA" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  
+  <%- include('../partials/header') -%>
+  <!-- Fetching  API Request -->
+  <script>
+    function sendData() {
+      let form = document.getElementById('myForm');
+
+      
+      let formData = new FormData(form);
+      console.log(formData)
+      fetch('https://braintumor-classification.herokuapp.com/classify_brain_tumor', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.text(); // read response body as text
+          }
+          throw new Error('Network did not respond.');
+        })
+        .then(text => {
+          console.log('Success:', text);
+          let result = JSON.parse(text)
+          let resultInput = document.getElementById('testResult');
+          resultInput.value = result.text;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+</head>
+
+<body>
+    <div class="container">
+      <div class="content">
+        <div class="top"></div>
+        <form id="myForm">
+          <div class="patient-details">
+              <div class="input-box">
+                <span class="details">First Name</span>
+                <input type="text" name="firstName" placeholder="Enter the patient's first name." required pattern="[A-Za-z]+" title="Please enter only letters." required>
+              </div>
+              <div class="input-box">
+                <span class="details">Last Name</span>
+                <input type="text" name="lastName" placeholder="Enter the patient's last name." required pattern="[A-Za-z]+" title="Please enter only letters." required>
+              </div>
+              <div class="input-box">
+                <span class="details">User's Email</span>
+                <input type="text" name="email" placeholder="Enter the user's Email." required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"title="Please enter your email address." required>
+              </div>
+              <div class="input-box">
+                <span class="details">User's Password</span>
+                <input type="text" name="password" placeholder="Enter the user's password." required pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?])[A-Za-z\d@$!%*?]{8,}$" title="Please enter your email address.">
+              </div>
+              <div class="input-box">
+                <span class="details">Test Date</span>
+                <input type="date" name="date" min="2021-01-01" max="2023-12-31" required>
+              </div>
+              <div class="input-box" id="testType">
+                <span class="details">Diagnostic Test</span>
+                <div class="custom-select">
+                    <select name="testType">
+                        <option value="">Select diagnostic test.</option>
+                        <option value="MRI">MRI Scan</option>
+                    </select>
+                </div>
+              </div>
+              <div class="input-box">
+                <span class="details">Upload Image</span>
+                <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" required id="uploadFile">
+                <button class="submit-button" type="button" onclick="sendData()">Submit</button>
+              </div>
+              <div class="result-box">
+                <br>
+                <input type="text" id="testResult" name="testResult" placeholder="Check test result here" \
+                  style="padding: 6px 10px;  width: 100%; font-size: 30px; font-weight: 500;
+                  color: #000000;
+                  animation: fadeIn 2s ease-in;box-sizing: border-box; 
+                  margin-top: 0px; margin-bottom: 12px;" disabled="disabled" required>
+              </div>   
+          </div>        
+        </form>
+      </div>
+    <%- include('../partials/footer-new') -%>  
+
+    </div>
+    <!-- <br><br> -->
+</body>
+</html>
+
+<style> 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.container {
+  max-width: 1100px;
+  height: 115%;
+  width: 100%;
+  position: relative;
+  top:15%;
+  background-color: #ececec;
+  background-size: cover;
+  background-position: center;
+  padding: 30px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  
+}
+
+.content-wrap {
+  padding-bottom: 20px;    /* Footer height */
+}
+
+.container .top {
+    font-size: 35px;
+    font-weight: 500;
+    height: 300px;
+    position: relative;
+    background-image: url('https://healthimaging.com/sites/default/files/2018-05/mribrainhitn_0_0.png');  /*Reference the image */
+    color: white;
+    background-size: cover;
+    background-position: center;
+
+
+}
+
+.container .top::after {
+    content: "Patient Form for Brain Tumor Diagnostics";
+    color: #000;
+    align-content: center;
+    position: absolute;
+    top: 320px;
+    left: 21%;
+    height: 3px;
+    
+}
+
+.content form .patient-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 60px 0 12px 0;
+}
+
+form .patient-details .input-box {
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 20px);
+}
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 48px;
+}
+
+.custom-select select {
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  appearance: none;
+  
+}
+
+.custom-select:after {
+  
+  position: relative;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+}
+
+.custom-select option {
+  font-size: 16px;
+}
+
+.input-box {
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.input-box .details {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: rgb(0, 0, 0);
+}
+
+.input-box input[type="text"],
+.input-box input[type="date"],
+.input-box textarea {
+  
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: none;
+    border: 1px solid gray;
+}
+
+.input-box textarea {
+    resize: none;
+    min-height: 100px;
+}
+
+.submit-button {
+ 
+    border: 0;
+    line-height: 2.5;
+    padding: 0 25px;
+    font-size: 14px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 6px;
+    background-color: rgb(35, 120, 240);
+  
+    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6), inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.submit-button:hover {
+    background-color: rgb(48, 167, 48);
+}
+
+.submit-button:active {
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6), inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.result-box {
+    width: 100%;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 100px;
+    background-color: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    text-align: left;
+    }
+    .result-text {
+      font-size: 20px;
+      font-weight: 500;
+      color: #2c3e50;
+
+    }
+    .result {
+      font-size: 30px;
+      font-weight: 500;
+      color: #000000;
+      margin-top: 10px;
+      animation: fadeIn 3s ease-in;
+    }
+
+/* .new_footer_top {
+  position: relative;
+  left:0;
+  bottom: 0;
+  right: 0;
+  width: -200%;
+} */
+
+</style>
