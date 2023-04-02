@@ -44,10 +44,28 @@
 
   }
   
-  label {
+  /* label {
     display: block;
     margin-bottom: 10px;
+  } */
+
+  /* label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+  } */
+  label {
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 20px;
+    line-height: 1.2;
   }
+  
+  
   
   input[type="text"],
   input[type="email"],
@@ -112,4 +130,99 @@
       padding: 8px;
     }
   }
+
+  /* Set styles for the container */
+.container {
+  margin-top: 40px;
+  width: 100%;
+}
+
+/* Set styles for the table */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Set styles for the table header */
+th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px 15px;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Set styles for the table rows */
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+/* Set styles for the table cells */
+td {
+  padding: 10px 15px;
+  font-size: 16px; /* increase font size */
+}
+
+/* Set hover styles for the table rows */
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+.outer{
+  margin: 60px 10rem 0;
+}
+.outer1{
+  padding-top: 3rem;
+}
+
+.input-box {
+  width: 100%;
+  background-color: rgb(249, 250, 252);
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  border: 1px solid rgb(252, 252, 252);
+  border-radius: 5px;
+}
+
+.input-box .details {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+  color: rgb(17, 2, 2);
+}
+
+.submitBtn {
+width: 20%;
+color: #fff;
+border: none;
+margin: 0 auto;
+font-size: 20px;
+font-weight: 500;
+cursor: pointer;
+background: linear-gradient(-135deg, #100d0de9, #000000);
+transition: all 0.3s ease;
+}
+
+/* .result-box {
+width: 100%;
+padding: 10px;
+position: center;
+margin-top: 0px;
+background-color: #ffffff;
+border: 1px solid #e1e1e1;
+border-radius: 10px;
+  text-align: left;
+} */
+.result-box {
+  border: 2px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+}
   /* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
