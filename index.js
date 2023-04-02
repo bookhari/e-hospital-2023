@@ -11,12 +11,16 @@ const fs = require('fs');
 const FormData = require('form-data');
 const memoryStorage = multer.memoryStorage()
 const upload = multer({ storage: memoryStorage })
-const port = process.env.PORT || 5000; 
+
+
+const port = process.env.PORT || 5000;
+
 
 /* Please use comments to identify your work thankyou */
 
 var sql = '';
 var crypto = require('crypto')
+
 
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
@@ -176,6 +180,7 @@ app.get('/psychology', (req, res) => {
 app.get('/psychologyQuestionnaire', (req, res) => {
   res.render("pages/psychologyQuestionnaire");
 })
+
 app.get('/psychologyDiagnosisQuestionnaires', (req, res) => {
   res.render("pages/psychologyDiagnosisQuestionnaires");
 })
@@ -192,8 +197,12 @@ app.get('/depressionQuestionnaire', (req, res) => {
 /* Psychology - code ended for adding route to Psychology Page Alexis McCreath Frangakis, Parisa Nikbakht)
    Group 8, Course-BMG5111, Winter 2023 */
 
+
 app.get('/liver', (req, res) => {
   res.render("pages/liver-prediction");
+})
+app.get('/liver2', (req, res) => {
+  res.render("pages/liver-direct-prediction");
 })
 
 /* TaskName -Heart Disease prediction using Machine learning
@@ -869,7 +878,7 @@ app.post('/get_patientInfoTest',(req,res)=>{
     async function sms(uuid,password,number){
 
       const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
-      const authToken = 'a7892481b91728822913e3b608c21a43'; //process.env.TWILIO_AUTH_TOKEN;
+      const authToken = '5589b3a47f698ac1942197b62b0082c9'; //process.env.TWILIO_AUTH_TOKEN;
       
       const client = require('twilio')(accountSid, authToken,{
         logLevel: 'debug'
@@ -1393,6 +1402,19 @@ app.get('/sendEmail', (req, res) => {
 })
 
 
+
+// API for symptoms checker
+app.get('/get_symptoms_checker', (req, res) => {
+  sql = "SELECT * FROM symptoms_checker";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send({success: result});
+  })
+})
 
 // This API is for checking the authorized patient list of the doctor
 app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
