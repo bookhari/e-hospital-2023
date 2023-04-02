@@ -1,6 +1,6 @@
 <style>
   .highlight {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(255, 254, 254);
   }
 
   table {
@@ -15,6 +15,7 @@
     color: black;
     background-color: linear-gradient(170deg, #ffffff, #b8a878);
     padding: 15px;
+    padding-bottom: 20px;
   }
 
   td {
@@ -26,6 +27,18 @@
     padding: 15px;
     background: linear-gradient(170deg, #ffffff, #b8a878);
   } */
+
+  th, .resultsTable tbody td {
+    color: #777;
+    font-weight: 400;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-weight: 300;
+    border: none;
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
 
   tr:hover {
     background-color: rgb(65, 51, 46);
@@ -148,7 +161,16 @@
             );
             const row = document.createElement("tr");
             const cell1 = document.createElement("td");
+
+            const name = document.createElement("span");
+            name.innerHTML = result.attributes.PlaceName;
+            const addr = document.createElement("span");
+            addr.innerHTML = `\n${result.attributes.Place_addr}`;
             cell1.textContent = result.attributes.PlaceName;
+            cell1.appendChild(name);
+            cell1.appendChild(document.createElement("br"));
+            cell1.appendChild(addr);
+
             row.appendChild(cell1);
             table.getElementsByTagName("tbody")[0].appendChild(row);
 
