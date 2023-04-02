@@ -132,8 +132,16 @@
         cache: false,
         success: function(data) {
           // console.log(data);
-          data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
+          //data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
           storePrediction(data, recordList[index]._id);
+          console.log(`Succesful response ${JSON.stringify(data)}`);
+          console.log(`Message is: ${JSON.stringify(data)}`);
+          var st1=JSON.stringify(data);
+          str= st1.replace(/[\[\]""]+/g,''); 
+          str2 = str.replace(/[{}()]/g, '').replace(/[\[\]""]+/g,'');
+          console.log(str2);         
+          console.log(str2);        
+          $("#diagnose").val(str2);
         },
         error: function(xhr, textStatus, errorThrown) {
           // Handle error response from server
@@ -168,7 +176,7 @@
         },
         success: function(data) {
           // console.log(data);
-          //data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
+          data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
         },
         error: function(xhr, textStatus, errorThrown) {
           // Handle error response from server
@@ -213,6 +221,17 @@
                         
                             </table>
                           </div>
+
+                          <div class="result-box">
+                            <label for="diagnose">Test Result</label>
+                            <br> 
+                            <input type="text" id="diagnose" name="diagnose" placeholder="Result" \
+                            style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 100%; font-size: 15px; font-weight: 500;
+                            color: #2783ae;
+                            animation: fadeIn 1s ease-in;box-sizing: border-box; 
+                             margin-top: 10px;" disabled="disabled" required>
+                          </div>
+
                       </div>
                     </div>
                     </form>
