@@ -1488,6 +1488,27 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 
     </style>
     <style>
+      /* width */
+    ::-webkit-scrollbar {
+      width: 20px;
+    }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+ 
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0, 0, 0); 
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #685f5f; 
+  }
       .Address-box {
         width: 100%;
         height: 5em;
@@ -1496,12 +1517,14 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
       }
 
       .LocationsDiv {
-        height: auto;
-        width: 10%;
+        height: 1000px;
+        width: 35%;
         float: left;
-        background: rgb(36, 80, 100);
-        padding: 10%;
-        margin: 2em;
+        background: rgb(221, 221, 221);
+        /* padding: 10%; */
+        margin-left: 2em;
+        color: rgb(0, 0, 0);
+        overflow: scroll;
       }
 
       .MapDiv {
@@ -1511,6 +1534,26 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
         padding: 20%;
         margin: 4em;
       }
+
+      .highlight {
+      background-color: gray;
+      }
+
+      tr:hover {
+    background-color: gray;
+    color: white
+    }
+
+    table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
     </style>
     <script>
       "use strict";
@@ -1569,7 +1612,15 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                       <input type="text" id="location" name="location" />
                       <button type="submit">Search</button>
                     </form> -->
-                    <div class="LocationsDiv"></div>
+                    <div id="LocationsDiv" class="LocationsDiv">
+                      <table id="resultsTable">
+                        <thead>
+                          <tr></tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
                     <div id="viewDiv" class="MapDiv"></div>
                   </div>
                 </section>
@@ -1652,7 +1703,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
       const view = new MapView({
         container: "viewDiv",
         map: map,
-        center: [-117.195, 34.057],
+        center: [-75.71859624820526, 45.40775749047658],
         zoom: 13,
       });
 
@@ -1694,13 +1745,14 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
         "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
 
       // Find places and add them to the map
+      const table = document.getElementById("resultsTable");
+
       function findPlaces(category, pt) {
-        locator
-          .addressToLocations(locatorUrl, {
+        locator.addressToLocations(locatorUrl, {
             location: pt,
             categories: [category],
             maxLocations: 25,
-            outFields: ["Place_addr", "PlaceName"],
+            outFields: ["Place_addr", "PlaceName"],            
           })
 
           .then(function (results) {
@@ -1728,31 +1780,56 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                   },
                 })
               );
+              const row = document.createElement("tr");
+              const cell1 = document.createElement("td");
+              cell1.textContent = result.attributes.PlaceName;
+              row.appendChild(cell1);
+              table.getElementsByTagName("tbody")[0].appendChild(row);
+              
+              row.addEventListener("click", function(event) {
+                console.log(`Call ${result.attributes.PlaceName} and ${result.attributes.Place_addr}`)
+              });
+              // const place_name = document.createTextNode(result.attributes.PlaceName);
+              // const place_addr = document.createTextNode(result.attributes.place_addr);
+     
             });
           });
       }
 
-      function addGraphic(type, point) {
-        const graphic = new Graphic({
-          symbol: {
-            type: "simple-marker",
-            color: type === "origin" ? "white" : "black",
-            size: "8px",
-          },
-          geometry: point,
-        });
-        view.graphics.add(graphic);
-      }
+    table.addEventListener("mouseenter", function(event) {
+      if (event.target.tagName === "TD") {
+      event.target.parentNode.classList.add("highlight");
+    }
+    });
 
-      const stopSymbol = {
-        type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-        style: "cross",
-        size: 15,
-        outline: {
-          // autocasts as new SimpleLineSymbol()
-          width: 4,
-        },
-      };
+    table.addEventListener("mouseleave", function(event) {
+      if (event.target.tagName === "TD") {
+        event.target.parentNode.classList.remove("highlight");
+      }
+    });
+
+
+      // function addGraphic(type, point) {
+      //   const graphic = new Graphic({
+      //     symbol: {
+      //       type: "simple-marker",
+      //       color: type === "origin" ? "white" : "black",
+      //       size: "8px",
+      //     },
+      //     geometry: point,
+      //   });
+      //   view.graphics.add(graphic);
+      // }
+
+      // const stopSymbol = {
+      //   type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+      //   style: "cross",
+      //   size: 15,
+      //   outline: {
+      //     // autocasts as new SimpleLineSymbol()
+      //     width: 4,
+      //   },
+      // };
 
       // Search for places in center of map
       view.watch("stationary", function (val) {
@@ -1766,21 +1843,21 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
           findPlaces(event.target.value, view.center);
       });
 
-      view.on("click", function(event){
+      // view.on("click", function(event){
 
-if (view.graphics.length === 0) {
-  addGraphic("origin", event.mapPoint);
-} else if (view.graphics.length === 1) {
-  addGraphic("destination", event.mapPoint);
+// if (view.graphics.length === 0) {
+//   addGraphic("origin", event.mapPoint);
+// } else if (view.graphics.length === 1) {
+//   addGraphic("destination", event.mapPoint);
 
-  getRoute(); // Call the route service
+//   getRoute(); // Call the route service
 
-} else {
-  view.graphics.removeAll();
-  addGraphic("origin",event.mapPoint);
-}
+// } else {
+//   view.graphics.removeAll();
+//   addGraphic("origin",event.mapPoint);
+// }
 
-});
+// });
 
 function addGraphic(type, point) {
 const graphic = new Graphic({
