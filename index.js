@@ -1413,6 +1413,55 @@ app.get('/get_symptoms_checker', (req, res) => {
   })
 })
 
+// This API is for authorized access to doctor
+app.post('/authorizeToDoctor', (req, res) => {
+  const uuid = req.body.uuid;
+  const password = req.body.password;
+  const doctorPhoneNumber = req.body.doctorPhoneNumber;
+  const isAuthorized = req.body.isAuthorized == "1" ? true : false;
+
+  sql = `SELECT id FROM patients_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  var patient_id = 0;
+  var doctor_id = 0;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.length == 0) {
+      res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
+      return;
+    }
+  
+    patient_id = result[0].id;
+    sql = `SELECT id FROM doctors_registration WHERE MobileNumber = "${doctorPhoneNumber}" AND verification = true`;
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        console.log(error);
+        return;
+      }
+      if (result.length == 0) {
+        res.send({error:"Invalid doctor phone number. Please Check."});
+        return;
+      }
+
+      doctor_id = result[0].id;
+      sql = isAuthorized ? `INSERT INTO doctor_recordauthorized (doctor_id,patient_id) VALUES (${doctor_id},${patient_id});` : `DELETE FROM doctor_recordauthorized WHERE doctor_id = "${doctor_id}" AND patient_id = "${patient_id}";`
+      console.log(sql);
+      conn.query(sql, (error, result) => {
+        if (error && error.code != 'ER_DUP_ENTRY') {
+          res.send({error:"Something wrong in MySQL."});
+          console.log(error);
+          return;
+        }
+        res.send({success: isAuthorized? "Authorize success." : "Deauthorize success." });
+      })
+    })
+  })
+})
+
 // This API is for checking the authorized patient list
 app.post('/checkAuthorizedPatients', (req, res) => {
   const uuid = req.body.uuid;
