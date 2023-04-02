@@ -1,0 +1,161 @@
+<style>
+  .outer{
+    margin: 60px 10rem 0;
+  }
+  .outer1{
+    padding-top: 3rem;
+  }
+
+  .input-box {
+    width: 100%;
+    background-color: rgb(249, 250, 252);
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    border: 1px solid rgb(252, 252, 252);
+    border-radius: 5px;
+}
+
+.input-box .details {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: rgb(17, 2, 2);
+}
+
+.submitBtn {
+  width: 20%;
+  color: #fff;
+  border: none;
+  margin: 0 auto;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(-135deg, #100d0de9, #000000);
+  transition: all 0.3s ease;
+}
+
+.result-box {
+  width: 100%;
+  padding: 10px;
+  position: relative;
+  margin-top: 0px;
+  background-color: #ffffff;
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+    text-align: left;
+  }
+
+</style>
+
+
+<!DOCTYPE html>
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+
+
+<body>
+  <%- include('../partials/header') -%>
+  <div class="outer">
+      <div class="outer1">
+        <form id="form-data"> 
+    <div class="mb-4">
+      <label for="First Name input" class="form-label mb-1">First Name</label>
+      <input type="text" class="form-control" name="First Name">
+    </div>
+    <div class="mb-3">
+      <label for="Last Name input" class="form-label">Last Name</label>
+      <input type="text" class="form-control" id="Last Name">
+    </div>
+    <div class="mb-3">
+      <label for="E-mail input" class="form-label">E-mail</label>
+      <input type="email" class="form-control" id="Last Name">
+    </div>
+    <div class="input-box">
+      <span class="details">Date of the test</span>
+      <input type="date" name="date" min="2021-01-01" max="2023-12-31" required>
+    </div>
+        </form>
+    <form id="upload-file" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+          <label for="imageUpload" class="form-label">
+              Choose csv file
+          </label>
+          <input type="file" lang="en" name="file" id="imageUpload" required accept=".csv">
+      </div>
+    </form>
+    <button class="submitBtn" onclick="submit()">Predict & submit</button>
+  <div class="result-box">
+    <label for="diagnose">Test Result:</label>
+    <br> 
+    <input type="text" id="diagnose" name="diagnose" placeholder="Result is here" \
+    style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 100%; font-size: 15px; font-weight: 500;
+    color: #ae2727;
+    animation: fadeIn 1s ease-in;box-sizing: border-box; 
+     margin-top: 10px;" disabled="disabled" required>
+   </div>
+        </form>
+      </div>
+  </div>
+
+
+
+<%- include('../partials/footer-new') -%>
+<script>
+
+
+function submit() {
+  var file_data = new FormData($('#upload-file')[0]);
+  var form_data = new FormData($('#form-data')[0]);
+  // Make prediction by calling api /predict
+  console.log(file_data)
+  console.log(form_data)
+  $.ajax({
+      headers: {
+         'Access-Control-Allow-Origin': '*'
+      },
+      method: 'POST',
+      url: 'https://ehospital-ecg.herokuapp.com/predict',
+      data: file_data,
+      contentType: false,
+      cache: false,
+      processData: false,
+      async: true,
+      success: function (data) {
+          // Get and display the result
+          console.log('Success!',  data  );
+          //const diagnose = data;
+          const diagnose = data;
+          console.log(diagnose)
+          form_data = {
+              FisrtName: form_data.get('First Name'),
+              LastName: form_data.get('Last Name'),
+              Email: form_data.get('E-mail'),
+              Date: form_data.get('Date of the test'),
+          }
+          $("#diagnose").val(diagnose);
+          console.log(form_data)
+      },
+      error: function () {
+          console.log('error');
+      },
+  });
+  return true
+}
+</script>
+
+</body>

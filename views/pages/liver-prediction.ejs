@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="en-CA">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+
+<style>
+  .bodyContent{
+      margin-top: 60px;
+      min-height: calc(100vh - 60px);
+      display: flex;
+      width: 100%;
+      background-image: url("https://badgut.org/wp-content/uploads/Image-Content-liver.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+  }
+  .bodyLeft{
+      width: 20%;
+      min-width: 230px;
+      background-color: lightgrey;
+  }
+  .bodyLeft p{
+      margin: 1rem;
+  }
+  .bodyRight{
+      display: flex;
+      flex-direction: column;
+      flex:1;
+
+  }
+  .instruction{
+      font-size: 2rem;
+      text-align: center;
+      margin: 3rem 1rem 0 1rem;
+      border-bottom: 2px solid black;
+  }
+  .modelAuthor{
+      margin: 1rem;
+      font-size: 0.8rem;
+  }
+  .diseaseTitle{
+      margin: 1rem;
+      font-size: 2rem;
+      font-weight: bold;
+  }
+  .card1{
+      margin: 1rem;
+      background-color: rgba(66,69,84,0.4);
+      border-radius: 12px;
+      min-height: 100px;
+      box-shadow: 2px 2px 2px 2px #888888;
+      color: white!important;
+      padding: 1rem;
+  }
+  select, input{
+      width: 100%;
+      border-radius: 8px;
+      padding-left: 0.5rem;
+  }
+  .col-sm div{
+      font-size: 1.1rem;
+      margin-top: 1rem;
+  }
+  .patientInfo{
+      padding-left: 1rem;
+      font-size: 1.5rem;
+  }
+  #liverRes{
+      margin: 1rem 0 0 1rem;
+      font-size: 1.5rem;
+  }
+  /*table, th, td {*/
+  /*      border: 1px solid black;*/
+  /*      border-collapse: collapse;*/
+  /*      padding: 5px;*/
+  /*}*/
+
+  table {
+  border-collapse: collapse;
+  border: none;
+  width: 100%;
+      color: black;
+}
+
+th {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  font-weight: bold;
+  padding: 8px;
+  text-align: left;
+}
+
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+   .hidden {
+        display: none;
+      }
+
+   #searchInput{
+       margin-bottom: 2rem;
+   }
+
+
+
+</style>
+
+
+
+<head>
+
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+</head>
+
+<%- include('../partials/header') -%>
+<body>
+    <div class="bodyContent">
+        <div class="bodyLeft">
+            <div class="instruction">Instructions</div>
+            <p>Enter bio parameters to analyze liver disease.</p>
+            <div class="modelAuthor">Model trained by @Hamidreza Hatami Shirkouhi & @Yasaman Mohtashami</div>
+        </div>
+
+        <div class="bodyRight">
+            <div class="diseaseTitle">Liver Disease Prediction</div>
+            <form action="" method="post">
+                <div class="card1">
+                <div class="patientInfo">Patient information</div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div>Age</div>
+                            <input type="text" class="form-control" id="age"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Patient name</div>
+                            <input type="text" class="form-control" id="name"/>
+                        </div>
+                        <div class="col-sm">
+                            <div for="gender">Gender</div>
+                              <select class="form-control" id="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                              </select>
+                        </div>
+                        <div class="col-sm"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div>Total Bilirubin</div>
+                            <input type="text" class="form-control" id="tb"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Direct Bilirubin</div>
+                            <input type="text" class="form-control" id="db"/>
+                        </div>
+                        <div class="col-sm"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div>Alkaline Phosphatase</div>
+                            <input type="text" class="form-control" id="ap"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Alanine Aminotransferase</div>
+                            <input type="text" class="form-control" id="aa1"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Aspartate Aminotransferase</div>
+                            <input type="text" class="form-control" id="aa2"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div>Total Proteins</div>
+                            <input type="text" class="form-control" id="tp"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Albumin</div>
+                            <input type="text" class="form-control" id="al"/>
+                        </div>
+                        <div class="col-sm">
+                            <div>Albumin and Globulin Ratio</div>
+                            <input type="text" class="form-control" id="ag"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3" id="myButton">Run model</button>
+                </div>
+            </div>
+            </form>
+            <div class="card1">
+                <div class="patientInfo">Prediction Result</div>
+                <div id="liverRes"></div>
+            </div>
+
+            <div class="card1">
+                <div class="patientInfo">Visualizations</div>
+                <button class="btn btn-primary mt-3 mb-3" id="myButton2">Age & Gender distribution</button>
+                <div id="visual1"></div>
+            </div>
+
+            <div class="card1">
+                <div class="patientInfo">History</div>
+                <button class="btn btn-success mt-3 mb-3" id="myButton3">Get History</button>
+                <input type="text" id="searchInput" placeholder="Search for patients...">
+                   <table id="patient-table">
+                      <thead class="hidden">
+                        <tr>
+                          <th>ID</th>
+                          <th>Patient ID</th>
+                          <th>Name</th>
+                          <th>Age</th>
+                          <th>Gender</th>
+                          <th>Total Bilirubin</th>
+                          <th>Direct Bilirubin</th>
+                          <th>Alkaline Phosphatase</th>
+                          <th>Alanine Aminotransferase</th>
+                          <th>Aspartate Aminotransferase</th>
+                          <th>Total Proteins</th>
+                          <th>Albumin</th>
+                          <th>Albumin and Globulin Ratio</th>
+                          <th>Have Disease</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</body>
+<%- include('../partials/footer-new') -%>
+
+</html>
+
+
+
+
+<script>
+
+
+    // const baseURL = 'https://e-hospital-liver.herokuapp.com'
+    const baseURL = 'http://127.0.0.1:53124'
+    const btn = document.getElementById("myButton");
+    const btn2 = document.getElementById("myButton2");
+    const btn3 = document.getElementById("myButton3");
+
+    const liverRes = document.getElementById('liverRes')
+    const visual1 = document.getElementById('visual1')
+    const visual2 = document.getElementById('visual2')
+
+    const patientTable = document.getElementById("patient-table");
+    const thead = patientTable.getElementsByTagName("thead")[0];
+    const tbody = patientTable.getElementsByTagName("tbody")[0];
+
+    document.getElementById("searchInput").addEventListener("input", searchTable);
+
+    function searchTable() {
+          // Get input value
+          let input = document.getElementById("searchInput").value.toLowerCase();
+
+          // Get table rows
+          let rows = document.querySelectorAll("table tbody tr");
+
+          // Loop through rows and hide those that don't match the search query
+          rows.forEach(row => {
+            let patientName = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+            if (patientName.includes(input)) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
+            }
+          });
+}
+
+
+    btn2.addEventListener('click', event => {
+        event.preventDefault();
+        fetch(`${baseURL}/liver_graph`, {
+            method: 'GET',
+          })
+            .then(response => response.text())
+            .then(html => {
+              const img = document.createElement('img');
+              img.src = `data:image/png;base64,${html.trim()}`;
+              const visualElement = document.getElementById('visual1');
+              if(visualElement.hasChildNodes()) visualElement.childNodes[0] = img;
+              else visualElement.appendChild(img);
+            });
+    })
+
+      btn3.addEventListener("click", function() {
+        fetch(`${baseURL}/get_all_liver_data`)
+          .then(response => response.json())
+          .then(data => {
+            thead.classList.remove("hidden");
+            tbody.innerHTML = "";
+            data.forEach(function(patient) {
+              var tr = document.createElement("tr");
+              patient.forEach(function(value) {
+                var td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+              });
+              tbody.appendChild(tr);
+            });
+          })
+          .catch(error => console.error(error));
+      });
+
+
+    btn.addEventListener('click', event => {
+        event.preventDefault();
+        const formData = {
+            age:document.getElementById("age").value,
+            name:document.getElementById("name").value,
+            gender:document.getElementById("gender").value,
+            tb:document.getElementById("tb").value,
+            db:document.getElementById("db").value,
+            ap:document.getElementById("ap").value,
+            aa1:document.getElementById("aa1").value,
+            aa2:document.getElementById("aa2").value,
+            tp:document.getElementById("tp").value,
+            al:document.getElementById("al").value,
+            ag:document.getElementById("ag").value
+        };
+        console.log(formData)
+
+        fetch(`${baseURL}/predict_liver_disease`, {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers:{
+          'Content-Type':'application/json'
+        }
+          })
+          .then(response => response.text())
+          .then(data => {
+              console.log(data)
+            liverRes.innerHTML = data;
+          });
+
+
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
