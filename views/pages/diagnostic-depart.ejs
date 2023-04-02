@@ -23,6 +23,13 @@
         <link rel="stylesheet" href="css/diagnostic-card-layout.css">
         
     </head>
+    <script>
+        function redirectToKidney() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const id = urlParams.get('id');
+          window.location.href = 'https://mlmodel2.herokuapp.com/kidney/' + id;
+        }
+        </script>
     <body>
         <%- include('../partials/header') -%>
         <!-- First section -->
@@ -66,22 +73,37 @@
                                 <button class="button" onclick="document.location='heartDiseasePrediction'">Learn More</button>
                             </div>
                         </div>
+                        <form method="post" action="/kidney">
+                            
+
+                            <input type="hidden" name="id" value="your_id_here">
+                            <div class="card swiper-slide">
+                                <div class="image-content">
+                                    <div class="card-image">
+                                        <img src="images/brain.png" class="card-img">
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <h2 class="name">Brain Diagnostic</h2>
+                                    <p class="description">Here is the page for brain diagnostic</p>
+                                    <button type="submit" class="button" onclick="document.location='heartDiseasePrediction'">Learn More</button>
+                                </div>
+                            </div>
+                        </form>
                         <div class="card swiper-slide">
                             <div class="image-content">
-                                
-
                                 <div class="card-image">
                                     <img src="images/brain.png" class="card-img">
                                 </div>
                             </div>
-
+                        
                             <div class="card-content">
-                                <h2 class="name">Brain Diagnostic</h2>
-                                <p class="description">Here is the page for brain diagnostic</p>
-
-                                <button class="button" onclick="document.location='brain'">Learn More</button>
+                                <h2 class="name">Kidney Diagnostic</h2>
+                                <p class="description">Here is the page for Kidney Diagnostics</p>
+                                <button class="button" onclick="redirectToKidney()">Learn More</button>
                             </div>
                         </div>
+                        
                         <div class="card swiper-slide">
                             <div class="image-content">
                                 
