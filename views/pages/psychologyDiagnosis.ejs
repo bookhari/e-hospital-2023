@@ -1,4 +1,5 @@
-<!-- /* TaskName, code started for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */ -->
+<!-- Psychology, code started for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
+
 <!DOCTYPE html>
 <html>
   
@@ -23,7 +24,7 @@
     table, th, td {
       border:1px solid black;
     }
-  </style>
+    </style>
     
   <script>
     var recordList = [];
@@ -33,16 +34,17 @@
       // retrived phone number form url
       let params = (new URL(document.location)).searchParams;
       let phoneNumber = params.get("phoneNumber");
-  // was "phoneNumber"
+
       // Get the patient records
       $.ajax({
-        url: "/imageRetrieveByPhoneNumber",
+        url: "/psychologyDiagnosis",
         type: 'POST',
         data: {
           phoneNumber: phoneNumber, 
-          recordType: "X-Ray_Lung" // the table name that stores the record
+          recordType: "psychology_patients" // the table name that stores the record
         },
         success: function(data) {
+          // console.log(data);
           data.error ? alert(JSON.stringify(data.error)) : display(data.success);
         },
         error: function(xhr, textStatus, errorThrown) {
@@ -56,7 +58,7 @@
     function display(data) {
       recordList = data;
       if (recordList.length <= 0) {
-        alert("This patient has no record, please do the X-Ray for the lung.");
+        alert("This patient has no record, please tell the patient to take the psychologist questionnaire and the psychologist diagnosis questionnaire.");
         return;
       }
       console.log(recordList);
@@ -64,23 +66,16 @@
       // Display each record
       for (let i = 0; i < recordList.length; ++i) {
         let tr = document.createElement("tr");
-        let image = document.createElement("td");
-        //let img = document.createElement("img");
-      // Extract the image data from the buffer
-        const imageData = recordList[i].file.buffer;
-
-        // Create a data URL from the image data
-        const dataURL = `data:image/jpeg;base64,${imageData}`;
-
-        // Create an img element and set its src attribute to the data URL
-        const img = document.createElement('img');
-        img.src = dataURL;
-        img.width = 150;
-        img.height = 150;
-        //image.innerHTML = "Will be replace by imagee";
-        image.appendChild(img)
+        //let image = document.createElement("td");
+        //image.innerHTML = "Will be replace by image";
         let recordDate = document.createElement("td");
-        recordDate.innerHTML = recordList[i].RecordDate;
+        recordDate.innerHTML = new Date(recordList[i].date);       
+        let therapy = document.createElement("td");
+        therapy.innerHTML = recordList[i].type_of_therapy;
+        console.log(recordList[i].type_of_therapy)
+        if (recordList[i].type_of_therapy == 1) {
+            therapy.innerHTML = "Depression";
+        }
         let action = document.createElement("td");
         let button = document.createElement("input");
         button.type = "button";
@@ -89,13 +84,14 @@
         button.setAttribute("onclick", "predict(this.index)")
         action.appendChild(button);
         
-        tr.appendChild(image);
+        //tr.appendChild(image);
         tr.appendChild(recordDate);
+        tr.appendChild(therapy);
         tr.appendChild(action);
         list.appendChild(tr);
       }
     }
-
+    
     // Send the image to the ML api for the prediction
     async function predict(index) {
       console.log(recordList[index]);
@@ -108,7 +104,7 @@
 
       // Send to the ML API
       $.ajax({
-        url: "https://lfsrepo-mlmodel-pneumonia.herokuapp.com/predict",
+        url: "/connectionTesting",
         type: 'POST',
         enctype: 'multipart/form-data',
         data: form,
@@ -117,17 +113,8 @@
         cache: false,
         success: function(data) {
           // console.log(data);
-          // data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
-          data.error ? alert(JSON.stringify(data.error)) : null;
+          data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
           storePrediction(data, recordList[index]._id);
-          console.log(`Succesful response ${JSON.stringify(data)}`);
-          console.log(`Message is: ${JSON.stringify(data)}`);
-          var st1=JSON.stringify(data);
-          str= st1.replace(/[\[\]""]+/g,''); 
-          str2 = str.replace(/[{}()]/g, '').replace(/[\[\]""]+/g,'');
-          console.log(str2);         
-          console.log(str2);        
-          $("#diagnose").val(str2);
         },
         error: function(xhr, textStatus, errorThrown) {
           // Handle error response from server
@@ -157,7 +144,7 @@
           date: today,
           prediction: result.prediction,
           accuracy: result.accuracy, // can be null if not provided
-          recordType: "X-Ray_Lung", // can be null if no record is used for the ML prediction
+          recordType: "psychology_patients", // can be null if no record is used for the ML prediction
           recordId: id // can be null if no record is used for the ML prediction
         },
         success: function(data) {
@@ -177,42 +164,17 @@
   <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
 </head>
 <body>
-  <div class="header">
-   
-    <h1>Pneumonia Diagnostics</h1>
-   
-  </div>
-
-  <div class="header2">
-    <h3>Patient's Information</h3>
-   
-  </div>
-  <div class="container" style="padding-top: 40px;">
-    <table id="recordList" style="width:100%">
+  <div class="container" style="padding-top: 40px;margin:0 auto;">
+    <table id="recordList" class="center" style="margin-top:50px; width:50%; margin-bottom:50px;margin-left: auto;margin-right: auto;">
       <tr>
-        <th>Record</th>
         <th>Record Date</th>
+        <th>Therapy Type</th>
         <th>Action</th>
       </tr>
 
     </table>
   </div>
   <div> 
-
-    <div class="outer">
-      <!-- <button class="submitBtn" onclick="submit()">Show the result</button> -->
-      <div class="result-box">
-        <label for="diagnose">Test Result:</label>
-        <br> 
-        <input type="text" id="diagnose" name="diagnose" placeholder="Result is here" \
-        style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 100%; font-size: 15px; font-weight: 500;
-        color: #ae2727;
-        animation: fadeIn 1s ease-in;box-sizing: border-box; 
-         margin-top: 10px;" disabled="disabled" required>
-       </div>
-            </form>
-          </div>
-      </div>
     <footer>
   <%- include('../partials/footer-new') -%>
   
@@ -223,4 +185,5 @@
 </body>
 </html>
 
-<!-- /* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Med 2023 */ -->
+<!--  Psychology - code ended for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht)
+   Group 8, Course-BMG5111, Winter 2023 -->
