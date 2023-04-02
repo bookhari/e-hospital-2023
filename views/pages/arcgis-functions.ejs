@@ -163,11 +163,8 @@
     const searchButton = document.getElementById("locationButton");
     var Map_center = [-75.71859624820526, 45.40775749047658];
 
-    const routeLayer = new GraphicsLayer();
-
     const map = new Map({
       basemap: "arcgis-navigation",
-      // layers: [routeLayer], // Add the route layer to the map
     });
 
     var view = new MapView({
@@ -212,6 +209,7 @@
       select.appendChild(option);
     });
 
+    view.ui.add(select, "top-right");
     view.ui.add(select, "top-right");
 
     const locatorUrl =
@@ -322,55 +320,55 @@
       view.graphics.add(graphic);
     }
 
-    function getRoute() {
-      const routeParams = new RouteParameters({
-        stops: new FeatureSet({
-          features: view.graphics.toArray(),
-        }),
+    // function getRoute() {
+    //   const routeParams = new RouteParameters({
+    //     stops: new FeatureSet({
+    //       features: view.graphics.toArray(),
+    //     }),
 
-        returnDirections: true,
-      });
+    //     returnDirections: true,
+    //   });
 
-      route
-        .solve(routeUrl, routeParams)
-        .then(function (data) {
-          data.routeResults.forEach(function (result) {
-            result.route.symbol = {
-              type: "simple-line",
-              color: [5, 150, 255],
-              width: 3,
-            };
-            view.graphics.add(result.route);
-          });
+    //   route
+    //     .solve(routeUrl, routeParams)
+    //     .then(function (data) {
+    //       data.routeResults.forEach(function (result) {
+    //         result.route.symbol = {
+    //           type: "simple-line",
+    //           color: [5, 150, 255],
+    //           width: 3,
+    //         };
+    //         view.graphics.add(result.route);
+    //       });
 
-          // Display directions
-          if (data.routeResults.length > 0) {
-            const directions = document.createElement("ol");
-            directions.classList =
-              "esri-widget esri-widget--panel esri-directions__scroller";
-            directions.style.marginTop = "0";
-            directions.style.padding = "15px 15px 15px 30px";
-            const features = data.routeResults[0].directions.features;
+    //       // Display directions
+    //       if (data.routeResults.length > 0) {
+    //         const directions = document.createElement("ol");
+    //         directions.classList =
+    //           "esri-widget esri-widget--panel esri-directions__scroller";
+    //         directions.style.marginTop = "0";
+    //         directions.style.padding = "15px 15px 15px 30px";
+    //         const features = data.routeResults[0].directions.features;
 
-            // Show each direction
-            features.forEach(function (result, i) {
-              const direction = document.createElement("li");
-              direction.innerHTML =
-                result.attributes.text +
-                " (" +
-                result.attributes.length.toFixed(2) +
-                " miles)";
-              directions.appendChild(direction);
-            });
+    //         // Show each direction
+    //         features.forEach(function (result, i) {
+    //           const direction = document.createElement("li");
+    //           direction.innerHTML =
+    //             result.attributes.text +
+    //             " (" +
+    //             result.attributes.length.toFixed(2) +
+    //             " miles)";
+    //           directions.appendChild(direction);
+    //         });
 
-            view.ui.empty("top-right");
-            view.ui.add(directions, "top-right");
-          }
-        })
+    //         view.ui.empty("top-right");
+    //         view.ui.add(directions, "top-right");
+    //       }
+    //     })
 
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
+    // }
   });
 </script>
