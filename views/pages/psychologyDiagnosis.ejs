@@ -1,4 +1,5 @@
-/* TaskName, code started for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
+<!-- Psychology, code started for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
+
 <!DOCTYPE html>
 <html>
   
@@ -23,7 +24,7 @@
     table, th, td {
       border:1px solid black;
     }
-  </style>
+    </style>
     
   <script>
     var recordList = [];
@@ -36,11 +37,11 @@
 
       // Get the patient records
       $.ajax({
-        url: "/imageRetrieveByPhoneNumber",
+        url: "/psychologyDiagnosis",
         type: 'POST',
         data: {
           phoneNumber: phoneNumber, 
-          recordType: "X-Ray_Lung" // the table name that stores the record
+          recordType: "psychology_patients" // the table name that stores the record
         },
         success: function(data) {
           // console.log(data);
@@ -57,19 +58,24 @@
     function display(data) {
       recordList = data;
       if (recordList.length <= 0) {
-        alert("This patient has no record, please do the X-Ray for the lung.");
+        alert("This patient has no record, please tell the patient to take the psychologist questionnaire and the psychologist diagnosis questionnaire.");
         return;
       }
       console.log(recordList);
       let list = document.getElementById("recordList");
-      
       // Display each record
       for (let i = 0; i < recordList.length; ++i) {
         let tr = document.createElement("tr");
-        let image = document.createElement("td");
-        image.innerHTML = "Will be replace by image";
+        //let image = document.createElement("td");
+        //image.innerHTML = "Will be replace by image";
         let recordDate = document.createElement("td");
-        recordDate.innerHTML = recordList[i].RecordDate;
+        recordDate.innerHTML = new Date(recordList[i].date);       
+        let therapy = document.createElement("td");
+        therapy.innerHTML = recordList[i].type_of_therapy;
+        console.log(recordList[i].type_of_therapy)
+        if (recordList[i].type_of_therapy == 1) {
+            therapy.innerHTML = "Depression";
+        }
         let action = document.createElement("td");
         let button = document.createElement("input");
         button.type = "button";
@@ -78,13 +84,14 @@
         button.setAttribute("onclick", "predict(this.index)")
         action.appendChild(button);
         
-        tr.appendChild(image);
+        //tr.appendChild(image);
         tr.appendChild(recordDate);
+        tr.appendChild(therapy);
         tr.appendChild(action);
         list.appendChild(tr);
       }
     }
-
+    
     // Send the image to the ML api for the prediction
     async function predict(index) {
       console.log(recordList[index]);
@@ -137,7 +144,7 @@
           date: today,
           prediction: result.prediction,
           accuracy: result.accuracy, // can be null if not provided
-          recordType: "X-Ray_Lung", // can be null if no record is used for the ML prediction
+          recordType: "psychology_patients", // can be null if no record is used for the ML prediction
           recordId: id // can be null if no record is used for the ML prediction
         },
         success: function(data) {
@@ -157,12 +164,11 @@
   <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
 </head>
 <body>
-
-  <div class="container" style="padding-top: 40px;">
-    <table id="recordList" style="width:100%">
+  <div class="container" style="padding-top: 40px;margin:0 auto;">
+    <table id="recordList" class="center" style="margin-top:50px; width:50%; margin-bottom:50px;margin-left: auto;margin-right: auto;">
       <tr>
-        <th>Record</th>
         <th>Record Date</th>
+        <th>Therapy Type</th>
         <th>Action</th>
       </tr>
 
@@ -179,4 +185,5 @@
 </body>
 </html>
 
-/* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
+<!--  Psychology - code ended for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht)
+   Group 8, Course-BMG5111, Winter 2023 -->

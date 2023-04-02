@@ -69,7 +69,43 @@
       margin: 1rem 0 0 1rem;
       font-size: 1.5rem;
   }
+  /*table, th, td {*/
+  /*      border: 1px solid black;*/
+  /*      border-collapse: collapse;*/
+  /*      padding: 5px;*/
+  /*}*/
 
+  table {
+  border-collapse: collapse;
+  border: none;
+  width: 100%;
+      color: black;
+}
+
+th {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  font-weight: bold;
+  padding: 8px;
+  text-align: left;
+}
+
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+   .hidden {
+        display: none;
+      }
+
+   #searchInput{
+       margin-bottom: 2rem;
+   }
 
 
 
@@ -180,6 +216,34 @@
                 <button class="btn btn-primary mt-3 mb-3" id="myButton2">Age & Gender distribution</button>
                 <div id="visual1"></div>
             </div>
+
+            <div class="card1">
+                <div class="patientInfo">History</div>
+                <button class="btn btn-success mt-3 mb-3" id="myButton3">Get History</button>
+                <input type="text" id="searchInput" placeholder="Search for patients...">
+                   <table id="patient-table">
+                      <thead class="hidden">
+                        <tr>
+                          <th>ID</th>
+                          <th>Patient ID</th>
+                          <th>Name</th>
+                          <th>Age</th>
+                          <th>Gender</th>
+                          <th>Total Bilirubin</th>
+                          <th>Direct Bilirubin</th>
+                          <th>Alkaline Phosphatase</th>
+                          <th>Alanine Aminotransferase</th>
+                          <th>Aspartate Aminotransferase</th>
+                          <th>Total Proteins</th>
+                          <th>Albumin</th>
+                          <th>Albumin and Globulin Ratio</th>
+                          <th>Have Disease</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+            </div>
         </div>
 
 
@@ -196,12 +260,41 @@
 
 <script>
 
-    const baseURL = 'https://e-hospital-liver.herokuapp.com'
 
+    // const baseURL = 'https://e-hospital-liver.herokuapp.com'
+    const baseURL = 'http://127.0.0.1:53124'
     const btn = document.getElementById("myButton");
     const btn2 = document.getElementById("myButton2");
+    const btn3 = document.getElementById("myButton3");
+
     const liverRes = document.getElementById('liverRes')
     const visual1 = document.getElementById('visual1')
+    const visual2 = document.getElementById('visual2')
+
+    const patientTable = document.getElementById("patient-table");
+    const thead = patientTable.getElementsByTagName("thead")[0];
+    const tbody = patientTable.getElementsByTagName("tbody")[0];
+
+    document.getElementById("searchInput").addEventListener("input", searchTable);
+
+    function searchTable() {
+          // Get input value
+          let input = document.getElementById("searchInput").value.toLowerCase();
+
+          // Get table rows
+          let rows = document.querySelectorAll("table tbody tr");
+
+          // Loop through rows and hide those that don't match the search query
+          rows.forEach(row => {
+            let patientName = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+            if (patientName.includes(input)) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
+            }
+          });
+}
+
 
     btn2.addEventListener('click', event => {
         event.preventDefault();
@@ -215,9 +308,27 @@
               const visualElement = document.getElementById('visual1');
               if(visualElement.hasChildNodes()) visualElement.childNodes[0] = img;
               else visualElement.appendChild(img);
-              // document.getElementById('visual1').appendChild(img);
             });
     })
+
+      btn3.addEventListener("click", function() {
+        fetch(`${baseURL}/get_all_liver_data`)
+          .then(response => response.json())
+          .then(data => {
+            thead.classList.remove("hidden");
+            tbody.innerHTML = "";
+            data.forEach(function(patient) {
+              var tr = document.createElement("tr");
+              patient.forEach(function(value) {
+                var td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+              });
+              tbody.appendChild(tr);
+            });
+          })
+          .catch(error => console.error(error));
+      });
 
 
     btn.addEventListener('click', event => {

@@ -120,6 +120,9 @@ body {
                         </tr>
                         <tr>
                             <td><button><a href="diagnostic-depart?id=<%= entry.id %>">Run Diagonostics</a></button></td>
+                            <% if (entry.id >= 152 && entry.id <= 166) { %>
+                            <td><button><a href="liver2?id=<%= entry.id %>">Run Liver Diagnostics</a></button></td>
+                            <% } %>
                         </tr>
                         <tr>
                             <td><button><a href="ECG-Doctor?id=<%= entry.id %>">ECG Diagonostics</a></button></td>
