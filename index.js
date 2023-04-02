@@ -231,9 +231,6 @@ app.get('/symptoms-checker', (req, res) => {
 app.get('/index', (req, res) => {
   res.render("pages/index");
 })
-app.get('/labform', (req, res) => { //Christina&Sanika
-  res.render("pages/labform");
-})
 app.get('/labtest', (req, res) => { //Christina&Sanika
   res.render("pages/labtest");
 })
@@ -968,6 +965,7 @@ app.post('/get_docotorInfoTest',(req,res)=>{
   })
 
 })
+
 app.post('/get_doctorInfo', (req, res) => {
   const get_doctorInfo = req.body
   var password = crypto.randomBytes(16).toString("hex");
@@ -1002,6 +1000,7 @@ app.post('/get_doctorInfo', (req, res) => {
               }
 })
 
+/* LAB TEST APPOINTMENT FORM, backenf api code started for adding route to register (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
 // Get a list of available labs
 app.get('/get_availableLabs', (req, res) => {
   sql = "SELECT Lab_Name, Email_Id, Location1, Location2, PostalCode, City, Province, Country, uuid FROM lab_admin WHERE verification = 1 ORDER BY Lab_Name";
@@ -1049,6 +1048,10 @@ app.post('/update_appointment', (req, res) => {
   const password = req.body.password;
   const date = req.body.date;
   const slot = req.body.slot;
+  console.log(uuid)
+  console.log(password)
+  console.log(date)
+  console.log(slot)
 
   if (!lab_uuid || !uuid || !password) {
     res.send({error:"Missing lab uuid, patient uuid, or patient password."});
@@ -1086,7 +1089,7 @@ app.post('/update_appointment', (req, res) => {
             return;
           } else {
             sql = `INSERT INTO lab_appointment (lab_id, patient_id, appointmentDate, slot)  VALUES (${result[0].id}, ${patient_id}, "${date}", ${slot})`;
-            console.log(sql);
+            
             conn.query(sql,(error, result) => {
               if (error) {
                 res.send({error:"Something wrong in MySQL."});
@@ -1108,6 +1111,7 @@ app.post('/update_appointment', (req, res) => {
     }
   })
 })
+/* LAB TEST APPOINTMENT FORM, backenf api code ended for adding route to register (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
 
 // Get the appointment list and the lab info for the specific patient
 app.post('/check_patientAppointment', (req, res) => {
@@ -1164,7 +1168,7 @@ app.post('/check_labAppointment', (req, res) => {
     res.send(result);
   })
 })
-
+/* notification widget, backenf api code started for adding route to index (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
 app.get('/get_availableDoctors', (req, res) => {
   sql = "SELECT Specialization, COUNT(Specialization) AS 'NumberOfDoctors' FROM doctors_registration WHERE Availability = 1 AND verification = 1 GROUP BY Specialization";
   conn.query(sql, (error, result) => {
@@ -1175,9 +1179,17 @@ app.get('/get_availableDoctors', (req, res) => {
     res.send(result);
   })
 })
+/* find a dentist, backenf api code ended for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
 
-app.get('/get_availableDentists', (req, res) => {
-  sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
+/* find a dentist, backenf api code started for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+app.post('/get_availableDentists', (req, res) => {
+  const Province = req.body.Province;
+  const Country= req.body.Country;
+  const City = req.body.City;
+  console.log(req.body)
+  
+  //sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
+  sql = `SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1 AND Province = "${Province}" AND Country = "${Country}" AND City = "${City}"  `;
   conn.query(sql, (error, result) => {
     if (error) {
       res.send({error:"Something wrong in MySQL."});
@@ -1187,6 +1199,7 @@ app.get('/get_availableDentists', (req, res) => {
     res.send(result);
   })
 })
+/* find a dentist, backenf api code ended for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
 
 app.post('/update_availability', (req, res) => {
   const Availability = req.body.Availability;
@@ -1504,6 +1517,7 @@ console.log(req.body.Country)
 
 const twilio = require("twilio");
 const { pid } = require('process');
+const { checkServerIdentity } = require('tls');
 
 app.get('/sendEmail', (req, res) => {
 
