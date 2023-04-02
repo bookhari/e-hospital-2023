@@ -1,148 +1,132 @@
 <style>
-    .highlight {
-      background-color: rgb(255, 254, 254);
-    }
+  .highlight {
+    background-color: rgb(255, 254, 254);
+  }
 
-    table {
-      width: 800px;
-      border-collapse: collapse;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
+  table {
+    width: 800px;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
 
-    tr {
-      /* background-color: beige; */
-      color: black;
-      background-color: linear-gradient(170deg, #ffffff, #b8a878);
-      padding: 15px;
-      padding-bottom: 20px;
-    }
+  tr {
+    /* background-color: beige; */
+    color: black;
+    background-color: linear-gradient(170deg, #ffffff, #b8a878);
+    padding: 15px;
+    padding-bottom: 20px;
+  }
 
-    td {
-      padding: 15px;
-      width: auto;
-    }
-    /* th,
+  td {
+    padding: 15px;
+    width: auto;
+  }
+  /* th,
     td {
       padding: 15px;
       background: linear-gradient(170deg, #ffffff, #b8a878);
     } */
 
-    th,
-    .resultsTable tbody td {
-      color: #777;
-      font-weight: 400;
-      padding-bottom: 20px;
-      padding-top: 20px;
-      font-weight: 300;
-      border: none;
-      -webkit-transition: 0.3s all ease;
-      -o-transition: 0.3s all ease;
-      transition: 0.3s all ease;
-    }
-
-    tr:hover {
-      background-color: rgb(65, 51, 46);
-      color: rgb(255, 255, 255);
-    }
-
-    .text-address {
-      background-color: rgb(216, 209, 209);
-      border-bottom: #777;
-    }
-
-    .input-container {
-      position: relative;
-      margin-left: 10%;
-    }
-
-    input {
-      height: 48px;
-      width: 280px;
-      border: 1px solid #c0c0c0;
-      border-radius: 4px;
-      box-sizing: border-box;
-      padding: 16px;
-    }
-
-    .byline{
-    text-align:center;
-    font-size:18px;
+  th,
+  .resultsTable tbody td {
+    color: #777;
+    font-weight: 400;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-weight: 300;
+    border: none;
+    -webkit-transition: 0.3s all ease;
+    -o-transition: 0.3s all ease;
+    transition: 0.3s all ease;
   }
-  .byline a{
-    text-decoration:none;
+
+  tr:hover {
+    background-color: rgb(65, 51, 46);
+    color: rgb(255, 255, 255);
+  }
+
+  .text-address {
+    background-color: rgb(216, 209, 209);
+    border-bottom: #777;
+  }
+
+  .input-container {
+    position: relative;
+    margin-left: 10%;
+  }
+
+  input {
+    height: 48px;
+    width: 280px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 16px;
+  }
+
+  .byline {
+    text-align: center;
+    font-size: 18px;
+  }
+  .byline a {
+    text-decoration: none;
     color: #ce0000;
   }
 
-  #gradient{
-      width:0;
-      height:50px;
-      margin:0 auto;
-      border-radius:100%;
-      -webkit-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
-      -moz-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
-      box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+  #gradient {
+    width: 0;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 100%;
+    -webkit-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+    -moz-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+    box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
   }
-  .searchbox{
-      background-color:#fffbf8;
-      padding:13px;
-      width:335px;
-      margin:100px auto;
-      -webkit-box-sizing:border-box;
-      -moz-box-sizing:border-box;
-      box-sizing:border-box;
-      border-radius:6px;
-      -webkit-box-shadow:
-          0 2px 4px 0 rgba(72, 72, 72, 0.83),
-          0 10px 15px 0 rgba(126, 126, 126, 0.12),
-          0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
-          0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
-      -moz-box-shadow:
-          0 2px 4px 0 rgba(72, 72, 72, 0.83),
-          0 10px 15px 0 rgba(126, 126, 126, 0.12),
-          0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
-          0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
-      box-shadow:
-          0 2px 4px 0 rgba(72, 72, 72, 0.83),
-          0 10px 15px 0 rgba(126, 126, 126, 0.12),
-          0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
-          0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+  .searchbox {
+    background-color: #fffbf8;
+    padding: 13px;
+    width: 335px;
+    margin: 100px auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(72, 72, 72, 0.83),
+      0 10px 15px 0 rgba(126, 126, 126, 0.12),
+      0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
+      0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+    -moz-box-shadow: 0 2px 4px 0 rgba(72, 72, 72, 0.83),
+      0 10px 15px 0 rgba(126, 126, 126, 0.12),
+      0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
+      0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+    box-shadow: 0 2px 4px 0 rgba(72, 72, 72, 0.83),
+      0 10px 15px 0 rgba(126, 126, 126, 0.12),
+      0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
+      0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
   }
-  input[type="search"]{
-      width:250px;
-      height:30px;
-      padding-left:15px;
-      border-radius:6px;
-      border:none;
-      color:#939393;
-      font-weight:500;
-      background-color:#fffbf8;
-      -webkit-box-shadow:
-          0 -2px 2px 0 rgba(199, 199, 199, 0.55),
-          0 1px 1px 0 #fff,
-          0 2px 2px 1px #fafafa,
-          0 2px 4px 0 #b2b2b2 inset,
-          0 -1px 1px 0 #f2f2f2 inset,
-          0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
-      -moz-box-shadow:
-          0 -2px 2px 0 rgba(199, 199, 199, 0.55),
-          0 1px 1px 0 #fff,
-          0 2px 2px 1px #fafafa,
-          0 2px 4px 0 #b2b2b2 inset,
-          0 -1px 1px 0 #f2f2f2 inset,
-          0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
-      box-shadow:
-          0 -2px 2px 0 rgba(199, 199, 199, 0.55),
-          0 1px 1px 0 #fff,
-          0 2px 2px 1px #fafafa,
-          0 2px 4px 0 #b2b2b2 inset,
-          0 -1px 1px 0 #f2f2f2 inset,
-          0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+  input[type="search"] {
+    width: 250px;
+    height: 30px;
+    padding-left: 15px;
+    border-radius: 6px;
+    border: none;
+    color: #939393;
+    font-weight: 500;
+    background-color: #fffbf8;
+    -webkit-box-shadow: 0 -2px 2px 0 rgba(199, 199, 199, 0.55), 0 1px 1px 0 #fff,
+      0 2px 2px 1px #fafafa, 0 2px 4px 0 #b2b2b2 inset,
+      0 -1px 1px 0 #f2f2f2 inset, 0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+    -moz-box-shadow: 0 -2px 2px 0 rgba(199, 199, 199, 0.55), 0 1px 1px 0 #fff,
+      0 2px 2px 1px #fafafa, 0 2px 4px 0 #b2b2b2 inset,
+      0 -1px 1px 0 #f2f2f2 inset, 0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+    box-shadow: 0 -2px 2px 0 rgba(199, 199, 199, 0.55), 0 1px 1px 0 #fff,
+      0 2px 2px 1px #fafafa, 0 2px 4px 0 #b2b2b2 inset,
+      0 -1px 1px 0 #f2f2f2 inset, 0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
   }
-  button[type="submit"]{
-      width:35px;
-      height:30px;
-      back
+  button[type="submit"] {
+    width: 35px;
+    height: 30px;
   }
 </style>
 
@@ -295,8 +279,6 @@
                 `Call ${result.attributes.PlaceName} and ${result.attributes.Place_addr}`
               );
             });
-            // const place_name = document.createTextNode(result.attributes.PlaceName);
-            // const place_addr = document.createTextNode(result.attributes.place_addr);
           });
         });
     }
@@ -313,28 +295,6 @@
       }
     });
 
-    // function addGraphic(type, point) {
-    //   const graphic = new Graphic({
-    //     symbol: {
-    //       type: "simple-marker",
-    //       color: type === "origin" ? "white" : "black",
-    //       size: "8px",
-    //     },
-    //     geometry: point,
-    //   });
-    //   view.graphics.add(graphic);
-    // }
-
-    // const stopSymbol = {
-    //   type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-    //   style: "cross",
-    //   size: 15,
-    //   outline: {
-    //     // autocasts as new SimpleLineSymbol()
-    //     width: 4,
-    //   },
-    // };
-
     // Search for places in center of map
     view.watch("stationary", function (val) {
       if (val) {
@@ -349,22 +309,6 @@
       }
       findPlaces(event.target.value, view.center);
     });
-
-    // view.on("click", function(event){
-
-    // if (view.graphics.length === 0) {
-    //   addGraphic("origin", event.mapPoint);
-    // } else if (view.graphics.length === 1) {
-    //   addGraphic("destination", event.mapPoint);
-
-    //   getRoute(); // Call the route service
-
-    // } else {
-    //   view.graphics.removeAll();
-    //   addGraphic("origin",event.mapPoint);
-    // }
-
-    // });
 
     function addGraphic(type, point) {
       const graphic = new Graphic({
