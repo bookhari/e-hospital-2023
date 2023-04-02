@@ -20,7 +20,7 @@
 
   td {
     padding: 15px;
-    width:auto;
+    width: auto;
   }
   /* th,
   td {
@@ -28,21 +28,27 @@
     background: linear-gradient(170deg, #ffffff, #b8a878);
   } */
 
-  th, .resultsTable tbody td {
+  th,
+  .resultsTable tbody td {
     color: #777;
     font-weight: 400;
     padding-bottom: 20px;
     padding-top: 20px;
     font-weight: 300;
     border: none;
-    -webkit-transition: .3s all ease;
-    -o-transition: .3s all ease;
-    transition: .3s all ease;
-}
+    -webkit-transition: 0.3s all ease;
+    -o-transition: 0.3s all ease;
+    transition: 0.3s all ease;
+  }
 
   tr:hover {
     background-color: rgb(65, 51, 46);
-    color:rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+  }
+
+  .text-address {
+    background-color: beige;
+    border-bottom: #777;
   }
 </style>
 
@@ -75,6 +81,10 @@
     esriConfig.apiKey =
       "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd-RXNWi44KwDM-SeN4GldsP8QiTHPeX";
 
+    const searchField = document.getElementById("locationInput");
+    const searchButton = document.getElementById("locationButton");
+    var Map_center = [-75.71859624820526, 45.40775749047658];
+  
     const routeLayer = new GraphicsLayer();
 
     const map = new Map({
@@ -82,11 +92,20 @@
       // layers: [routeLayer], // Add the route layer to the map
     });
 
-    const view = new MapView({
+    var view = new MapView({
       container: "viewDiv",
       map: map,
-      center: [-75.71859624820526, 45.40775749047658],
+      center: Map_center,
       zoom: 13,
+    });
+
+    searchButton.addEventListener("click", function (){
+      console.log("click");
+      if (searchField.value != "") {
+        const coordinates = searchField.value.split(',').map(Number);
+        console.log(coordinates);
+        view.center = coordinates;
+      }
     });
 
     const locate = new Locate({
@@ -164,9 +183,12 @@
 
             const name = document.createElement("span");
             name.innerHTML = result.attributes.PlaceName;
+            name.style.fontSize = "1em";
+
             const addr = document.createElement("span");
+            addr.style.fontSize = "0.7em";
             addr.innerHTML = `\n${result.attributes.Place_addr}`;
-            cell1.textContent = result.attributes.PlaceName;
+
             cell1.appendChild(name);
             cell1.appendChild(document.createElement("br"));
             cell1.appendChild(addr);
@@ -228,6 +250,9 @@
 
     // Listen for category changes and find places
     select.addEventListener("change", function (event) {
+      for (let i = table.rows.length - 1; i > 0; i--) {
+        table.deleteRow(i);
+      }
       findPlaces(event.target.value, view.center);
     });
 
