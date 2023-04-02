@@ -1519,7 +1519,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
       .LocationsDiv {
         height: 1000px;
         width: 35%;
-        float: left;
+        float: right;
         background: rgb(221, 221, 221);
         /* padding: 10%; */
         margin-left: 2em;
@@ -1529,31 +1529,13 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 
       .MapDiv {
         height: 1000px;
-        width: 1000px;
-        float: right;
-        padding: 20%;
-        margin: 4em;
+        width: 50em;
+        float: left;
+        /* padding: 20%; */
+        /* margin: 4em; */
+        /* padding-right: 20%; */
       }
 
-      .highlight {
-      background-color: gray;
-      }
-
-      tr:hover {
-    background-color: gray;
-    color: white
-    }
-
-    table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
     </style>
     <script>
       "use strict";
@@ -1612,7 +1594,7 @@ th, td {
                       <input type="text" id="location" name="location" />
                       <button type="submit">Search</button>
                     </form> -->
-                    <div id="LocationsDiv" class="LocationsDiv">
+                    <div id="LocationsDiv" class="LocationsDiv" style="margin-right: 5%">
                       <table id="resultsTable">
                         <thead>
                           <tr></tr>
@@ -1621,7 +1603,7 @@ th, td {
                         </tbody>
                       </table>
                     </div>
-                    <div id="viewDiv" class="MapDiv"></div>
+                    <div id="viewDiv" class="MapDiv" style="margin-left: 5%"></div>
                   </div>
                 </section>
               </div>
