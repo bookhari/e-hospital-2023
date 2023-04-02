@@ -1413,10 +1413,31 @@ app.get('/get_symptoms_checker', (req, res) => {
   })
 })
 
-// This API is for checking the authorized patient list of the doctor
-app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
+// This API is for checking the authorized patient list
+app.post('/checkAuthorizedPatients', (req, res) => {
   const uuid = req.body.uuid;
   const password = req.body.password;
+  const accountType = req.body.accountType;
+
+  var accountTable = "";
+
+  switch(accountType) {
+    case ("doctor"):
+      accountTable = "doctors_registration";
+      break;
+    case ("hospital"):
+      accountTable = "hospital_admin";
+      break;
+    case ("lab"):
+      accountTable = "lab_admin";
+      break;
+    case ("clinic"):
+      accountTable = "clinic_admin";
+      break;
+    default:
+      res.send({ error: `Unknown account type: ${accountType}` });
+      return;
+  }
 
   // Check parameters
   if (!uuid || !password) {
@@ -1424,8 +1445,8 @@ app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
     return;
   }
 
-  sql = `SELECT id FROM doctors_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
-  var doctor_id = 0;
+  sql = `SELECT id FROM ${accountTable} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  var id = 0;
   conn.query(sql, (error, result) => {
     if (error) {
       res.send({error:"Something wrong in MySQL."});
@@ -1435,10 +1456,22 @@ app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
     if (result.length == 0) {
       res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
       return;
-    }}
-    
-    )
+    }
+  
+    id = result[0].id;
+    sql = `SELECT FName, MName, LName, Age, Gender, BloodGroup, height, weight, MobileNumber, EmailId
+    FROM ${accountType}_recordauthorized join patients_registration ON ${accountType}_recordauthorized.patient_id = patients_registration.id
+    WHERE ${accountType}_id = ${id}`
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        console.log(error);
+        return;
+      }
+      res.send({success:result});
+    })
   })
+})
 
 
 // This API is for updating the ML prediction result to the database. 
