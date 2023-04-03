@@ -76,7 +76,7 @@ body {
                 <table>
                     <tbody>
                         <% data.forEach(entry => { %>
-
+                            
                         <tr>
                             <td>ID</td>
                             <td>:</td>
@@ -153,8 +153,10 @@ body {
                             <td><button><a href="psychologyDiagnosis?phoneNumber=<%= entry.MobileNumber %>">Psychology Diagnostics</a></button></td>
                         </tr>
                         <!--  Psychology - code ended for accessing patient's diagnosis results  (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
-
+                        
+                        
                     </tbody>
+                    <% }) %>
                 </table>
             </div>
         </div>
