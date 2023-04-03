@@ -279,6 +279,18 @@ app.get('/Breast-Diagnostic', (req, res) => {
   res.render("pages/Breast-Diagnostic");
 })
 
+app.get('/heartStrokeDetection', (req, res) => {
+  res.render("pages/heartStrokeDetection");
+})
+
+app.get('/heartStrokeDetection', (req, res) => {
+  res.render("pages/heartStrokeDetection");
+})
+
+app.get('/cancerDetection', (req, res) => {
+  res.render("pages/cancerDetection");
+})
+
 /* TaskName -AlzheimersDiagnostics and BrainTumorDiagnostics
  (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101, 
 */
@@ -294,6 +306,9 @@ app.get('/BrainTumorDiagnostics', (req, res) => {
 /* TaskName -AlzheimersDiagnostics and BrainTumorDiagnostics
  (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101, 
 */
+
+
+
 
 app.get('/Login', (req, res) => {
   errorMessage = '';
