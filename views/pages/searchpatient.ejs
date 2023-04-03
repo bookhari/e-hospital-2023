@@ -119,14 +119,10 @@ body {
                             <td><%= entry.Address %></td>
                         </tr>
                         <tr>
-<<<<<<< HEAD
-                            <td><button><a href="diagnostic-depart?id=<%= entry.id %>">Run Diagonostics</a></button></td>
-                            <% if (entry.id >= 112 && entry.id <= 166) { %>
-=======
+
                             <td><button><a href="diagnostic-depart?phoneNumber=<%= entry.MobileNumber %>">Run Diagonostics</a></button></td>
                         </tr>
                         <tr>
->>>>>>> upstream/main
                             <td><button><a href="liver2?id=<%= entry.id %>">Run Liver Diagnostics</a></button></td>
                         </tr>
                         <tr>
@@ -159,7 +155,6 @@ body {
                         <!--  Psychology - code ended for accessing patient's diagnosis results  (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
 
                     </tbody>
-                    <% }) %> 
                 </table>
             </div>
         </div>
