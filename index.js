@@ -159,6 +159,9 @@ app.get('/diabetology_specialists', (req, res) => {
 app.get('/DiabetologyDiagnostics', (req, res) => {
   res.render("pages/DiabetologyDiagnostics");
 })
+app.get('/DiabetologyData', (req, res) => {
+  res.render("pages/DiabetologyData");
+})
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })

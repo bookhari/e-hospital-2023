@@ -1,8 +1,10 @@
+<!-- Diabetology, code started for accessing ML Model (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group 1, Course-BMG5111, Winter 2023 -->
+
+
 <!DOCTYPE html>
 <html lang="en-CA">
-<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <head>
   <meta charSet="utf-8" />
@@ -229,7 +231,7 @@
     document.getElementById("log").innerHTML = ``;
 
     const data = {
- //     PatientID: (document.getElementById("PatientID").value),
+      PatientID: (document.getElementById("PatientID").value),
       Age: (document.getElementById("Age").value),
       BMI: (document.getElementById("BMI").value),
       SkinThickness: (document.getElementById("SkinThickness").value),
@@ -237,7 +239,7 @@
       BloodPressure: (document.getElementById("BloodPressure").value),
       Insulin: (document.getElementById("Insulin").value),
       DiabetesPedigreeFunction: (document.getElementById("DiabetesPedigreeFunction").value),
-  //    Sex: (document.getElementById("Sex").value),
+      Sex: (document.getElementById("Sex").value),
       Pregnancies: (document.getElementById("Pregnancies")?.value),
     }
     
