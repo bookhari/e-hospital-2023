@@ -34,6 +34,7 @@
       // retrived phone number form url
       let params = (new URL(document.location)).searchParams;
       let phoneNumber = params.get("phoneNumber");
+      console.log(phoneNumber)
 
       // Get the patient records
       $.ajax({
@@ -136,11 +137,11 @@
 
       // Store to the database
       $.ajax({
-        url: "/updateDisease",
+        url: "/updatePsychologyDiagnosis",
         type: 'POST',
         data: {
           phoneNumber: phoneNumber,
-          disease: "pneumonia", // the table name that stores the prediction result
+          disease: "pyschology_patients", // the table name that stores the prediction result
           date: today,
           prediction: result.prediction,
           accuracy: result.accuracy, // can be null if not provided
