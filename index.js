@@ -283,11 +283,7 @@ app.get('/Breast-Diagnostic', (req, res) => {
  (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101, 
 */
 
-/* TaskName -AlzheimersDiagnostics and BrainTumorDiagnostics
- (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101, 
-*/
-
-app.get('/BrainTumorDiagnostics', (req, res) => {
+app.get('/AlzheimersDiagnostics', (req, res) => {
   res.render("pages/BrainTumorDiagnostics");
 })
 
