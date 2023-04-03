@@ -70,13 +70,16 @@
 
 <div class="container">
   <div class="title">Assess Your Risk of Developing Diabetes</div>
-  <p id="log" style="
-    color:tomato; 
+ 
+ <p id="log" style="
+    color:rgb(50, 60, 133); 
     font-weight: bold;
     font-size: larger;
-    text-align: left;">
+    text-align: left;
+    margin-top: 3rem;">
     Result
   </p>
+  
   <div class="content">
 
     <form id="form">
@@ -269,13 +272,14 @@
     })
       .then(response => response.json())
       .then(data => {
-        if (data?.prediction === 'Patient is diabetic') {
-          document.getElementById("log").innerHTML = `Heart Disease`;
+        console.log(data)
+        if (data == 'Patient is diabetic') {
+          document.getElementById("log").innerHTML = 'Patient is diabetic';
           spinner.style.display = 'none'; // hide the spinner
 
 
-        } else if (data?.prediction === 'Patient is not diabetic') {
-          document.getElementById("log").innerHTML = `No Heart Disease`;
+        } else if (data == 'Patient is not diabetic') {
+          document.getElementById("log").innerHTML = 'Patient is not diabetic';
           spinner.style.display = 'none'; // hide the spinner
         }
 
