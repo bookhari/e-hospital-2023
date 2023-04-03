@@ -296,7 +296,7 @@ app.get('/cancerDetection', (req, res) => {
 */
 
 app.get('/AlzheimersDiagnostics', (req, res) => {
-  res.render("pages/BrainTumorDiagnostics");
+  res.render("pages/AlzheimersDiagnosticsDiagnostics");
 })
 
 app.get('/BrainTumorDiagnostics', (req, res) => {
