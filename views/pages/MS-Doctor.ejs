@@ -45,6 +45,69 @@
     border-radius: 10px;
       text-align: left;
     }
+    #result {
+      margin: 1rem 1rem;
+      background-color: #f5f5f5;
+      border-radius: 12px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      font-size: 24px;
+      width: 350px;
+      height: 75px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    
+    #result h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    #result p {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .displayArea{
+      margin-top: 60px;
+      height: 100%;
+      /*border: 1px solid green;*/
+      width: 50vw;
+  }
+
+    #patientTable td {
+  font-style: italic;
+}
+    #patientTable {
+border-collapse: collapse;
+width: 100%;
+}
+
+#patientTable td {
+border: 1px solid #ddd;
+padding: 8px;
+}
+
+#patientTable tr:nth-child(even) {
+background-color: #f2f2f2;
+}
+
+#patientTable tr:hover {
+background-color: #ddd;
+}
+
+#patientTable th {
+padding-top: 12px;
+padding-bottom: 12px;
+text-align: left;
+background-color: #4CAF50;
+color: white;
+}
+
   
   </style>
   
@@ -83,6 +146,48 @@
      </div>
           </form>
         </div>
+    <div class="displayArea">
+      <div id="result" style="display: none;"></div>
+      <h3 style="margin-bottom: 1rem">Patient Information</h3>
+      <table id="patientTable">
+  <tbody>
+    <tr>
+      <td>Pyramidal:</td>
+      <td id="pyramidal"></td>
+    </tr>
+    <tr>
+      <td>Cerebella:</td>
+      <td id="cerebella"></td>
+    </tr>
+    <tr>
+      <td>Brain_stem:</td>
+      <td id="brain_stem"></td>
+    </tr>
+    <tr>
+      <td>Sensory:</td>
+      <td id="sensory"></td>
+    </tr>
+    <tr>
+      <td>Visual:</td>
+      <td id="visual"></td>
+    </tr>
+    <tr>
+      <td>Mental:</td>
+      <td id="mental"></td>
+    </tr>
+    <tr>
+      <td>Bowel_and_bladder_function:</td>
+      <td id="bowel_and_bladder_function"></td>
+    </tr>
+    <tr>
+      <td>Mobility:</td>
+      <td id="mobility"></td>
+    </tr>
+      <td>Record Date:</td>
+      <td id="recordDate"></td>
+    </tr>
+  </tbody>
+</table>
     </div>
   
   
@@ -115,12 +220,46 @@
                     const diagnose = data;
                     console.log(diagnose)
                     $("#diagnose").val(diagnose);
+                    getMsDiseaseInfor();
                 },
                 error: function () {
                     console.log('error');
                 },
             });
             return true
+    }
+    function getMsDiseaseInfor() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+      const recordReq = { id: id };
+      fetch('/getPatientInformation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(recordReq),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(result => {
+        const data = result.data[0];
+        document.getElementById('pyramidal').textContent = data.pyramidal;
+        document.getElementById('cerebella').textContent = data.cerebella;
+        document.getElementById('brain_stem').textContent = data.brain_stem;
+        document.getElementById('sensory').textContent = data.sensory;
+        document.getElementById('visual').textContent = data.visual;
+        document.getElementById('mental').textContent = data.mental;
+        document.getElementById('bowel_and_bladder_function').textContent = data.bowel_and_bladder_function;
+        document.getElementById('mobility').textContent = data.mobility;
+        document.getElementById('recordDate').textContent = data.RecordDate;
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
     }    
   </script>
   
