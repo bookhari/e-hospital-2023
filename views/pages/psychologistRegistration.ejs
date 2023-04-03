@@ -90,23 +90,24 @@
       <input type="text" id="result" readonly>
       </p>
       <div class="content">
-        <form action="/psychologyQuestionnaire" method="post">
+        <form> 
           <div class="user-details">
             <div class="input-box">
-              <span class="details">Mobile Number</span>
-              <input name="phoneNumber" type="text" id="phoneNumber" placeholder="Enter Your Mobile Number">
+              <span class="details">Doctor ID</span>
+              <input name="uuid" type="text" id="uuid" placeholder="Enter Your ID">
             </div>
             <div class="input-box">
-              <span class="details">What is your preferred gender of the psychologist?</span>
+              <span class="details">What is your gender?</span>
               <select name="sex" id="sex">
                 <option value="" disabled selected>Select</option>
                 <option value=1>Male</option>
                 <option value=2>Female</option>
-                <option value=3>No Preference</option>
+                <option value=3>Non-binary</option>
+                <option value=4>Prefer not to say.</option>
               </select>
             </div>
             <div class="input-box">                       
-              <span class="details">What is your preferred language for therapy sessions?</span>
+              <span class="details">What language do you prefer to use during therapy sessions?</span>
               <select name="language" id="language">
                 <option value="" disabled selected>Select</option>
                 <option value=1>French</option>
@@ -115,7 +116,7 @@
               </select>
             </div>
             <div class="input-box">
-                <span class="details">What type of treatment setting do you prefer?</span>
+                <span class="details">What type of treatment setting do you offer?</span>
                 <select name="treatment_setting" id="treatment_setting">
                   <option value="" disabled selected>Select</option>
                   <option value=1>In-person therapy</option>
@@ -124,7 +125,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">Are you looking for a therapist who focuses on a specific age group?</span>
+                <span class="details">Do you focus on a specific age group?</span>
                 <select name="age_group" id="age_group">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Children and Adolescents</option>
@@ -133,7 +134,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">What is your primary concern that you want to address with a pscyhologist?</span>
+                <span class="details">What primary concerns do you specialize in?</span>
                 <select name="type_of_therapy" id="type_of_therapy">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Depression</option>
@@ -142,7 +143,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">Do you have a preference for a specific type of psychological treatment modality or what type of therapy you are interested in?</span>
+                <span class="details">Do you specialize in a specific type of psychological treatment modality or therapy?</span>
                 <select name="psychological_treatment" id="psychological_treatment">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Psychodynamic therapy</option>
@@ -151,7 +152,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">What is your preferred time frame for therapy sessions?</span>
+                <span class="details">What is your available time frame for therapy sessions?</span>
                 <select name="time_frame" id="time_frame">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Morning</option>
@@ -160,7 +161,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">How frequently would you like to attend therapy sessions?</span>
+                <span class="details">How frequently do you offer therapy sessions?</span>
                 <select name="frequency" id="frequency">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Weekly</option>
@@ -169,21 +170,13 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">What is your budget for therapy sessions?</span>
+                <span class="details">How much do you charge per session?</span>
                 <select name="cost" id="cost">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Less than $100 per session</option>
                   <option value=2>$100-$150 per session</option>
                   <option value=3>More than $150 per session</option>
                 </select>
-            </div>
-            <div class="input-box">
-              <span class="details">Based on your the primary concern you selected, would you like to complete an additional questionnaire that could help your healthcare provider assist you in diagnosis?</span>
-              <select name="nextQuestion" id="nextQuestion">
-                <option value="" disabled selected>Select</option>
-                <option value=1>Yes</option>
-                <option value=2>No</option>
-              </select>
             </div>
           </div>
           <div class="button">
@@ -193,81 +186,5 @@
       </div>
     </div>
   </div>  
-
-  <script>
-
-    var answers = ['','','','','','','','',''];
-    //const date = new Date( Date.now() );
-
-    function checkAnswer() {
-      console.log()
-      var q1SelectedOption = document.querySelector('input[name="sex"]:checked');
-      var q2SelectedOption = document.querySelector('input[name="language"]:checked');
-      var q3SelectedOption = document.querySelector('input[name="treatment_setting"]:checked');
-      var q4SelectedOption = document.querySelector('input[name="age_group"]:checked');
-      var q5SelectedOption = document.querySelector('input[name="type_of_therapy"]:checked');
-      var q6SelectedOption = document.querySelector('input[name="psychological_treatment"]:checked');
-      var q7SelectedOption = document.querySelector('input[name="time_frame"]:checked');
-      var q8SelectedOption = document.querySelector('input[name="frequency"]:checked');
-      var q9SelectedOption = document.querySelector('input[name="cost"]:checked');
-      var q10SelectedOption = document.querySelector('input[name="nextQuestion"]:checked');
-
-      answers[1] = q1SelectedOption.value;
-      answers[2] = q2SelectedOption.value;
-      answers[3] = q3SelectedOption.value;
-      answers[4] = q4SelectedOption.value;
-      answers[5] = q5SelectedOption.value;
-      answers[6] = q6SelectedOption.value;
-      answers[7] = q7SelectedOption.value;
-      answers[8] = q8SelectedOption.value;
-      answers[9] = q9SelectedOption.value;
-      answers[10] = q10SelectedOption.value;
-
-      // Define the Information of Dr.s database
-      fetch('/get_psychologistsinfo')
-        .then((data) => populate(data));
-
-      function populate(res) {
-        for (var i = 0; i < res.length; i++) {
-          doctors.push([        res[i].dr_name,
-            res[i].sex,
-            res[i].language,
-            res[i].treatment_type,
-            res[i].age_group,
-            res[i].type_of_therapy,
-            res[i].psychological_treatment,
-            res[i].time_frame,
-            res[i].frequency,
-            res[i].cost
-          ]);
-        }
-        return res
-      }
-
-      var numSame = 0;
-      var x = 0;
-
-      for (var i = 0; i < res.length; i++) {
-        var cam = 0;
-        for (var j = 1; j < answers.length; j++) {
-          if (answers[j] === res[i][j]) {
-            cam++;
-          }
-        }
-        if (numSame < cam) {
-          numSame = cam;
-          x = i;
-        }
-      }
-
-      //document.getElementById("result").value = doctors[x][0];
-      //document.getElementById("result").innerHTML = doctors[x][0];
-      console.log(res[x][0]);
-      var chosen_dr = res[x][0];
-      console.log(chosen_dr)
-      return chosen_dr
-    }
-    console.log(chosen_dr)
-  </script>
 </body>
 </html>

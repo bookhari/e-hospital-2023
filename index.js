@@ -199,6 +199,9 @@ app.get('/psychologyDiagnosis', (req, res) => {
 app.get('/depressionQuestionnaire', (req, res) => {
   res.render("pages/depressionQuestionnaire");
 })
+app.get('/psychologistRecommendation', (req, res) => {
+  res.render("pages/psychologistRecommendation");
+})
 /* Psychology - code ended for adding route to Psychology Page Alexis McCreath Frangakis, Parisa Nikbakht)
    Group 8, Course-BMG5111, Winter 2023 */
 
@@ -1875,6 +1878,7 @@ app.post('/updateDisease', (req, res) => {
 */
 app.post('/psychologyQuestionnaire', (req, res) => {
   const getDetails = req.body
+  console.log(req.body)
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
   const date = new Date();
@@ -1888,11 +1892,11 @@ app.post('/psychologyQuestionnaire', (req, res) => {
   // console.log(sql);
   conn.query(sql, async (error, result) => {
     if (error) {
-      console.log(error)
       res.send({error:"Something wrong in MySQL."});
       return;
     }
     if (result.length != 1) {
+      console.log(result.length)
       res.send({error:"No patient matched in database."});
       return;
     }
@@ -1901,7 +1905,7 @@ app.post('/psychologyQuestionnaire', (req, res) => {
     sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`, `chosen_dr`) VALUES ?";
     var VALUES = [[patient_id, phoneNumber, date, getDetails.sex, getDetails.language,
      getDetails.treatment_setting, getDetails.age_group, getDetails.type_of_therapy, getDetails.psychological_treatment,
-     getDetails.time_frame, getDetails.frequency, getDetails.cost, getDetails.chosen_dr]]
+     getDetails.time_frame, getDetails.frequency, getDetails.cost, getDetails.dr_name]]
 
     conn.query(sql, [VALUES], (error, result) => {
       if (error) throw error
@@ -1915,7 +1919,7 @@ app.post('/psychologyQuestionnaire', (req, res) => {
           res.redirect("/thankyou");
         }
       }
-        else{
+      else{
         res.redirect("/thankyou");
       }
     })
@@ -1947,15 +1951,14 @@ app.post('/depressionQuestionnaire', (req, res) => {
     }
   
     patient_id = result[0].id;  
-    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`, `chosen_dr`) VALUES ?";
-    var VALUES = [[patient_id, phoneNumber, date]]
+    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`sumTotal`) VALUES ?";
+    var VALUES = [[patient_id, phoneNumber, date, getDetails.sumTotal]]
 
     conn.query(sql, [VALUES], (error, result) => {
       if (error) throw error
       let params1 = encodeURIComponent(phoneNumber)
-      let params2 = encodeURIComponent(getDetails.type_of_therapy)
-      //console.log("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2)
-      res.redirect("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2);
+      let params2 = encodeURIComponent(getDetails.psychologist)
+      res.redirect("/psychologistRecommendation?phoneNumber="+params1+"&psych="+params2);
     })
   })
 })
