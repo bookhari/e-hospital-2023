@@ -231,7 +231,7 @@
 
     if(id < 152 || id > 166) {
       alert("No record for this patient, redirecting to general diagnostic page for manual inputs.")
-      window.location.replace(`/liver-prediction?id=${id}`);
+      window.location.replace(`/liver?id=${id}`);
     }
 
     const baseURL = 'https://e-hospital-liver.herokuapp.com'
