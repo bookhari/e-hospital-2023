@@ -203,10 +203,11 @@ app.get('/depressionQuestionnaire', (req, res) => {
    Group 8, Course-BMG5111, Winter 2023 */
 
 
-app.get('/liver', (req, res) => {
-  res.render("pages/liver");
+app.get('/liver-prediction', (req, res) => {
+  res.render("pages/liver-prediction");
+
 })
-app.get('/liver2', (req, res) => {
+app.get('/liver-direct-prediction', (req, res) => {
   res.render("pages/liver-direct-prediction");
 })
 
