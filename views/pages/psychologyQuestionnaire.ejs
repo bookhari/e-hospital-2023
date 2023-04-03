@@ -199,8 +199,8 @@
     var answers = ['','','','','','','','',''];
     //const date = new Date( Date.now() );
 
-    function checkAnswer() {
-      console.log()
+    function checkAnswer(event) {
+      
       var q1SelectedOption = document.querySelector('input[name="sex"]:checked');
       var q2SelectedOption = document.querySelector('input[name="language"]:checked');
       var q3SelectedOption = document.querySelector('input[name="treatment_setting"]:checked');
@@ -223,10 +223,6 @@
       answers[9] = q9SelectedOption.value;
       answers[10] = q10SelectedOption.value;
 
-      // Define the Information of Dr.s database
-      fetch('/get_psychologistsinfo')
-        .then((data) => populate(data));
-
       function populate(res) {
         for (var i = 0; i < res.length; i++) {
           doctors.push([        res[i].dr_name,
@@ -244,6 +240,10 @@
         return res
       }
 
+      // Define the Information of Dr.s database
+      fetch('/get_psychologistsinfo')
+        .then((data) => populate(data));
+
       var numSame = 0;
       var x = 0;
 
@@ -259,15 +259,9 @@
           x = i;
         }
       }
-
-      //document.getElementById("result").value = doctors[x][0];
-      //document.getElementById("result").innerHTML = doctors[x][0];
-      console.log(res[x][0]);
       var chosen_dr = res[x][0];
-      console.log(chosen_dr)
-      return chosen_dr
     }
-    console.log(chosen_dr)
+
   </script>
 </body>
 </html>
