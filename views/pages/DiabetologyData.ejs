@@ -1,4 +1,4 @@
-<!-- Psychology, code started for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
+<!-- Diabetology, code started for accessing patient ML Results (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group 1, Course-BMG5111, Winter 2023 -->
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
   <meta charSet="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Register | E-Hospital</title>
+  <title>Diabetology | E-Hospital</title>
   <meta name="author" content="E-Hospital" />
 
   <meta property="og:url" content="register.html" />
@@ -33,16 +33,15 @@
     $(document).ready(function() {
       // retrived phone number form url
       let params = (new URL(document.location)).searchParams;
-      let phoneNumber = params.get("phoneNumber");
-      console.log(phoneNumber)
+      let PatientID = params.get("PatiendID");
 
       // Get the patient records
       $.ajax({
-        url: "/psychologyDiagnosis",
+        url: "/DiabetologyData",
         type: 'POST',
         data: {
-          phoneNumber: phoneNumber, 
-          recordType: "psychology_patients" // the table name that stores the record
+          PatientID: PatientID, 
+          recordType: "Diabetology_patients" // the table name that stores the record
         },
         success: function(data) {
           // console.log(data);
@@ -59,7 +58,7 @@
     function display(data) {
       recordList = data;
       if (recordList.length <= 0) {
-        alert("This patient has no record, please tell the patient to take the psychologist questionnaire and the psychologist diagnosis questionnaire.");
+        alert("This patient has no record.");
         return;
       }
       console.log(recordList);
@@ -137,15 +136,15 @@
 
       // Store to the database
       $.ajax({
-        url: "/updatePsychologyDiagnosis",
+        url: "/updateDisease",
         type: 'POST',
         data: {
           phoneNumber: phoneNumber,
-          disease: "pyschology_patients", // the table name that stores the prediction result
+          disease: "pneumonia", // the table name that stores the prediction result
           date: today,
           prediction: result.prediction,
           accuracy: result.accuracy, // can be null if not provided
-          recordType: "psychology_patients", // can be null if no record is used for the ML prediction
+          recordType: "Diabetology_patients", // can be null if no record is used for the ML prediction
           recordId: id // can be null if no record is used for the ML prediction
         },
         success: function(data) {

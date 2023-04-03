@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css">
+
+</head>
+<style>
+  select {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  select:focus {
+    border-color: #9b59b6;
+  }
+
+  .spinner {
+    border: 5px solid #9b59b6;
+    border-top-color: #9b59b6;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .black-button {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .black-button input[type="submit"] {
+    background: linear-gradient(-135deg, #747474, rgb(0, 0, 0));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 400px;
+    width: 300px;
+
+  }
+
+  .black-button input[type="submit"]:hover {
+    background: linear-gradient(-135deg, #000000, #747474);
+  }
+</style>
+
+<body>
+<%- include('../partials/header') -%>
+
+    <div class="container">
+        <div class="title">PHQ-9: Over the last 2 weeks, how often have you been bothered by any of the following problems: </div>
+        <div class="content">
+          
+            <form action="/depressionQuestionnaire" method="post">
+                <div class="user-details">
+                  <div class="input-box">                       
+                    <span class="details">Little interest or pleasure in doing things.</span>
+                    <select name="q1" id="q1">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Not at all</option>
+                      <option value=1>Several days</option>
+                      <option value=2>More than half the days</option>
+                      <option value=3>Nearly every day</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">Feeling down, depressed, or hopeless</span>
+                      <select name="q2" id="q2">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Not at all</option>
+                        <option value=1>Several days</option>
+                        <option value=2>More than half the days</option>
+                        <option value=3>Nearly every day</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">Trouble falling or staying asleep or sleeping too much</span>
+                      <select name="q3" id="q3">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Not at all</option>
+                        <option value=1>Several days</option>
+                        <option value=2>More than half the days</option>
+                        <option value=3>Nearly every day</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">Feeling tired or having little energy</span>
+                      <select name="q4" id="q4">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Not at all</option>
+                        <option value=1>Several days</option>
+                        <option value=2>More than half the days</option>
+                        <option value=3>Nearly every day</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">Poor appetite or overeating</span>
+                      <select name="q5" id="q5">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Not at all</option>
+                        <option value=1>Several days</option>
+                        <option value=2>More than half the days</option>
+                        <option value=3>Nearly every day</option>
+                      </select>
+                  </div>
+
+                  <div class="input-box">
+                      <span class="details">Feeling bad about yourself - or that you are a failure or have let yourself or your family down</span>
+                      <select name="q6" id="q6">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Not at all</option>
+                        <option value=1>Several days</option>
+                        <option value=2>More than half the days</option>
+                        <option value=3>Nearly every day</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">Trouble concentrating on things, such as reading the newspaper or watching television</span>
+                      <select name="q7" id="q7">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Not at all</option>
+                        <option value=1>Several days</option>
+                        <option value=2>More than half the days</option>
+                        <option value=3>Nearly every day</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">Moving or speaking so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual</span>
+                      <select name="q8" id="q8">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Not at all</option>
+                        <option value=1>Several days</option>
+                        <option value=2>More than half the days</option>
+                        <option value=3>Nearly every day</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">Thoughts that you would be better off dead or of hurting yourself in some way</span>
+                    <select name="q9" id="q9">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Not at all</option>
+                      <option value=1>Several days</option>
+                      <option value=2>More than half the days</option>
+                      <option value=3>Nearly every day</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">If you checked off any problems, how difficult have these problems made it for you to do your work, take care of things at home, or get along with other people?</span>
+                    <select name="q10" id="q10">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Not difficult at all</option>
+                      <option value=1>Somewhat difficult</option>
+                      <option value=2>Very difficult</option>
+                      <option value=3>Extremely difficult</option>
+                    </select>
+                  </div>
+              </div>
+              <div class="button">
+                  <input type="submit" value="Submit" onclick="sumAnswers();">
+              </div>
+          </form>
+      </div>
+  </div>
+
+
+<script>
+
+  function sumAnswers() {
+    var q1SelectedOption = document.querySelector('input[name="q1"]:checked');
+    var q2SelectedOption = document.querySelector('input[name="q2"]:checked');
+    var q3SelectedOption = document.querySelector('input[name="q3"]:checked');
+    var q4SelectedOption = document.querySelector('input[name="q4"]:checked');
+    var q5SelectedOption = document.querySelector('input[name="q5"]:checked');
+    var q6SelectedOption = document.querySelector('input[name="q6"]:checked');
+    var q7SelectedOption = document.querySelector('input[name="q7"]:checked');
+    var q8SelectedOption = document.querySelector('input[name="q8"]:checked');
+    var q9SelectedOption = document.querySelector('input[name="q9"]:checked');
+    var q10SelectedOption = document.querySelector('input[name="q10"]:checked');
+
+    var sumTotal = Number(q1SelectedOption.value) + Number(q2SelectedOption.value) + Number(q3SelectedOption.value) + Number(q4SelectedOption.value) + Number(q5SelectedOption.value) + Number(q6SelectedOption.value) + Number(q7SelectedOption.value) + Number(q8SelectedOption.value) + Number(q9SelectedOption.value);
+
+    return sumTotal;
+  }
+</script>
+</body>
+</html>

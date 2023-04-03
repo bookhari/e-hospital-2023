@@ -140,7 +140,7 @@ app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
 
-app.get('/ecg', (req, res) => {
+app.get('/arrhythmia', (req, res) => {
   res.render("pages/ecg-ml");
 })
 
@@ -158,6 +158,9 @@ app.get('/diabetology_specialists', (req, res) => {
 })
 app.get('/DiabetologyDiagnostics', (req, res) => {
   res.render("pages/DiabetologyDiagnostics");
+})
+app.get('/DiabetologyData', (req, res) => {
+  res.render("pages/DiabetologyData");
 })
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
@@ -191,12 +194,15 @@ app.get('/psychologyDiagnosisQuestionnaires/patientID=:patientID&type=:type', (r
 app.get('/psychologyDiagnosis', (req, res) => {
   res.render("pages/psychologyDiagnosis");
 })
+app.get('/depressionQuestionnaire', (req, res) => {
+  res.render("pages/depressionQuestionnaire");
+})
 /* Psychology - code ended for adding route to Psychology Page Alexis McCreath Frangakis, Parisa Nikbakht)
    Group 8, Course-BMG5111, Winter 2023 */
 
 
 app.get('/liver', (req, res) => {
-  res.render("pages/liver-prediction");
+  res.render("pages/liver");
 })
 app.get('/liver2', (req, res) => {
   res.render("pages/liver-direct-prediction");
@@ -234,6 +240,9 @@ app.get('/symptoms-checker', (req, res) => {
 app.get('/index', (req, res) => {
   res.render("pages/index");
 })
+app.get('/labtest', (req, res) => { //Christina&Sanika
+  res.render("pages/labtest");
+})
 app.get('/labapp', (req, res) => { //Christina&Sanika
   res.render("pages/labapp");
 })
@@ -268,8 +277,8 @@ app.get('/Breast-Diagnostic', (req, res) => {
   res.render("pages/Breast-Diagnostic");
 })
 
-app.get('/AlzheimersDiagnostics', (req, res) => {
-  res.render("pages/AlzheimersDiagnostics");
+app.get('/heartStrokeDetection', (req, res) => {
+  res.render("pages/heartStrokeDetection");
 })
 
 app.get('/heartStrokeDetection', (req, res) => {
@@ -401,8 +410,6 @@ app.get('/hospital', (req, res) => {
   res.render("pages/hospital");
 })
 
-
-
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
 })
@@ -421,11 +428,14 @@ app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });
 
-app.post('/send-contact-form', (req, res) => {
+app.get('/contact-us', (req, res) => {
+  res.render("pages/contact-us");
+});
 
-  // Define mandatory parameters
-  const SENDER_EMAIL = "ehospital112233@gmail.com";
-  const SENDER_PASS = "hlcvsrrzempexzhw";
+app.post('/send-contact-form', (req, res) => {
+  const SENDER_EMAIL = "ehospital23@gmail.com";
+  const SENDER_PASS = "bozsyftcnmqhokte";
+  
   const RECEIVER_NAME = req.body.userName;
   const RECEIVER_EMAIL = req.body.userEmail;
   const PHONE_NUMBER = req.body.phoneNumber;
@@ -649,10 +659,47 @@ app.post('/searchpatient', (req, res) => {
     });
     console.log(sql_search_query);
     });
-
-   
-
 })
+
+// To search for patient info based on id
+app.post('/searchid', (req, res) => {
+  const id = req.query.id;
+  console.log("requestId", id);
+
+    sql_search_query = `SELECT * FROM patients_registration WHERE id = "${id}"`;
+    conn.query(sql_search_query, function (err, result) {
+      if (err) throw err;
+      // console.log(result);
+        res.json(result)
+    });
+    
+    console.log(sql_search_query);
+})
+
+// To search for Ecg blood test records  based on id & mobile number
+
+app.post('/searchEcgBloodtest', (req, res) => {
+  const mobileNumber = req.query.mobileNumber;
+  const id = req.query.id;
+
+  // console.log("requestMobileNumber", mobileNumber);
+
+  const sql_search_query = `
+    SELECT * 
+    FROM ecg_bloodtest_going_to_delete
+    JOIN patients_registration
+    ON patients_registration.id = "${id}"
+    WHERE patients_registration.MobileNumber = "${mobileNumber}"
+  `;
+  conn.query(sql_search_query, function (err, result) {
+    if (err) throw err;
+    // console.log("blood test",result[0]);
+    res.json(result[0]);
+  });
+  
+});
+
+
 //app.post('/searchpatient', async (req,res) => {  
 //})
 app.post('/patientsDashboard', (req, res) => {
@@ -967,6 +1014,7 @@ app.post('/get_docotorInfoTest',(req,res)=>{
   })
 
 })
+
 app.post('/get_doctorInfo', (req, res) => {
   const get_doctorInfo = req.body
   var password = crypto.randomBytes(16).toString("hex");
@@ -1001,12 +1049,242 @@ app.post('/get_doctorInfo', (req, res) => {
               }
 })
 
+/* LAB TEST APPOINTMENT FORM, backenf api code started for adding route to register (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+// Get a list of available labs
+app.get('/get_availableLabs', (req, res) => {
+  sql = "SELECT Lab_Name, Email_Id, Location1, Location2, PostalCode, City, Province, Country, uuid FROM lab_admin WHERE verification = 1 ORDER BY Lab_Name";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+
+// Get the appointment schedule of the specific lab
+app.post('/get_appointmentList', (req, res) => {
+  const uuid = req.body.id;
+
+  if (!uuid) {
+    res.send({error:"Missing lab uuid."});
+    return;
+  }
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
+  sql = `SELECT appointmentDate, slot
+  FROM lab_admin join lab_appointment ON lab_admin.id = lab_appointment.lab_id
+  WHERE lab_admin.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+
+// Get the appointment schedule of the specific lab
+app.post('/update_appointment', (req, res) => {
+  const lab_uuid = req.body.lab_id;
+  const uuid = req.body.id;
+  const password = req.body.password;
+  const date = req.body.date;
+  const slot = req.body.slot;
+  console.log(uuid)
+  console.log(password)
+  console.log(date)
+  console.log(slot)
+
+  if (!lab_uuid || !uuid || !password) {
+    res.send({error:"Missing lab uuid, patient uuid, or patient password."});
+    return;
+  }
+  if (!date || !slot) {
+    res.send({error:"Missing appointment date or slot."});
+    return;
+  }
+
+  sql = 'SELECT * FROM `patients_registration` WHERE uuid = ? AND verification = ?';
+  console.log(sql);
+  conn.query(sql, [uuid,true] ,(error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if(result.length == 0){
+      res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
+      return;
+    } else {
+      if (result[0].uuid === uuid && result[0].password === password) {
+        // Correct patients
+        const patient_id = result[0].id;
+        sql = `SELECT id FROM lab_admin WHERE uuid = "${lab_uuid}" AND verification = true`
+        conn.query(sql, (error, result) => {
+          if (error) {
+            res.send({error:"Something wrong in MySQL."});
+            console.log(error);
+            return;
+          }
+          if(result.length == 0){
+            res.send({error: "No valid lab match in the database."});
+            return;
+          } else {
+            sql = `INSERT INTO lab_appointment (lab_id, patient_id, appointmentDate, slot)  VALUES (${result[0].id}, ${patient_id}, "${date}", ${slot})`;
+            
+            conn.query(sql,(error, result) => {
+              if (error) {
+                res.send({error:"Something wrong in MySQL."});
+                console.log(error);
+                return;
+              }
+              if (result.affectedRows == 1) {
+                res.send({success:"Appointment scheduled."})
+              } else {
+                res.send({error:"Something goes wrong in the database."});
+              }
+            })
+          }
+        })
+      } else {
+        res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
+        return;
+      }
+    }
+  })
+})
+/* LAB TEST APPOINTMENT FORM, backenf api code ended for adding route to register (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+
+// Get the appointment list and the lab info for the specific patient
+app.post('/check_patientAppointment', (req, res) => {
+  const uuid = req.body.id;
+
+  if (!uuid) {
+    res.send({error:"Missing patient uuid."});
+    return;
+  }
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
+  sql = `SELECT lab_admin.Lab_Name, lab_admin.Email_Id, lab_admin.Location1, lab_admin.Location2, lab_admin.City, lab_admin.Province, lab_admin.Country, appointmentDate, slot
+  FROM lab_admin JOIN lab_appointment JOIN patients_registration 
+  ON lab_admin.id = lab_appointment.lab_id AND patients_registration.id = lab_appointment.patient_id
+  WHERE patients_registration.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+
+// Get the appointment list and the patient info for the specific lab
+app.post('/check_labAppointment', (req, res) => {
+  const uuid = req.body.id;
+
+  if (!uuid) {
+    res.send({error:"Missing lab uuid."});
+    return;
+  }
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
+  sql = `SELECT patients_registration.FName, patients_registration.MName, patients_registration.LName, patients_registration.MobileNumber, appointmentDate, slot
+  FROM lab_admin JOIN lab_appointment JOIN patients_registration 
+  ON lab_admin.id = lab_appointment.lab_id AND patients_registration.id = lab_appointment.patient_id
+  WHERE lab_admin.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+/* notification widget, backenf api code started for adding route to index (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+app.get('/get_availableDoctors', (req, res) => {
+  sql = "SELECT Specialization, COUNT(Specialization) AS 'NumberOfDoctors' FROM doctors_registration WHERE Availability = 1 AND verification = 1 GROUP BY Specialization";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
+    res.send(result);
+  })
+})
+/* find a dentist, backenf api code ended for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+
+/* find a dentist, backenf api code started for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+app.post('/get_availableDentists', (req, res) => {
+  const Province = req.body.Province;
+  const Country= req.body.Country;
+  const City = req.body.City;
+  console.log(req.body)
+  
+  //sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
+  sql = `SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1 AND Province = "${Province}" AND Country = "${Country}" AND City = "${City}"  `;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+/* find a dentist, backenf api code ended for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+
+app.post('/update_availability', (req, res) => {
+  const Availability = req.body.Availability;
+  const uuid = req.body.id;
+  const password = req.body.password;
+
+  sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  console.log(sql)
+  conn.query(sql,(error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.affectedRows == 1) {
+      result.changedRows == 1 ? res.send({success:"Availability updated."}) : res.send({success:"The update is already in place."})
+    } else if (result.affectedRows == 0) {
+      res.send({error:"Your account info is not correct."});
+    } else if (result.affectedRows > 1) {
+      res.send({error:"Duplicate account updated, please contact the system manager."});
+    } else {
+      res.send({error:"Something goes wrong in the database."});
+    }
+  })
+})
+
 /* Diabetology Page, code started for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
 app.get('/get_diabetologyList', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
   conn.query(sql, (error, result) => {
-    if (error) throw error
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
     res.send(result);
   })
 })
@@ -1275,8 +1553,20 @@ app.get('/MS-Doctor',(req,res) => {
 // user: "uottawabiomedicalsystems@gmail.com", //
 // pass: "@uOttawa5902",
 
+//christina&sanika
+app.route("/ajax")
+.post(function(req,res){
+
+ res.send({response:req.body.Country});
+ console.log("success")
+console.log(req.body)
+console.log(req.body.Country)
+});
+//christina&sanika
+
 const twilio = require("twilio");
 const { pid } = require('process');
+const { checkServerIdentity } = require('tls');
 
 app.get('/sendEmail', (req, res) => {
 
@@ -1413,18 +1703,15 @@ app.get('/get_symptoms_checker', (req, res) => {
   })
 })
 
-// This API is for checking the authorized patient list of the doctor
-app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
+// This API is for authorized access to doctor
+app.post('/authorizeToDoctor', (req, res) => {
   const uuid = req.body.uuid;
   const password = req.body.password;
+  const doctorPhoneNumber = req.body.doctorPhoneNumber;
+  const isAuthorized = req.body.isAuthorized == "1" ? true : false;
 
-  // Check parameters
-  if (!uuid || !password) {
-    res.send({error:"Missing doctor credential."});
-    return;
-  }
-
-  sql = `SELECT id FROM doctors_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  sql = `SELECT id FROM patients_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  var patient_id = 0;
   var doctor_id = 0;
   conn.query(sql, (error, result) => {
     if (error) {
@@ -1435,10 +1722,95 @@ app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
     if (result.length == 0) {
       res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
       return;
-    }}
-    
-    )
+    }
+  
+    patient_id = result[0].id;
+    sql = `SELECT id FROM doctors_registration WHERE MobileNumber = "${doctorPhoneNumber}" AND verification = true`;
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        console.log(error);
+        return;
+      }
+      if (result.length == 0) {
+        res.send({error:"Invalid doctor phone number. Please Check."});
+        return;
+      }
+
+      doctor_id = result[0].id;
+      sql = isAuthorized ? `INSERT INTO doctor_recordauthorized (doctor_id,patient_id) VALUES (${doctor_id},${patient_id});` : `DELETE FROM doctor_recordauthorized WHERE doctor_id = "${doctor_id}" AND patient_id = "${patient_id}";`
+      console.log(sql);
+      conn.query(sql, (error, result) => {
+        if (error && error.code != 'ER_DUP_ENTRY') {
+          res.send({error:"Something wrong in MySQL."});
+          console.log(error);
+          return;
+        }
+        res.send({success: isAuthorized? "Authorize success." : "Deauthorize success." });
+      })
+    })
   })
+})
+
+// This API is for checking the authorized patient list
+app.post('/checkAuthorizedPatients', (req, res) => {
+  const uuid = req.body.uuid;
+  const password = req.body.password;
+  const accountType = req.body.accountType;
+
+  var accountTable = "";
+
+  switch(accountType) {
+    case ("doctor"):
+      accountTable = "doctors_registration";
+      break;
+    case ("hospital"):
+      accountTable = "hospital_admin";
+      break;
+    case ("lab"):
+      accountTable = "lab_admin";
+      break;
+    case ("clinic"):
+      accountTable = "clinic_admin";
+      break;
+    default:
+      res.send({ error: `Unknown account type: ${accountType}` });
+      return;
+  }
+
+  // Check parameters
+  if (!uuid || !password) {
+    res.send({error:"Missing doctor credential."});
+    return;
+  }
+
+  sql = `SELECT id FROM ${accountTable} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  var id = 0;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.length == 0) {
+      res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
+      return;
+    }
+  
+    id = result[0].id;
+    sql = `SELECT FName, MName, LName, Age, Gender, BloodGroup, height, weight, MobileNumber, EmailId
+    FROM ${accountType}_recordauthorized join patients_registration ON ${accountType}_recordauthorized.patient_id = patients_registration.id
+    WHERE ${accountType}_id = ${id}`
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        console.log(error);
+        return;
+      }
+      res.send({success:result});
+    })
+  })
+})
 
 
 // This API is for updating the ML prediction result to the database. 
@@ -1450,8 +1822,6 @@ app.post('/updateDisease', (req, res) => {
   const accuracy = req.body.accuracy; // prediction accuracy, e.g. "90%"
   const recordType = req.body.recordType; // the type of the health test, e.g. "X-Ray" or "ecg"
   const recordId = req.body.recordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
-
-  console.log(req.body);
 
   if (!phoneNumber || !disease || !date || !prediction) {
     res.send({error:"Missing patient phone number, disease, date, or prediction."});
@@ -1491,39 +1861,6 @@ app.post('/updateDisease', (req, res) => {
     });
   });
 });
-//   var patient_id = 0;
-//   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-//   // console.log(sql);
-//   conn.query(sql, async (error, result) => {
-//     if (error) {
-//       res.send({error:"Something wrong in MySQL."});
-//       return;
-//     }
-//     if (result.length != 1) {
-//       res.send({error:"No patient matched in database."});
-//       return;
-//     }
-//     patient_id = result[0].id;
-
-//     sql = `INSERT into ${disease} (patient_id, prediction_date, prediction, accuracy, record_type, record_id)
-//     VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${reccordType?"\""+reccordType+"\"":"NULL"}, ${reccordId?"\""+reccordId+"\"":"NULL"})
-//     ON DUPLICATE KEY 
-//     UPDATE prediction_date = "${date}", 
-//     prediction = "${prediction}",
-//     accuracy = ${accuracy?"\""+accuracy+"\"":"NULL"},
-//     record_type = ${reccordType?"\""+reccordType+"\"":"NULL"},
-//     record_id = ${reccordId?"\""+reccordId+"\"":"NULL"};`;
-//     conn.query(sql, async (error, result) => {
-//       if (error) {
-//         res.send({error:"Something wrong in MySQL."});
-//         return;
-//       }
-//       res.send({success: "Submit success."});
-//     });
-//   });
-
-// })
-
 
 /* Psychology, code started for logging info into database from psychology Questionnaire, also for finding the patient ID and showing results to the doctor. (Alexis McCreath Frangakis, Parisa Nikbakht)
    Group 8, Course-BMG5111, Winter 2023
@@ -1543,6 +1880,7 @@ app.post('/psychologyQuestionnaire', (req, res) => {
   // console.log(sql);
   conn.query(sql, async (error, result) => {
     if (error) {
+      console.log(error)
       res.send({error:"Something wrong in MySQL."});
       return;
     }
@@ -1552,20 +1890,68 @@ app.post('/psychologyQuestionnaire', (req, res) => {
     }
   
     patient_id = result[0].id;  
-    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`) VALUES ?";
+    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`, `chosen_dr`) VALUES ?";
     var VALUES = [[patient_id, phoneNumber, date, getDetails.sex, getDetails.language,
      getDetails.treatment_setting, getDetails.age_group, getDetails.type_of_therapy, getDetails.psychological_treatment,
-     getDetails.time_frame, getDetails.frequency, getDetails.cost]]
+     getDetails.time_frame, getDetails.frequency, getDetails.cost, getDetails.chosen_dr]]
 
     conn.query(sql, [VALUES], (error, result) => {
       if (error) throw error
-      let params1 = encodeURIComponent(patient_id)
+      let params1 = encodeURIComponent(phoneNumber)
       let params2 = encodeURIComponent(getDetails.type_of_therapy)
-      console.log("/psychologyDiagnosisQuestionnaires/patientID="+params1+"&type="+params2)
-      res.redirect("/psychologyDiagnosisQuestionnaires/patientID="+params1+"&type="+params2);
+      //console.log("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2)
+      res.redirect("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2);
     })
   })
 })
+
+app.post('/depressionQuestionnaire', (req, res) => {
+  const getDetails = req.body
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
+  const date = new Date();
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      console.log(error)
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+  
+    patient_id = result[0].id;  
+    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`, `chosen_dr`) VALUES ?";
+    var VALUES = [[patient_id, phoneNumber, date]]
+
+    conn.query(sql, [VALUES], (error, result) => {
+      if (error) throw error
+      let params1 = encodeURIComponent(phoneNumber)
+      let params2 = encodeURIComponent(getDetails.type_of_therapy)
+      //console.log("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2)
+      res.redirect("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2);
+    })
+  })
+})
+
+/*getting all of the doctors from the database*/
+app.get('/get_psychologistsinfo', (req, res) => {
+  sql = "SELECT dr_name, sex, language, treatment_type, age_group, type_of_therapy, psychological_treatment, time_frame, frequency, cost FROM psychology_dr";
+  conn.query(sql, (error, result) => {
+    if (error) throw error
+    res.send(result);
+  })
+})
+/*end getting all of the doctors from the database*/
 
 // This is the MySQL health test search API
 app.post('/psychologyDiagnosis', async (req,res) => {
