@@ -202,7 +202,7 @@ app.get('/depressionQuestionnaire', (req, res) => {
 
 
 app.get('/liver', (req, res) => {
-  res.render("pages/liver-prediction");
+  res.render("pages/liver");
 })
 app.get('/liver2', (req, res) => {
   res.render("pages/liver-direct-prediction");
@@ -240,6 +240,9 @@ app.get('/symptoms-checker', (req, res) => {
 app.get('/index', (req, res) => {
   res.render("pages/index");
 })
+app.get('/labtest', (req, res) => { //Christina&Sanika
+  res.render("pages/labtest");
+})
 app.get('/labapp', (req, res) => { //Christina&Sanika
   res.render("pages/labapp");
 })
@@ -274,8 +277,8 @@ app.get('/Breast-Diagnostic', (req, res) => {
   res.render("pages/Breast-Diagnostic");
 })
 
-app.get('/AlzheimersDiagnostics', (req, res) => {
-  res.render("pages/AlzheimersDiagnostics");
+app.get('/heartStrokeDetection', (req, res) => {
+  res.render("pages/heartStrokeDetection");
 })
 
 app.get('/heartStrokeDetection', (req, res) => {
@@ -406,8 +409,6 @@ app.get('/b', (req, res) => {
 app.get('/hospital', (req, res) => {
   res.render("pages/hospital");
 })
-
-
 
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
@@ -1010,6 +1011,7 @@ app.post('/get_docotorInfoTest',(req,res)=>{
   })
 
 })
+
 app.post('/get_doctorInfo', (req, res) => {
   const get_doctorInfo = req.body
   var password = crypto.randomBytes(16).toString("hex");
@@ -1044,12 +1046,242 @@ app.post('/get_doctorInfo', (req, res) => {
               }
 })
 
+/* LAB TEST APPOINTMENT FORM, backenf api code started for adding route to register (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+// Get a list of available labs
+app.get('/get_availableLabs', (req, res) => {
+  sql = "SELECT Lab_Name, Email_Id, Location1, Location2, PostalCode, City, Province, Country, uuid FROM lab_admin WHERE verification = 1 ORDER BY Lab_Name";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+
+// Get the appointment schedule of the specific lab
+app.post('/get_appointmentList', (req, res) => {
+  const uuid = req.body.id;
+
+  if (!uuid) {
+    res.send({error:"Missing lab uuid."});
+    return;
+  }
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
+  sql = `SELECT appointmentDate, slot
+  FROM lab_admin join lab_appointment ON lab_admin.id = lab_appointment.lab_id
+  WHERE lab_admin.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+
+// Get the appointment schedule of the specific lab
+app.post('/update_appointment', (req, res) => {
+  const lab_uuid = req.body.lab_id;
+  const uuid = req.body.id;
+  const password = req.body.password;
+  const date = req.body.date;
+  const slot = req.body.slot;
+  console.log(uuid)
+  console.log(password)
+  console.log(date)
+  console.log(slot)
+
+  if (!lab_uuid || !uuid || !password) {
+    res.send({error:"Missing lab uuid, patient uuid, or patient password."});
+    return;
+  }
+  if (!date || !slot) {
+    res.send({error:"Missing appointment date or slot."});
+    return;
+  }
+
+  sql = 'SELECT * FROM `patients_registration` WHERE uuid = ? AND verification = ?';
+  console.log(sql);
+  conn.query(sql, [uuid,true] ,(error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if(result.length == 0){
+      res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
+      return;
+    } else {
+      if (result[0].uuid === uuid && result[0].password === password) {
+        // Correct patients
+        const patient_id = result[0].id;
+        sql = `SELECT id FROM lab_admin WHERE uuid = "${lab_uuid}" AND verification = true`
+        conn.query(sql, (error, result) => {
+          if (error) {
+            res.send({error:"Something wrong in MySQL."});
+            console.log(error);
+            return;
+          }
+          if(result.length == 0){
+            res.send({error: "No valid lab match in the database."});
+            return;
+          } else {
+            sql = `INSERT INTO lab_appointment (lab_id, patient_id, appointmentDate, slot)  VALUES (${result[0].id}, ${patient_id}, "${date}", ${slot})`;
+            
+            conn.query(sql,(error, result) => {
+              if (error) {
+                res.send({error:"Something wrong in MySQL."});
+                console.log(error);
+                return;
+              }
+              if (result.affectedRows == 1) {
+                res.send({success:"Appointment scheduled."})
+              } else {
+                res.send({error:"Something goes wrong in the database."});
+              }
+            })
+          }
+        })
+      } else {
+        res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
+        return;
+      }
+    }
+  })
+})
+/* LAB TEST APPOINTMENT FORM, backenf api code ended for adding route to register (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+
+// Get the appointment list and the lab info for the specific patient
+app.post('/check_patientAppointment', (req, res) => {
+  const uuid = req.body.id;
+
+  if (!uuid) {
+    res.send({error:"Missing patient uuid."});
+    return;
+  }
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
+  sql = `SELECT lab_admin.Lab_Name, lab_admin.Email_Id, lab_admin.Location1, lab_admin.Location2, lab_admin.City, lab_admin.Province, lab_admin.Country, appointmentDate, slot
+  FROM lab_admin JOIN lab_appointment JOIN patients_registration 
+  ON lab_admin.id = lab_appointment.lab_id AND patients_registration.id = lab_appointment.patient_id
+  WHERE patients_registration.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+
+// Get the appointment list and the patient info for the specific lab
+app.post('/check_labAppointment', (req, res) => {
+  const uuid = req.body.id;
+
+  if (!uuid) {
+    res.send({error:"Missing lab uuid."});
+    return;
+  }
+
+  let today = new Date()
+  const offset = today.getTimezoneOffset()
+  today = new Date(today.getTime() - (offset*60*1000))
+
+  sql = `SELECT patients_registration.FName, patients_registration.MName, patients_registration.LName, patients_registration.MobileNumber, appointmentDate, slot
+  FROM lab_admin JOIN lab_appointment JOIN patients_registration 
+  ON lab_admin.id = lab_appointment.lab_id AND patients_registration.id = lab_appointment.patient_id
+  WHERE lab_admin.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+/* notification widget, backenf api code started for adding route to index (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+app.get('/get_availableDoctors', (req, res) => {
+  sql = "SELECT Specialization, COUNT(Specialization) AS 'NumberOfDoctors' FROM doctors_registration WHERE Availability = 1 AND verification = 1 GROUP BY Specialization";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error: error.sqlMessage});
+      return;
+    }
+    res.send(result);
+  })
+})
+/* find a dentist, backenf api code ended for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+
+/* find a dentist, backenf api code started for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+app.post('/get_availableDentists', (req, res) => {
+  const Province = req.body.Province;
+  const Country= req.body.Country;
+  const City = req.body.City;
+  console.log(req.body)
+  
+  //sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
+  sql = `SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1 AND Province = "${Province}" AND Country = "${Country}" AND City = "${City}"  `;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+/* find a dentist, backenf api code ended for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
+
+app.post('/update_availability', (req, res) => {
+  const Availability = req.body.Availability;
+  const uuid = req.body.id;
+  const password = req.body.password;
+
+  sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  console.log(sql)
+  conn.query(sql,(error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.affectedRows == 1) {
+      result.changedRows == 1 ? res.send({success:"Availability updated."}) : res.send({success:"The update is already in place."})
+    } else if (result.affectedRows == 0) {
+      res.send({error:"Your account info is not correct."});
+    } else if (result.affectedRows > 1) {
+      res.send({error:"Duplicate account updated, please contact the system manager."});
+    } else {
+      res.send({error:"Something goes wrong in the database."});
+    }
+  })
+})
+
 /* Diabetology Page, code started for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
 app.get('/get_diabetologyList', (req, res) => {
   sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
   conn.query(sql, (error, result) => {
-    if (error) throw error
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
     res.send(result);
   })
 })
@@ -1318,8 +1550,20 @@ app.get('/MS-Doctor',(req,res) => {
 // user: "uottawabiomedicalsystems@gmail.com", //
 // pass: "@uOttawa5902",
 
+//christina&sanika
+app.route("/ajax")
+.post(function(req,res){
+
+ res.send({response:req.body.Country});
+ console.log("success")
+console.log(req.body)
+console.log(req.body.Country)
+});
+//christina&sanika
+
 const twilio = require("twilio");
 const { pid } = require('process');
+const { checkServerIdentity } = require('tls');
 
 app.get('/sendEmail', (req, res) => {
 
