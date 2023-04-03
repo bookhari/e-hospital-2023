@@ -1700,18 +1700,15 @@ app.get('/get_symptoms_checker', (req, res) => {
   })
 })
 
-// This API is for checking the authorized patient list of the doctor
-app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
+// This API is for authorized access to doctor
+app.post('/authorizeToDoctor', (req, res) => {
   const uuid = req.body.uuid;
   const password = req.body.password;
+  const doctorPhoneNumber = req.body.doctorPhoneNumber;
+  const isAuthorized = req.body.isAuthorized == "1" ? true : false;
 
-  // Check parameters
-  if (!uuid || !password) {
-    res.send({error:"Missing doctor credential."});
-    return;
-  }
-
-  sql = `SELECT id FROM doctors_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  sql = `SELECT id FROM patients_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  var patient_id = 0;
   var doctor_id = 0;
   conn.query(sql, (error, result) => {
     if (error) {
@@ -1722,10 +1719,95 @@ app.post('/checkAuthorizedPatientOfDoctor', (req, res) => {
     if (result.length == 0) {
       res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
       return;
-    }}
-    
-    )
+    }
+  
+    patient_id = result[0].id;
+    sql = `SELECT id FROM doctors_registration WHERE MobileNumber = "${doctorPhoneNumber}" AND verification = true`;
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        console.log(error);
+        return;
+      }
+      if (result.length == 0) {
+        res.send({error:"Invalid doctor phone number. Please Check."});
+        return;
+      }
+
+      doctor_id = result[0].id;
+      sql = isAuthorized ? `INSERT INTO doctor_recordauthorized (doctor_id,patient_id) VALUES (${doctor_id},${patient_id});` : `DELETE FROM doctor_recordauthorized WHERE doctor_id = "${doctor_id}" AND patient_id = "${patient_id}";`
+      console.log(sql);
+      conn.query(sql, (error, result) => {
+        if (error && error.code != 'ER_DUP_ENTRY') {
+          res.send({error:"Something wrong in MySQL."});
+          console.log(error);
+          return;
+        }
+        res.send({success: isAuthorized? "Authorize success." : "Deauthorize success." });
+      })
+    })
   })
+})
+
+// This API is for checking the authorized patient list
+app.post('/checkAuthorizedPatients', (req, res) => {
+  const uuid = req.body.uuid;
+  const password = req.body.password;
+  const accountType = req.body.accountType;
+
+  var accountTable = "";
+
+  switch(accountType) {
+    case ("doctor"):
+      accountTable = "doctors_registration";
+      break;
+    case ("hospital"):
+      accountTable = "hospital_admin";
+      break;
+    case ("lab"):
+      accountTable = "lab_admin";
+      break;
+    case ("clinic"):
+      accountTable = "clinic_admin";
+      break;
+    default:
+      res.send({ error: `Unknown account type: ${accountType}` });
+      return;
+  }
+
+  // Check parameters
+  if (!uuid || !password) {
+    res.send({error:"Missing doctor credential."});
+    return;
+  }
+
+  sql = `SELECT id FROM ${accountTable} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
+  var id = 0;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    if (result.length == 0) {
+      res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
+      return;
+    }
+  
+    id = result[0].id;
+    sql = `SELECT FName, MName, LName, Age, Gender, BloodGroup, height, weight, MobileNumber, EmailId
+    FROM ${accountType}_recordauthorized join patients_registration ON ${accountType}_recordauthorized.patient_id = patients_registration.id
+    WHERE ${accountType}_id = ${id}`
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({error:"Something wrong in MySQL."});
+        console.log(error);
+        return;
+      }
+      res.send({success:result});
+    })
+  })
+})
 
 
 // This API is for updating the ML prediction result to the database. 
@@ -1737,8 +1819,6 @@ app.post('/updateDisease', (req, res) => {
   const accuracy = req.body.accuracy; // prediction accuracy, e.g. "90%"
   const recordType = req.body.recordType; // the type of the health test, e.g. "X-Ray" or "ecg"
   const recordId = req.body.recordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
-
-  console.log(req.body);
 
   if (!phoneNumber || !disease || !date || !prediction) {
     res.send({error:"Missing patient phone number, disease, date, or prediction."});
@@ -1778,39 +1858,6 @@ app.post('/updateDisease', (req, res) => {
     });
   });
 });
-//   var patient_id = 0;
-//   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-//   // console.log(sql);
-//   conn.query(sql, async (error, result) => {
-//     if (error) {
-//       res.send({error:"Something wrong in MySQL."});
-//       return;
-//     }
-//     if (result.length != 1) {
-//       res.send({error:"No patient matched in database."});
-//       return;
-//     }
-//     patient_id = result[0].id;
-
-//     sql = `INSERT into ${disease} (patient_id, prediction_date, prediction, accuracy, record_type, record_id)
-//     VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${reccordType?"\""+reccordType+"\"":"NULL"}, ${reccordId?"\""+reccordId+"\"":"NULL"})
-//     ON DUPLICATE KEY 
-//     UPDATE prediction_date = "${date}", 
-//     prediction = "${prediction}",
-//     accuracy = ${accuracy?"\""+accuracy+"\"":"NULL"},
-//     record_type = ${reccordType?"\""+reccordType+"\"":"NULL"},
-//     record_id = ${reccordId?"\""+reccordId+"\"":"NULL"};`;
-//     conn.query(sql, async (error, result) => {
-//       if (error) {
-//         res.send({error:"Something wrong in MySQL."});
-//         return;
-//       }
-//       res.send({success: "Submit success."});
-//     });
-//   });
-
-// })
-
 
 /* Psychology, code started for logging info into database from psychology Questionnaire, also for finding the patient ID and showing results to the doctor. (Alexis McCreath Frangakis, Parisa Nikbakht)
    Group 8, Course-BMG5111, Winter 2023
