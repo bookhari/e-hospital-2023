@@ -1,8 +1,10 @@
+<!-- Diabetology, code started for accessing ML Model (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group 1, Course-BMG5111, Winter 2023 -->
+
+
 <!DOCTYPE html>
 <html lang="en-CA">
-<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <head>
   <meta charSet="utf-8" />
@@ -17,6 +19,43 @@
   <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
   <meta property="og:locale" content="en_CA" />
   <link href="css/diabetesmlfrontend.css" rel="stylesheet" type="text/css">
+  <style>
+      .spinner {
+    border: 5px solid #9b59b6;
+    border-top-color: #9b59b6;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .black-button {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .black-button input[type="submit"] {
+    background: linear-gradient(-135deg, #747474, rgb(0, 0, 0));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 400px;
+    width: 300px;
+
+  }
+
+  .black-button input[type="submit"]:hover {
+    background: linear-gradient(-135deg, #000000, #747474);
+  }
+  </style>
 
   
   <link rel="stylesheet" type="text/css" href="/css/diabetology.css" />
@@ -166,14 +205,21 @@
       </div>
       <!--<div class="spinner" style="display: none;"></div>-->
 
+      <div class="spinner" style="display: none;"></div>
 
-      <div class="button appt">
-        <input type="submit" value="Assess Diabetes Risk">
+      <div class="black-button">
+        <input type="submit" value="Predict">
       </div>
+
     </form>
   </div>
-
 </div>
+
+<footer>
+  <%- include('../partials/footer-new') -%>
+  
+  </footer>
+
 <script>
   document.getElementById("log").innerHTML = ``;
   const spinner = document.querySelector('.spinner');
@@ -223,12 +269,12 @@
     })
       .then(response => response.json())
       .then(data => {
-        if (data?.prediction === 'Heart Disease') {
+        if (data?.prediction === 'Patient is diabetic') {
           document.getElementById("log").innerHTML = `Heart Disease`;
           spinner.style.display = 'none'; // hide the spinner
 
 
-        } else if (data?.prediction === 'No Heart Disease') {
+        } else if (data?.prediction === 'Patient is not diabetic') {
           document.getElementById("log").innerHTML = `No Heart Disease`;
           spinner.style.display = 'none'; // hide the spinner
         }
@@ -249,9 +295,6 @@
   form.addEventListener('submit', logSubmit);
 </script>
 
-<footer>
-    <%- include('../partials/footer-new') -%>
-    
-    </footer>
+
 
 </html>

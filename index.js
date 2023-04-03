@@ -140,6 +140,9 @@ app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
 
+app.get('/arrhythmia', (req, res) => {
+  res.render("pages/ecg-ml");
+})
 
 app.get('/services', (req, res) => {
   res.render("pages/services");
@@ -155,6 +158,9 @@ app.get('/diabetology_specialists', (req, res) => {
 })
 app.get('/DiabetologyDiagnostics', (req, res) => {
   res.render("pages/DiabetologyDiagnostics");
+})
+app.get('/DiabetologyData', (req, res) => {
+  res.render("pages/DiabetologyData");
 })
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
@@ -187,6 +193,9 @@ app.get('/psychologyDiagnosisQuestionnaires/patientID=:patientID&type=:type', (r
 })
 app.get('/psychologyDiagnosis', (req, res) => {
   res.render("pages/psychologyDiagnosis");
+})
+app.get('/depressionQuestionnaire', (req, res) => {
+  res.render("pages/depressionQuestionnaire");
 })
 /* Psychology - code ended for adding route to Psychology Page Alexis McCreath Frangakis, Parisa Nikbakht)
    Group 8, Course-BMG5111, Winter 2023 */
@@ -647,10 +656,47 @@ app.post('/searchpatient', (req, res) => {
     });
     console.log(sql_search_query);
     });
-
-   
-
 })
+
+// To search for patient info based on id
+app.post('/searchid', (req, res) => {
+  const id = req.query.id;
+  console.log("requestId", id);
+
+    sql_search_query = `SELECT * FROM patients_registration WHERE id = "${id}"`;
+    conn.query(sql_search_query, function (err, result) {
+      if (err) throw err;
+      // console.log(result);
+        res.json(result)
+    });
+    
+    console.log(sql_search_query);
+})
+
+// To search for Ecg blood test records  based on id & mobile number
+
+app.post('/searchEcgBloodtest', (req, res) => {
+  const mobileNumber = req.query.mobileNumber;
+  const id = req.query.id;
+
+  // console.log("requestMobileNumber", mobileNumber);
+
+  const sql_search_query = `
+    SELECT * 
+    FROM ecg_bloodtest_going_to_delete
+    JOIN patients_registration
+    ON patients_registration.id = "${id}"
+    WHERE patients_registration.MobileNumber = "${mobileNumber}"
+  `;
+  conn.query(sql_search_query, function (err, result) {
+    if (err) throw err;
+    // console.log("blood test",result[0]);
+    res.json(result[0]);
+  });
+  
+});
+
+
 //app.post('/searchpatient', async (req,res) => {  
 //})
 app.post('/patientsDashboard', (req, res) => {
@@ -1784,6 +1830,7 @@ app.post('/psychologyQuestionnaire', (req, res) => {
   // console.log(sql);
   conn.query(sql, async (error, result) => {
     if (error) {
+      console.log(error)
       res.send({error:"Something wrong in MySQL."});
       return;
     }
@@ -1793,20 +1840,68 @@ app.post('/psychologyQuestionnaire', (req, res) => {
     }
   
     patient_id = result[0].id;  
-    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`) VALUES ?";
+    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`, `chosen_dr`) VALUES ?";
     var VALUES = [[patient_id, phoneNumber, date, getDetails.sex, getDetails.language,
      getDetails.treatment_setting, getDetails.age_group, getDetails.type_of_therapy, getDetails.psychological_treatment,
-     getDetails.time_frame, getDetails.frequency, getDetails.cost]]
+     getDetails.time_frame, getDetails.frequency, getDetails.cost, getDetails.chosen_dr]]
 
     conn.query(sql, [VALUES], (error, result) => {
       if (error) throw error
-      let params1 = encodeURIComponent(patient_id)
+      let params1 = encodeURIComponent(phoneNumber)
       let params2 = encodeURIComponent(getDetails.type_of_therapy)
-      console.log("/psychologyDiagnosisQuestionnaires/patientID="+params1+"&type="+params2)
-      res.redirect("/psychologyDiagnosisQuestionnaires/patientID="+params1+"&type="+params2);
+      //console.log("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2)
+      res.redirect("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2);
     })
   })
 })
+
+app.post('/depressionQuestionnaire', (req, res) => {
+  const getDetails = req.body
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
+  const date = new Date();
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      console.log(error)
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+  
+    patient_id = result[0].id;  
+    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`, `chosen_dr`) VALUES ?";
+    var VALUES = [[patient_id, phoneNumber, date]]
+
+    conn.query(sql, [VALUES], (error, result) => {
+      if (error) throw error
+      let params1 = encodeURIComponent(phoneNumber)
+      let params2 = encodeURIComponent(getDetails.type_of_therapy)
+      //console.log("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2)
+      res.redirect("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2);
+    })
+  })
+})
+
+/*getting all of the doctors from the database*/
+app.get('/get_psychologistsinfo', (req, res) => {
+  sql = "SELECT dr_name, sex, language, treatment_type, age_group, type_of_therapy, psychological_treatment, time_frame, frequency, cost FROM psychology_dr";
+  conn.query(sql, (error, result) => {
+    if (error) throw error
+    res.send(result);
+  })
+})
+/*end getting all of the doctors from the database*/
 
 // This is the MySQL health test search API
 app.post('/psychologyDiagnosis', async (req,res) => {
