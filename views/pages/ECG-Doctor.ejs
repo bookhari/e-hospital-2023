@@ -94,6 +94,10 @@
 function submit() {
     const urlParams=new URLSearchParams(window.location.search);
     const id=urlParams.get('id');
+    if(id < 132 || id > 150) {
+      alert("There is no record for the patient redirecting to the page for manual input.")
+      window.location.replace(`/ECG-diagnoses?id=${id}`);
+    }
     $.ajax({
       headers: {
          'Access-Control-Allow-Origin': '*'
