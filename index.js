@@ -655,10 +655,47 @@ app.post('/searchpatient', (req, res) => {
     });
     console.log(sql_search_query);
     });
-
-   
-
 })
+
+// To search for patient info based on id
+app.post('/searchid', (req, res) => {
+  const id = req.query.id;
+  console.log("requestId", id);
+
+    sql_search_query = `SELECT * FROM patients_registration WHERE id = "${id}"`;
+    conn.query(sql_search_query, function (err, result) {
+      if (err) throw err;
+      // console.log(result);
+        res.json(result)
+    });
+    
+    console.log(sql_search_query);
+})
+
+// To search for Ecg blood test records  based on id & mobile number
+
+app.post('/searchEcgBloodtest', (req, res) => {
+  const mobileNumber = req.query.mobileNumber;
+  const id = req.query.id;
+
+  // console.log("requestMobileNumber", mobileNumber);
+
+  const sql_search_query = `
+    SELECT * 
+    FROM ecg_bloodtest_going_to_delete
+    JOIN patients_registration
+    ON patients_registration.id = "${id}"
+    WHERE patients_registration.MobileNumber = "${mobileNumber}"
+  `;
+  conn.query(sql_search_query, function (err, result) {
+    if (err) throw err;
+    // console.log("blood test",result[0]);
+    res.json(result[0]);
+  });
+  
+});
+
+
 //app.post('/searchpatient', async (req,res) => {  
 //})
 app.post('/patientsDashboard', (req, res) => {
