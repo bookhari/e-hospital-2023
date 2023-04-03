@@ -13,7 +13,7 @@ const memoryStorage = multer.memoryStorage()
 const upload = multer({ storage: memoryStorage })
 
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 
 /* Please use comments to identify your work thankyou */
@@ -1547,6 +1547,10 @@ app.get('/hospitalData', (req, res) => {
 
 app.get('/MS-diagnoses', (req, res) => {
   res.render("pages/MS-diagnoses")
+})
+
+app.get('/diagnosisMS', (req, res) => {
+  res.render("pages/diagnosisMS")
 })
 
 app.get('/ECG-diagnoses', (req, res) => {
