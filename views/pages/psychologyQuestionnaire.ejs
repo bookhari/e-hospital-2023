@@ -179,16 +179,29 @@
                         <option value=3>More than $150 per session</option>
                       </select>
                   </div>
+                  <div class="input-box">
+                    <span class="details">Based on your the primary concern you selected, would you like to complete an additional questionnaire that could help your healthcare provider assist you in diagnosis?</span>
+                    <select name="nextQuestion" id="nextQuestion">
+                      <option value="" disabled selected>Select</option>
+                      <option value=1>Yes</option>
+                      <option value=2>No</option>
+                    </select>
+                  </div>
               </div>
               <div class="button">
-                  <input type="submit" value="Submit" onclick="checkAnswer();">
+                  <input type="submit" value="Submit" onclick="checkAnswer(), addCard();">
               </div>
           </form>
       </div>
   </div>
 
-
 <script>
+  function addCard(name, specialization, location, availability){
+    var anchor = document.getElementsByName("cardRow")[0];
+    var div = '<div class="coll"><div class="card"><img src="/images/DocProfile.png"><div class="card-body"><h5 class="doctor-name"><a href="#">' + name + '</a></h5><p class="Availability-text">' + specialization + ' <span class="Availability"> Availability: ' + availability + '</span></p><p class="card-text">'+ location + '</p></div></div></div>';
+    anchor.insertAdjacentHTML("beforeend", div);
+  };
+
   var answers = ['','','','','','','','',''];
   //const date = new Date( Date.now() );
 
@@ -202,6 +215,7 @@
     var q7SelectedOption = document.querySelector('input[name="time_frame"]:checked');
     var q8SelectedOption = document.querySelector('input[name="frequency"]:checked');
     var q9SelectedOption = document.querySelector('input[name="cost"]:checked');
+    var q10SelectedOption = document.querySelector('input[name="nextQuestion"]:checked');
 
     answers[1] = q1SelectedOption.value;
     answers[2] = q2SelectedOption.value;
@@ -212,14 +226,13 @@
     answers[7] = q7SelectedOption.value;
     answers[8] = q8SelectedOption.value;
     answers[9] = q9SelectedOption.value;
+    answers[10] = q10SelectedOption.value;
 
     // Define the Information of Dr.s database
-    var doctors = [[]];
     fetch('/get_psychologistsinfo')
       .then((data) => populate(data));
 
     function populate(res) {
-      doctors = [];
       for (var i = 0; i < res.length; i++) {
         doctors.push([        res[i].dr_name,
           res[i].sex,
@@ -233,15 +246,16 @@
           res[i].cost
         ]);
       }
+      return res
     }
 
     var numSame = 0;
     var x = 0;
 
-    for (var i = 0; i < doctors.length; i++) {
+    for (var i = 0; i < res.length; i++) {
       var cam = 0;
       for (var j = 1; j < answers.length; j++) {
-        if (answers[j] === doctors[i][j]) {
+        if (answers[j] === res[i][j]) {
           cam++;
         }
       }
@@ -253,8 +267,9 @@
 
     //document.getElementById("result").value = doctors[x][0];
     //document.getElementById("result").innerHTML = doctors[x][0];
-    console.log(doctors[x][0]);
-    var chosen_dr = doctors[x][0];
+    console.log(res[x][0]);
+    var chosen_dr = res[x][0];
+    return chosen_dr
   }
 </script>
 </body>

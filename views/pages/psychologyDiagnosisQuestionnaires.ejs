@@ -1,76 +1,170 @@
-<!-- Psychology, code started for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
-
 <!DOCTYPE html>
-<html>
-  
+<html lang:"en">
 <head>
-  <meta charSet="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="author" content="E-Hospital" />
-
-  <meta property="og:url" content="register.html" />
-  <meta property="og:site_name" content="E-Hospital" />
-  <meta property="og:title" content="E-Hospital" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
-  <meta property="og:locale" content="en_CA" />
-  <link href="css/login.css" rel="stylesheet" type="text/css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
-  <style>
-    table, th, td {
-      border:1px solid black;
-    }
-    </style>
     
-  <script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
-    // Run the code when the page finished loading
-    $(document).ready(function() {
-      // retrived phone number form url
-      let params = (new URL(document.location)).searchParams;
-      let phoneNumber = params.get("phoneNumber");
-      let type = params.get("type");
-      //console.log(type)
-    });
-  </script>
-  
-  <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
-  <%- include('../partials/header') -%>
-  <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
+    <!-- displays site properly based on user's device -->
+
+    
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="./images/favicon-32x32.png"
+    />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400&display=swap"
+        rel="stylesheet"
+     />
+
+
+    <title>E-Hospital | Diabetology</title>
+
+    <style>
+      *{
+          box-sizing: border-box;
+      }
+      body{
+          padding: 0;
+          margin: 0;
+      }
+      a{
+          text-decoration: none;
+      }
+      .cont {
+          max-width: 960px;
+          margin: 0 auto;
+      }
+      .roww {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          margin-top: 1rem;
+          margin-left: 0px;
+          margin-right: 0px;
+      }
+      .coll {
+          width: 33.3333333%;
+          padding: 15px;
+      }
+      .coll .card {
+          width: 100%;
+          box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+          transition: transform 0.3s ease;
+      }
+      .coll img {
+          width: 100%;
+          height: auto;
+          border: 0;
+      }
+      .coll .card-body {
+          padding: 0 15px 15px 15px;
+          background-color: #fff;
+          border-bottom-left-radius: 15px;
+          border-bottom-right-radius: 15px;
+      }
+      .card-body h5 {
+          font-size: 24px;
+          margin: 7px 0;
+      }
+      .card:hover{
+          transform: translateY(-10px);
+          transition: transform 0.3s ease;
+      }
+      .card p {
+          color: #6c757d;
+      }
+      .card-body .Availability-text span {
+          color: #e74c3c;
+      }
+      .card-body h5 a{
+          color: #222;
+      }
+      
+      @media(min-width: 577px) and (max-width: 768px){
+          .coll{
+              width: 50%;
+          }
+      }
+      @media(max-width: 576px){
+          .coll{
+              width: 100%;
+          }
+      }
+      </style>
+
+<link rel="stylesheet" type="text/css" href="/css/diabetology.css" />
+
+
 </head>
-<body>
-    <div class="container" style="padding-top: 100px;margin:0 auto;">
-        <form id="addquestionnaire">
-            <label for="doQuestionnaire">Based on your the primary concern you selected, would you like to complete an additional questionnaire that could help your healthcare provider assist you in diagnosis?</label>
-            <select name="studentAns" id="studentAns">
-            <option value="-">-</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-            </select>
-            <input type="submit" value="Submit" onclick="otherQuestionnaires('<?php echo $type ?>')"/>
-        </form>
-    </div>
-    <script>
-        function otherQuestionnaires(type){
-            console.log(type)
-            if ($('#studentAns').val() == "Yes"){
-                if (type == "1") {
-                    console.log()
-                    window.location.href = "/depressionQuestionnaire.html";
-                }
-            }
-        }
-    </script>
-    <div> 
-        <footer>
-    <%- include('../partials/footer-new') -%>
-    
-    </footer>
-    </div> 
-</body>
-</html>
 
-<!--  Psychology - code ended for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht)
-   Group 8, Course-BMG5111, Winter 2023 -->
+<body>
+
+    <header>
+        <%- include('../partials/header') -%>
+    </header>
+
+    <section class="banner">
+      <div class="container">
+        <!--<div class="banner__image"></div>-->
+
+        <div class="banner__text container--pall">
+          <h0 style="margin-bottom: 1rem;">Your recommended psychologist.</h0>
+        </div>
+        
+      </div>
+    </section>
+
+      
+      <div class="cont">
+          <div class="roww" name="cardRow">
+
+          </div>
+      </div>
+      
+      <script>
+      
+var res = {};
+
+     function addCard(name, specialization, location, availability){
+          var anchor = document.getElementsByName("cardRow")[0];
+          var div = '<div class="coll"><div class="card"><img src="/images/DocProfile.png"><div class="card-body"><h5 class="doctor-name"><a href="#">' + name + '</a></h5><p class="Availability-text">' + specialization + ' <span class="Availability"> Availability: ' + availability + '</span></p><p class="card-text">'+ location + '</p></div></div></div>';
+          anchor.insertAdjacentHTML("beforeend", div);
+      };
+      
+      function populate(res){
+      for (var i = 0; i < res.length; i ++){
+          var ava = res[i].Availability; 
+          var name = res[i].Fname + " " + res[i].Mname + " " + res[i].Lname;
+          var loc = res[i].Location1 + " " + res[i].Location2 + "\n" + res[i].City + " " + res[i].Province + " " + res[i].Country + "\n" + res[i].PostalCode;
+          var spe = res[i].Specialization;
+      
+          addCard(name, spe, loc, ava);
+      }
+    }
+      </script>
+
+    <section class="appt" style="margin-top: 2rem; margin-bottom: 3rem;"> 
+      <div class="container flex-jc-c">
+          <a href="/contact-us" class="button appt">Request An Appointment</a>
+        </div>
+      </div>
+      
+
+    </section>
+
+
+
+
+    <footer>
+        <%- include('../partials/footer-new') -%>
+    </footer>
+
+
+</body>
+
+
+</html>

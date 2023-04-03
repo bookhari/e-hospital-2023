@@ -1565,8 +1565,17 @@ app.post('/psychologyQuestionnaire', (req, res) => {
       if (error) throw error
       let params1 = encodeURIComponent(phoneNumber)
       let params2 = encodeURIComponent(getDetails.type_of_therapy)
-      //console.log("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2)
-      res.redirect("/psychologyDiagnosisQuestionnaires?phoneNumber="+params1+"&type="+params2);
+      if (getDetails.nextQuestion == "1"){
+        if (getDetails.type_of_therapy == "1"){
+          res.redirect("/psychologyDiagnosisQuestionnaires");
+        }
+        else{
+          res.redirect("/thankyou");
+        }
+      }
+        else{
+        res.redirect("/thankyou");
+      }
     })
   })
 })
