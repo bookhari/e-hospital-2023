@@ -428,11 +428,14 @@ app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });
 
-app.post('/send-contact-form', (req, res) => {
+app.get('/contact-us', (req, res) => {
+  res.render("pages/contact-us");
+});
 
-  // Define mandatory parameters
-  const SENDER_EMAIL = "ehospital112233@gmail.com";
-  const SENDER_PASS = "hlcvsrrzempexzhw";
+app.post('/send-contact-form', (req, res) => {
+  const SENDER_EMAIL = "ehospital23@gmail.com";
+  const SENDER_PASS = "bozsyftcnmqhokte";
+  
   const RECEIVER_NAME = req.body.userName;
   const RECEIVER_EMAIL = req.body.userEmail;
   const PHONE_NUMBER = req.body.phoneNumber;
