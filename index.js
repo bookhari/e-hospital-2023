@@ -171,7 +171,7 @@ app.get('/Pneumonia-diagnostics', (req, res) => {
 app.get('/kidney-diagnostic', (req, res) => {
   res.render("pages/kidney-diagnostic");
 })
-app.get('/brain', (req, res) => {
+app.get('/brain', (req, res) => { //Enrico, Apeksha, Tarin
   res.render("pages/brain");
 })
 /* Psychology, code started for adding route to Psychology Page (Alexis McCreath Frangakis, Parisa Nikbakht)
