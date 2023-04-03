@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/pages/liver-direct-prediction.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/liver-direct-prediction.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/pages/liver-prediction.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/liver-prediction.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/pages/searchpatient.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/searchpatient.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +51,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/views/pages" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -106,7 +107,9 @@
       <workItem from="1677687050573" duration="385000" />
       <workItem from="1677687439973" duration="2506000" />
       <workItem from="1678733688953" duration="46000" />
-      <workItem from="1679360076378" duration="36066000" />
+      <workItem from="1679360076378" duration="38739000" />
+      <workItem from="1680447993284" duration="1119000" />
+      <workItem from="1680450959525" duration="8229000" />
     </task>
     <servers />
   </component>
