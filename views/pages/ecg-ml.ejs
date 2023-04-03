@@ -1,3 +1,4 @@
+/* TaskName, adding database call (Mohamed Yassine Bouhamidi) GroupNumber 5, BMG5109 Medical Diagnostics Engineering, 2023 */
 <!DOCTYPE html>
 <html lang="en-CA">
 
@@ -54,15 +55,16 @@
                     <h1>ECG Arrhythmia Diagnostics</h1>
                     <br>
                     <img src="images/ecg_ml.jpg" alt="Doctor using tablet to diagnose medical technology" width="70%">
-                    <div id="upload-form">
+                    <form id="upload-form" onsubmit="button_pressed(event)">
                         <br>
                         <div class="form-group">
-                            <label for="csv-file">Select CSV file:</label>
-                            <input type="file" class="form-control-file" id="csv-file" name="csv-file" accept=".csv">
+                            <label for="csv-file">Select Patient ID:</label>
+                            <input id="csv-file" name="csv-file" type="text" placeholder="0000" required="required"
+                                pattern="[0-9]{10}">
                         </div>
-                        <button onclick="button_pressed()" id="submitted" type="submit" class="btn btn-primary"
-                            style="background-color: black; color: white;">Upload</button>
-                    </div>
+                        <button id="submitted" type="submit" class="btn btn-primary"
+                            style="background-color: black; color: white;">Submit</button>
+                    </form>
                     <br>
                 </div>
                 <div class="col-md-6">
@@ -91,6 +93,55 @@
                     <br>
                     <div id="plot"></div>
                 </div>
+                <div class="col-md-12" style="align-items: center;
+                justify-content: center;">
+                    <br>
+                    <form id="save-form" onsubmit="save_pressed(event)" style="display:none;">
+                        <div class="form-group">
+                            <label> Save patient's result:</label>
+                            <br>
+                            <label for="phone-number">Phone Number:</label>
+                            <input type="text" id="phoneNumber" name="phone_number" placeholder="0000"
+                                required="required" pattern="[0-9]{10}">
+                            <label for="disease">Disease:</label>
+                            <input type="text" id="disease" name="disease" required placeholder="arrhythmia">
+
+                            <label for="date">Date:</label>
+                            <input type="datetime-local" id="date" name="date" required
+                                placeholder="2023-03-20 10:00:00">
+
+                            <label for="prediction">Prediction:</label>
+                            <input type="text" id="prediction" name="prediction" required>
+
+                            <br>
+
+                            <label for="accuracy">Accuracy:</label>
+                            <input type="text" id="accuracy" name="accuracy" required>
+
+                            <label for="record-type">Record Type:</label>
+                            <input type="text" id="recordType" name="record_type" placeholder="ecg" required>
+
+                            <label for="record-id">Record ID:</label>
+                            <input type="text" id="recordId" name="record_id" placeholder="000" required="required"
+                                pattern="[0-9]{3}">
+                        </div>
+                        <button id="submitted" type="submit" class="btn btn-primary"
+                            style="background-color: black; color: white;">Submit</button>
+
+                        <br>
+
+                        <!-- <label for="csv-file">Save Patient ID:</label>
+                        <input id="csv-file" name="csv-file" type="text" placeholder="0000" required="required"
+                            pattern="[0-9]{10}"> -->
+                    </form>
+                    <br>
+                </div>
+                <div class="col-md-12" style="align-items: center;
+                justify-content: center;">
+                    <label id="event-success" style="display: none;">Successfully saved the results to the patient's
+                        record.
+                    </label>
+                </div>
             </div>
         </div>
     </main>
@@ -102,24 +153,69 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script type="text/javascript">
         let data = [];
-        $(document).ready(function () {
-            $('#csv-file').on('change', function () {
-                var file = $(this)[0].files[0];
-                var reader = new FileReader();
-                reader.readAsText(file);
-                reader.onload = function () {
-                    data = Papa.parse(reader.result).data;
-                    data[0] = data[0].map(function (element) {
-                        return element * 10;
-                    });
-                    // console.log(typeof (data[1]));
-                };
-            });
-        });
+        let predictions = "";
 
-        function button_pressed() {
-            postData(data);
+        function button_pressed(event) {
+            event.preventDefault();
+
+            const nameInput = document.querySelector("input");
+
+            nameInput.addEventListener("input", () => {
+                nameInput.setCustomValidity("");
+                nameInput.checkValidity();
+            });
+
+            nameInput.addEventListener("invalid", () => {
+                if (nameInput.value === "") {
+                    nameInput.setCustomValidity("Enter the patient ID!");
+                } else {
+                    nameInput.setCustomValidity(
+                        "Patient ID can only contain numbers and has to be of size 10. Try again!"
+                    );
+                }
+            });
+
+
+            const x = document.getElementById("csv-file").value;
+            fetchData(x);
         }
+
+        function fetchData(x) {
+            const spinner = document.getElementById('spinner');
+            spinner.style.display = 'block';
+
+            fetch("/healthTestRetrieveByPhoneNumber/", {
+                method: "POST",
+                mode: "cors",
+                credentials: "same-origin",
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+                headers: {
+                    'Content-Type': 'application/json'
+
+                },
+                body: JSON.stringify({ "phoneNumber": x, "recordType": "ecg" }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        throw new Error('Request failed.' + error);
+                    }
+                })
+                .then(blob => {
+                    console.log("db call successful");
+                    spinner.style.display = 'none';
+                    postData(blob["success"]["0"]["ECG_complex"].match(/\d+(?:\.\d+)?/g).map(Number));
+                }
+                )
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+
+
 
         function postData(data) {
             const spinner = document.getElementById('spinner');
@@ -135,17 +231,17 @@
                     'Content-Type': 'application/json'
 
                 },
-                body: JSON.stringify({ "data": data[1] }),
+                body: JSON.stringify({ "data": data }),
             })
                 .then(response => {
                     if (response.ok) {
-                        // console.log(data);
                         return response.json()
                     } else {
                         throw new Error('Request failed.' + error);
                     }
                 })
                 .then(blob => {
+                    console.log("success, going to the plotting");
                     spinner.style.display = 'none';
                     plotData(blob["result"], data);
                 }
@@ -154,6 +250,15 @@
                     console.error(error);
                 });
         }
+
+        function NewArray(size) {
+            var x = [];
+            for (var i = 0; i < size; ++i) {
+                x[i] = i * 10;
+            }
+            return x;
+        }
+
 
         function plotData(response, data) {
             let exp = "";
@@ -174,8 +279,8 @@
             }
 
             var trace1 = {
-                x: data[0],
-                y: data[1],
+                x: NewArray(data.length),
+                y: data,
                 mode: "lines",
                 type: "scatter"
             };
@@ -186,7 +291,52 @@
             };
             var plotData = [trace1];
             Plotly.newPlot('plot', plotData, layout);
+            const save_form = document.getElementById('save-form');
+            save_form.style.display = 'block';
+            const prediction_form = document.getElementById('prediction');
+            prediction_form.value = exp;
         }
+
+        function save_pressed(event) {
+            event.preventDefault();
+
+            const x = document.getElementById("csv-file").value;
+            const date = document.getElementById("date").value;
+            const prediction = document.getElementById('prediction');
+            const accuracy = document.getElementById("accuracy").value;
+            const type = document.getElementById("recordType").value;
+            const id = document.getElementById("recordId").value;
+
+            fetch("/updateDisease", {
+                method: "POST",
+                mode: "cors",
+                credentials: "same-origin",
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+                headers: {
+                    'Content-Type': 'application/json'
+
+                },
+                body: JSON.stringify({ "phoneNumber": x, "disease": "arrhythmia", "date": date, "prediction": prediction, "accurary": accuracy, "recordType": type, "recordId": id }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        throw new Error('Request failed.' + error);
+                    }
+                })
+                .then(blob => {
+                    console.log("success, saving result");
+                    const save_form = document.getElementById('event-success');
+                    save_form.style.display = 'block';
+                }
+                )
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
     </script>
 </body>
 
