@@ -76,7 +76,7 @@ body {
                 <table>
                     <tbody>
                         <% data.forEach(entry => { %>
-
+                            
                         <tr>
                             <td>ID</td>
                             <td>:</td>
@@ -119,13 +119,11 @@ body {
                             <td><%= entry.Address %></td>
                         </tr>
                         <tr>
-                            <td><button><a href="diagnostic-depart?id=<%= entry.id %>">Run Diagonostics</a></button></td>
+
+                            <td><button><a href="diagnostic-depart?phoneNumber=<%= entry.MobileNumber %>">Run Diagonostics</a></button></td>
                         </tr>
                         <tr>
-                            <td><button><a href="ECG-Doctor?id=<%= entry.id %>">ECG Diagonostics</a></button></td>
-                        </tr>
-                        <tr>
-                            <td><button><a href="MS-Doctor?id=<%= entry.id %>">MS Diagonostics</a></button></td>
+                            <td><button><a href="liver2?id=<%= entry.id %>">Run Liver Diagnostics</a></button></td>
                         </tr>
                         <tr>
                             <td><button><a href="Pneumonia-diagnostics?phoneNumber=<%= entry.MobileNumber %>">Run Pneumonia Diagonostics</a></button></td>
@@ -138,11 +136,27 @@ body {
                             <td><button><a href="Breast-Diagnostic?phoneNumber=<%= entry.MobileNumber %>">Run Breast Diagnostic</a></button></td>
                         </tr>
                         <tr>
-                            <td><button><a href="liver2?id=<%= entry.id %>">Run Liver Diagnostics</a></button></td>
+                            <td><button><a href="ECG-Doctor?id=<%= entry.id %>">ECG Diagonostics</a></button></td>
                         </tr>
-          
+
+                        <!-- //Ram- Hoaming  -->
+                        <tr>
+                            <td><button><a href="heartDiseasePrediction?id=<%= entry.id %>">Heart Disease Prediction</a></button></td> 
+                        </tr>
+                        
+                        <tr>
+                            <td><button><a href="MS-Doctor?id=<%= entry.id %>">MS Diagonostics</a></button></td>
+                        </tr>
+
+                        <!-- Psychology, code started for accessing patient's diagnosis results (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
+                        <tr>
+                            <td><button><a href="psychologyDiagnosis?phoneNumber=<%= entry.MobileNumber %>">Psychology Diagnostics</a></button></td>
+                        </tr>
+                        <!--  Psychology - code ended for accessing patient's diagnosis results  (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
+                        
+                        
                     </tbody>
-                    <% }) %> 
+                    <% }) %>
                 </table>
             </div>
         </div>
