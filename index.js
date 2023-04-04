@@ -694,7 +694,7 @@ app.post('/searchid', (req, res) => {
   const id = req.query.id;
   console.log("requestId", id);
 
-    sql_search_query = `SELECT * FROM patients_registration WHERE id = "${id}"`;
+    sql_search_query = `SELECT * FROM patients_registration WHERE id = ${id}`;
     conn.query(sql_search_query, function (err, result) {
       if (err) throw err;
       // console.log(result);
@@ -715,16 +715,16 @@ app.post('/searchEcgBloodtest', (req, res) => {
   const sql_search_query = `
     SELECT * 
     FROM ecg_bloodtest_going_to_delete
-    JOIN patients_registration
-    ON patients_registration.id = "${id}"
-    WHERE patients_registration.MobileNumber = "${mobileNumber}"
-  `;
+    WHERE phone_number = "${mobileNumber}"
+    limit 100
+  `;   
   conn.query(sql_search_query, function (err, result) {
     if (err) throw err;
-    // console.log("blood test",result[0]);
+    //console.log("blood test",result[0]);
     res.json(result[0]);
   });
-  
+      //console.log("sql_search_query",sql_search_query);
+
 });
 
 
@@ -1569,9 +1569,22 @@ app.get('/MS-diagnoses', (req, res) => {
   res.render("pages/MS-diagnoses")
 })
 
+app.get('/diagnosisMS', (req, res) => {
+  res.render("pages/diagnosisMS")
+})
+
 app.get('/ECG-diagnoses', (req, res) => {
   res.render("pages/ECG-diagnoses")
 })
+
+app.post('/getPatientInformation',(req,res)=>{
+  const recordReq=req.body;
+  sql = "SELECT pyramidal, cerebella, brain_stem, sensory, visual, mental, bowel_and_bladder_function, mobility, RecordDate FROM `physical_test_ms` WHERE patient_id= ?";
+  conn.query(sql, [recordReq.id], (error, result) => {
+  res.send({data: result});
+});
+})
+
 app.get('/ECG-Doctor',(req,res) => {
   res.render("pages/ECG-Doctor")
 })
