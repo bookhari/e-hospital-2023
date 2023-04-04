@@ -1552,6 +1552,15 @@ app.get('/MS-diagnoses', (req, res) => {
 app.get('/ECG-diagnoses', (req, res) => {
   res.render("pages/ECG-diagnoses")
 })
+
+app.post('/getPatientInformation',(req,res)=>{
+  const recordReq=req.body;
+  sql = "SELECT pyramidal, cerebella, brain_stem, sensory, visual, mental, bowel_and_bladder_function, mobility, RecordDate FROM `physical_test_ms` WHERE patient_id= ?";
+  conn.query(sql, [recordReq.id], (error, result) => {
+  res.send({data: result});
+});
+})
+
 app.get('/ECG-Doctor',(req,res) => {
   res.render("pages/ECG-Doctor")
 })
