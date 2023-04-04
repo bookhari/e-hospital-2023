@@ -674,7 +674,7 @@ app.post('/searchid', (req, res) => {
   const id = req.query.id;
   console.log("requestId", id);
 
-    sql_search_query = `SELECT * FROM patients_registration WHERE id = "${id}"`;
+    sql_search_query = `SELECT * FROM patients_registration WHERE id = ${id}`;
     conn.query(sql_search_query, function (err, result) {
       if (err) throw err;
       // console.log(result);
@@ -695,16 +695,16 @@ app.post('/searchEcgBloodtest', (req, res) => {
   const sql_search_query = `
     SELECT * 
     FROM ecg_bloodtest_going_to_delete
-    JOIN patients_registration
-    ON patients_registration.id = "${id}"
-    WHERE patients_registration.MobileNumber = "${mobileNumber}"
-  `;
+    WHERE phone_number = "${mobileNumber}"
+    limit 100
+  `;   
   conn.query(sql_search_query, function (err, result) {
     if (err) throw err;
-    // console.log("blood test",result[0]);
+    //console.log("blood test",result[0]);
     res.json(result[0]);
   });
-  
+      //console.log("sql_search_query",sql_search_query);
+
 });
 
 
