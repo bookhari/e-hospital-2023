@@ -311,8 +311,8 @@ app.get('/psychologyDiagnosisQuestionnaires/patientID=:patientID&type=:type', (r
 app.get('/psychologyDiagnosis', (req, res) => {
   res.render("pages/psychologyDiagnosis");
 })
-app.get('/depressionQuestionnaire', (req, res) => {
-  res.render("pages/depressionQuestionnaire");
+app.get('/psychologyDepressionQuestionnaire', (req, res) => {
+  res.render("pages/psychologyDepressionQuestionnaire");
 })
 app.get('/psychologistRecommendation', (req, res) => {
   res.render("pages/psychologistRecommendation");
@@ -2046,7 +2046,7 @@ app.post('/psychologyQuestionnaire', (req, res) => {
   })
 })
 
-app.post('/depressionQuestionnaire', (req, res) => {
+app.post('/psychologyDepressionQuestionnaire', (req, res) => {
   const getDetails = req.body
   //console.log(req.body)
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
@@ -2070,10 +2070,47 @@ app.post('/depressionQuestionnaire', (req, res) => {
       return;
     }
     const patient_id = result[0].id;
-    sql = "INSERT INTO `depression_questionnaire`(`patient_id`,`phoneNumber`,`date`,`q1`,`q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `result`) VALUES ?";
+    sql = "INSERT INTO `psychology_depression_questionnaire`(`patient_id`,`phoneNumber`,`date`,`q1`,`q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `result`) VALUES ?";
     var VALUES = [[patient_id, phoneNumber, date, getDetails.q1, getDetails.q2,
      getDetails.q3, getDetails.q4, getDetails.q5, getDetails.q6,
      getDetails.q7, getDetails.q8, getDetails.q9, getDetails.q10, getDetails.result]]
+
+    conn.query(sql, [VALUES], (error, result) => {
+      if (error) throw error
+    })
+  })
+})
+
+app.post('/psychologyAnxietyQuestionnaire', (req, res) => {
+  const getDetails = req.body
+  //console.log(req.body)
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
+  const date = new Date();
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      console.log(result.length)
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    const patient_id = result[0].id;
+    sql = "INSERT INTO `psychology_anxiety_questionnaire`(`patient_id`,`phoneNumber`,`date`,`q1`,`q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`,`q11`,`q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `result`) VALUES ?";
+    var VALUES = [[patient_id, phoneNumber, date, getDetails.q1, getDetails.q2,
+     getDetails.q3, getDetails.q4, getDetails.q5, getDetails.q6,
+     getDetails.q7, getDetails.q8, getDetails.q9, getDetails.q10, getDetails.q11, getDetails.q12,
+     getDetails.q13, getDetails.q14, getDetails.q15, getDetails.q16,
+     getDetails.q17, getDetails.q18,  getDetails.result]]
 
     conn.query(sql, [VALUES], (error, result) => {
       if (error) throw error

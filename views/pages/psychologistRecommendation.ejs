@@ -170,7 +170,10 @@ let chosen_dr = params.get("doc")
             const myButton = document.getElementById("myButton");
 
             if (type = 1) {
-                myButton.setAttribute("href", "/depressionQuestionnaire?phoneNumber="+phoneNumber);
+                myButton.setAttribute("href", "/psychologyDepressionQuestionnaire?phoneNumber="+phoneNumber);
+            }
+            else if (type = 2) {
+                myButton.setAttribute("href", "/psychologyAnxietyQuestionnaire?phoneNumber="+phoneNumber);
             }
         }
 
