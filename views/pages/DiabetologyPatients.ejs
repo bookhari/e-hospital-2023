@@ -1,14 +1,14 @@
-<!-- Diabetology, code started for accessing patient ML Results (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group 1, Course-BMG5111, Winter 2023 -->
+<!-- Diabetology, code started for accessing patient information and getting ML Results (doctor) (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group 1, Course-BMG5111, Winter 2023 -->
 
 <!DOCTYPE html>
-<html>
-  
+<html lang="en-CA">
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
 <head>
-  <title>Patient Information Form</title>
   <meta charSet="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Diabetology | E-Hospital</title>
   <meta name="author" content="E-Hospital" />
 
   <meta property="og:url" content="register.html" />
@@ -17,7 +17,9 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
   <meta property="og:locale" content="en_CA" />
-  <link href="css/login.css" rel="stylesheet" type="text/css">
+  <link href="css/diabetesmlfrontend.css" rel="stylesheet" type="text/css">
+
+  <link href="css/login.css" rel="stylesheet" type="text/css"> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
   <style>
@@ -33,15 +35,16 @@
     $(document).ready(function() {
       // retrived phone number form url
       let params = (new URL(document.location)).searchParams;
-      let PatientID = params.get("PatiendID");
+      let phoneNumber = params.get("phoneNumber");
+      console.log(phoneNumber)
 
       // Get the patient records
       $.ajax({
-        url: "/DiabetologyData",
+        url: "/DiabetologyPatients",
         type: 'POST',
         data: {
-          PatientID: PatientID, 
-          recordType: "Diabetology_patients" // the table name that stores the record
+          phoneNumber: phoneNumber, 
+          recordType: "diabetes" // the table name that stores the record
         },
         success: function(data) {
           // console.log(data);
@@ -70,24 +73,46 @@
         //image.innerHTML = "Will be replace by image";
         let recordDate = document.createElement("td");
         recordDate.innerHTML = new Date(recordList[i].date);       
-        let therapy = document.createElement("td");
-        therapy.innerHTML = recordList[i].type_of_therapy;
-        console.log(recordList[i].type_of_therapy)
-        if (recordList[i].type_of_therapy == 1) {
-            therapy.innerHTML = "Depression";
+        let Sex = document.createElement("td");
+            Sex.innerHTML = recordList[i].Sex;
+        console.log(recordList[i].Sex)
+        if (recordList[i].Sex == 1) {
+            Sex.innerHTML = "Female";
         }
-        let action = document.createElement("td");
-        let button = document.createElement("input");
-        button.type = "button";
-        button.value = "Diagnose";
-        button.index = i;
-        button.setAttribute("onclick", "predict(this.index)")
-        action.appendChild(button);
+        else {
+            Sex.innerHTML = "Male";
+        }
+        let Age = document.createElement("td");
+            Age.innerHTML = recordList[i].Age;
+        let BMI = document.createElement("td");
+            BMI.innerHTML = recordList[i].BMI;  
+        let SkinThickness = document.createElement("td");
+            SkinThickness.innerHTML = recordList[i].SkinThickness;     
+        let Glucose = document.createElement("td");
+            Glucose.innerHTML = recordList[i].Glucose;
+        let BloodPressure = document.createElement("td");
+            BloodPressure.innerHTML = recordList[i].BloodPressure;
+        let Insulin = document.createElement("td");
+            Insulin.innerHTML = recordList[i].Insulin;
+        let DiabetesPedigreeFunction = document.createElement("td");
+            DiabetesPedigreeFunction.innerHTML = recordList[i].DiabetesPedigreeFunction;
+        let Pregnancies = document.createElement("td");
+            Pregnancies.innerHTML = recordList[i].Pregnancies;
+        let ML_result = document.createElement("td");
+            ML_result.innerHTML = recordList[i].ML_result;
+
         
-        //tr.appendChild(image);
         tr.appendChild(recordDate);
-        tr.appendChild(therapy);
-        tr.appendChild(action);
+        tr.appendChild(Sex);
+        tr.appendChild(Age);
+        tr.appendChild(BMI);
+        tr.appendChild(SkinThickness);
+        tr.appendChild(Glucose);
+        tr.appendChild(BloodPressure);
+        tr.appendChild(Insulin);
+        tr.appendChild(DiabetesPedigreeFunction);
+        tr.appendChild(Pregnancies);
+        tr.appendChild(ML_result);
         list.appendChild(tr);
       }
     }
@@ -134,42 +159,34 @@
       const offset = today.getTimezoneOffset();
       today = new Date(today.getTime() - (offset*60*1000)).toISOString();
 
-      // Store to the database
-      $.ajax({
-        url: "/updateDisease",
-        type: 'POST',
-        data: {
-          phoneNumber: phoneNumber,
-          disease: "pneumonia", // the table name that stores the prediction result
-          date: today,
-          prediction: result.prediction,
-          accuracy: result.accuracy, // can be null if not provided
-          recordType: "Diabetology_patients", // can be null if no record is used for the ML prediction
-          recordId: id // can be null if no record is used for the ML prediction
-        },
-        success: function(data) {
-          // console.log(data);
-          data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
-        },
-        error: function(xhr, textStatus, errorThrown) {
-          // Handle error response from server
-          alert(textStatus + ': ' + errorThrown);
-        }
-      });
+
     }
   </script>
   
-  <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
-  <%- include('../partials/header') -%>
   <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
+
 </head>
-<body>
-  <div class="container" style="padding-top: 40px;margin:0 auto;">
+<header>
+    <%- include('../partials/header') -%>
+</header>
+  <div class="container" >
+    <div class="title">Patient Record</div>
     <table id="recordList" class="center" style="margin-top:50px; width:50%; margin-bottom:50px;margin-left: auto;margin-right: auto;">
       <tr>
         <th>Record Date</th>
-        <th>Therapy Type</th>
-        <th>Action</th>
+        <th>Sex</th>
+        <th>Age</th>
+        <th>Body Mass Index</th>
+        <th>Skin Thickness (mm)</th>
+        <th>Glucose Measurement (mg/dL)</th>
+        <th>Diastolic Blood Pressure (mm/Hg)</th>
+        <th>Insulin (U/mL)</th>
+        <th>DiabetesPedigreeFunction</th>
+        <th>Number of Pregnancies</th>
+        <th>Prediction Results</th>
+
+
+
       </tr>
 
     </table>
@@ -182,8 +199,6 @@
   </div> 
   
 
-</body>
 </html>
 
-<!--  Psychology - code ended for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht)
-   Group 8, Course-BMG5111, Winter 2023 -->
+<!-- Diabetology, code ended for accessing patient information and getting ML Results (doctor) (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group 1, Course-BMG5111, Winter 2023 -->

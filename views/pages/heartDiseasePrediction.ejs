@@ -185,6 +185,7 @@
     <form id="form">
       <div class="spinner" style="display: none;"></div>
     </form>
+    <br /><br />
     <table id="myTable">
       <caption>Patient Information </caption>
       <thead>
@@ -206,10 +207,6 @@
       </tbody>
     </table>
     <br />
-    <br />
-
-    <br />
-
     <table id="myTable">
       <caption>Patient Record</caption>
       <thead>
@@ -355,13 +352,16 @@
           cell12.innerHTML = JSON.stringify(data.ca);
           cell13.innerHTML = JSON.stringify(data.thal);
 
+          // https://mlmodel.herokuapp.com/ml/Stacking
           let base_url = 'https://mlmodel.herokuapp.com/ml/';
-          let ml_model = 'GBT';
+          let ml_model = 'Stacking';
           spinner.style.display = 'block'; // show the spinner
 
           const requestBody = {
             input: [
-              // 8.0, 1.0, 4.0, 355.0, 99.0, 1.0, 2.0, 2.0, 1, 2, 1, 2, 3
+              // 8.0, 1.0, 4.0, 355.0, 99.0, 1.0, 2.0, 2.0, 1, 2, 1, 2, 3 -Unhealthy data
+              //52.0, 1.0, 0.0, 125.0, 212.0, 0.0, 1.0, 168.0, 0, 1, 2, 2, 3 -Healthy data
+              // 71, 0, 2, 110, 265, 1, 0, 130, 0, 0, 2, 1, 2
               data.age,
               data.sex,
               data.cp,
@@ -388,14 +388,12 @@
           })
             .then(response => response.json())
             .then(data => {
-
-
-              if (data === 1.0) {
+              if (data === 1) {
                 document.getElementById("log").innerHTML = `You probably have heart disease risk`;
                 spinner.style.display = 'none'; // hide the spinner
 
 
-              } else if (data === 0.0) {
+              } else if (data === 0) {
                 document.getElementById("log").innerHTML = `You have a healthy heart`;
                 spinner.style.display = 'none'; // hide the spinner
               }

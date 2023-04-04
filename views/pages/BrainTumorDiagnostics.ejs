@@ -4,11 +4,11 @@
   <meta charSet="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>Alzheimers Diagnostic's | E-Hospital</title>
+  <title>Brain Tumor Diagnostic's | E-Hospital</title>
   <meta name="author" content="E-Hospital" />
-  <meta property="og:url" content="AlzheimersDiagnostics.html" />
+  <meta property="og:url" content="BrainTumorDiagnostics.html" />
   <meta property="og:site_name" content="E-Hospital" />
-  <meta property="og:title" content="Alzheimers Diagnostics | E-Hospital" />
+  <meta property="og:title" content="Brain Tumor Diagnostics | E-Hospital" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_CA" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -19,7 +19,7 @@
     }
   </style>
 
-  <!-- TaskName -AlzheimersDiagnostics
+  <!-- TaskName -Brain Tumor Diagnostics
  (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101 -->
 
  <script>
@@ -106,7 +106,7 @@
       const blob = await base64Response.blob();
       form.append('image', blob, recordList[index].file.originalname);
 
-      fetch('https://ad-classification.herokuapp.com/classify_image_ad', {
+      fetch('https://braintumor-classification.herokuapp.com/classify_brain_tumor', {
           method: 'POST',
           body: form
         })
@@ -135,7 +135,7 @@
 <body>
   <div class="header">
  
-    <h1>Alzheimer's Diagnostics</h1>
+    <h1>Brain Tumor Diagnostics</h1>
  
   </div>
 
