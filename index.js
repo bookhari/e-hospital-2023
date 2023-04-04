@@ -34,6 +34,17 @@ app.get('/', (req, res) => {
   res.render("pages/index");
 })
 
+/* TaskName -Alzheimers Detecction
+
+ (Parisa) - Team8, Course-BMG5111
+
+*/
+
+app.get('/AlzheimerMRIDetection', (req, res) => {
+
+  res.render("pages/AlzheimerMRIDetection");
+})
+
 // Hamza Khan Team for Specialities Page
 app.get('/specialities', (req, res) => {
   res.render("pages/specialities");
