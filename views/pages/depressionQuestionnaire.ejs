@@ -84,8 +84,7 @@
     <div class="container">
         <div class="title">PHQ-9: Over the last 2 weeks, how often have you been bothered by any of the following problems: </div>
         <div class="content">
-          
-            <form action="/depressionQuestionnaire" method="post">
+            <form>
                 <div class="user-details">
                   <div class="input-box">                       
                     <span class="details">Little interest or pleasure in doing things.</span>
@@ -190,7 +189,7 @@
                   </div>
               </div>
               <div class="button">
-                  <input type="submit" value="Submit" onclick="sumAnswers();">
+                <input id = "submit-button" type="submit" value="Submit">
               </div>
           </form>
       </div>
@@ -198,6 +197,8 @@
 
 
 <script>
+  let params = (new URL(document.location)).searchParams;
+  let phoneNumber = params.get("phoneNumber");
 
   function sumAnswers() {
     var q1SelectedOption = document.querySelector('input[name="q1"]:checked');
@@ -212,9 +213,32 @@
     var q10SelectedOption = document.querySelector('input[name="q10"]:checked');
 
     var sumTotal = Number(q1SelectedOption.value) + Number(q2SelectedOption.value) + Number(q3SelectedOption.value) + Number(q4SelectedOption.value) + Number(q5SelectedOption.value) + Number(q6SelectedOption.value) + Number(q7SelectedOption.value) + Number(q8SelectedOption.value) + Number(q9SelectedOption.value);
-
-    return sumTotal;
+    
+    const body = {
+            results: sumTotal,
+            q1SelectedOption,
+            q2SelectedOption,
+            q3SelectedOption,
+            q4SelectedOption,
+            q5SelectedOption,
+            q6SelectedOption,
+            q8SelectedOption,
+            q9SelectedOption,
+            q10SelectedOption,
+            phoneNumber
+        }
+        console.log(body)
+        fetch('/depressionQuestionnaire', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        .then(response => window.location.href = "/thankyou")
   }
+  const submitButton = document.getElementById('submit-button');
+  submitButton.addEventListener('click', sumAnswers);
   
 </script>
 </body>

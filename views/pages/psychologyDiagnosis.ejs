@@ -70,63 +70,38 @@
         //let image = document.createElement("td");
         //image.innerHTML = "Will be replace by image";
         let recordDate = document.createElement("td");
-        recordDate.innerHTML = new Date(recordList[i].date);       
+        recordDate.innerHTML = new Date(recordList[i].date);
+        let frequency = document.createElement("td");
+        frequency.innerHTML = recordList[i].frequency;
+        if (recordList[i].frequency == 1) {
+            frequency.innerHTML = "Weekly";
+        }       
         let therapy = document.createElement("td");
         therapy.innerHTML = recordList[i].type_of_therapy;
-        console.log(recordList[i].type_of_therapy)
         if (recordList[i].type_of_therapy == 1) {
             therapy.innerHTML = "Depression";
         }
-        let action = document.createElement("td");
-        let button = document.createElement("input");
-        button.type = "button";
-        button.value = "Diagnose";
-        button.index = i;
-        button.setAttribute("onclick", "predict(this.index)")
-        action.appendChild(button);
+        let treatment = document.createElement("td");
+        treatment.innerHTML = recordList[i].treatment_type;
+        if (recordList[i].treatment_type == 1) {
+            treatment.innerHTML = "Psychodynamic Therapy";
+        }
+        let cost = document.createElement("td");
+        cost.innerHTML = recordList[i].cost;
+        if (recordList[i].cost == 1) {
+            cost.innerHTML = "Less than $100 per session";
+        }
+
         
         //tr.appendChild(image);
         tr.appendChild(recordDate);
         tr.appendChild(therapy);
-        tr.appendChild(action);
+        tr.appendChild(frequency);
+        tr.appendChild(treatment);
+        tr.appendChild(cost);
         list.appendChild(tr);
       }
     }
-    
-    // Send the image to the ML api for the prediction
-    async function predict(index) {
-      console.log(recordList[index]);
-
-      // Prepare submit data
-      const form = new FormData();
-      const base64Response = await fetch(`data:image/jpeg;base64,${recordList[index].file.buffer}`);
-      const blob = await base64Response.blob();
-      form.append('image', blob, recordList[index].file.originalname);
-
-      // Send to the ML API
-      $.ajax({
-        url: "/connectionTesting",
-        type: 'POST',
-        enctype: 'multipart/form-data',
-        data: form,
-        processData: false,
-        contentType: false,
-        cache: false,
-        success: function(data) {
-          // console.log(data);
-          data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
-          storePrediction(data, recordList[index]._id);
-        },
-        error: function(xhr, textStatus, errorThrown) {
-          // Handle error response from server
-          alert(textStatus + ': ' + errorThrown);
-        }
-      });
-    }
-
-    // Store the prediction result to the database
-    function storePrediction(result, id) {
-      console.log(result);
       
       // Retrieved phone number and the current date
       let params = (new URL(document.location)).searchParams;
@@ -135,29 +110,6 @@
       const offset = today.getTimezoneOffset();
       today = new Date(today.getTime() - (offset*60*1000)).toISOString();
 
-      // Store to the database
-      $.ajax({
-        url: "/updatePsychologyDiagnosis",
-        type: 'POST',
-        data: {
-          phoneNumber: phoneNumber,
-          disease: "pyschology_patients", // the table name that stores the prediction result
-          date: today,
-          prediction: result.prediction,
-          accuracy: result.accuracy, // can be null if not provided
-          recordType: "psychology_patients", // can be null if no record is used for the ML prediction
-          recordId: id // can be null if no record is used for the ML prediction
-        },
-        success: function(data) {
-          // console.log(data);
-          data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
-        },
-        error: function(xhr, textStatus, errorThrown) {
-          // Handle error response from server
-          alert(textStatus + ': ' + errorThrown);
-        }
-      });
-    }
   </script>
   
   <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
@@ -170,7 +122,9 @@
       <tr>
         <th>Record Date</th>
         <th>Therapy Type</th>
-        <th>Action</th>
+        <th>Frequency</th>
+        <th>Treatment</th>
+        <th>Cost</th>
       </tr>
 
     </table>

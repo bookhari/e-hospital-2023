@@ -130,10 +130,11 @@
       <script>
       
 var res = {};
-var chosen_dr = "Emily"
+///psychologistRecommendation?phoneNumber=6131230002&type=1&doc=Olivia
 let params = (new URL(document.location)).searchParams;
 let phoneNumber = params.get("phoneNumber");
 let type = params.get("type");
+let chosen_dr = params.get("doc")
 
     //   fetch( 'http://localhost:5000/get_diabetologyList')
        fetch( '/get_psychologistsinfo')
