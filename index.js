@@ -34,6 +34,17 @@ app.get('/', (req, res) => {
   res.render("pages/index");
 })
 
+/* TaskName -Alzheimers Detecction
+
+ (Parisa) - Team8, Course-BMG5111
+
+*/
+
+app.get('/AlzheimerMRIDetection', (req, res) => {
+
+  res.render("pages/AlzheimerMRIDetection");
+})
+
 // Hamza Khan Team for Specialities Page
 app.get('/specialities', (req, res) => {
   res.render("pages/specialities");
@@ -149,11 +160,13 @@ app.get('/arrhythmia', (req, res) => {
 app.get('/services', (req, res) => {
   res.render("pages/services");
 })
+
+/* Diabetology, code started for adding route to Diabetology Page (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan)
+   Group 1, Course-BMG5111, Winter 2023
+*/
+
 app.get('/diabetology', (req, res) => {
   res.render("pages/diabetology");
-})
-app.get('/ediabetes', (req, res) => {
-  res.render("pages/ediabetes");
 })
 app.get('/diabetology_specialists', (req, res) => {
   res.render("pages/diabetology_specialists");
@@ -161,9 +174,112 @@ app.get('/diabetology_specialists', (req, res) => {
 app.get('/DiabetologyDiagnostics', (req, res) => {
   res.render("pages/DiabetologyDiagnostics");
 })
-app.get('/DiabetologyData', (req, res) => {
-  res.render("pages/DiabetologyData");
+app.get('/DiabetologyPatients', (req, res) => {
+  res.render("pages/DiabetologyPatients");
 })
+
+
+app.get('/get_diabetologyList', (req, res) => {
+  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      console.log(error);
+      return;
+    }
+    res.send(result);
+  })
+})
+
+app.post('/DiabetologyData', (req, res) => {
+  const getDetails = req.body
+  console.log(req.body)
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
+  const date = new Date();
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      console.log(result.length)
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+  
+    const patient_id = result[0].id;
+
+    console.log(patient_id)
+
+    sql = "INSERT INTO `diabetes`(`patient_id`,`phoneNumber`,`date`, `Age`, `BMI`, `SkinThickness`, `Glucose`, `BloodPressure`, `Insulin`, `DiabetesPedigreeFunction`, `Sex`, `Pregnancies`, `ML_result`) VALUES ?";
+    var VALUES = [[patient_id, phoneNumber, date, getDetails.Age, getDetails.BodyMassIndex, 
+     getDetails.SkinThickness, getDetails.Glucose, getDetails.BloodPressure, getDetails.Insulin,
+     getDetails.DiabetesPedigreeFunction, getDetails.Sex, getDetails.Pregnancies, getDetails.ML_result]]
+
+    conn.query(sql, [VALUES], (error, result) => {
+      if (error) throw error
+      console.log(result);
+
+    })
+  })
+})
+
+
+// This is the MySQL health test search API
+app.post('/DiabetologyPatients', async (req,res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const recordType = req.body.recordType; // the record type, e.g. "ecg", this represents the table name in the database
+
+  // Check parameters
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number."});
+    return;
+  }
+  if (!recordType) {
+    res.send({error:"Missing record type."});
+    return;
+  }
+
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      console.log()
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    sql = `SELECT * FROM ${recordType} WHERE patient_id = "${patient_id}" ORDER BY date DESC`
+    conn.query(sql, async (error, result) => {
+      if (error) {
+        console.log()
+        res.send({error:"Something wrong in MySQL."});
+        return;
+      }
+
+      var temp = removeKey(result,"patient_id");
+      res.send({success:temp});
+    });
+  });
+})
+
+
+/* Diabetology, code ended
+*/
+
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })
@@ -290,6 +406,26 @@ app.get('/heartStrokeDetection', (req, res) => {
 app.get('/cancerDetection', (req, res) => {
   res.render("pages/cancerDetection");
 })
+
+/* TaskName -AlzheimersDiagnostics and BrainTumorDiagnostics
+ (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101, 
+*/
+
+app.get('/AlzheimersDiagnostics', (req, res) => {
+  res.render("pages/AlzheimersDiagnostics");
+})
+
+app.get('/BrainTumorDiagnostics', (req, res) => {
+  res.render("pages/BrainTumorDiagnostics");
+})
+
+/* TaskName -AlzheimersDiagnostics and BrainTumorDiagnostics
+ (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101, 
+*/
+
+
+
+
 app.get('/Login', (req, res) => {
   errorMessage = '';
   res.render("pages/logina8b9", {
@@ -1283,20 +1419,7 @@ app.post('/update_availability', (req, res) => {
   })
 })
 
-/* Diabetology Page, code started for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
-app.get('/get_diabetologyList', (req, res) => {
-  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    res.send(result);
-  })
-})
-/* Diabetology Page, code ended for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
 app.post('/recordUpdate', upload.single("image"), (req, res) => {
   // console.log(req.file);
@@ -1547,6 +1670,10 @@ app.get('/hospitalData', (req, res) => {
 
 app.get('/MS-diagnoses', (req, res) => {
   res.render("pages/MS-diagnoses")
+})
+
+app.get('/diagnosisMS', (req, res) => {
+  res.render("pages/diagnosisMS")
 })
 
 app.get('/ECG-diagnoses', (req, res) => {

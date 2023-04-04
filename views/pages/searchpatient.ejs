@@ -141,6 +141,20 @@ body {
                             <td><button><a href="liver2?id=<%= entry.id %>">Run Liver Diagnostics</a></button></td>
                         </tr>
 
+                        
+                        <!--AlzheimersDiagnostics and BrainTumorDiagnostics (Prateek Walia, Shrey, Advaith, Group 9, BMG 5109)-->
+                        <tr>
+                            <td><button><a href="AlzheimersDiagnostics?phoneNumber=<%= entry.MobileNumber %>">Run Alzheimers Diagnostics</a></button></td>
+                        </tr>
+
+                        <tr>
+                            <td><button><a href="BrainTumorDiagnostics?phoneNumber=<%= entry.MobileNumber %>">Run Brain Tumor Diagonostics</a></button></td>
+                        </tr>
+                        
+                        <!--AlzheimersDiagnostics and BrainTumorDiagnostics (Prateek Walia, Shrey, Advaith, Group 9, BMG 5109)-->
+
+
+
                         <!-- Heart Disease Prediction - Ram, Hoaming -->
                         <tr>
                             <td><button><a href="heartDiseasePrediction?id=<%= entry.id %>">Heart Disease Prediction</a></button></td>
@@ -154,6 +168,7 @@ body {
                             <td><button><a href="gastroImagePrediction?phoneNumber=<%= entry.MobileNumber %>">Gastro Image Diagnosis</a></button></td>
                         </tr>
           
+
                     </tbody>
                     <% }) %> 
                 </table>
