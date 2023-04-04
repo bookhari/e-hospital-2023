@@ -23,6 +23,10 @@
         <link rel="stylesheet" href="css/diagnostic-card-layout.css">
         
     </head>
+
+    <!--Group5 Manorama, Akhil, Bhavya 
+    Adding this script to access id and redirect to our Urology app
+    Start of Script-->
     <script>
         function redirectToKidney() {
           const urlParams = new URLSearchParams(window.location.search);
@@ -30,6 +34,7 @@
           window.location.href = 'https://mlmodel2.herokuapp.com/kidney/' + id;
         }
         </script>
+        <!---End of Script by Group5-->
     <body>
         <%- include('../partials/header') -%>
         <!-- First section -->
@@ -73,11 +78,7 @@
                                 <button class="button" onclick="document.location='heartDiseasePrediction'">Learn More</button>
                             </div>
                         </div>
-                        <form method="post" action="/kidney">
-                            
-
-                            <input type="hidden" name="id" value="your_id_here">
-                            <div class="card swiper-slide">
+                        <div class="card swiper-slide">
                                 <div class="image-content">
                                     <div class="card-image">
                                         <img src="images/brain.png" class="card-img">
@@ -86,14 +87,14 @@
                                 <div class="card-content">
                                     <h2 class="name">Brain Diagnostic</h2>
                                     <p class="description">Here is the page for brain diagnostic</p>
-                                    <button type="submit" class="button" onclick="document.location='heartDiseasePrediction'">Learn More</button>
+                                    <button type="submit" class="button" onclick="document.location='brain'">Learn More</button>
                                 </div>
                             </div>
-                        </form>
+                        
                         <div class="card swiper-slide">
                             <div class="image-content">
                                 <div class="card-image">
-                                    <img src="images/brain.png" class="card-img">
+                                    <img src="images/kidney.jpg" class="card-img">
                                 </div>
                             </div>
                         
