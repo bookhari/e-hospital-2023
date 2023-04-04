@@ -1549,6 +1549,10 @@ app.get('/MS-diagnoses', (req, res) => {
   res.render("pages/MS-diagnoses")
 })
 
+app.get('/diagnosisMS', (req, res) => {
+  res.render("pages/diagnosisMS")
+})
+
 app.get('/ECG-diagnoses', (req, res) => {
   res.render("pages/ECG-diagnoses")
 })
