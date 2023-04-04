@@ -90,7 +90,7 @@
       <input type="text" id="result" readonly>
       </p>
       <div class="content">
-        <form action="/psychologyQuestionnaire" method="post">
+        <form>
           <div class="user-details">
             <div class="input-box">
               <span class="details">Mobile Number</span>
@@ -177,13 +177,9 @@
                   <option value=3>More than $150 per session</option>
                 </select>
             </div>
-            <div class="input-box">
-              <span class="details"></span>
-              <input type="text" id="chosen_dr" name="chosenDr" style="display:none">
-            </div>
           </div>
           <div class="button">
-              <input type="submit" value="Submit" onclick="checkAnswer();">
+              <input id = "submit-button" type="submit" value="Submit">
           </div>
         </form>
       </div>
@@ -196,68 +192,90 @@
     //const date = new Date( Date.now() );
 
     function checkAnswer(event) {
-      
-      var q1SelectedOption = document.querySelector('input[name="sex"]:checked');
-      var q2SelectedOption = document.querySelector('input[name="language"]:checked');
-      var q3SelectedOption = document.querySelector('input[name="treatment_setting"]:checked');
-      var q4SelectedOption = document.querySelector('input[name="age_group"]:checked');
-      var q5SelectedOption = document.querySelector('input[name="type_of_therapy"]:checked');
-      var q6SelectedOption = document.querySelector('input[name="psychological_treatment"]:checked');
-      var q7SelectedOption = document.querySelector('input[name="time_frame"]:checked');
-      var q8SelectedOption = document.querySelector('input[name="frequency"]:checked');
-      var q9SelectedOption = document.querySelector('input[name="cost"]:checked');
+      event.preventDefault();
 
-      answers[1] = q1SelectedOption.value;
-      answers[2] = q2SelectedOption.value;
-      answers[3] = q3SelectedOption.value;
-      answers[4] = q4SelectedOption.value;
-      answers[5] = q5SelectedOption.value;
-      answers[6] = q6SelectedOption.value;
-      answers[7] = q7SelectedOption.value;
-      answers[8] = q8SelectedOption.value;
-      answers[9] = q9SelectedOption.value;
+      var q1SelectedOption = document.getElementById("sex").value;
+      var q2SelectedOption = document.getElementById("language").value;
+      var q3SelectedOption = document.getElementById("treatment_setting").value;
+      var q4SelectedOption = document.getElementById("age_group").value;
+      var q5SelectedOption = document.getElementById("type_of_therapy").value;
+      var q6SelectedOption = document.getElementById("psychological_treatment").value;
+      var q7SelectedOption = document.getElementById("time_frame").value;
+      var q8SelectedOption = document.getElementById("frequency").value;
+      var q9SelectedOption = document.getElementById("cost").value;
 
-      function populate(res) {
-        console.log(res)
-        for (var i = 0; i < res.length; i++) {
-          doctors.push([        res[i].dr_name,
-            res[i].sex,
-            res[i].language,
-            res[i].treatment_type,
-            res[i].age_group,
-            res[i].type_of_therapy,
-            res[i].psychological_treatment,
-            res[i].time_frame,
-            res[i].frequency,
-            res[i].cost
-          ]);
+      const phoneNumber = document.getElementById("phoneNumber").value;
+
+      answers[1] = q1SelectedOption;
+      answers[2] = q2SelectedOption;
+      answers[3] = q3SelectedOption;
+      answers[4] = q4SelectedOption;
+      answers[5] = q5SelectedOption;
+      answers[6] = q6SelectedOption;
+      answers[7] = q7SelectedOption;
+      answers[8] = q8SelectedOption;
+      answers[9] = q9SelectedOption;
+
+    // Define the Information of Dr.s database
+    fetch('/get_psychologistsinfo')
+    .then((response) => response.json())
+    .then((data) =>{   
+        let lastMaxMatchedAttributes = 0;
+        let lastDoctorIndex = 0;
+        for (var i = 0; i < data.length; i++) {
+            // sum all the elements that match here
+
+            let matchedAttributes = 0;
+
+            matchedAttribute += data[i].sex == q1SelectedOption ? 1 : 0;
+            matchedAttribute += data[i].language == q2SelectedOption ? 1 : 0;
+            matchedAttribute += data[i].treatment_setting == q3SelectedOption ? 1 : 0;
+            matchedAttribute += data[i].age_group == q4SelectedOption ? 1 : 0;
+            matchedAttribute += data[i].type_of_therapy == q5SelectedOption ? 1 : 0;
+            matchedAttribute += data[i].psychological_treatment == q6SelectedOption ? 1 : 0;
+            matchedAttribute += data[i].time_frame == q7SelectedOption ? 1 : 0;
+            matchedAttribute += data[i].frequency == q8SelectedOption ? 1 : 0;
+            matchedAttribute += data[i].cost == q9SelectedOption ? 1 : 0;
+            
+            // after all the sums
+
+            if (matchedAttributes > lastMaxMatchedAttributes) {
+                lastDoctorIndex = i;
+                lastMaxMatchedAttributes = matchedAttributes
+            }
         }
-        return res
-      }
+        
+        var chosen_dr = data[lastDoctorIndex].dr_name;
 
-      // Define the Information of Dr.s database
-      fetch('/get_psychologistsinfo')
-        .then((data) => populate(data));
+        console.log(chosen_dr);
 
-      var numSame = 0;
-      var x = 0;
-
-      for (var i = 0; i < res.length; i++) {
-        var cam = 0;
-        for (var j = 1; j < answers.length; j++) {
-          if (answers[j] === res[i][j]) {
-            cam++;
-          }
+        const body = {
+            dr_name: chosen_dr,
+            sex: q1SelectedOption,
+            language:q2SelectedOption, 
+            treatment_setting: q3SelectedOption, 
+            age_group: q4SelectedOption, 
+            type_of_therapy: q5SelectedOption, 
+            psychological_treatment: q6SelectedOption, 
+            time_frame: q7SelectedOption, 
+            frequency: q8SelectedOption, 
+            cost: q9SelectedOption,
+            phoneNumber
         }
-        if (numSame < cam) {
-          numSame = cam;
-          x = i;
-        }
-      }
-      var chosen_dr = res[x][0];
-      console.log(chosen_dr)
-      document.getElementById("chosen_dr").innerHTML = chosen_dr;
+        console.log(body)
+        fetch('/psychologyQuestionnaire2', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+
+    });
     }
+    const submitButton = document.getElementById('submit-button');
+    submitButton.addEventListener('click', checkAnswer);
+
 
   </script>
 </body>

@@ -131,6 +131,9 @@
       
 var res = {};
 var chosen_dr = "Emily"
+let params = (new URL(document.location)).searchParams;
+let phoneNumber = params.get("phoneNumber");
+let type = params.get("type");
 
     //   fetch( 'http://localhost:5000/get_diabetologyList')
        fetch( '/get_psychologistsinfo')
@@ -161,22 +164,21 @@ var chosen_dr = "Emily"
             else if (lang == 2){
                 lang = "French"
             }
-            
             addCard(name, spe, loc, ava, lang);
-            if (res[i].type_of_therapy = 1){
-                var varurl = "/depressionQuestionnaire"
+
+            const myButton = document.getElementById("myButton");
+
+            if (type = 1) {
+                myButton.setAttribute("href", "/depressionQuestionnaire?phoneNumber="+phoneNumber);
             }
         }
 
       }
     }
-    
-      </script>
-
+    </script>
     <section class="appt" style="margin-top: 2rem; margin-bottom: 3rem;"> 
         <div class="container flex-jc-c">
-            
-            <a href=varurl class="button appt">Fill in next questionnaire</a>
+            <a id="myButton" href= "/thankyou" class="button appt">Fill in additional questionnaire</a>
         </div>
         </div>
     </section>
@@ -191,9 +193,5 @@ var chosen_dr = "Emily"
     <footer>
         <%- include('../partials/footer-new') -%>
     </footer>
-
-
 </body>
-
-
 </html>
