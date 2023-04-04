@@ -271,17 +271,42 @@
 
     })
       .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        if (data == 'Patient is diabetic') {
-          document.getElementById("log").innerHTML = 'Patient is diabetic';
+      .then(result => {
+        console.log(result)
+        if (result == 'Patient is diabetic') {
+          document.getElementById("log").innerHTML = 'Patient is likely to develop diabetes.';
           spinner.style.display = 'none'; // hide the spinner
 
 
-        } else if (data == 'Patient is not diabetic') {
-          document.getElementById("log").innerHTML = 'Patient is not diabetic';
+        } else if (result == 'Patient is not diabetic') {
+          document.getElementById("log").innerHTML = 'Patient is unlikely to develop diabetes.';
           spinner.style.display = 'none'; // hide the spinner
         }
+
+
+        const body = {
+        "Age": data?.Age,
+        "BodyMassIndex": data?.BMI,
+        "SkinThickness": data?.SkinThickness,
+        "Glucose": data?.Glucose,
+        "BloodPressure": data?.BloodPressure,
+        "Insulin": data?.Insulin,
+        "DiabetesPedigreeFunction": data?.DiabetesPedigreeFunction,
+        "Pregnancies": data?.Pregnancies,
+        "Sex": data?.Sex,
+        "phoneNumber": data?.PatientID,
+        "ML_result": result
+
+      }
+
+    console.log(body)
+        fetch('/DiabetologyData', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
 
       })
       .catch(error => {
@@ -290,13 +315,18 @@
         spinner.style.display = 'none'; // hide the spinner
 
       });
-  }
+  
+      
+  
+    }
   function clearResult() {
     // To clear result
     document.getElementById("log").innerHTML = ``;
   }
   const form = document.getElementById('form');
   form.addEventListener('submit', logSubmit);
+
+
 </script>
 
 
