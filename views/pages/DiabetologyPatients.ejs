@@ -8,7 +8,7 @@
 <head>
   <meta charSet="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="author" content="E-Hospital" />
 
   <meta property="og:url" content="register.html" />
@@ -23,6 +23,51 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
   <style>
+
+    /* Set styles for the table */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+
+    .hscroll {
+      overflow-x: auto; /* Horizontal scrolling */
+    }
+
+    /* Set styles for the table header */
+    th {
+      background-color: #2f4052;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px 15px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    /* Set styles for the table rows */
+    tr {
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Set styles for the table cells */
+    td {
+      padding: 10px 15px;
+      font-size: 16px; /* increase font size */
+    }
+
+    /* Set hover styles for the table rows */
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+    .outer{
+      margin: 60px 10rem 0;
+    }
+
     table, th, td {
       border:1px solid black;
     }
@@ -118,7 +163,7 @@
     }
     
     // Send the image to the ML api for the prediction
-    async function predict(index) {
+      async function predict(index) {
       console.log(recordList[index]);
 
       // Prepare submit data
@@ -163,13 +208,14 @@
     }
   </script>
   
-  <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
+ <!-- <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" > -->
 
 </head>
 <header>
-    <%- include('../partials/header') -%>
+  <%- include('../partials/header') -%>
 </header>
-  <div class="container" >
+  <div class="container hscroll">
+
     <div class="title">Patient Record</div>
     <table id="recordList" class="center" style="margin-top:50px; width:50%; margin-bottom:50px;margin-left: auto;margin-right: auto;">
       <tr>
@@ -181,7 +227,7 @@
         <th>Glucose Measurement (mg/dL)</th>
         <th>Diastolic Blood Pressure (mm/Hg)</th>
         <th>Insulin (U/mL)</th>
-        <th>DiabetesPedigreeFunction</th>
+        <th>Diabetes Pedigree Function</th>
         <th>Number of Pregnancies</th>
         <th>Prediction Results</th>
 
@@ -197,7 +243,6 @@
   
   </footer>
   </div> 
-  
 
 </html>
 
