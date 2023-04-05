@@ -30,7 +30,7 @@
     $(document).ready(function() {
 
       let params = (new URL(document.location)).searchParams;
-      let phoneNumber = 6131230002;
+      let phoneNumber = 6131230001;
       // Get the patient records
       $.ajax({
         url: "/healthTestRetrieveByPhoneNumber",
@@ -57,7 +57,7 @@
 
     //Takes the information of the patient and stores it as a list
     function convert(data) {
-        let record = data[0];
+        const record = data[0];
         if (!data) {
             alert("No data received");
             return;
@@ -65,36 +65,14 @@
             console.log(record);
             myList = Object.values(record);
             console.log(myList);
-            createTable(record);
+            createTableFromDict(record);
             return(myList);
         }
 
     }
-//display results in table. Not sure how to format this in terms of location.
-    function createTable(data) {
-        const table = document.createElement('table');
-        const tbody = document.createElement('tbody');
-        table.id = "myTable";
-        table.style.zIndex = "999";
-        table.style.position = "absolute";
-        let row = tbody.insertRow();
-        let header = row.insertCell(0);
-        header.innerHTML = "<b>Parameter</b>";
-        let valueHeader = row.insertCell(1);
-        valueHeader.innerHTML = "<b>Value</b>";
-        for (let key in data) {
-            row = tbody.insertRow();
-            let cell1 = row.insertCell(0);
-            cell1.innerText = key;
-            let cell2 = row.insertCell(1);
-            cell2.innerText = data[key];
-        }
-        table.appendChild(tbody);
-        document.body.appendChild(table);
-    }
 
 //runs the model with the selected patient's information
-    function predict() {
+    function predict(data) {
         let announce;
         const finalInput = document.getElementById("diagnose");
         if (bc_diagnose(myList) === 1) {
@@ -106,15 +84,40 @@
         
     }
 
+    //Create table to display patient information
+    function createTableFromDict(dict) {
+        let table = document.createElement('table');
+        //table.style.marginLeft = "-100px";
+        let headerRow = table.insertRow();
+        for (let key in dict) {
+            let headerCell = document.createElement('th');
+            headerCell.style.maxWidth = "140px";
+            headerCell.innerHTML = key;
+            headerRow.appendChild(headerCell);
+        }
+        let dataRow = table.insertRow();
+        for (let key in dict) {
+            let dataCell = document.createElement('td');
+            dataCell.style.maxWidth = "140px";
+            dataCell.innerHTML = dict[key];
+            dataRow.appendChild(dataCell);
+        }
+        let container = document.querySelector('.container');
+        container.appendChild(table);
+    }
+
+    //Fill in values for record Type and date
     function tableFill(value, date) {
-        let thRecord = document.getElementById('record');
+        let thRecord = document.getElementById('recordType');
         let thDate = document.getElementById('recordDate');
         thDate.innerText = `Record Date: ${date}`;
-        if (value === 1) {
+        if (value === 0) {
             thRecord.innerText = "Record Type: Benign" ;
         } else {
             thRecord.innerText = "Record Type: Malignant";
         }
+        let container = document.querySelector(".container")
+        //container.appendChild(table)
     }
     //decision tree prediciton model 0=benign, 1=malignant
     function bc_diagnose(ins) {
@@ -193,48 +196,10 @@
             }
     }
 
-    // Send the image to the ML api for the prediction
-    // async function predict(index) {
-    //   console.log(recordList[index]);
-
-    //   // Prepare submit data
-    //   const form = new FormData();
-
-    //   // Send to the ML API
-    //   $.ajax({
-    //     url: "/connectionTesting",
-    //     type: 'POST',
-    //     enctype: 'multipart/form-data',
-    //     data: form,
-    //     processData: false,
-    //     contentType: false,
-    //     cache: false,
-    //     success: function(data) {
-    //       // console.log(data);
-    //       // data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
-    //       data.error ? alert(JSON.stringify(data.error)) : null;
-    //       storePrediction(data, recordList[index]._id);
-    //       console.log(`Succesful response ${JSON.stringify(data)}`);
-    //       console.log(`Message is: ${JSON.stringify(data)}`);
-    //       var st1=JSON.stringify(data);
-    //       str= st1.replace(/[\[\]""]+/g,''); 
-    //       str2 = str.replace(/[{}()]/g, '').replace(/[\[\]""]+/g,'');
-    //       console.log(str2);         
-    //       console.log(str2);        
-    //       $("#diagnose").val(str2);
-    //     },
-    //     error: function(xhr, textStatus, errorThrown) {
-    //       // Handle error response from server
-    //       alert(textStatus + ': ' + errorThrown);
-    //     }
-    //   });
-    // }
-
     // Store the prediction result to the database
     function storePrediction() {
-      // Retrieved phone number and the current date
-      let params = (new URL(document.location)).searchParams;
-      let phoneNumber = 6131230002;
+      // Set phone number and the current date
+      let phoneNumber = 6131230001;
       let today = new Date();
       const offset = today.getTimezoneOffset();
       today = new Date(today.getTime() - (offset*60*1000)).toISOString();
@@ -248,7 +213,7 @@
           date: today,
           prediction: bc_diagnose(myList),
           accuracy: null,
-          recordType: "tumor", // can be null if no record is used for the ML prediction
+          recordType: "tumor", 
           recordId: 2,
         },
         success: function(data) {
@@ -268,7 +233,7 @@
   </script>
   
   <%- include('../partials/header') -%>
-  <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
+    <link href="/css/oncology.css" rel="stylesheet" >
 </head>
 <body>
   <div class="header">
@@ -284,7 +249,7 @@
   <div class="container" style="padding-top: 40px;">
     <table id="recordList" style="width:100%">
       <tr>
-        <th id="record">Record</th>
+        <th id="recordType">Record</th>
         <th id="recordDate">Record Date</th>
       </tr>
 
@@ -293,14 +258,14 @@
   <div> 
 
     <div class="outer">
-      <div class="result-box">
+      <div class="result-box" style = "padding: 30px 15px; width: 1000px; margin-left: 65.5px;">
         <label for="diagnose">Test Result:</label>
         <br> 
         <input type="text" id="diagnose" name="diagnose" placeholder="Result" \
         style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 100%; font-size: 15px; font-weight: 500;
         color: #ae2727;
         animation: fadeIn 1s ease-in;box-sizing: border-box; 
-        margin-top: 10px;" disabled="disabled" required>
+        margin-top: 10px;" disabled="disabled">
         <button onclick="predict(); storePrediction()">Predict</button>
        </div>
             </form>
