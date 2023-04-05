@@ -1,0 +1,326 @@
+<style>
+  .highlight {
+    background-color: rgb(255, 254, 254);
+  }
+
+  table {
+    width: 800px;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  tr {
+    /* background-color: beige; */
+    color: black;
+    background-color: linear-gradient(170deg, #ffffff, #b8a878);
+    padding: 15px;
+    padding-bottom: 20px;
+  }
+
+  td {
+    padding: 15px;
+    width: auto;
+  }
+  /* th,
+    td {
+      padding: 15px;
+      background: linear-gradient(170deg, #ffffff, #b8a878);
+    } */
+
+  th,
+  .resultsTable tbody td {
+    color: #777;
+    font-weight: 400;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-weight: 300;
+    border: none;
+    -webkit-transition: 0.3s all ease;
+    -o-transition: 0.3s all ease;
+    transition: 0.3s all ease;
+  }
+
+  tr:hover {
+    background-color: rgb(65, 51, 46);
+    color: rgb(255, 255, 255);
+  }
+
+  .text-address {
+    background-color: rgb(216, 209, 209);
+    border-bottom: #777;
+  }
+
+  .input-container {
+    position: relative;
+    margin-left: 10%;
+  }
+
+  input {
+    height: 48px;
+    width: 280px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 16px;
+  }
+
+  .byline {
+    text-align: center;
+    font-size: 18px;
+  }
+  .byline a {
+    text-decoration: none;
+    color: #ce0000;
+  }
+
+  #gradient {
+    width: 0;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 100%;
+    -webkit-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+    -moz-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+    box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+  }
+  .searchbox {
+    background-color: #fffbf8;
+    padding: 13px;
+    width: 335px;
+    margin: 100px auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(72, 72, 72, 0.83),
+      0 10px 15px 0 rgba(126, 126, 126, 0.12),
+      0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
+      0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+    -moz-box-shadow: 0 2px 4px 0 rgba(72, 72, 72, 0.83),
+      0 10px 15px 0 rgba(126, 126, 126, 0.12),
+      0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
+      0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+    box-shadow: 0 2px 4px 0 rgba(72, 72, 72, 0.83),
+      0 10px 15px 0 rgba(126, 126, 126, 0.12),
+      0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset,
+      0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+  }
+  input[type="search"] {
+    width: 250px;
+    height: 30px;
+    padding-left: 15px;
+    border-radius: 6px;
+    border: none;
+    color: #939393;
+    font-weight: 500;
+    background-color: #fffbf8;
+    -webkit-box-shadow: 0 -2px 2px 0 rgba(199, 199, 199, 0.55), 0 1px 1px 0 #fff,
+      0 2px 2px 1px #fafafa, 0 2px 4px 0 #b2b2b2 inset,
+      0 -1px 1px 0 #f2f2f2 inset, 0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+    -moz-box-shadow: 0 -2px 2px 0 rgba(199, 199, 199, 0.55), 0 1px 1px 0 #fff,
+      0 2px 2px 1px #fafafa, 0 2px 4px 0 #b2b2b2 inset,
+      0 -1px 1px 0 #f2f2f2 inset, 0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+    box-shadow: 0 -2px 2px 0 rgba(199, 199, 199, 0.55), 0 1px 1px 0 #fff,
+      0 2px 2px 1px #fafafa, 0 2px 4px 0 #b2b2b2 inset,
+      0 -1px 1px 0 #f2f2f2 inset, 0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+  }
+  button[type="submit"] {
+    width: 35px;
+    height: 30px;
+  }
+</style>
+
+<script>
+  // Import all requirements.
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
+    "esri/rest/locator",
+    "esri/Graphic",
+    "esri/widgets/Locate",
+    "esri/Graphic",
+    "esri/rest/route",
+    "esri/layers/GraphicsLayer",
+    "esri/rest/support/RouteParameters",
+    "esri/rest/support/FeatureSet",
+  ], function (
+    esriConfig,
+    Map,
+    MapView,
+    locator,
+    Graphic,
+    Locate,
+    RouteParameters,
+    FeatureSet,
+    route,
+    GraphicsLayer
+  ) {
+    esriConfig.apiKey =
+      "AAPK8d6f97bba6114008aa8c2e0c4e4c9faeVdLpPkFkUE3cdT4JuduDTF2qyVad1BN3dd-RXNWi44KwDM-SeN4GldsP8QiTHPeX";
+
+    // const searchField = document.getElementById("locationInput");
+    // const searchButton = document.getElementById("locationButton");
+    var Map_center = [-75.71859624820526, 45.40775749047658];
+
+    const map = new Map({
+      basemap: "arcgis-navigation",
+    });
+
+    var view = new MapView({
+      container: "viewDiv",
+      map: map,
+      center: Map_center,
+      zoom: 13,
+    });
+
+    // searchButton.addEventListener("click", function () {
+    //   console.log("click");
+    //   if (searchField.value != "") {
+    //     const coordinates = searchField.value.split(",").map(Number);
+    //     console.log(coordinates);
+    //     view.center = coordinates;
+    //   }
+    // });
+
+    const locate = new Locate({
+      view: view,
+      useHeadingEnabled: false,
+      goToOverride: function (view, options) {
+        options.target.scale = 1500;
+        return view.goTo(options.target);
+      },
+    });
+    view.ui.add(locate, "top-left");
+
+    const places = ["Choose a place type...", "Hospital", "Pharmacy"];
+
+    const select = document.createElement("select", "");
+    select.setAttribute("class", "esri-widget esri-select");
+    select.setAttribute(
+      "style",
+      "width: 175px; font-family: 'Avenir Next W00'; font-size: 1em"
+    );
+
+    places.forEach(function (p) {
+      const option = document.createElement("option");
+      option.value = p;
+      option.innerHTML = p;
+      select.appendChild(option);
+    });
+
+    view.ui.add(select, "top-right");
+    view.ui.add(select, "top-right");
+
+    const locatorUrl =
+      "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+    const routeUrl =
+      "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+
+    // Find places and add them to the map
+    const table = document.getElementById("resultsTable");
+
+    function findPlaces(category, pt) {
+      locator
+        .addressToLocations(locatorUrl, {
+          location: pt,
+          categories: [category],
+          maxLocations: 25,
+          outFields: ["Place_addr", "PlaceName"],
+        })
+
+        .then(function (results) {
+          view.popup.close();
+          view.graphics.removeAll();
+
+          results.forEach(function (result) {
+            view.graphics.add(
+              new Graphic({
+                attributes: result.attributes, // Data attributes returned
+                geometry: result.location, // Point returned
+                symbol: {
+                  type: "simple-marker",
+                  color: "red",
+                  size: "12px",
+                  outline: {
+                    color: "black",
+                    width: "2px",
+                  },
+                },
+
+                popupTemplate: {
+                  title: "{PlaceName}", // Data attribute names
+                  content: "{Place_addr}",
+                },
+              })
+            );
+            const row = document.createElement("tr");
+            const cell1 = document.createElement("td");
+
+            const name = document.createElement("span");
+            name.innerHTML = result.attributes.PlaceName;
+            name.style.fontSize = "1em";
+
+            const addr = document.createElement("span");
+            addr.style.fontSize = "0.7em";
+            addr.innerHTML = `\n${result.attributes.Place_addr}`;
+
+            cell1.appendChild(name);
+            cell1.appendChild(document.createElement("br"));
+            cell1.appendChild(addr);
+
+            row.appendChild(cell1);
+            table.getElementsByTagName("tbody")[0].appendChild(row);
+
+            row.addEventListener("click", function (event) {
+              console.log(
+                `Call ${result.attributes.PlaceName} and ${result.attributes.Place_addr}`
+              );
+            });
+          });
+        });
+    }
+
+    table.addEventListener("mouseenter", function (event) {
+      if (event.target.tagName === "TD") {
+        event.target.parentNode.classList.add("highlight");
+      }
+    });
+
+    table.addEventListener("mouseleave", function (event) {
+      if (event.target.tagName === "TD") {
+        event.target.parentNode.classList.remove("highlight");
+      }
+    });
+
+    // Search for places in center of map
+    view.watch("stationary", function (val) {
+      for (let i = table.rows.length - 1; i > 0; i--) {
+        table.deleteRow(i);
+      }
+      if (val) {
+        findPlaces(select.value, view.center);
+      }
+    });
+
+    // Listen for category changes and find places
+    select.addEventListener("change", function (event) {
+      for (let i = table.rows.length - 1; i > 0; i--) {
+        table.deleteRow(i);
+      }
+      findPlaces(event.target.value, view.center);
+    });
+
+    function addGraphic(type, point) {
+      const graphic = new Graphic({
+        symbol: {
+          type: "simple-marker",
+          color: type === "origin" ? "white" : "black",
+          size: "8px",
+        },
+        geometry: point,
+      });
+      view.graphics.add(graphic);
+    }
+  });
+</script>

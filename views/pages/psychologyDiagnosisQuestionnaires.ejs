@@ -1,0 +1,76 @@
+<!-- Psychology, code started for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
+
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+  <style>
+    table, th, td {
+      border:1px solid black;
+    }
+    </style>
+    
+  <script>
+
+    // Run the code when the page finished loading
+    $(document).ready(function() {
+      // retrived phone number form url
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      let type = params.get("type");
+      //console.log(type)
+    });
+  </script>
+  
+  <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
+  <%- include('../partials/header') -%>
+  <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
+</head>
+<body>
+    <div class="container" style="padding-top: 100px;margin:0 auto;">
+        <form id="addquestionnaire">
+            <label for="doQuestionnaire">Based on your the primary concern you selected, would you like to complete an additional questionnaire that could help your healthcare provider assist you in diagnosis?</label>
+            <select name="studentAns" id="studentAns">
+            <option value="-">-</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            </select>
+            <input type="submit" value="Submit" onclick="otherQuestionnaires('<?php echo $type ?>')"/>
+        </form>
+    </div>
+    <script>
+        function otherQuestionnaires(type){
+            console.log(type)
+            if ($('#studentAns').val() == "Yes"){
+                if (type == "1") {
+                    console.log()
+                    window.location.href = "/depressionQuestionnaire.html";
+                }
+            }
+        }
+    </script>
+    <div> 
+        <footer>
+    <%- include('../partials/footer-new') -%>
+    
+    </footer>
+    </div> 
+</body>
+</html>
+
+<!--  Psychology - code ended for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht)
+   Group 8, Course-BMG5111, Winter 2023 -->
