@@ -287,34 +287,34 @@
 
       let base_url = 'https://alzheimer-api.herokuapp.com/predict';
 
-      // const requestBody = 
-      //   {
-      //     "Visit":data.VST,
-      //     "MR_Delay":data.MRD,
-      //     "M_F":data.gender,
-      //     "Age":data.age,
-      //     "EDUC":data.EDUC,
-      //     "SES":data.SES,
-      //     "MMSE":data.MMSE,
-      //     "CDR":data.CDR,
-      //     "eTIV":data.eTIV,
-      //     "nWBV":data.nWBV,
-      //     "ASF":data.ASF
-      // }
-      // Test body
-      const requestBody = {
-          "Visit":2,
-          "MR_Delay":182,
-          "M_F":1,
-          "Age":66,
-          "EDUC":13,
-          "SES":2.0,
-          "MMSE":30.0,
-          "CDR":0.0,
-          "eTIV":1506,
-          "nWBV":0.740,
-          "ASF":1.165
+      const requestBody = 
+        {
+          "Visit":records?.success[0]?.Visit,
+          "MR_Delay":records?.success[0]?.Visit,
+          "M_F":records?.success[0]?.MR_Delay,
+          "Age":records?.success[0]?.Age,
+          "EDUC":records?.success[0]?.EDUC,
+          "SES":records?.success[0]?.SES,
+          "MMSE":records?.success[0]?.MMSE,
+          "CDR":records?.success[0]?.CDR,
+          "eTIV":records?.success[0]?.eTIV,
+          "nWBV":records?.success[0]?.nWBV,
+          "ASF":records?.success[0]?.ASF
       }
+      // Test body
+      // const requestBody = {
+      //     "Visit":2,
+      //     "MR_Delay":182,
+      //     "M_F":1,
+      //     "Age":66,
+      //     "EDUC":13,
+      //     "SES":2.0,
+      //     "MMSE":30.0,
+      //     "CDR":0.0,
+      //     "eTIV":1506,
+      //     "nWBV":0.740,
+      //     "ASF":1.165
+      // }
   
 
         fetch('https://alzheimer-api.herokuapp.com/predict', {
