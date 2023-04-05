@@ -10,6 +10,11 @@
   <title>E-Hospital</title>
   <meta name="author" content="E-Hospital" />
   <link href="css/services.css" rel="stylesheet" type="text/css">
+  <script>
+    function redirectToKidney() {
+      window.location.href = 'https://mlmodel2.herokuapp.com/';
+    }
+    </script>
 
 </head>
 
@@ -59,21 +64,21 @@
 
       <!--Group 5 -Speciality Page: Respiratory Medicine-->
       <div class="card1">
-        <img class="imgservices" src="e-hospital-2023\public\images\respiratory.jpeg" alt="" />
+        <img class="imgservices" src="/images/respiratory.jpeg" alt="" />
         <h1 class="textheading">Group 5 Speciality Page</h1>
         <p class="pservices">Respiratory Medicine</p><br>
         <center><a class="button" href="/respiratoryMedicine"
           style="color: rgb(255, 255, 255); text-decoration: none;">Respiratory Medicine Disease Prediction</a></center>
       </div>
       <!--Group 5 -Speciality Page: Urology-->
-    </div>
+    
     
 
       <div class="card1">
-        <img class="imgservices" src="e-hospital-2023\public\images\urology.jpeg" alt="" />
+        <img class="imgservices" src="/images/urology.jpeg" alt="" />
         <h1 class="textheading">Group 5 Speciality Page</h1>
         <p class="pservices">Urology</p><br>
-        <center><a class="button" href="/urology"
+        <center><a class="button"  onclick="redirectToKidney()"
           style="color: rgb(255, 255, 255); text-decoration: none;">Chronic Kidney Disease Prediction</a></center>
       </div>
 
