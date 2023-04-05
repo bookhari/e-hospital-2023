@@ -17,400 +17,252 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
   <meta property="og:locale" content="en_CA" />
-  <!-- <link rel="stylesheet" href="/css/style-starter.css">
-  <link rel="stylesheet" href="/css/patients.css"> -->
-  <!-- <link href="css/login.css" rel="stylesheet" type="text/css">  -->
+  <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css">
+  <link href="css/heartdiseasefrontend.css" rel="stylesheet" type="text/css">
 
 
 </head>
-<!-- <style>
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    background-color: #f2f2f2;
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  th,
-  td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    color: black;
-    text-align: center;
-    margin-top: 20px;
-  }
-  .container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-</style> -->
-<style>
-  /* Colors */
-  :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #e74c3c;
-    --text-color: #333;
-    --background-color: #f2f2f2;
-  }
-
-  /* Layout */
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    background-color: var(--background-color);
-    font-family: sans-serif;
-  }
-
-  .container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 30px;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-  }
-
-  .container:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    background-image: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
-    opacity: 0.7;
-    border-radius: 10px;
-    transition: opacity 0.2s ease-in-out;
-  }
-
-  .container:hover:before {
-    opacity: 0.9;
-  }
-
-  .title {
-    font-size: 36px;
-    font-weight: bold;
-    color: black;
-    text-align: center;
-    margin-bottom: 40px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    border-radius: 10px;
-  }
-
-  th,
-  td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-
-  }
-
-  th {
-    background-color: var(--primary-color);
-    color: #fff;
-
-  }
-
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  tr:hover {
-    background-color: #e6e6e6;
-  }
-</style>
-
-
-
-
-<!-- <%- include('../partials/header') -%> -->
-
-<div class="container">
-  <div class="title">Early heart disease prediction </div>
-
-  <p>
-    <span style="color: black; font-weight: bold; font-size: larger; text-align: left;">Result :</span>
-  <p id="log" style="
-  color:tomato; 
-  font-weight: bold;
-  font-size: medium;
-  text-align: left;">
-    Result
-  </p>
-  </p>
-  <p id="id" style="
+<header <%- include('../partials/header') -%>
+</header>
+  <div class="container">
+    <div class="title">Early heart disease prediction </div>
+    <p id="log" style="
     color:tomato; 
     font-weight: bold;
     font-size: larger;
     text-align: left;">
-    Patient Information
-  </p>
-  <br />
+      Result
+    </p>
+    <div class="content">
 
+      <form id="form">
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Age</span>
+            <input type="number" id="age" name="age" placeholder="Enter your age"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              maxlength="3" title="Please enter numbers only" min="0" max="120" step="1" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Sex</span>
+            <select name="sex" id="sex" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=1>Female</option>
+              <option value=0>Male</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Chest Musle pain</span>
+            <select name="cp" id="cp" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=0>Typical Angina</option>
+              <option value=1>Atypical Angina</option>
+              <option value=2>Non-anginal pain</option>
+              <option value=3>Asymptomatic</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Resting Blood Pressure</span>
+            <input 
+            type="number" 
+            name="trestbps" 
+            id="trestbps" 
+            placeholder="Enter Resting Blood Presure Value" 
+            maxlength="10"
+            oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+            required 
+            >
+          </div>
+          <div class="input-box">
+            <span class="details">Cholesterol</span>
+            <input 
+            type="number" 
+            name="chol" 
+            id="chol" 
+            placeholder="Enter Cholestral level" 
+            oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+            required>
+          </div>
+          <div class="input-box">
+            <span class="details">Fasting Blood Sugar</span>
+            <select name="fbs" id="fbs" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=1>True</option>
+              <option value=0>False</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Resting Blood Pressure</span>
+            <select name="restecg" id="restecg" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=0>Normal</option>
+              <option value=1>Having ST-T wave abnormality</option>
+              <option value=2>Left Ventricular Hypertrophy</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Maximum Heart Rate Achieved</span>
+            <input type="number" name="thalach" id="thalach" placeholder="Enter maximum heart rate achieved"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              title="Please enter numbers only" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Exercising</span>
+            <select class="dropdown" name="exang" id="exang" >
+            <option value="" selected disabled hidden onchange="clearResult()">Choose Exercise</option>
+            <option value=1>Yes</option>
+            <option value=0>No</option>
+          </select>
+        </div>
+        <div class="input-box">
+          <span class="details">Old Peak</span>
+          <input 
+          type="number" 
+          name="oldpeak" 
+          id="oldpeak" 
+          placeholder="Enter Old Peak Value" 
+          oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+          required>
+        </div>
+          <div class="input-box">
+            <span class="details">Slope</span>
+            <select name="slope" id="slope" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=1 selected>Upsloping </option>
+              <option value=2>Flat</option>
+              <option value=3>Downslopping</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Number of major Blood Vessels</span>
+            <select name="ca" id="ca" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=0 selected>0 </option>
+              <option value=1>1</option>
+              <option value=2>2</option>
+              <option value=3>3</option>
+              <option value=4>4</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <span class="details">Thalesmia</span>
+            <select name="thal" id="thal" required onchange="clearResult()">
+              <option value="" disabled selected>Select</option>
+              <option value=0 selected>0 </option>
+              <option value=1>1</option>
+              <option value=2>2</option>
+              <option value=3>3</option>
+            </select>
+          </div>
+        <div class="spinner" style="display: none;"></div>
 
-
-  <div class="content">
-    <form id="form">
-      <div class="spinner" style="display: none;"></div>
-    </form>
-    <br /><br />
-    <table id="myTable">
-      <caption>Patient Information </caption>
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Middle Name</th>
-          <th>Last Name</th>
-          <th>Age</th>
-          <th>Blood Group</th>
-          <th>Mobile Number</th>
-          <th>Email ID</th>
-          <th>Address</th>
-          <th>Location</th>
-          <th>Height</th>
-          <th>Weight</th>
-        </tr>
-      </thead>
-      <tbody id="myTableBody">
-      </tbody>
-    </table>
-    <br />
-    <table id="myTable">
-      <caption>Patient Record</caption>
-      <thead>
-        <tr>
-          <th>Age</th>
-          <th>Sex</th>
-          <th>cp</th>
-          <th>trestbps</th>
-          <th>chol</th>
-          <th>fbs</th>
-          <th>restecg</th>
-          <th>thalach</th>
-          <th>exang</th>
-          <th>oldpeak</th>
-          <th>slope</th>
-          <th>ca</th>
-          <th>thal</th>
-        </tr>
-      </thead>
-      <tbody id="myEcgDataBody">
-      </tbody>
-    </table>
+        <div class="button">
+          <input type="submit" value="Check for Heart Disease">
+        </div>
+      </form>
+    </div>
+    <footer>
+      <%- include('../partials/footer-new') -%>
+      
+      </footer>
   </div>
-</div>
 
-</html>
-</br>
-
-
-
-<script>
+  <script>
+    document.getElementById("log").innerHTML = ``;
+    const spinner = document.querySelector('.spinner');
 
 
-  document.getElementById("log").innerHTML = ``;
-  document.getElementById("id").innerHTML = ``;
 
-  const spinner = document.querySelector('.spinner');
+    function logSubmit(event) {
+      event.preventDefault();
+      document.getElementById("log").innerHTML = ``;
 
-  // Get the URL parameters
-  const queryString = window.location.search;
-
-  // Create a new URLSearchParams object
-  const urlParams = new URLSearchParams(queryString);
-
-  // Get the value of the "id" parameter
-  const id = urlParams.get('id');
-
-  var finalData;
-  fetch(`/searchid?id=${id}`, {
-    method: 'POST',
-  })
-    .then(response => {
-      return response.json();
-      document.getElementById('resultDiv').innerHTML = JSON.stringify(data);
-
-    })
-    .then(data => {
-      // console.log(data)
-      finalData = data
-      const table = document.getElementById("myTableBody");
-
-      for (let i = 0; i < data.length; i++) {
-        const row = table.insertRow();
-        const cell1 = row.insertCell(0);
-        const cell2 = row.insertCell(1);
-        const cell3 = row.insertCell(2);
-        const cell4 = row.insertCell(3);
-        const cell5 = row.insertCell(4);
-        const cell6 = row.insertCell(5);
-        const cell7 = row.insertCell(6);
-        const cell8 = row.insertCell(7);
-        const cell9 = row.insertCell(8);
-        const cell10 = row.insertCell(9);
-        const cell11 = row.insertCell(10);
-
-        cell1.innerHTML = JSON.stringify(data[i].FName);
-        cell2.innerHTML = JSON.stringify(data[i].MName);
-        cell3.innerHTML = JSON.stringify(data[i].LName);
-        cell4.innerHTML = JSON.stringify(data[i].Age);
-        cell5.innerHTML = JSON.stringify(data[i].BloodGroup);
-        cell6.innerHTML = JSON.stringify(data[i].MobileNumber);
-        cell7.innerHTML = JSON.stringify(data[i].EmailId);
-        cell8.innerHTML = JSON.stringify(data[i].Address);
-        cell9.innerHTML = JSON.stringify(data[i].Location);
-        cell10.innerHTML = JSON.stringify(data[i].height);
-        cell11.innerHTML = JSON.stringify(data[i].weight);
+      const data = {
+        age: parseInt(document.getElementById("age").value),
+        sex: parseInt(document.getElementById("sex").value),
+        cp: parseInt(document.getElementById("cp")?.value),
+        trestbps: parseInt(document.getElementById("trestbps").value),
+        chol: parseInt(document.getElementById("chol").value),
+        fbs: parseInt(document.getElementById("fbs").value),
+        restecg: parseInt(document.getElementById("restecg").value),
+        thalach: parseInt(document.getElementById("thalach").value),
+        exang: parseInt(document.getElementById("exang").value),
+        oldpeak: parseInt(document.getElementById("oldpeak").value),
+        slope: parseInt(document.getElementById("slope").value),
+        ca: parseInt(document.getElementById("ca").value),
+        thal: parseInt(document.getElementById("thal").value),
       }
+      let base_url = 'https://baba-1.herokuapp.com/predict';
+      spinner.style.display = 'block'; // show the spinner
 
-      let mobileNumber = data[0].MobileNumber;
-      let id = data[0].id;
-      fetch(`/searchEcgBloodtest?mobileNumber=${mobileNumber}&id=${id}`, {
+      const requestBody = {
+          "age": data?.age,
+          "sex":data?.sex,
+          "cp":data?.cp,
+          "trestbps":data?.trestbps,
+          "chol":data?.chol,
+          "fbs":data?.fbs,
+          "restecg":data?.restecg,
+          "thalach":data?.thalach,
+          "exang":data?.exang,
+          "oldpeak":data?.oldpeak,
+          "slope" :data?.slope,
+          "ca":data?.ca,
+          "thal":data?.thal
+      }
+      //{
+  //"age": 40,
+  //"sex": 0,
+  //"cp": 0,
+  //"trestbps": 0,
+  //"chol": 0,
+  //"fbs": 0,
+  //"restecg": 0,
+  //"thalach": 0,
+  //"exang": 0,
+  //"oldpeak": 0,
+  //"slope": 0,
+  //"ca": 0,
+  //"thal": 0
+//}
+      fetch(base_url,{
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody),
+
       })
-        .then(response => {
-          return response.json();
-
-        })
+        .then(response => response.json())
         .then(data => {
-          const dataPacket = {
-            age: data?.age,
-            sex: data?.sex,
-            cp: data?.cp,
-            trestbps: data?.trestbps,
-            chol: data?.chol,
-            fbs: data?.fbs,
-            restecg: data?.restecg,
-            thalach: data?.thalach,
-            exang: data?.exang,
-            oldpeak: data?.oldpeak,
-            slope: data?.slope,
-            ca: data?.ca,
-            thal: data?.thal,
+
+
+          if (data?.prediction === "Heart Disease") {
+            document.getElementById("log").innerHTML = `Heart Disease`;
+            spinner.style.display = 'none'; // hide the spinner
+
+
+          } else if (data?.prediction=== "No Heart Disease") {
+            document.getElementById("log").innerHTML = `No Heart Disease`;
+            spinner.style.display = 'none'; // hide the spinner
           }
-          const table2 = document.getElementById("myEcgDataBody");
-
-          const row = table2.insertRow();
-          const cell1 = row.insertCell(0);
-          const cell2 = row.insertCell(1);
-          const cell3 = row.insertCell(2);
-          const cell4 = row.insertCell(3);
-          const cell5 = row.insertCell(4);
-          const cell6 = row.insertCell(5);
-          const cell7 = row.insertCell(6);
-          const cell8 = row.insertCell(7);
-          const cell9 = row.insertCell(8);
-          const cell10 = row.insertCell(9);
-          const cell11 = row.insertCell(10);
-          const cell12 = row.insertCell(11);
-          const cell13 = row.insertCell(12);
-
-
-          cell1.innerHTML = JSON.stringify(data.age);
-          cell2.innerHTML = JSON.stringify(data.sex);
-          cell3.innerHTML = JSON.stringify(data.cp);
-          cell4.innerHTML = JSON.stringify(data.trestbps);
-          cell5.innerHTML = JSON.stringify(data.chol);
-          cell6.innerHTML = JSON.stringify(data.fbs);
-          cell7.innerHTML = JSON.stringify(data.restecg);
-          cell8.innerHTML = JSON.stringify(data.thalach);
-          cell9.innerHTML = JSON.stringify(data.exang);
-          cell10.innerHTML = JSON.stringify(data.oldpeak);
-          cell11.innerHTML = JSON.stringify(data.slope);
-          cell12.innerHTML = JSON.stringify(data.ca);
-          cell13.innerHTML = JSON.stringify(data.thal);
-
-          // https://mlmodel.herokuapp.com/ml/Stacking
-          let base_url = 'https://mlmodel.herokuapp.com/ml/';
-          let ml_model = 'Stacking';
-          spinner.style.display = 'block'; // show the spinner
-
-          const requestBody = {
-            input: [
-              // 8.0, 1.0, 4.0, 355.0, 99.0, 1.0, 2.0, 2.0, 1, 2, 1, 2, 3 -Unhealthy data
-              //52.0, 1.0, 0.0, 125.0, 212.0, 0.0, 1.0, 168.0, 0, 1, 2, 2, 3 -Healthy data
-              // 71, 0, 2, 110, 265, 1, 0, 130, 0, 0, 2, 1, 2
-              data.age,
-              data.sex,
-              data.cp,
-              data.trestbps,
-              data.chol,
-              data.fbs,
-              data.restecg,
-              data.thalach,
-              data.exang,
-              data.oldpeak,
-              data.slope,
-              data.ca,
-              data.thal,
-            ]
-          }
-
-          fetch(base_url + ml_model, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody),
-
-          })
-            .then(response => response.json())
-            .then(data => {
-              if (data === 1) {
-                document.getElementById("log").innerHTML = `You probably have heart disease risk`;
-                spinner.style.display = 'none'; // hide the spinner
-
-
-              } else if (data === 0) {
-                document.getElementById("log").innerHTML = `You have a healthy heart`;
-                spinner.style.display = 'none'; // hide the spinner
-              }
-
-            })
-            .catch(error => {
-              document.getElementById("log").innerHTML = `Please try again later`;
-              spinner.style.display = 'none'; // hide the spinner
-
-            });
 
         })
-        .catch(error => console.error(error));
-    })
-    .catch(error => console.error(error));
+        .catch(error => {
+          document.getElementById("log").innerHTML = `Please try again later`;
+          spinner.style.display = 'none'; // hide the spinner
+
+        });
 
 
-</script>
+    }
+    function clearResult() {
+      // To clear result
+      document.getElementById("log").innerHTML = ``;
+    }
+    const form = document.getElementById('form');
+    form.addEventListener('submit', logSubmit);
+  </script>
 
 </html>

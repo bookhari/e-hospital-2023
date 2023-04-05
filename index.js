@@ -7,62 +7,35 @@ const mongoClient = require('./dbConnection/mongodbConnection');
 const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
+
 const fs = require('fs');
 const FormData = require('form-data');
 const memoryStorage = multer.memoryStorage()
 const upload = multer({ storage: memoryStorage })
-
-
 const port = process.env.PORT || 5000;
 
 
-/* Please use comments to identify your work thankyou */
 
 var sql = '';
 var crypto = require('crypto')
 
-
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
-
-app.use(express.static(__dirname + '/public'));
-
+app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({ extended: true }));
 // mongoClient.connectToServer();
 
 app.get('/', (req, res) => {
   res.render("pages/index");
 })
-/* TaskName -Kidney Prediction
- (Front-end - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
- (Machine learning - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
-*/
-app.get('/kidney', (req, res) => {
-  res.redirect(' https://c0f3-72-136-34-2.ngrok.io/');
-})
-
-/* TaskName -Alzheimers Detecction
-
- (Parisa) - Team8, Course-BMG5111
-
-*/
-
-app.get('/AlzheimerMRIDetection', (req, res) => {
-
-  res.render("pages/AlzheimerMRIDetection");
-})
-
-// Hamza Khan Team for Specialities Page
-app.get('/specialities', (req, res) => {
-  res.render("pages/specialities");
-})
-//// Hamza Khan Team for Specialities Page
-
 app.get('/pneumoniahome', (req, res) => {
   res.render("pages/index");
 })
 app.get('/heartdiseasefrontend', (req, res) => {
   res.render("pages/heartdiseasefrontend");
+})
+app.get('/CoronaryArteryDisease', (req, res) => {
+  res.render("pages/CoronaryArteryDisease");
 })
 app.get('/respiratorymedicine', (req, res) => {
   // Send a GET request to the Flask app's /pneumonia endpoint to get the HTML content of the page
@@ -160,133 +133,19 @@ app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
 
-app.get('/arrhythmia', (req, res) => {
+app.get('/ecg', (req, res) => {
   res.render("pages/ecg-ml");
 })
 
 app.get('/services', (req, res) => {
   res.render("pages/services");
 })
-
-/* Diabetology, code started for adding route to Diabetology Page (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan)
-   Group 1, Course-BMG5111, Winter 2023
-*/
-
 app.get('/diabetology', (req, res) => {
   res.render("pages/diabetology");
 })
-app.get('/diabetology_specialists', (req, res) => {
-  res.render("pages/diabetology_specialists");
+app.get('/ediabetes', (req, res) => {
+  res.render("pages/ediabetes");
 })
-app.get('/DiabetologyDiagnostics', (req, res) => {
-  res.render("pages/DiabetologyDiagnostics");
-})
-app.get('/DiabetologyPatients', (req, res) => {
-  res.render("pages/DiabetologyPatients");
-})
-
-
-app.get('/get_diabetologyList', (req, res) => {
-  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    res.send(result);
-  })
-})
-
-app.post('/DiabetologyData', (req, res) => {
-  const getDetails = req.body
-  console.log(req.body)
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
-  const date = new Date();
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
-    return;
-  }
-  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  // console.log(sql);
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      console.log(result.length)
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-  
-    const patient_id = result[0].id;
-
-    console.log(patient_id)
-
-    sql = "INSERT INTO `diabetes`(`patient_id`,`phoneNumber`,`date`, `Age`, `BMI`, `SkinThickness`, `Glucose`, `BloodPressure`, `Insulin`, `DiabetesPedigreeFunction`, `Sex`, `Pregnancies`, `ML_result`) VALUES ?";
-    var VALUES = [[patient_id, phoneNumber, date, getDetails.Age, getDetails.BodyMassIndex, 
-     getDetails.SkinThickness, getDetails.Glucose, getDetails.BloodPressure, getDetails.Insulin,
-     getDetails.DiabetesPedigreeFunction, getDetails.Sex, getDetails.Pregnancies, getDetails.ML_result]]
-
-    conn.query(sql, [VALUES], (error, result) => {
-      if (error) throw error
-      console.log(result);
-
-    })
-  })
-})
-
-
-// This is the MySQL health test search API
-app.post('/DiabetologyPatients', async (req,res) => {
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-  const recordType = req.body.recordType; // the record type, e.g. "ecg", this represents the table name in the database
-
-  // Check parameters
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number."});
-    return;
-  }
-  if (!recordType) {
-    res.send({error:"Missing record type."});
-    return;
-  }
-
-  var patient_id = 0;
-  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  
-  conn.query(sql, async (error, result) => {
-    if (error) {
-      console.log()
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    patient_id = result[0].id;
-
-    sql = `SELECT * FROM ${recordType} WHERE patient_id = "${patient_id}" ORDER BY date DESC`
-    conn.query(sql, async (error, result) => {
-      if (error) {
-        console.log()
-        res.send({error:"Something wrong in MySQL."});
-        return;
-      }
-
-      var temp = removeKey(result,"patient_id");
-      res.send({success:temp});
-    });
-  });
-})
-
-
-/* Diabetology, code ended
-*/
-
 app.get('/diagnostic-depart', (req, res) => {
   res.render("pages/diagnostic-depart");
 })
@@ -296,49 +155,17 @@ app.get('/Pneumonia-diagnostics', (req, res) => {
 app.get('/kidney-diagnostic', (req, res) => {
   res.render("pages/kidney-diagnostic");
 })
-app.get('/brain', (req, res) => { //Enrico, Apeksha, Tarin
+app.get('/brain', (req, res) => {
   res.render("pages/brain");
 })
-/* Psychology, code started for adding route to Psychology Page (Alexis McCreath Frangakis, Parisa Nikbakht)
-   Group 8, Course-BMG5111, Winter 2023
-*/
 app.get('/psychology', (req, res) => {
   res.render("pages/psychology");
 })
 app.get('/psychologyQuestionnaire', (req, res) => {
   res.render("pages/psychologyQuestionnaire");
 })
-app.get('/psychologyPhoneNumber', (req, res) => {
-  res.render("pages/psychologyPhoneNumber");
-})
-app.get('/psychologyDiagnosisQuestionnaires/patientID=:patientID&type=:type', (req, res) => {  
-  const { patientID, type } = req.query; 
-  res.render("pages/psychologyDiagnosisQuestionnaires", { patientID, type });
-})
-app.get('/psychologyDiagnosis', (req, res) => {
-  res.render("pages/psychologyDiagnosis");
-})
-app.get('/psychologyDepressionQuestionnaire', (req, res) => {
-  res.render("pages/psychologyDepressionQuestionnaire");
-})
-app.get('/psychologyAnxietyQuestionnaire', (req, res) => {
-  res.render("pages/psychologyAnxietyQuestionnaire");
-})
-app.get('/psychologistRecommendation', (req, res) => {
-  res.render("pages/psychologistRecommendation");
-})
-app.get('/psychologistRegistration', (req, res) => {
-  res.render("pages/psychologistRegistration");
-})
-/* Psychology - code ended for adding route to Psychology Page Alexis McCreath Frangakis, Parisa Nikbakht)
-   Group 8, Course-BMG5111, Winter 2023 */
-
-
 app.get('/liver', (req, res) => {
   res.render("pages/liver-prediction");
-})
-app.get('/liver2', (req, res) => {
-  res.render("pages/liver-direct-prediction");
 })
 
 /* TaskName -Heart Disease prediction using Machine learning
@@ -372,9 +199,6 @@ app.get('/symptoms-checker', (req, res) => {
 })
 app.get('/index', (req, res) => {
   res.render("pages/index");
-})
-app.get('/labtest', (req, res) => { //Christina&Sanika
-  res.render("pages/labtest");
 })
 app.get('/labapp', (req, res) => { //Christina&Sanika
   res.render("pages/labapp");
@@ -410,8 +234,8 @@ app.get('/Breast-Diagnostic', (req, res) => {
   res.render("pages/Breast-Diagnostic");
 })
 
-app.get('/heartStrokeDetection', (req, res) => {
-  res.render("pages/heartStrokeDetection");
+app.get('/AlzheimersDiagnostics', (req, res) => {
+  res.render("pages/AlzheimersDiagnostics");
 })
 
 app.get('/heartStrokeDetection', (req, res) => {
@@ -421,26 +245,6 @@ app.get('/heartStrokeDetection', (req, res) => {
 app.get('/cancerDetection', (req, res) => {
   res.render("pages/cancerDetection");
 })
-
-/* TaskName -AlzheimersDiagnostics and BrainTumorDiagnostics
- (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101, 
-*/
-
-app.get('/AlzheimersDiagnostics', (req, res) => {
-  res.render("pages/AlzheimersDiagnostics");
-})
-
-app.get('/BrainTumorDiagnostics', (req, res) => {
-  res.render("pages/BrainTumorDiagnostics");
-})
-
-/* TaskName -AlzheimersDiagnostics and BrainTumorDiagnostics
- (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101, 
-*/
-
-
-
-
 app.get('/Login', (req, res) => {
   errorMessage = '';
   res.render("pages/logina8b9", {
@@ -563,6 +367,8 @@ app.get('/hospital', (req, res) => {
   res.render("pages/hospital");
 })
 
+
+
 app.get('/heartDiseasePrediction', (req, res) => {
   res.render("pages/heartDiseasePrediction");
 })
@@ -572,26 +378,19 @@ app.get('/heartDiseasePrediction', (req, res) => {
 app.get('/lab', (req, res) => {
   res.render("pages/lab");
 })
-
-
-/* TaskName - Contact Us page with email confirmation 
-   Team: Apeksha, Enrico, Tarin
-*/
-app.get('/contact-us', (req, res) => {
-  res.render("pages/contact-us");
-});
-
 app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });
 
 app.post('/send-contact-form', (req, res) => {
+
+
   const SENDER_EMAIL = "ehospital23@gmail.com";
   const SENDER_PASS = "bozsyftcnmqhokte";
-  
   const RECEIVER_NAME = req.body.userName;
   const RECEIVER_EMAIL = req.body.userEmail;
-  const PHONE_NUMBER = req.body.phoneNumber;
+
+  const USER_PHONE = req.body.phoneNumber;
   const USER_MESSAGE = req.body.userMessage;
 
   let VALID_INPUTS = true;
@@ -606,20 +405,11 @@ app.post('/send-contact-form', (req, res) => {
     console.log(sql);
     conn.query(sql, (error, result) => {
       if (error) {
-        res.send(`
-        <script>alert("An error occured while sending. Error message: ${error.sqlMessage}"); 
-          window.location.href = "/contact-us";
-        </script>`
-        );
-        
+        res.send({ error: error.sqlMessage });
         return;
       }
       if (result.affectedRows != 1) {
-        res.send(`
-        <script>alert("Sorry, an error occured in the database. Please contact the site admin."); 
-          window.location.href = "/contact-us";
-        </script>`
-        );
+        res.send({ error: "Something goes wrong in the database." });
         return;
       }
     })
@@ -637,7 +427,7 @@ app.post('/send-contact-form', (req, res) => {
       <br>
       <p> Name: ${RECEIVER_NAME} </p>
       <p> Email: ${RECEIVER_EMAIL} </p>
-      <p> Phone: ${PHONE_NUMBER} </p>
+      <p> Phone: ${USER_PHONE} </p>
       <p> Message: ${USER_MESSAGE} </p>
     `;
 
@@ -682,15 +472,9 @@ app.post('/send-contact-form', (req, res) => {
       window.location.href = "/contact-us";
     </script>`
     );
+
   }
 })
-
-app.get('/emergency-locations', async (req, res) => {
-  res.render("pages/emergency-locations");
-});
-
-
-
 
 
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
@@ -745,7 +529,7 @@ app.get('/HealthCare_DashBoard', (req, res) => {
   res.render("pages/Dashboard/HealthCare_DashBoard");
 })
 
-app.post('/DoctorDashBoard', (req, res) => {
+app.post('/DoctorsDashBoard', (req, res) => {
   const uuid = req.body.email;
   const password = req.body.password;
   sql = 'SELECT * FROM `doctors_registration` WHERE uuid =  ? AND verification = ?';
@@ -781,234 +565,37 @@ app.post('/DoctorDashBoard', (req, res) => {
   })
 })
 
-
-app.post('/searchpatient', (req, res) => {
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-  console.log(phoneNumber);
-  // Check patient identity
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
-    return;
-  }
-  var patient_id = 0;
-  var check_list=[];
-  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  console.log(sql);
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log("Something wrong in MySQL");
-      return;
-    }
-    if (result.length != 1) {
-      check_list[0]=1;
-      res.render('pages/searchpatient', {check:check_list});
-      res.send({error:"No patient matched in database."});
-      console.log("No patient matched in database");
-      return;
-    }
-    patient_id = result[0].id;
-    console.log(patient_id);
-    sql_search_query = `SELECT * FROM patients_registration WHERE id = "${patient_id}"`;
-    conn.query(sql_search_query, function (err, result) {
-      if (err) throw err;
-
-      ///res.render() function
-      res.render('pages/searchpatient', {data: result});
-    });
-    console.log(sql_search_query);
-    });
-})
-
-// To search for patient info based on id
-app.post('/searchid', (req, res) => {
-  const id = req.query.id;
-  console.log("requestId", id);
-
-    sql_search_query = `SELECT * FROM patients_registration WHERE id = ${id}`;
-    conn.query(sql_search_query, function (err, result) {
-      if (err) throw err;
-      // console.log(result);
-        res.json(result)
-    });
-    
-    console.log(sql_search_query);
-})
-
-// To search for Ecg blood test records  based on id & mobile number
-
-app.post('/searchEcgBloodtest', (req, res) => {
-  const mobileNumber = req.query.mobileNumber;
-  const id = req.query.id;
-
-  // console.log("requestMobileNumber", mobileNumber);
-
-  const sql_search_query = `
-    SELECT * 
-    FROM ecg_bloodtest_going_to_delete
-    WHERE phone_number = "${mobileNumber}"
-    limit 100
-  `;   
-  conn.query(sql_search_query, function (err, result) {
-    if (err) throw err;
-    //console.log("blood test",result[0]);
-    res.json(result[0]);
-  });
-      //console.log("sql_search_query",sql_search_query);
-
-});
-
-
-//app.post('/searchpatient', async (req,res) => {  
-//})
 app.post('/patientsDashboard', (req, res) => {
   const uuid = req.body.email;
   const password = req.body.password;
   sql = 'SELECT * FROM `patients_registration` WHERE uuid =  ? AND verification = ?';
   console.log(sql);
-  conn.query(sql, [uuid,true] ,(error, result) => {
-      if (error) throw error
-      if(result.length == 0){
+  conn.query(sql, [uuid, true], (error, result) => {
+    if (error) throw error
+    if (result.length == 0) {
+      var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
+      res.render('pages/patientLogin', {    //patientsDashboard
+        error: errorMessage
+      })
+    } else {
+      if (result[0].uuid === uuid && result[0].password === password) {
+        // console.log(result[0].uuid);
+        var patients_data = result[0];
+        res.render("pages/Dashboard/patientsDashboard", {
+          patient: patients_data,
+        });
+      }
+      else {
         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-        res.render('pages/patientLogin',{    //patientsDashboard
+        res.render('pages/patientLogin', {
           error: errorMessage
         })
-      } else {
-      if (result[0].uuid === uuid && result[0].password === password) {
-
-        var patients_data = result[0];
-          res.render("pages/Dashboard/patientsDashboard", {
-              patient: patients_data,
-            });
-        }
-        else {
-          var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-          res.render('pages/patientLogin',{
-            error: errorMessage
-          })
-        }
       }
-      })
-})
- // API to fetch data from SQL, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-
-/* Patient Dashboard For showing the test results, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-
-app.get('/patientscardio', function(req, res) {
-  const id = req.query.id;
-  if (!id) {
-    res.status(400).json({ error: 'id parameter is required' });
-    return;
-  }
-    const ptd = req.query.id;
-  sqlCardio = 'SELECT * FROM `ecg` WHERE patient_id = ?';
-  conn.query(sqlCardio, [ptd],(error, result)=>{
-    if (error) throw error
-    if (result[0].patient_id == ptd) {
-
-      }
-
-    res.json(result[0].RecordDate);
-})
-
-});
-
-app.get('/patientscardiovascular', function(req, res) {
-  const id = req.query.id;
-  if (!id) {
-    res.status(400).json({ error: 'id parameter is required' });
-    return;
-  }
-    const ptd = req.query.id;
-  sqlCardio = 'SELECT * FROM `cardiovascular` WHERE patient_id = ?';
-
-  conn.query(sqlCardio, [ptd],(error, result)=>{
-    if (error) throw error
-    if (result[0].patient_id == ptd) {
-
-      }
-    res.json(result[0]);
-
-})
-
-});
-
-
-
-
-/* Patient Dashboard For showing the test results, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-
-
-const { MongoClient } = require('mongodb');
-
-const uri = "mongodb+srv://ehuser:ehuser@e-hospital.mgq2xgp.mongodb.net/?retryWrites=true&w=majority"
-const client = new MongoClient(uri);
-
-// API to fetch data from MongoDB, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-
-async function getRecordDate(patient_id, recordType) {
-  try {
-    const parsedId = parseInt(patient_id, 10); // convert to number
-    // console.log(parsedId);
-    // console.log(recordType);
-    await client.connect();
-    const database = client.db("htdata");
-    const collection = database.collection(recordType);
-    const result = await collection.findOne({ patient_id: parsedId }); // use parsed ID in query
-    if (result === null) {
-      console.log(`No record found for patient ID: ${patient_id}`);
-      return null;
     }
-    return result.RecordDate;
-  } catch (err) {
-    console.log(err);
-  } finally {
-    await client.close();
-  }
-}
+  })
+})
 
-
-async function GetInformation(id, recordType)
-{
-  const patient_id = id;
-  const recordDate = await getRecordDate(patient_id, recordType);
-  if (recordDate !== null) {
-    return recordDate;
-  }
-  
-}
-
-app.get('/RetrieveXray', async function(req, res) {
-  const id = req.query.id;
-  const recordType = "X-Ray_Lung";
-  if (!id) {
-    res.status(400).json({ error: 'id parameter is required' });
-    return;
-  }
-  tmp = await GetInformation(id, recordType);
-  // console.log(tmp);
-  res.json(tmp);
-});
-
-
-
-app.get('/RetrieveEndoscopic', async function(req, res) {
-  const id = req.query.id;
-  const recordType = "Endoscopic";
-  if (!id) {
-    res.status(400).json({ error: 'id parameter is required' });
-    return;
-  }
-  tmp = await GetInformation(id, recordType);
-  console.log(tmp);
-  res.json(tmp);
-});
-// API to fetch data from MongoDB, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-
-/* Patient Dashboard For showing the test results, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-
-/* Patient Dashboard with Editable fields, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-//Editable Part
+//Editable
 
 app.get('/patientsDashboardEdit', (req, res) => {
   const uuid = req.query.id;
@@ -1033,29 +620,64 @@ app.get('/patientsDashboardEdit', (req, res) => {
   })
 
 })
-/* Patient Dashboard with Editable fields, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
+// app.post('/patientsDashboardEditTest', (req, res) => {
+//   const uuid = req.body.email;
+//   const password = req.body.password;
+//   const Fname = req.body.Fname;
+
+//   sql = 'SELECT * FROM `patients_registration` WHERE uuid =  ? AND verification = ?';
+//   console.log(sql);
+//   conn.query(sql, [uuid,true] ,(error, result) => {
+//       if (error) throw error
+//       if(result.length == 0){
+//         var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
+//         res.render('pages/patientLogin',{    //patientsDashboard
+//           error: errorMessage
+//         })
+//       } else {
+//       if (result[0].uuid === uuid && result[0].password === password) {
+//         var patients_data = result[0];
+
+//          sql = "UPDATE patients_registration SET FName = ? WHERE uuid =  ? AND verification = ?";
+//         conn.query(sql,[Fname,uuid,true],(error, result) => {
+
+//           res.render("pages/Dashboard/patientsDashboard", {
+//             patient: patients_data,
+//           });
+//       })
+//         }
+//         else {
+//           var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
+//           res.render('pages/patientLogin',{
+//             error: errorMessage
+//           })
+//         }
+//       }
+//       })
+// })
 
 
-// Text Phone verification for Patients, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
-app.post('/get_patientInfoTest',(req,res)=>{
-  
+
+app.post('/get_patientInfoTest', (req, res) => {
+
   const getDetails = req.body
   const uuid = getDetails.EmailId;
-  // console.log(uuid)
+  console.log(uuid)
   sql = 'SELECT * FROM `patients_registration` WHERE EmailId =  ? ';
   // console.log(sql);
-  conn.query(sql, [uuid,true] ,(error, result) => {
-    console.log("T1");
-      if (error) throw error
-      if(result.length != 0){
-        console.log(result.length)
-        var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
-        res.render('pages/patientLogin',{    //patientsDashboard
-          error: errorMessage
-        })
-      } 
-      else {
+  conn.query(sql, [uuid, true], (error, result) => {
+    console.log("T1")
+    if (error) throw error
+    if (result.length != 0) {
+      console.log(result.length)
+      var errorMessage = "Either ID or Password is wrong or your account is not verified. Please Check";
+      res.render('pages/patientLogin', {    //patientsDashboard
+        error: errorMessage
+      })
+    }
+    else {
 
       let uuid = "PAT-" + "ON-" + getDetails.Age + "-" + getDetails.province + "-" + Math.floor(Math.random() * 90000) + 10000;
       var password = crypto.randomBytes(16).toString("hex");
@@ -1067,34 +689,15 @@ app.post('/get_patientInfoTest',(req,res)=>{
         getDetails.LName, getDetails.Age, getDetails.bloodGroup, getDetails.number,
         getDetails.EmailId, getDetails.Address, getDetails.Location, getDetails.PostalCode, getDetails.City, getDetails.province, getDetails.H_CardNo,
         getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, true, password]]
-            conn.query(sql,[VALUES], (error, result) => {
-              if (error) throw error
-              res.render("pages/thankyou");
-              })
-              sms(uuid,password,getDetails.number);
-
-      }
+      conn.query(sql, [VALUES], (error, result) => {
+        if (error) throw error
+        res.render("pages/thankyou");
       })
+
+    }
+  })
 })
 
-// API for sending sms from TWILIO website to the patients' phone, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-    async function sms(uuid,password,number){
-
-      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
-      const authToken = '5589b3a47f698ac1942197b62b0082c9'; //process.env.TWILIO_AUTH_TOKEN;
-      
-      const client = require('twilio')(accountSid, authToken,{
-        logLevel: 'debug'
-      });
-      
-      client.messages
-            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
-            , from: '+13433074905', to: number})
-            .then(message => console.log(message.dateCreated));    //message.sid
-              }
-// Text Phone verification for Patients, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-
-/* Patient Dashboard with editable feilds, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
 app.post('/get_patientInfo', (req, res) => {
   const getDetails = req.body
@@ -1106,19 +709,31 @@ app.post('/get_patientInfo', (req, res) => {
     getDetails.LName, getDetails.Age, getDetails.bloodGroup, getDetails.number,
     getDetails.EmailId, getDetails.Address, getDetails.Location, getDetails.PostalCode, getDetails.City, getDetails.province, getDetails.H_CardNo,
     getDetails.PassportNo, getDetails.PRNo, getDetails.DLNo, getDetails.gender, true, password]]
-        conn.query(sql,[VALUES], (error, result) => {
-          if (error) throw error
-          res.render("pages/thankyou");
-          })
-    // sms();
+  conn.query(sql, [VALUES], (error, result) => {
+    if (error) throw error
+    res.render("pages/thankyou");
+  })
+  // sms();
 
+  // async function sms(){
 
+  //   const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+  //   const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
+
+  //   const client = require('twilio')(accountSid, authToken,{
+  //     logLevel: 'debug'
+  //   });
+
+  //   client.messages
+  //         .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
+  //         , from: '+13433074905', to: getDetails.number})
+  //         .then(message => console.log(message.dateCreated));    //message.sid
+  //           }
 }
 )
-/* Patient Dashboard with editable field, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
 
 
-app.post('/get_docotorInfoTest',(req,res)=>{
+app.post('/get_docotorInfoTest', (req, res) => {
 
 
   const uuid = req.body.EmailId;
@@ -1173,7 +788,6 @@ app.post('/get_docotorInfoTest',(req,res)=>{
   })
 
 })
-
 app.post('/get_doctorInfo', (req, res) => {
   const get_doctorInfo = req.body
   var password = crypto.randomBytes(16).toString("hex");
@@ -1188,257 +802,38 @@ app.post('/get_doctorInfo', (req, res) => {
 
   conn.query(sql, [getDoctorsInfo], (error, result) => {
     if (error) throw error
-    if (get_doctorInfo.Specialization == "Psychology"){
-      res.redirect("/psychologistRegistration?uuid="+uuid);
-    }
-    else{
-      res.render("pages/thankyou");
-    }
+    res.render("pages/thankyou");
   })
   // sms();
 
   async function sms() {
 
-      const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
-      const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
-      
-      const client = require('twilio')(accountSid, authToken,{
-        logLevel: 'debug'
-      });
-      
-      client.messages
-            .create({body: '\n\n E-Hospital Account \n User: '+uuid+ ' \n Password: '+password
-            , from: '+13433074905', to: get_doctorInfo.MobileNo})
-            .then(message => console.log(message.status));    //message.sid
-              }
-})
+    const accountSid = 'ACcd90ad6235243c49f5f806ddbbcf26d1'; //process.env.TWILIO_ACCOUNT_SID;
+    const authToken = '05c14694c309118ab18ae8c12c4a208d'; //process.env.TWILIO_AUTH_TOKEN;
 
-/* LAB TEST APPOINTMENT FORM, backenf api code started for adding route to register (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
-// Get a list of available labs
-app.get('/get_availableLabs', (req, res) => {
-  sql = "SELECT Lab_Name, Email_Id, Location1, Location2, PostalCode, City, Province, Country, uuid FROM lab_admin WHERE verification = 1 ORDER BY Lab_Name";
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    res.send(result);
-  })
-})
+    const client = require('twilio')(accountSid, authToken, {
+      logLevel: 'debug'
+    });
 
-// Get the appointment schedule of the specific lab
-app.post('/get_appointmentList', (req, res) => {
-  const uuid = req.body.id;
-
-  if (!uuid) {
-    res.send({error:"Missing lab uuid."});
-    return;
+    client.messages
+      .create({
+        body: '\n\n E-Hospital Account \n User: ' + uuid + ' \n Password: ' + password
+        , from: '+13433074905', to: get_doctorInfo.MobileNo
+      })
+      .then(message => console.log(message.status));    //message.sid
   }
+})
 
-  let today = new Date()
-  const offset = today.getTimezoneOffset()
-  today = new Date(today.getTime() - (offset*60*1000))
+/* Diabetology Page, code started for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
-  sql = `SELECT appointmentDate, slot
-  FROM lab_admin join lab_appointment ON lab_admin.id = lab_appointment.lab_id
-  WHERE lab_admin.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
-  console.log(sql);
+app.get('/get_diabetologyList', (req, res) => {
+  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Diabetology'";
   conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
+    if (error) throw error
     res.send(result);
   })
 })
-
-// Get the appointment schedule of the specific lab
-app.post('/update_appointment', (req, res) => {
-  const lab_uuid = req.body.lab_id;
-  const uuid = req.body.id;
-  const password = req.body.password;
-  const date = req.body.date;
-  const slot = req.body.slot;
-  console.log(uuid)
-  console.log(password)
-  console.log(date)
-  console.log(slot)
-
-  if (!lab_uuid || !uuid || !password) {
-    res.send({error:"Missing lab uuid, patient uuid, or patient password."});
-    return;
-  }
-  if (!date || !slot) {
-    res.send({error:"Missing appointment date or slot."});
-    return;
-  }
-
-  sql = 'SELECT * FROM `patients_registration` WHERE uuid = ? AND verification = ?';
-  console.log(sql);
-  conn.query(sql, [uuid,true] ,(error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    if(result.length == 0){
-      res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
-      return;
-    } else {
-      if (result[0].uuid === uuid && result[0].password === password) {
-        // Correct patients
-        const patient_id = result[0].id;
-        sql = `SELECT id FROM lab_admin WHERE uuid = "${lab_uuid}" AND verification = true`
-        conn.query(sql, (error, result) => {
-          if (error) {
-            res.send({error:"Something wrong in MySQL."});
-            console.log(error);
-            return;
-          }
-          if(result.length == 0){
-            res.send({error: "No valid lab match in the database."});
-            return;
-          } else {
-            sql = `INSERT INTO lab_appointment (lab_id, patient_id, appointmentDate, slot)  VALUES (${result[0].id}, ${patient_id}, "${date}", ${slot})`;
-            
-            conn.query(sql,(error, result) => {
-              if (error) {
-                res.send({error:"Something wrong in MySQL."});
-                console.log(error);
-                return;
-              }
-              if (result.affectedRows == 1) {
-                res.send({success:"Appointment scheduled."})
-              } else {
-                res.send({error:"Something goes wrong in the database."});
-              }
-            })
-          }
-        })
-      } else {
-        res.send({error: "Either ID or Password is wrong or your account is not verified. Please Check."});
-        return;
-      }
-    }
-  })
-})
-/* LAB TEST APPOINTMENT FORM, backenf api code ended for adding route to register (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
-
-// Get the appointment list and the lab info for the specific patient
-app.post('/check_patientAppointment', (req, res) => {
-  const uuid = req.body.id;
-
-  if (!uuid) {
-    res.send({error:"Missing patient uuid."});
-    return;
-  }
-
-  let today = new Date()
-  const offset = today.getTimezoneOffset()
-  today = new Date(today.getTime() - (offset*60*1000))
-
-  sql = `SELECT lab_admin.Lab_Name, lab_admin.Email_Id, lab_admin.Location1, lab_admin.Location2, lab_admin.City, lab_admin.Province, lab_admin.Country, appointmentDate, slot
-  FROM lab_admin JOIN lab_appointment JOIN patients_registration 
-  ON lab_admin.id = lab_appointment.lab_id AND patients_registration.id = lab_appointment.patient_id
-  WHERE patients_registration.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
-  console.log(sql);
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    res.send(result);
-  })
-})
-
-// Get the appointment list and the patient info for the specific lab
-app.post('/check_labAppointment', (req, res) => {
-  const uuid = req.body.id;
-
-  if (!uuid) {
-    res.send({error:"Missing lab uuid."});
-    return;
-  }
-
-  let today = new Date()
-  const offset = today.getTimezoneOffset()
-  today = new Date(today.getTime() - (offset*60*1000))
-
-  sql = `SELECT patients_registration.FName, patients_registration.MName, patients_registration.LName, patients_registration.MobileNumber, appointmentDate, slot
-  FROM lab_admin JOIN lab_appointment JOIN patients_registration 
-  ON lab_admin.id = lab_appointment.lab_id AND patients_registration.id = lab_appointment.patient_id
-  WHERE lab_admin.uuid = "${uuid}" AND appointmentDate = "${today.toISOString().slice(0, 10)}";`;
-  console.log(sql);
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    res.send(result);
-  })
-})
-/* notification widget, backenf api code started for adding route to index (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
-app.get('/get_availableDoctors', (req, res) => {
-  sql = "SELECT Specialization, COUNT(Specialization) AS 'NumberOfDoctors' FROM doctors_registration WHERE Availability = 1 AND verification = 1 GROUP BY Specialization";
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error: error.sqlMessage});
-      return;
-    }
-    res.send(result);
-  })
-})
-/* find a dentist, backenf api code ended for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
-
-/* find a dentist, backenf api code started for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
-app.post('/get_availableDentists', (req, res) => {
-  const Province = req.body.Province;
-  const Country= req.body.Country;
-  const City = req.body.City;
-  console.log(req.body)
-  
-  //sql = "SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1";
-  sql = `SELECT Fname, Mname, Lname, Specialization, MobileNumber, Location1, Location2, City, Province, Country, PostalCode, Availability FROM doctors_registration WHERE Specialization = 'Dentist' AND Availability = 1 AND Province = "${Province}" AND Country = "${Country}" AND City = "${City}"  `;
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    res.send(result);
-  })
-})
-/* find a dentist, backenf api code ended for adding route to services (Team-member1-Christina, Team-member2-Sanika), BMG5109H, 2nd term-1stYear */
-
-app.post('/update_availability', (req, res) => {
-  const Availability = req.body.Availability;
-  const uuid = req.body.id;
-  const password = req.body.password;
-
-  sql = `UPDATE doctors_registration SET Availability = ${Availability} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
-  console.log(sql)
-  conn.query(sql,(error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    if (result.affectedRows == 1) {
-      result.changedRows == 1 ? res.send({success:"Availability updated."}) : res.send({success:"The update is already in place."})
-    } else if (result.affectedRows == 0) {
-      res.send({error:"Your account info is not correct."});
-    } else if (result.affectedRows > 1) {
-      res.send({error:"Duplicate account updated, please contact the system manager."});
-    } else {
-      res.send({error:"Something goes wrong in the database."});
-    }
-  })
-})
-
+/* Diabetology Page, code ended for adding route to Diabetology (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group1, BMG5111, 2023 */
 
 
 app.post('/recordUpdate', upload.single("image"), (req, res) => {
@@ -1545,6 +940,15 @@ app.post('/recordUpdate', upload.single("image"), (req, res) => {
   })
 })
 
+
+// This is a connection testing api 
+app.post('/connectionTesting', upload.single("image"), (req, res) => {
+  console.log("Request received by test api.");
+  console.log(req.file);
+  console.log(req.body);
+  res.send({ prediction: "Request received by test api." });
+})
+
 app.post('/Hospital', (req, res) => {
   const get_HospitalInfo = req.body;
   var password = crypto.randomBytes(16).toString("hex");
@@ -1566,28 +970,28 @@ const nodemailer = require("nodemailer");
 
 // create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport({
-    service: "gmail",
-auth:{
-     user:'ehospital112233@gmail.com',
-     pass:'hlcvsrrzempexzhw'
-    }
-  });
+  service: "gmail",
+  auth: {
+    user: 'ehospital112233@gmail.com',
+    pass: 'hlcvsrrzempexzhw'
+  }
+});
 
 
 
 
 // Lab Registration
-/* Lab Registration webpage with email Notification and connection with db, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
+
 app.post('/Lab', (req, res) => {
   const get_LabInfo = req.body;
-  var uniqueID = "HOS-" + Math.floor(Math.random()*90000) + 10000;
+  var uniqueID = "HOS-" + Math.floor(Math.random() * 90000) + 10000;
   var password = crypto.randomBytes(16).toString("hex");
   email = req.body.ConfirmEmail;
 
   var login_url = 'http://www.e-hospital.ca/signin';
   transporter.sendMail({
     from: "ehospital112233@gmail.com", // sender address
-    to:email, // list of receivers
+    to: email, // list of receivers
     subject: "Your E-Lab account confirmed", // Subject line
     html: `
     <!DOCTYPE html>
@@ -1626,9 +1030,6 @@ app.post('/Lab', (req, res) => {
   })
 }
 )
-/* Lab Registration webpage with email Notification and connection with db, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */
-
-
 
 // app.post('/masterDashboard', (req, res) => {
 //     const email = req.body.email;
@@ -1692,45 +1093,10 @@ app.get('/MS-diagnoses', (req, res) => {
   res.render("pages/MS-diagnoses")
 })
 
-app.get('/diagnosisMS', (req, res) => {
-  res.render("pages/diagnosisMS")
-})
-
-app.get('/ECG-diagnoses', (req, res) => {
-  res.render("pages/ECG-diagnoses")
-})
-
-app.post('/getPatientInformation',(req,res)=>{
-  const recordReq=req.body;
-  sql = "SELECT pyramidal, cerebella, brain_stem, sensory, visual, mental, bowel_and_bladder_function, mobility, RecordDate FROM `physical_test_ms` WHERE patient_id= ?";
-  conn.query(sql, [recordReq.id], (error, result) => {
-  res.send({data: result});
-});
-})
-
-app.get('/ECG-Doctor',(req,res) => {
-  res.render("pages/ECG-Doctor")
-})
-app.get('/MS-Doctor',(req,res) => {
-  res.render("pages/MS-Doctor")
-})
 // user: "uottawabiomedicalsystems@gmail.com", //
 // pass: "@uOttawa5902",
 
-//christina&sanika
-app.route("/ajax")
-.post(function(req,res){
-
- res.send({response:req.body.Country});
- console.log("success")
-console.log(req.body)
-console.log(req.body.Country)
-});
-//christina&sanika
-
 const twilio = require("twilio");
-const { pid } = require('process');
-const { checkServerIdentity } = require('tls');
 
 app.get('/sendEmail', (req, res) => {
 
@@ -1778,24 +1144,24 @@ app.get('/sendEmail', (req, res) => {
   "use strict";
   const nodemailer = require("nodemailer");
 
-        async function main() {
-            let transporter = nodemailer.createTransport({
-                host: "smtp.gmail.com",
-                port: 587,
-                secure: false, // true for 465, false for other ports
-                auth: {
-                    user: "ehospital112233@gmail.com",//add your smtp server
-                    pass: "hlcvsrrzempexzhw"//with password
-                },
-            });
+  async function main() {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: "ehospital112233@gmail.com",//add your smtp server
+        pass: "hlcvsrrzempexzhw"//with password
+      },
+    });
 
-            var login_url = 'http://www.e-hospital.ca/signin';
-            // send mail with defined transport object
-            let info = await transporter.sendMail({
-                from: "ehospital112233@gmail.com", // sender address
-                to: email, // list of receivers
-                subject: "Your E-Hospital account confirmed", // Subject line
-                html: `
+    var login_url = 'http://www.e-hospital.ca/signin';
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: "ehospital112233@gmail.com", // sender address
+      to: email, // list of receivers
+      subject: "Your E-Hospital account confirmed", // Subject line
+      html: `
             <h1>This is to confirm that, your registration with E-Hospital is completed</h1> <br/>
             <h3>Please use the below details to login</h3> <br/>
             <div>
@@ -1854,138 +1220,15 @@ app.get('/sendEmail', (req, res) => {
 
 
 
-// API for symptoms checker
-app.get('/get_symptoms_checker', (req, res) => {
-  sql = "SELECT * FROM symptoms_checker";
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    res.send({success: result});
-  })
-})
-
-// This API is for authorized access to doctor
-app.post('/authorizeToDoctor', (req, res) => {
-  const uuid = req.body.uuid;
-  const password = req.body.password;
-  const doctorPhoneNumber = req.body.doctorPhoneNumber;
-  const isAuthorized = req.body.isAuthorized == "1" ? true : false;
-
-  sql = `SELECT id FROM patients_registration WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
-  var patient_id = 0;
-  var doctor_id = 0;
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    if (result.length == 0) {
-      res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
-      return;
-    }
-  
-    patient_id = result[0].id;
-    sql = `SELECT id FROM doctors_registration WHERE MobileNumber = "${doctorPhoneNumber}" AND verification = true`;
-    conn.query(sql, (error, result) => {
-      if (error) {
-        res.send({error:"Something wrong in MySQL."});
-        console.log(error);
-        return;
-      }
-      if (result.length == 0) {
-        res.send({error:"Invalid doctor phone number. Please Check."});
-        return;
-      }
-
-      doctor_id = result[0].id;
-      sql = isAuthorized ? `INSERT INTO doctor_recordauthorized (doctor_id,patient_id) VALUES (${doctor_id},${patient_id});` : `DELETE FROM doctor_recordauthorized WHERE doctor_id = "${doctor_id}" AND patient_id = "${patient_id}";`
-      console.log(sql);
-      conn.query(sql, (error, result) => {
-        if (error && error.code != 'ER_DUP_ENTRY') {
-          res.send({error:"Something wrong in MySQL."});
-          console.log(error);
-          return;
-        }
-        res.send({success: isAuthorized? "Authorize success." : "Deauthorize success." });
-      })
-    })
-  })
-})
-
-// This API is for checking the authorized patient list
-app.post('/checkAuthorizedPatients', (req, res) => {
-  const uuid = req.body.uuid;
-  const password = req.body.password;
-  const accountType = req.body.accountType;
-
-  var accountTable = "";
-
-  switch(accountType) {
-    case ("doctor"):
-      accountTable = "doctors_registration";
-      break;
-    case ("hospital"):
-      accountTable = "hospital_admin";
-      break;
-    case ("lab"):
-      accountTable = "lab_admin";
-      break;
-    case ("clinic"):
-      accountTable = "clinic_admin";
-      break;
-    default:
-      res.send({ error: `Unknown account type: ${accountType}` });
-      return;
-  }
-
-  // Check parameters
-  if (!uuid || !password) {
-    res.send({error:"Missing doctor credential."});
-    return;
-  }
-
-  sql = `SELECT id FROM ${accountTable} WHERE uuid = "${uuid}" AND password = "${password}" AND verification = true`;
-  var id = 0;
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    if (result.length == 0) {
-      res.send({error:"Either ID or Password is wrong or your account is not verified. Please Check."});
-      return;
-    }
-  
-    id = result[0].id;
-    sql = `SELECT FName, MName, LName, Age, Gender, BloodGroup, height, weight, MobileNumber, EmailId
-    FROM ${accountType}_recordauthorized join patients_registration ON ${accountType}_recordauthorized.patient_id = patients_registration.id
-    WHERE ${accountType}_id = ${id}`
-    conn.query(sql, (error, result) => {
-      if (error) {
-        res.send({error:"Something wrong in MySQL."});
-        console.log(error);
-        return;
-      }
-      res.send({success:result});
-    })
-  })
-})
-
-
-// This API is for updating the ML prediction result to the database. 
+// This API is for update the ML prediction result to the database. 
 app.post('/updateDisease', (req, res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const disease = req.body.disease; // the name of the disease, e.g. "pneumonia"
   const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
   const prediction = req.body.prediction; // prediction result, e.g. "diseased" or "detail disease type"
   const accuracy = req.body.accuracy; // prediction accuracy, e.g. "90%"
-  const recordType = req.body.recordType; // the type of the health test, e.g. "X-Ray" or "ecg"
-  const recordId = req.body.recordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
+  const reccordType = req.body.reccordType; // the type of the health test, e.g. "X-Ray" or "ecg"
+  const reccordId = req.body.reccordId; // the id of the health test, e.g. "12", "640b68a96d5b6382c0a3df4c"
 
   if (!phoneNumber || !disease || !date || !prediction) {
     res.send({error:"Missing patient phone number, disease, date, or prediction."});
@@ -1998,7 +1241,6 @@ app.post('/updateDisease', (req, res) => {
   conn.query(sql, async (error, result) => {
     if (error) {
       res.send({error:"Something wrong in MySQL."});
-      console.log(error);
       return;
     }
     if (result.length != 1) {
@@ -2008,306 +1250,22 @@ app.post('/updateDisease', (req, res) => {
     patient_id = result[0].id;
 
     sql = `INSERT into ${disease} (patient_id, prediction_date, prediction, accuracy, record_type, record_id)
-    VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${recordType?"\""+recordType+"\"":"NULL"}, ${recordId?"\""+recordId+"\"":"NULL"})
+    VALUES (${patient_id}, "${date}", "${prediction}", ${accuracy?"\""+accuracy+"\"":"NULL"}, ${reccordType?"\""+reccordType+"\"":"NULL"}, ${reccordId?"\""+reccordId+"\"":"NULL"})
     ON DUPLICATE KEY 
     UPDATE prediction_date = "${date}", 
     prediction = "${prediction}",
     accuracy = ${accuracy?"\""+accuracy+"\"":"NULL"},
-    record_type = ${recordType?"\""+recordType+"\"":"NULL"},
-    record_id = ${recordId?"\""+recordId+"\"":"NULL"};`;
+    record_type = ${reccordType?"\""+reccordType+"\"":"NULL"},
+    record_id = ${reccordId?"\""+reccordId+"\"":"NULL"};`;
     conn.query(sql, async (error, result) => {
       if (error) {
         res.send({error:"Something wrong in MySQL."});
-        console.log(error);
         return;
       }
       res.send({success: "Submit success."});
     });
   });
-});
 
-/* Psychology, code started for logging info into database from psychology Questionnaire, also for finding the patient ID and showing results to the doctor. (Alexis McCreath Frangakis, Parisa Nikbakht)
-   Group 8, Course-BMG5111, Winter 2023
-*/
-app.post('/psychologyQuestionnaire', (req, res) => {
-  const getDetails = req.body
-  //console.log(req.body)
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
-  const date = new Date();
-  // Check patient identity
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
-    return;
-  }
-  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  // console.log(sql);
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      console.log(result.length)
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    const patient_id = result[0].id;
-    sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`, `chosen_dr`) VALUES ?";
-    var VALUES = [[patient_id, phoneNumber, date, getDetails.sex, getDetails.language,
-     getDetails.treatment_setting, getDetails.age_group, getDetails.type_of_therapy, getDetails.psychological_treatment,
-     getDetails.time_frame, getDetails.frequency, getDetails.cost, getDetails.dr_uuid]]
-
-    conn.query(sql, [VALUES], (error, result) => {
-      if (error) throw error
-      let params1 = encodeURIComponent(phoneNumber)
-      let params2 = encodeURIComponent(getDetails.type_of_therapy)
-      let params3 = encodeURIComponent(getDetails.dr_name)
-      res.redirect("/psychologistRecommendation?phoneNumber="+params1+"&type="+params2+"&doc="+params3)
-    })
-  })
-})
-
-app.post('/psychologyDepressionQuestionnaire', (req, res) => {
-  const getDetails = req.body
-  //console.log(req.body)
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
-  const date = new Date();
-  // Check patient identity
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
-    return;
-  }
-  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  // console.log(sql);
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      console.log(result.length)
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    const patient_id = result[0].id;
-    sql = "INSERT INTO `psychology_depression_questionnaire`(`patient_id`,`phoneNumber`,`date`,`q1`,`q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `result`) VALUES ?";
-    var VALUES = [[patient_id, phoneNumber, date, getDetails.q1, getDetails.q2,
-     getDetails.q3, getDetails.q4, getDetails.q5, getDetails.q6,
-     getDetails.q7, getDetails.q8, getDetails.q9, getDetails.q10, getDetails.result]]
-
-    conn.query(sql, [VALUES], (error, result) => {
-      if (error) throw error
-      res.redirect("/thankyou")
-    })
-  })
-})
-
-app.post('/psychologyAnxietyQuestionnaire', (req, res) => {
-  const getDetails = req.body
-  console.log(req.body)
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-  //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
-  const date = new Date();
-  // Check patient identity
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
-    return;
-  }
-  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  // console.log(sql);
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      console.log(result.length)
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    const patient_id = result[0].id;
-    sql = "INSERT INTO `psychology_anxiety_questionnaire`(`patient_id`,`phoneNumber`,`date`,`q1`,`q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`,`q11`,`q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `result`) VALUES ?";
-    var VALUES = [[patient_id, phoneNumber, date, getDetails.q1, getDetails.q2,
-     getDetails.q3, getDetails.q4, getDetails.q5, getDetails.q6,
-     getDetails.q7, getDetails.q8, getDetails.q9, getDetails.q10, getDetails.q11, getDetails.q12,
-     getDetails.q13, getDetails.q14, getDetails.q15, getDetails.q16,
-     getDetails.q17, getDetails.q18,  getDetails.result]]
-
-    conn.query(sql, [VALUES], (error, result) => {
-      if (error) throw error
-      res.redirect("/thankyou")
-    })
-  })
-})
-
-/*getting all of the doctors from the database*/
-app.get('/get_psychologistsinfo', (req, res) => {
-  sql = "SELECT uuid, sex, language, treatment_setting, age_group, type_of_therapy, psychological_treatment, time_frame, frequency, cost FROM psychology_dr";
-  conn.query(sql, (error, result) => {
-    if (error) throw error
-    res.json(result);
-  })
-})
-/*end getting all of the doctors from the database*/
-/*getting all of the doctors from the database*/
-app.get('/get_psychologistsregistration', (req, res) => {
-  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability, uuid FROM doctors_registration WHERE Specialization = 'Psychology'";
-  conn.query(sql, (error, result) => {
-    if (error) throw error
-    res.json(result);
-  })
-})
-/*end getting all of the doctors from the database*/
-
-// This is the MySQL health test search API
-app.post('/psychologyPatientRegistration', async (req,res) => {
-  const phoneNumber = req.query.phoneNumber;
-  const recordType = req.query.recordType;
-  //console.log(recordType)
-  // Check parameters
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number."});
-    return;
-  }
-  if (!recordType) {
-    res.send({error:"Missing record type."});
-    return;
-  }
-
-  var patient_id = 0;
-  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  
-  conn.query(sql, async (error, result) => {
-    if (error) {
-      console.log()
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    patient_id = result[0].id;
-
-    sql = `SELECT * FROM ${recordType} WHERE patient_id = "${patient_id}" ORDER BY date DESC`
-    conn.query(sql, async (error, result) => {
-      if (error) {
-        console.log()
-        res.send({error:"Something wrong in MySQL."});
-        return;
-      }
-      var temp = removeKey(result,"patient_id");
-      res.send({success:temp});
-    });
-  });
-})
-
-
-//Psychologist Profile Information
-app.post('/psychologistRegistration', (req, res) => {
-  const getDetails = req.body
-  //console.log(req.body)
-  const uuid = req.body.uuid; 
-  // Check patient identity
-  if (!uuid) {
-    res.send({error:"Doctor is not Registered"});
-    return;
-  }
-  sql = `SELECT id FROM doctors_registration WHERE uuid = "${uuid}"`;
-  // console.log(sql);
-  conn.query(sql, (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      console.log(result.length)
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    const dr_id = result[0].id;
-    sql = "INSERT INTO `psychology_dr`(`dr_id`,`uuid`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`) VALUES ?";
-    var VALUES = [[dr_id, uuid, getDetails.sex, getDetails.language,
-     getDetails.treatment_setting, getDetails.age_group, getDetails.type_of_therapy, getDetails.psychological_treatment,
-     getDetails.time_frame, getDetails.frequency, getDetails.cost]]
-
-    conn.query(sql, [VALUES], (error, result) => {
-      if (error) throw error
-      res.redirect("/thankyou")
-    })
-  })
-})
-/* Psychology - code ended for logging info into database from psychology Questionnaire, also for finding the patient ID and showing results to the doctor. (Alexis McCreath Frangakis, Parisa Nikbakht)
-   Group 8, Course-BMG5111, Winter 2023 */
-
-// This API is for receiveing the basic info of the patient like age and gender.
-app.post('/get_patientBasicHealthInfo', (req, res) => {
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number"});
-    return;
-  }
-
-  sql = `SELECT Age, BloodGroup, Gender, height, weight FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  // console.log(sql);
-  conn.query(sql, async (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      console.log(error);
-      return;
-    }
-    if (result.length != 1) {
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    res.send({success: result});
-  });
-
-});
-
-// This is the MySQL health test search API
-app.post('/healthTestRetrieveByPhoneNumber', async (req,res) => {
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-  const recordType = req.body.recordType; // the record type, e.g. "ecg", this represents the table name in the database
-
-  // Check parameters
-  if (!phoneNumber) {
-    res.send({error:"Missing patient phone number."});
-    return;
-  }
-  if (!recordType) {
-    res.send({error:"Missing record type."});
-    return;
-  }
-
-  var patient_id = 0;
-  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
-  // console.log(sql);
-  conn.query(sql, async (error, result) => {
-    if (error) {
-      res.send({error:"Something wrong in MySQL."});
-      return;
-    }
-    if (result.length != 1) {
-      res.send({error:"No patient matched in database."});
-      return;
-    }
-    patient_id = result[0].id;
-
-    sql = `SELECT * FROM ${recordType} WHERE patient_id = "${patient_id}" ORDER BY RecordDate DESC`
-    conn.query(sql, async (error, result) => {
-      if (error) {
-        res.send({error:"Something wrong in MySQL."});
-        return;
-      }
-
-      var temp = removeKey(result,"patient_id");
-      res.send({success:temp});
-    });
-  });
 })
 
 // This is a MongoDB import API template
@@ -2316,16 +1274,11 @@ app.post('/imageUpload', upload.single("image"), async (req,res) => {
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
   const recordDate = req.body.recordDate; // record date, e.g. "2023-03-01 09:00:00"
 
-  // Check parameters
+  // Check patient identity
   if (!phoneNumber) {
-    res.send({error:"Missing patient phone number."});
+    res.send({error:"Missing patient phone number"});
     return;
   }
-  if (!recordType || !recordDate) {
-    res.send({error:"Missing record type or record date."});
-    return;
-  }
-
   var patient_id = 0;
   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
   // console.log(sql);
@@ -2350,23 +1303,17 @@ app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
-  // Check parameters
+  // Check patient identity
   if (!phoneNumber) {
-    res.send({error:"Missing patient phone number."});
+    res.send({error:"Missing patient phone number"});
     return;
   }
-  if (!recordType) {
-    res.send({error:"Missing record type."});
-    return;
-  }
-
   var patient_id = 0;
   sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
   console.log(sql);
   conn.query(sql, async (error, result) => {
     if (error) {
       res.send({error:"Something wrong in MySQL."});
-      console.log(error);
       return;
     }
     if (result.length != 1) {
@@ -2385,16 +1332,6 @@ app.post('/imageRetrieveByRecordId', async (req,res) => {
   const _id = req.body._id; // record id, e.g. "640b68a96d5b6382c0a3df4c"
   const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
-  // Check parameters
-  if (!_id) {
-    res.send({error:"Missing record id."});
-    return;
-  }
-  if (!recordType) {
-    res.send({error:"Missing record type."});
-    return;
-  }
-
   const MongoResult = await imageRetrieveByRecordId(_id, recordType);
   res.send(MongoResult);
 })
@@ -2404,34 +1341,17 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request received by test api.");
   console.log(req.file);
   console.log(req.body);
-  if (req.file) {
-    res.send({prediction: "File received by test api.", accuracy: "100%"});
-  } else {
-    res.send({prediction: "Request received by test api.", accuracy: "100%"});
-  }
-  
+  res.send({prediction: "Request received by test api."});
 })
 
-/**
- * Remove the sensitive field from the result.
- * @ param {*} result The result from the database.
- * @ param {*} key The field that is sensitive.
- * @ returns The result without the sensitive field.
- */
-function removeKey(result, key) {
-  for (let i = 0; i < result.length; i++) {
-    delete result[i][key];
-  }
-  return result;
-}
 
 /**
  * This is the function that updates a single file (image) to the patient record in MongoDB.
- * @ param {*} patient_id Existed id from the table "patients_registration" under MySQL database.
- * @ param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
- * @ param {*} recordDate The date when this record was generated, e.g. "2023-03-01 09:00:00".
- * @ param {*} file The record, can be an image or other file that can be used on ML prediction directly.
- * @ returns If success, return {success: "New image created.", id: "id of this record"}; otherwise, return {error:"Error message."}.
+ * @param {*} patient_id Existed id from the table "patients_registration" under MySQL database.
+ * @param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
+ * @param {*} recordDate The date when this record was generated, e.g. "2023-03-01 09:00:00".
+ * @param {*} file The record, can be an image or other file that can be used on ML prediction directly.
+ * @returns If success, return {success: "New image created.", id: "id of this record"}; otherwise, return {error:"Error message."}.
  */
 async function imageUpload(patient_id, recordType, recordDate, file) {
   if (!patient_id || !recordType || !recordDate || !file) {
@@ -2450,9 +1370,9 @@ async function imageUpload(patient_id, recordType, recordDate, file) {
 
 /**
  * This is the function that retrieves all records in a specific record type in MongoDB through patient id.
- * @ param {*} patient_id Existed id from the table "patients_registration" under MySQL database.
- * @ param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
- * @ returns If success, return {success: [{Record A in JSON}, {Record B in JSON}, ...]}; otherwise, return return {error:"Error message."}.
+ * @param {*} patient_id Existed id from the table "patients_registration" under MySQL database.
+ * @param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
+ * @returns If success, return {success: [{Record A in JSON}, {Record B in JSON}, ...]}; otherwise, return return {error:"Error message."}.
  */
 async function imageRetrieveByPatientId(patient_id, recordType) {
   if (!patient_id || !recordType) {
@@ -2466,9 +1386,9 @@ async function imageRetrieveByPatientId(patient_id, recordType) {
 
 /**
  * This is the function that retrieves specific records in a specific record type in MongoDB through the id of the record.
- * @ param {*} _id The id of the record in MongoDB.
- * @ param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
- * @ returns If success, return {success: {Record in JSON}}; otherwise, return return {error:"Error message."}.
+ * @param {*} _id The id of the record in MongoDB.
+ * @param {*} recordType The record type, e.g. "X-Ray", this also represents the collection name in the MongoDB (case sensitive).
+ * @returns If success, return {success: {Record in JSON}}; otherwise, return return {error:"Error message."}.
  */
 async function imageRetrieveByRecordId(_id, recordType) {
   if (!_id || !recordType) {
