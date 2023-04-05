@@ -27,84 +27,21 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.render("pages/index");
 })
-/* TaskName -Kidney Prediction
+/* TaskName -Speciality Page: Urology
  (Front-end - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
  (Machine learning - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
 */
-app.get('/kidney', (req, res) => {
-  res.redirect(' https://c0f3-72-136-34-2.ngrok.io/');
+app.get('/urology', (req, res) => {
+  res.redirect(' https://mlmodel2.herokuapp.com/');
 })
-// Hamza Khan Team for Specialities Page
-app.get('/specialities', (req, res) => {
-  res.render("pages/specialities");
-})
-//// Hamza Khan Team for Specialities Page
 
-app.get('/pneumoniahome', (req, res) => {
-  res.render("pages/index");
-})
-app.get('/heartdiseasefrontend', (req, res) => {
-  res.render("pages/heartdiseasefrontend");
-})
-app.get('/respiratorymedicine', (req, res) => {
-  // Send a GET request to the Flask app's /pneumonia endpoint to get the HTML content of the page
-  axios.get('https://mlmodel2.herokuapp.com/pneumonia')
-    .then(response => {
-      // The response data contains the HTML content of the page
-      const html = response.data;
+/*--------------------------------------------
+TaskName -Speciality Page: Respiratory Medicine
+ (Front-end - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
+ (Machine learning - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
+*/
 
-      // Set the Content-Type header to text/html
-      res.set('Content-Type', 'text/html');
-
-      // Send the HTML content of the page as the response
-      res.send(html);
-      console.log(req)
-    })
-    .catch(error => {
-      // If an error occurs, log the error and send a 500 Internal Server Error response
-      console.error(error);
-      res.sendStatus(500);
-    });
-});
-
-
-app.post('/pneumoniapredict', upload.single('image'), (req, res) => {
-  const form = new FormData();
-
-  // Get the uploaded image file from the request body
-  const imageFile = req.file
-
-  // Convert the image file to a buffer and add it to the form data
-  const imageData = fs.readFileSync(imageFile.path);
-  form.append('image', imageData, { filename: 'image.jpg', contentType: 'image/jpeg' });
-
-
-  // Send a POST request to the Flask app's /pneumoniapredict endpoint with the image data
-  axios.post('https://mlmodel2.herokuapp.com/pneumoniapredict', form, {
-    headers: form.getHeaders()
-  })
-    .then(response => {
-      // The response data contains the HTML content of the predict page
-      const html = response.data;
-      res.set('Content-Type', 'text/html');
-      res.send(html);
-    })
-    .catch(error => {
-      console.error(error);
-      res.sendStatus(500);
-    });
-});
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
-});
-
-
-app.get('/respiratoryMedicine2', (req, res) => {
+app.get('/respiratoryMedicine', (req, res) => {
   res.render('pages/respiratoryMedicine', { message: '', prediction: '' });
 });
 
@@ -137,7 +74,23 @@ app.post('/predict', upload.single('file'), (req, res) => {
     });
 });
 
+/*--------------------------------------------
+End of Group 5 tasks for Speciality Pages 
+1. Urology 2. Respiratory Medicine
+*/
 
+// Hamza Khan Team for Specialities Page
+app.get('/specialities', (req, res) => {
+  res.render("pages/specialities");
+})
+//// Hamza Khan Team for Specialities Page
+
+app.get('/pneumoniahome', (req, res) => {
+  res.render("pages/index");
+})
+app.get('/heartdiseasefrontend', (req, res) => {
+  res.render("pages/heartdiseasefrontend");
+})
 app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
