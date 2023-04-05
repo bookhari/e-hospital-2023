@@ -44,8 +44,7 @@
                 alert(JSON.stringify(data.error));
             } else {
                 let x = convert(data.success);
-                createTableFromDict(x);
-                
+                //createTableFromDict(x);
                 storePrediction();
                 predict(x);
             }
@@ -69,7 +68,7 @@
             console.log(record);
             myList = Object.values(record);
             console.log(myList);
-            //createTableFromDict(record);
+            createTableFromDict(record);
             return(myList);
         }
 
@@ -246,7 +245,7 @@
    
   </div>
   <div class="container" style="padding-top: 40px;">
-    <table id="recordList" style="width:100%">
+    <table id="recordList" style="width:60%">
       <tr>
         <th id="recordType">Record</th>
         <th id="recordDate">Record Date</th>
@@ -257,24 +256,24 @@
   <div> 
 
     <div class="outer">
-        <input type="text" id="phoneID" placeholder="Phone Number" style="border: 2px solid #ccc; border-radius: 4px;
-         color: black;
-        animation: fadeIn 1s ease-in; box-sizing: border-box; 
-        margin-top: 20px;
-        margin-left: 80.5px;">
-      <div class="result-box" style = "padding: 30px 15px; width: 1000px; margin-left: 65.5px;">
-        <label for="diagnose">Test Result:</label>
-        <br> 
-        <input type="text" id="diagnose" name="diagnose" placeholder="Result" \
-        style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 400px; font-size: 15px; font-weight: 500;
-        color: black;
-        animation: fadeIn 1s ease-in;box-sizing: border-box; 
-        margin-top: 10px;" disabled="disabled">
-        <button onclick="doSomething()">Predict</button>
-       </div>
-            </form>
-          </div>
-      </div>
+        <div class="result-box" style = "padding: 30px 15px; width: 1000px; margin-left: 65.5px; margin-bottom: -50px;">
+            <label for="diagnose">Test Result:</label>
+            <br> 
+            <input type="text" id="diagnose" name="diagnose" placeholder="Result" \
+            style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 400px; font-size: 15px; font-weight: 500;
+            color: black;
+            animation: fadeIn 1s ease-in;box-sizing: border-box;" disabled="disabled">
+        </div>
+
+       <div class="result-box" style = "padding: 30px 15px; width: 1000px; margin-left: 65.5px;">
+            <label for="diagnose">Patient Phone Number</label>
+            <br> 
+            <input type="text" id="phoneID" placeholder="Phone Number" style="border: 2px solid #ccc; border-radius: 4px;
+            color: black; animation: fadeIn 1s ease-in; box-sizing: border-box;">
+            <button onclick="doSomething()">Predict</button>
+        </div>
+    </div>
+    </div>
     <footer>
   <%- include('../partials/footer-new') -%>
   

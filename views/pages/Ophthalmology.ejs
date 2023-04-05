@@ -44,8 +44,6 @@
                 alert(JSON.stringify(data.error));
             } else {
                 let x = convert(data.success);
-                createTableFromDict(x);
-                
                 storePrediction();
                 predict(x);
             }
@@ -69,7 +67,7 @@
             console.log(record);
             myList = Object.values(record);
             console.log(myList);
-            //createTableFromDict(record);
+            createTableFromDict(record);
             return(myList);
         }
 
@@ -80,9 +78,9 @@
         let announce;
         const finalInput = document.getElementById("diagnose");
         if (bc_diagnose(myList) === 1) {
-            announce = "The tumor is malignant";
+            announce = "Patient is at risk of developing myopia";
         } else {
-            announce = "The tumor is benign";
+            announce = "Patient is not at risk of developing myopia";
         };
         finalInput.value = '' + announce;
         
@@ -116,9 +114,9 @@
         let thDate = document.getElementById('recordDate');
         thDate.innerText = `Record Date: ${date}`;
         if (value === 0) {
-            thRecord.innerText = "Record Type: Benign" ;
+            thRecord.innerText = "Record Type: Non-myopic" ;
         } else {
-            thRecord.innerText = "Record Type: Malignant";
+            thRecord.innerText = "Record Type: Myopic";
         }
         let container = document.querySelector(".container")
         //container.appendChild(table)
@@ -240,13 +238,13 @@
 <body>
   <div class="words" id="words">
    
-    <h1>Breast Cancer Tumor Classification</h1>
+    <h1>Juvenile Myopia Risk Prediction</h1>
 
     <h3 style="margin-top: 30px;">Patient Information</h3>
    
   </div>
   <div class="container" style="padding-top: 40px;">
-    <table id="recordList" style="width:100%">
+    <table id="recordList" style="width:60%">
       <tr>
         <th id="recordType">Record</th>
         <th id="recordDate">Record Date</th>
@@ -257,24 +255,25 @@
   <div> 
 
     <div class="outer">
-        <input type="text" id="phoneID" placeholder="Phone Number" style="border: 2px solid #ccc; border-radius: 4px;
-         color: black;
-        animation: fadeIn 1s ease-in; box-sizing: border-box; 
-        margin-top: 20px;
-        margin-left: 80.5px;">
-      <div class="result-box" style = "padding: 30px 15px; width: 1000px; margin-left: 65.5px;">
-        <label for="diagnose">Test Result:</label>
-        <br> 
-        <input type="text" id="diagnose" name="diagnose" placeholder="Result" \
-        style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 400px; font-size: 15px; font-weight: 500;
-        color: black;
-        animation: fadeIn 1s ease-in;box-sizing: border-box; 
-        margin-top: 10px;" disabled="disabled">
-        <button onclick="doSomething()">Predict</button>
-       </div>
-            </form>
-          </div>
-      </div>
+        
+        <div class="result-box" style = "padding: 30px 15px; width: 1000px; margin-left: 65.5px; margin-bottom: -50px;">
+            <label for="diagnose">Test Result:</label>
+            <br> 
+            <input type="text" id="diagnose" name="diagnose" placeholder="Result" \
+            style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 400px; font-size: 15px; font-weight: 500;
+            color: black;
+            animation: fadeIn 1s ease-in;box-sizing: border-box;" disabled="disabled">
+        </div>
+
+       <div class="result-box" style = "padding: 30px 15px; width: 1000px; margin-left: 65.5px;">
+            <label for="diagnose">Patient Phone Number</label>
+            <br> 
+            <input type="text" id="phoneID" placeholder="Phone Number" style="border: 2px solid #ccc; border-radius: 4px;
+            color: black; animation: fadeIn 1s ease-in; box-sizing: border-box;">
+            <button onclick="doSomething()">Predict</button>
+        </div>
+    </div>
+    </div>
     <footer>
   <%- include('../partials/footer-new') -%>
   
