@@ -36,7 +36,7 @@
         type: 'POST',
         data: {
           phoneNumber: phoneNumber, 
-          recordType: "tumor" // the table name that stores the record
+          recordType: "eye_test" // the table name that stores the record
         },
         //check the data to make sure it is there and pass it to convert()
         success: function(data) {
@@ -212,11 +212,11 @@
         type: 'POST',
         data: {
           phoneNumber: document.getElementById('phoneID').value,
-          disease: "breast_cancer", 
+          disease: "juvenile_myopia", 
           date: today,
           prediction: bc_diagnose(myList),
           accuracy: null,
-          recordType: "tumor", 
+          recordType: "eye_test", 
           recordId: 2,
         },
         success: function(data) {

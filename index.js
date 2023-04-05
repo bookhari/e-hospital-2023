@@ -507,6 +507,12 @@ app.get('/Oncology', (req, res) => {
     error: errorMessage
   });
 });
+app.get('/Ophthalmology', (req, res) => {
+  errorMessage = '';
+  res.render("pages/Ophthalmology", {
+    error: errorMessage
+  });
+});
 app.get('/patientLogin', (req, res) => {
   errorMessage = '';
   res.render("pages/patientLogin", {
