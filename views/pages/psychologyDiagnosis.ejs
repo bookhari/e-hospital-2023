@@ -1,14 +1,14 @@
-<!-- Psychology, code started for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht) Group 8, Course-BMG5111, Winter 2023 -->
-
 <!DOCTYPE html>
-<html>
-  
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
 <head>
-  <title>Patient Information Form</title>
   <meta charSet="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Register | E-Hospital</title>
+  <title>Services | Heart Diagnosis</title>
   <meta name="author" content="E-Hospital" />
 
   <meta property="og:url" content="register.html" />
@@ -17,128 +17,410 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
   <meta property="og:locale" content="en_CA" />
-  <link href="css/login.css" rel="stylesheet" type="text/css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <!-- <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css"> -->
+  <!-- <link href="css/login.css" rel="stylesheet" type="text/css">  -->
 
-  <style>
-    table, th, td {
-      border:1px solid black;
-    }
-    </style>
-    
-  <script>
-    var recordList = [];
 
-    // Run the code when the page finished loading
-    $(document).ready(function() {
-      // retrived phone number form url
-      let params = (new URL(document.location)).searchParams;
-      let phoneNumber = params.get("phoneNumber");
-      console.log(phoneNumber)
-
-      // Get the patient records
-      $.ajax({
-        url: "/psychologyDiagnosis",
-        type: 'POST',
-        data: {
-          phoneNumber: phoneNumber, 
-          recordType: "psychology_patients" // the table name that stores the record
-        },
-        success: function(data) {
-          // console.log(data);
-          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
-        },
-        error: function(xhr, textStatus, errorThrown) {
-          // Handle error response from server
-          alert(textStatus + ': ' + errorThrown);
-        }
-      });
-    });
-    
-    // Display the patient records to the front end that allows doctor selected specific record for diagnose
-    function display(data) {
-      recordList = data;
-      if (recordList.length <= 0) {
-        alert("This patient has no record, please tell the patient to take the psychologist questionnaire and the psychologist diagnosis questionnaire.");
-        return;
-      }
-      console.log(recordList);
-      let list = document.getElementById("recordList");
-      // Display each record
-      for (let i = 0; i < recordList.length; ++i) {
-        let tr = document.createElement("tr");
-        //let image = document.createElement("td");
-        //image.innerHTML = "Will be replace by image";
-        let recordDate = document.createElement("td");
-        recordDate.innerHTML = new Date(recordList[i].date);
-        let frequency = document.createElement("td");
-        frequency.innerHTML = recordList[i].frequency;
-        if (recordList[i].frequency == 1) {
-            frequency.innerHTML = "Weekly";
-        }       
-        let therapy = document.createElement("td");
-        therapy.innerHTML = recordList[i].type_of_therapy;
-        if (recordList[i].type_of_therapy == 1) {
-            therapy.innerHTML = "Depression";
-        }
-        let treatment = document.createElement("td");
-        treatment.innerHTML = recordList[i].psychological_treatment;
-        if (recordList[i].psychological_treatment == 1) {
-            treatment.innerHTML = "Psychodynamic Therapy";
-        }
-        let cost = document.createElement("td");
-        cost.innerHTML = recordList[i].cost;
-        if (recordList[i].cost == 1) {
-            cost.innerHTML = "Less than $100 per session";
-        }
-
-        
-        //tr.appendChild(image);
-        tr.appendChild(recordDate);
-        tr.appendChild(therapy);
-        tr.appendChild(frequency);
-        tr.appendChild(treatment);
-        tr.appendChild(cost);
-        list.appendChild(tr);
-      }
-    }
-      
-      // Retrieved phone number and the current date
-      let params = (new URL(document.location)).searchParams;
-      let phoneNumber = params.get("phoneNumber");
-      let today = new Date();
-      const offset = today.getTimezoneOffset();
-      today = new Date(today.getTime() - (offset*60*1000)).toISOString();
-
-  </script>
-  
-  <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
-  <%- include('../partials/header') -%>
-  <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" >
 </head>
-<body>
-  <div class="container" style="padding-top: 40px;margin:0 auto;">
-    <table id="recordList" class="center" style="margin-top:50px; width:50%; margin-bottom:50px;margin-left: auto;margin-right: auto;">
-      <tr>
-        <th>Record Date</th>
-        <th>Therapy Type</th>
-        <th>Frequency</th>
-        <th>Treatment</th>
-        <th>Cost</th>
-      </tr>
+<!-- <style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+  }
 
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+</style> -->
+<style>
+  /* Colors */
+  :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #e74c3c;
+    --text-color: #333;
+    --background-color: #f2f2f2;
+  }
+
+  /* Layout */
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    font-family: sans-serif;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .container:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-image: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+    opacity: 0.7;
+    border-radius: 10px;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .container:hover:before {
+    opacity: 0.9;
+  }
+
+  .title {
+    font-size: 36px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+
+  }
+
+  th {
+    background-color: var(--primary-color);
+    color: #fff;
+
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #e6e6e6;
+  }
+</style>
+
+
+
+
+<!-- <%- include('../partials/header') -%> -->
+
+<div class="container">
+  <div class="title">Psychology Registration and Diagnosis Screening </div>
+
+  <div class="content">
+    <form id="form">
+      <div class="spinner" style="display: none;"></div>
+    </form>
+    <br /><br />
+    <table id="myTable">
+      <caption>Patient Information </caption>
+      <thead>
+        <tr>
+          <th>Phone Number</th>
+          <th>Date</th>
+          <th>Language</th>
+          <th>Desired Treatment Setting</th>
+          <th>Age Group</th>
+          <th>Pyschological Concern</th>
+          <th>Pscyhological Treatment Preference</th>
+          <th>Requested Time Frame</th>
+          <th>Frequency</th>
+          <th>Budget</th>
+        </tr>
+      </thead>
+      <tbody id="myTableBody">
+      </tbody>
+    </table>
+    <br />
+    <table id="myTable">
+      <caption>Depression Screening</caption>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Results</th>
+        </tr>
+      </thead>
+      <tbody id="depressionResults">
+      </tbody>
+    </table>
+    <br />
+    <table id="myTable">
+      <caption>Anxiety Screening</caption>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Results</th>
+        </tr>
+      </thead>
+      <tbody id="anxietyResults">
+      </tbody>
     </table>
   </div>
-  <div> 
-    <footer>
-  <%- include('../partials/footer-new') -%>
-  
-  </footer>
-  </div> 
-  
+</div>
 
-</body>
 </html>
+</br>
 
-<!--  Psychology - code ended for accessing patient Questionnaire Results and getting a diagnosis from the doctor (Alexis McCreath Frangakis, Parisa Nikbakht)
-   Group 8, Course-BMG5111, Winter 2023 -->
+
+
+<script>
+
+  const spinner = document.querySelector('.spinner');
+
+  // Get the URL parameters
+  const queryString = window.location.search;
+
+  // Create a new URLSearchParams object
+  const urlParams = new URLSearchParams(queryString);
+
+  // Get the value of the "id" parameter
+  const phoneNumber = urlParams.get('phoneNumber');
+  //console.log(phoneNumber)
+  var finalData;
+  var recordType = "psychology_patients"
+  fetch(`/psychologyPatientRegistration?phoneNumber=${phoneNumber}&recordType=${recordType}`, {
+    method: 'POST',
+  })
+    .then(response => {
+      return response.json();
+      document.getElementById('resultDiv').innerHTML = JSON.stringify(data);
+      //console.log(data)
+    })
+    .then(data => {
+      // console.log(data)
+      finalData = data
+      data = data.success
+      //console.log(data)
+      const table = document.getElementById("myTableBody");
+      for (let i = 0; i < data.length; i++) {
+        const row = table.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        const cell4 = row.insertCell(3);
+        const cell5 = row.insertCell(4);
+        const cell6 = row.insertCell(5);
+        const cell7 = row.insertCell(6);
+        const cell8 = row.insertCell(7);
+        const cell9 = row.insertCell(8);
+        const cell10 = row.insertCell(9);
+        //console.log(data[i].phoneNumber)
+        cell1.innerHTML = data[i].phoneNumber;
+        cell2.innerHTML = new Date(data[i].date);
+        if (data[i].language = 1){
+              cell3.innerHTML = "French"
+            }
+        else if (data[i].language = 2){
+              cell3.innerHTML = "English"
+            }
+        else if (data[i].language = 3){
+              cell3.innerHTML = "No Preference"
+            }
+        if (data[i].treatment_setting = 1){
+              cell4.innerHTML = "In-person"
+            }
+        else if (data[i].treatment_setting = 2){
+              cell4.innerHTML = "Online"
+            }
+        else if (data[i].treatment_setting = 3){
+              cell4.innerHTML = "Hybrid"
+            }
+        if (data[i].age_group = 1){
+              cell5.innerHTML = "Child/Adolescent"
+            }
+        else if (data[i].age_group = 2){
+              cell5.innerHTML = "Adults"
+            }
+        else if (data[i].age_group = 3){
+              cell5.innerHTML = "Seniors"
+            }
+        if (data[i].type_of_therapy = 1){
+              cell6.innerHTML = "Depression"
+            }
+        else if (data[i].type_of_therapy = 2){
+              cell6.innerHTML = "Anxiety"
+            }
+        else if (data[i].type_of_therapy = 3){
+              cell6.innerHTML = "Adoption"
+            }
+        else if (data[i].type_of_therapy = 4){
+              cell6.innerHTML = "Anger Management"
+            }
+        else if (data[i].type_of_therapy = 5){
+              cell6.innerHTML = "Bullying"
+            }
+        else if (data[i].type_of_therapy = 6){
+              cell6.innerHTML = "Emotional Regulation"
+            }
+        if (data[i].psychological_treatment = 1){
+              cell7.innerHTML = "Acceptance and Committment Therapy"
+            }
+        else if (data[i].psychological_treatment = 2){
+              cell7.innerHTML = "Hypnosis"
+            }
+        else if (data[i].psychological_treatment = 3){
+              cell7.innerHTML = "Cognitive/Behavioural Therapy"
+            }
+        else if (data[i].psychological_treatment = 3){
+              cell7.innerHTML = "Solution-Focused Therapy"
+            }
+        if (data[i].time_frame = 1){
+              cell8.innerHTML = "Morning"
+            }
+        else if (data[i].time_frame = 2){
+              cell8.innerHTML = "Afternoon"
+            }
+        else if (data[i].time_frame = 3){
+              cell8.innerHTML = "Evening"
+            }
+        if (data[i].frequency = 1){
+              cell9.innerHTML = "Weekly"
+            }
+        else if (data[i].frequency = 2){
+              cell9.innerHTML = "Bi-weekly"
+            }
+        else if (data[i].frequency = 3){
+              cell9.innerHTML = "Monthly"
+            }
+        if (data[i].cost= 1){
+              cell10.innerHTML = "Less than $100 per session"
+            }
+        else if (data[i].cost = 2){
+              cell10.innerHTML = "$100-$150 per session"
+            }
+        else if (data[i].cost = 3){
+              cell10.innerHTML = "More than $150 per session"
+            }
+
+      }
+
+      let phoneNumber = data[0].phoneNumber;
+      let id = data[0].patient_id;
+      let recordType = "psychology_depression_questionnaire"
+      fetch(`/psychologyPatientRegistration?phoneNumber=${phoneNumber}&recordType=${recordType}`, {
+        method: 'POST',
+      })
+        .then(response => {
+          return response.json();
+
+        })
+        .then(data => {
+          const table2 = document.getElementById("depressionResults");
+          data = data.success
+          //console.log(data)
+          for (let i = 0; i < data.length; i++) {
+            const row = table2.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+
+
+            cell1.innerHTML = new Date(data[i].date);
+            if (data[i].result < 5){
+              cell2.innerHTML = "Normal/Minimal Depression"
+            }
+            else if (data[i].result >= 5 && data[i].result <= 9){
+              cell2.innerHTML = "Mild Depression"
+            }
+            else if (data[i].result >= 10 && data[i].result <= 14){
+              cell2.innerHTML = "Moderate Depression"
+            }
+            else if (data[i].result >= 15 && data[i].result <= 19){
+              cell2.innerHTML = "Moderately Severe Depression"
+            }
+            else if (data[i].result >= 20){
+              cell2.innerHTML = "Severe Depression"
+            }
+          }
+        })
+        .catch(error => console.error(error));
+      
+      var record = "psychology_anxiety_questionnaire"
+      fetch(`/psychologyPatientRegistration?phoneNumber=${phoneNumber}&recordType=${record}`, {
+        method: 'POST',
+      })
+        .then(response => {
+          return response.json();
+
+        })
+        .then(data => {
+          const table2 = document.getElementById("anxietyResults");
+          data = data.success
+          //console.log(data)
+          for (let i = 0; i < data.length; i++) {
+
+            const row = table2.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+
+
+            cell1.innerHTML = new Date(data[i].date);
+            if (data[i].result > 18){
+              cell2.innerHTML = "The patient has symptoms highly consistent with ADHD. Further investigation is warrented."
+            }
+            else{
+              cell2.innerHTML = "The patient does not have symptoms consistent with ADHD. Further investigation is not required."
+            }
+          }
+        })
+        .catch(error => console.error(error));
+        
+    })
+    .catch(error => console.error(error));
+
+
+</script>
+
+</html>

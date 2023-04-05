@@ -308,8 +308,8 @@ app.get('/psychology', (req, res) => {
 app.get('/psychologyQuestionnaire', (req, res) => {
   res.render("pages/psychologyQuestionnaire");
 })
-app.get('/psychologyDiagnosisQuestionnaires', (req, res) => {
-  res.render("pages/psychologyDiagnosisQuestionnaires");
+app.get('/psychologyPhoneNumber', (req, res) => {
+  res.render("pages/psychologyPhoneNumber");
 })
 app.get('/psychologyDiagnosisQuestionnaires/patientID=:patientID&type=:type', (req, res) => {  
   const { patientID, type } = req.query; 
@@ -2162,10 +2162,10 @@ app.get('/get_psychologistsregistration', (req, res) => {
 /*end getting all of the doctors from the database*/
 
 // This is the MySQL health test search API
-app.post('/psychologyDiagnosis', async (req,res) => {
-  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
-  const recordType = req.body.recordType; // the record type, e.g. "ecg", this represents the table name in the database
-
+app.post('/psychologyPatientRegistration', async (req,res) => {
+  const phoneNumber = req.query.phoneNumber;
+  const recordType = req.query.recordType;
+  //console.log(recordType)
   // Check parameters
   if (!phoneNumber) {
     res.send({error:"Missing patient phone number."});
@@ -2198,12 +2198,12 @@ app.post('/psychologyDiagnosis', async (req,res) => {
         res.send({error:"Something wrong in MySQL."});
         return;
       }
-
       var temp = removeKey(result,"patient_id");
       res.send({success:temp});
     });
   });
 })
+
 
 //Psychologist Profile Information
 app.post('/psychologistRegistration', (req, res) => {
