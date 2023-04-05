@@ -33,6 +33,13 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.render("pages/index");
 })
+/* TaskName -Kidney Prediction
+ (Front-end - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
+ (Machine learning - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
+*/
+app.get('/kidney', (req, res) => {
+  res.redirect(' https://c0f3-72-136-34-2.ngrok.io/');
+})
 
 /* TaskName -Alzheimers Detecction
 
