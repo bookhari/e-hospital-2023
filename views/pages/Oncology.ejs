@@ -25,12 +25,10 @@
   </style>
     
   <script>
-
     // Run the code when the page finished loading
-    $(document).ready(function() {
-
-      let params = (new URL(document.location)).searchParams;
-      let phoneNumber = 6131230001;
+    //$(document).ready(function() {
+     function doSomething(){   
+      let phoneNumber = document.getElementById('phoneID').value;
       // Get the patient records
       $.ajax({
         url: "/healthTestRetrieveByPhoneNumber",
@@ -44,7 +42,11 @@
             if (data.error) {
                 alert(JSON.stringify(data.error));
             } else {
-                convert(data.success);
+                let x = convert(data.success);
+                createTableFromDict(x);
+                
+                storePrediction();
+                predict(x);
             }
         },
         error: function(xhr, textStatus, errorThrown) {
@@ -53,7 +55,8 @@
         }
         
       });
-    });
+    };
+    //});
 
     //Takes the information of the patient and stores it as a list
     function convert(data) {
@@ -65,7 +68,7 @@
             console.log(record);
             myList = Object.values(record);
             console.log(myList);
-            createTableFromDict(record);
+            //createTableFromDict(record);
             return(myList);
         }
 
@@ -199,7 +202,6 @@
     // Store the prediction result to the database
     function storePrediction() {
       // Set phone number and the current date
-      let phoneNumber = 6131230001;
       let today = new Date();
       const offset = today.getTimezoneOffset();
       today = new Date(today.getTime() - (offset*60*1000)).toISOString();
@@ -208,7 +210,7 @@
         url: "/updateDisease",
         type: 'POST',
         data: {
-          phoneNumber: phoneNumber,
+          phoneNumber: document.getElementById('phoneID').value,
           disease: "breast_cancer", 
           date: today,
           prediction: bc_diagnose(myList),
@@ -220,7 +222,6 @@
           // console.log(data);
           const prediction = bc_diagnose(myList);
           const recordDate = today;
-          console.log(prediction, recordDate);
           tableFill(prediction, recordDate);
           data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
         },
@@ -255,6 +256,11 @@
   <div> 
 
     <div class="outer">
+        <input type="text" id="phoneID" placeholder="Phone Number" style="border: 2px solid #ccc; border-radius: 4px;
+         color: black;
+        animation: fadeIn 1s ease-in; box-sizing: border-box; 
+        margin-top: 20px;
+        margin-left: 80.5px;">
       <div class="result-box" style = "padding: 30px 15px; width: 1000px; margin-left: 65.5px;">
         <label for="diagnose">Test Result:</label>
         <br> 
@@ -263,7 +269,7 @@
         color: black;
         animation: fadeIn 1s ease-in;box-sizing: border-box; 
         margin-top: 10px;" disabled="disabled">
-        <button onclick="predict(); storePrediction()">Predict</button>
+        <button onclick="doSomething()">Predict</button>
        </div>
             </form>
           </div>
