@@ -314,8 +314,14 @@ app.get('/psychologyDiagnosis', (req, res) => {
 app.get('/psychologyDepressionQuestionnaire', (req, res) => {
   res.render("pages/psychologyDepressionQuestionnaire");
 })
+app.get('/psychologyAnxietyQuestionnaire', (req, res) => {
+  res.render("pages/psychologyAnxietyQuestionnaire");
+})
 app.get('/psychologistRecommendation', (req, res) => {
   res.render("pages/psychologistRecommendation");
+})
+app.get('/psychologistRegistration', (req, res) => {
+  res.render("pages/psychologistRegistration");
 })
 /* Psychology - code ended for adding route to Psychology Page Alexis McCreath Frangakis, Parisa Nikbakht)
    Group 8, Course-BMG5111, Winter 2023 */
@@ -1175,7 +1181,12 @@ app.post('/get_doctorInfo', (req, res) => {
 
   conn.query(sql, [getDoctorsInfo], (error, result) => {
     if (error) throw error
-    res.render("pages/thankyou");
+    if (get_doctorInfo.Specialization == "Psychology"){
+      res.redirect("/psychologistRegistration?uuid="+uuid);
+    }
+    else{
+      res.render("pages/thankyou");
+    }
   })
   // sms();
 
@@ -2038,10 +2049,14 @@ app.post('/psychologyQuestionnaire', (req, res) => {
     sql = "INSERT INTO `psychology_patients`(`patient_id`,`phoneNumber`,`date`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`, `chosen_dr`) VALUES ?";
     var VALUES = [[patient_id, phoneNumber, date, getDetails.sex, getDetails.language,
      getDetails.treatment_setting, getDetails.age_group, getDetails.type_of_therapy, getDetails.psychological_treatment,
-     getDetails.time_frame, getDetails.frequency, getDetails.cost, getDetails.dr_name]]
+     getDetails.time_frame, getDetails.frequency, getDetails.cost, getDetails.dr_uuid]]
 
     conn.query(sql, [VALUES], (error, result) => {
       if (error) throw error
+      let params1 = encodeURIComponent(phoneNumber)
+      let params2 = encodeURIComponent(getDetails.type_of_therapy)
+      let params3 = encodeURIComponent(getDetails.dr_name)
+      res.redirect("/psychologistRecommendation?phoneNumber="+params1+"&type="+params2+"&doc="+params3)
     })
   })
 })
@@ -2077,13 +2092,14 @@ app.post('/psychologyDepressionQuestionnaire', (req, res) => {
 
     conn.query(sql, [VALUES], (error, result) => {
       if (error) throw error
+      res.redirect("/thankyou")
     })
   })
 })
 
 app.post('/psychologyAnxietyQuestionnaire', (req, res) => {
   const getDetails = req.body
-  //console.log(req.body)
+  console.log(req.body)
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
   //const date = req.body.date; // prediction date, e.g. "2023-03-01 09:00:00"
   const date = new Date();
@@ -2114,13 +2130,23 @@ app.post('/psychologyAnxietyQuestionnaire', (req, res) => {
 
     conn.query(sql, [VALUES], (error, result) => {
       if (error) throw error
+      res.redirect("/thankyou")
     })
   })
 })
 
 /*getting all of the doctors from the database*/
 app.get('/get_psychologistsinfo', (req, res) => {
-  sql = "SELECT dr_name, sex, language, treatment_type, age_group, type_of_therapy, psychological_treatment, time_frame, frequency, cost FROM psychology_dr";
+  sql = "SELECT uuid, sex, language, treatment_setting, age_group, type_of_therapy, psychological_treatment, time_frame, frequency, cost FROM psychology_dr";
+  conn.query(sql, (error, result) => {
+    if (error) throw error
+    res.json(result);
+  })
+})
+/*end getting all of the doctors from the database*/
+/*getting all of the doctors from the database*/
+app.get('/get_psychologistsregistration', (req, res) => {
+  sql = "SELECT Fname, Mname, Lname, Specialization, Location1, Location2, City, Province, Country, PostalCode, Availability, uuid FROM doctors_registration WHERE Specialization = 'Psychology'";
   conn.query(sql, (error, result) => {
     if (error) throw error
     res.json(result);
@@ -2170,6 +2196,41 @@ app.post('/psychologyDiagnosis', async (req,res) => {
       res.send({success:temp});
     });
   });
+})
+
+//Psychologist Profile Information
+app.post('/psychologistRegistration', (req, res) => {
+  const getDetails = req.body
+  //console.log(req.body)
+  const uuid = req.body.uuid; 
+  // Check patient identity
+  if (!uuid) {
+    res.send({error:"Doctor is not Registered"});
+    return;
+  }
+  sql = `SELECT id FROM doctors_registration WHERE uuid = "${uuid}"`;
+  // console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    if (result.length != 1) {
+      console.log(result.length)
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    const dr_id = result[0].id;
+    sql = "INSERT INTO `psychology_dr`(`dr_id`,`uuid`,`sex`,`language`, `treatment_setting`, `age_group`, `type_of_therapy`, `psychological_treatment`, `time_frame`, `frequency`, `cost`) VALUES ?";
+    var VALUES = [[dr_id, uuid, getDetails.sex, getDetails.language,
+     getDetails.treatment_setting, getDetails.age_group, getDetails.type_of_therapy, getDetails.psychological_treatment,
+     getDetails.time_frame, getDetails.frequency, getDetails.cost]]
+
+    conn.query(sql, [VALUES], (error, result) => {
+      if (error) throw error
+      res.redirect("/thankyou")
+    })
+  })
 })
 /* Psychology - code ended for logging info into database from psychology Questionnaire, also for finding the patient ID and showing results to the doctor. (Alexis McCreath Frangakis, Parisa Nikbakht)
    Group 8, Course-BMG5111, Winter 2023 */

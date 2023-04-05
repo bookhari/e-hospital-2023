@@ -8,7 +8,7 @@
   <meta charSet="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Register | E-Hospital</title>
+  <title>Psychologist Registration</title>
   <meta name="author" content="E-Hospital" />
 
   <meta property="og:url" content="register.html" />
@@ -76,38 +76,25 @@
     background: linear-gradient(-135deg, #000000, #747474);
   }
 </style>
-
 <body>
 <%- include('../partials/header') -%>
 
   <div class="container">
-    <div class="title">Patient - Psychologist Questionnaire </div>
-      <p id="log" style="
-      color:black; 
-      font-weight: bold;
-      font-size: larger;
-      text-align: left;">
-      <input type="text" id="result" readonly>
-      </p>
+    <div class="title">Psychologist Registration </div>
       <div class="content">
-        <form> 
+        <form>
           <div class="user-details">
-            <div class="input-box">
-              <span class="details">Doctor ID</span>
-              <input name="uuid" type="text" id="uuid" placeholder="Enter Your ID">
-            </div>
             <div class="input-box">
               <span class="details">What is your gender?</span>
               <select name="sex" id="sex">
                 <option value="" disabled selected>Select</option>
                 <option value=1>Male</option>
                 <option value=2>Female</option>
-                <option value=3>Non-binary</option>
-                <option value=4>Prefer not to say.</option>
+                <option value=3>Non Binary</option>
               </select>
             </div>
             <div class="input-box">                       
-              <span class="details">What language do you prefer to use during therapy sessions?</span>
+              <span class="details">What Language do you prefer to use during therapy sessions?</span>
               <select name="language" id="language">
                 <option value="" disabled selected>Select</option>
                 <option value=1>French</option>
@@ -130,25 +117,36 @@
                   <option value="" disabled selected>Select</option>
                   <option value=1>Children and Adolescents</option>
                   <option value=2>Adults</option>
-                  <option value=3>No Preference</option>
+                  <option value=3>Seniors</option>
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">What primary concerns do you specialize in?</span>
+                <span class="details">What primary concern do you specialize in?</span>
                 <select name="type_of_therapy" id="type_of_therapy">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Depression</option>
                   <option value=2>Anxiety</option>
-                  <option value=3>Relationship Issues</option>
+                  <option value=3>Adoption</option>
+                  <option value=4>Anger Management</option>
+                  <option value=5>Bullying</option>
+                  <option value=6>Emotion Regulation</option>
+                  <option value=7>Eating Disorders</option>
+                  <option value=8>Schizophrenia</option>
+                  <option value=9>ADHD Assessment</option>
+                  <option value=10>Addiction</option>
+                  <option value=11>Phobias</option>
+                  <option value=12>Retirement</option>
+                  <option value=13>Separation/Divorce</option>
                 </select>
             </div>
             <div class="input-box">
                 <span class="details">Do you specialize in a specific type of psychological treatment modality or therapy?</span>
                 <select name="psychological_treatment" id="psychological_treatment">
                   <option value="" disabled selected>Select</option>
-                  <option value=1>Psychodynamic therapy</option>
-                  <option value=2>Behavioral therapy</option>
-                  <option value=3>Cognitive therapy</option>
+                  <option value=1>Acceptance and Commitment Therapy</option>
+                  <option value=2>Hypnosis</option>
+                  <option value=3>Cognitive/Behavioural Therapy</option>
+                  <option value=4>Solution-Focused Therapy</option>
                 </select>
             </div>
             <div class="input-box">
@@ -180,11 +178,55 @@
             </div>
           </div>
           <div class="button">
-              <input type="submit" value="Submit" onclick="checkAnswer();">
+              <input id = "submit-button" type="submit" value="Submit">
           </div>
         </form>
       </div>
     </div>
   </div>  
+  <script>
+
+    function saveResults(event) {
+      event.preventDefault();
+
+      var q1SelectedOption = document.getElementById("sex").value;
+      var q2SelectedOption = document.getElementById("language").value;
+      var q3SelectedOption = document.getElementById("treatment_setting").value;
+      var q4SelectedOption = document.getElementById("age_group").value;
+      var q5SelectedOption = document.getElementById("type_of_therapy").value;
+      var q6SelectedOption = document.getElementById("psychological_treatment").value;
+      var q7SelectedOption = document.getElementById("time_frame").value;
+      var q8SelectedOption = document.getElementById("frequency").value;
+      var q9SelectedOption = document.getElementById("cost").value;
+      
+      let params = (new URL(document.location)).searchParams;
+      let uuid = params.get("uuid");
+
+      const body = {
+            uuid,
+            sex: q1SelectedOption,
+            language:q2SelectedOption, 
+            treatment_setting: q3SelectedOption, 
+            age_group: q4SelectedOption, 
+            type_of_therapy: q5SelectedOption, 
+            psychological_treatment: q6SelectedOption, 
+            time_frame: q7SelectedOption, 
+            frequency: q8SelectedOption, 
+            cost: q9SelectedOption,
+          }
+        //console.log(body)
+        fetch('/psychologistRegistration', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        .then(response => window.location.href = "/thankyou")
+  }
+  const submitButton = document.getElementById('submit-button');
+  console.log(submitButton)
+  submitButton.addEventListener('click', saveResults);
+</script>
 </body>
 </html>

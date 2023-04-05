@@ -249,12 +249,12 @@
             }
         }
         
-        var chosen_dr = data[lastDoctorIndex].dr_name;
+        var chosen_dr = data[lastDoctorIndex].uuid;
 
         console.log(chosen_dr);
 
         const body = {
-            dr_name: chosen_dr,
+            dr_uuid: chosen_dr,
             sex: q1SelectedOption,
             language:q2SelectedOption, 
             treatment_setting: q3SelectedOption, 
@@ -269,7 +269,7 @@
         let params1 = encodeURIComponent(phoneNumber)
         let params2 = encodeURIComponent(q5SelectedOption)
         let params3 = encodeURIComponent(chosen_dr)
-        console.log(body)
+        console.log(params2)
         fetch('/psychologyQuestionnaire', {
             method: 'POST',
             headers: {

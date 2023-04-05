@@ -136,7 +136,6 @@
                         <option value=3>Nearly every day</option>
                       </select>
                   </div>
-
                   <div class="input-box">
                       <span class="details">Feeling bad about yourself - or that you are a failure or have let yourself or your family down</span>
                       <select name="q6" id="q6">
@@ -199,35 +198,40 @@
 <script>
   let params = (new URL(document.location)).searchParams;
   let phoneNumber = params.get("phoneNumber");
+  //console.log(phoneNumber)
 
-  function sumAnswers() {
-    var q1SelectedOption = document.querySelector('input[name="q1"]:checked');
-    var q2SelectedOption = document.querySelector('input[name="q2"]:checked');
-    var q3SelectedOption = document.querySelector('input[name="q3"]:checked');
-    var q4SelectedOption = document.querySelector('input[name="q4"]:checked');
-    var q5SelectedOption = document.querySelector('input[name="q5"]:checked');
-    var q6SelectedOption = document.querySelector('input[name="q6"]:checked');
-    var q7SelectedOption = document.querySelector('input[name="q7"]:checked');
-    var q8SelectedOption = document.querySelector('input[name="q8"]:checked');
-    var q9SelectedOption = document.querySelector('input[name="q9"]:checked');
-    var q10SelectedOption = document.querySelector('input[name="q10"]:checked');
+  function sumAnswers(event) {
+    event.preventDefault();
+    //console.log(document.querySelector('input[name="q1"]:checked'))
+    var q1SelectedOption = document.getElementById("q1").value;
+    var q2SelectedOption = document.getElementById("q2").value;
+    var q3SelectedOption = document.getElementById("q3").value;
+    var q4SelectedOption = document.getElementById("q4").value;
+    var q5SelectedOption = document.getElementById("q5").value;
+    var q6SelectedOption = document.getElementById("q6").value;
+    var q7SelectedOption = document.getElementById("q7").value;
+    var q8SelectedOption = document.getElementById("q8").value;
+    var q9SelectedOption = document.getElementById("q9").value;
+    var q10SelectedOption = document.getElementById("q10").value;
 
-    var sumTotal = Number(q1SelectedOption.value) + Number(q2SelectedOption.value) + Number(q3SelectedOption.value) + Number(q4SelectedOption.value) + Number(q5SelectedOption.value) + Number(q6SelectedOption.value) + Number(q7SelectedOption.value) + Number(q8SelectedOption.value) + Number(q9SelectedOption.value);
-    
+    var sumTotal = Number(q1SelectedOption) + Number(q2SelectedOption) + Number(q3SelectedOption) + Number(q4SelectedOption) + Number(q5SelectedOption) + Number(q6SelectedOption) + Number(q7SelectedOption) + Number(q8SelectedOption) + Number(q9SelectedOption)+Number(q10SelectedOption);
+    //console.log(sumTotal)
+
     const body = {
-            results: sumTotal,
-            q1SelectedOption,
-            q2SelectedOption,
-            q3SelectedOption,
-            q4SelectedOption,
-            q5SelectedOption,
-            q6SelectedOption,
-            q8SelectedOption,
-            q9SelectedOption,
-            q10SelectedOption,
+            result: sumTotal,
+            q1: q1SelectedOption,
+            q2: q2SelectedOption,
+            q3: q3SelectedOption,
+            q4: q4SelectedOption,
+            q5: q5SelectedOption,
+            q6: q6SelectedOption,
+            q7: q7SelectedOption,
+            q8: q8SelectedOption,
+            q9: q9SelectedOption,
+            q10: q10SelectedOption,
             phoneNumber
-        }
-        console.log(body)
+          }
+        //console.log(body)
         fetch('/psychologyDepressionQuestionnaire', {
             method: 'POST',
             headers: {
@@ -238,8 +242,8 @@
         .then(response => window.location.href = "/thankyou")
   }
   const submitButton = document.getElementById('submit-button');
+  //console.log(submitButton)
   submitButton.addEventListener('click', sumAnswers);
-  
 </script>
 </body>
 </html>

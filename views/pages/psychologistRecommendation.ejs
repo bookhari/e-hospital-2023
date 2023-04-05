@@ -137,7 +137,7 @@ let type = params.get("type");
 let chosen_dr = params.get("doc")
 
     //   fetch( 'http://localhost:5000/get_diabetologyList')
-       fetch( '/get_psychologistsinfo')
+       fetch( '/get_psychologistsregistration')
 
         .then((response) => response.json())
         .then((data) => 
@@ -145,34 +145,27 @@ let chosen_dr = params.get("doc")
 
         );
       
-     function addCard(name, specialization, location, availability, lang){
+     function addCard(name, specialization, location, availability){
           var anchor = document.getElementsByName("cardRow")[0];
-          var div = '<div class="coll"><div class="card"><img src="/images/DocProfile.png"><div class="card-body"><h5 class="doctor-name"><a href="#">' + name + '</a></h5><p class="Availability-text">' + specialization + ' <span class="Availability"> Availability: ' + availability + '</span></p><p class="card-text">'+ location + '</p><p class="card-text">'+ lang + '</p></div></div></div>';
+          var div = '<div class="coll"><div class="card"><img src="/images/DocProfile.png"><div class="card-body"><h5 class="doctor-name"><a href="#">' + name + '</a></h5><p class="Availability-text">' + specialization + ' <span class="Availability"> Availability: ' + availability + '</span></p><p class="card-text">'+ location + '</p></div></div></div>';
           anchor.insertAdjacentHTML("beforeend", div);
       };
       
       function populate(res){
       for (var i = 0; i < res.length; i ++){
-        if (res[i].dr_name == chosen_dr){
+        if (res[i].uuid == chosen_dr){
             var ava = res[i].Availability; 
-            var name = res[i].dr_name;
-            var loc = res[i].Location1 + " " + res[i].Location2 + "\n" + res[i].City + " " + res[i].Province + " " + res[i].Country + "\n" + res[i].PostalCode;
+            var name = "Dr. " + res[i].Fname + " " + res[i].Mname + " " + res[i].Lname;
+            var loc = res[i].Location2 + "\n" + res[i].City + " " + res[i].Province + " " + res[i].Country + "\n" + res[i].PostalCode;
             var spe = res[i].Specialization;
-            var lang = res[i].language
-            if (lang == 1){
-                lang = "English"
-            }
-            else if (lang == 2){
-                lang = "French"
-            }
-            addCard(name, spe, loc, ava, lang);
+            addCard(name, spe, loc, ava);
 
             const myButton = document.getElementById("myButton");
-
-            if (type = 1) {
+            console.log(type)
+            if (type == 1) {
                 myButton.setAttribute("href", "/psychologyDepressionQuestionnaire?phoneNumber="+phoneNumber);
             }
-            else if (type = 2) {
+            else if (type == 2) {
                 myButton.setAttribute("href", "/psychologyAnxietyQuestionnaire?phoneNumber="+phoneNumber);
             }
         }
