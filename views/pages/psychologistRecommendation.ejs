@@ -23,7 +23,7 @@
      />
 
 
-    <title>E-Hospital | Diabetology</title>
+    <title>E-Hospital | Psychology</title>
 
     <style>
       *{
@@ -114,7 +114,7 @@
         <!--<div class="banner__image"></div>-->
 
         <div class="banner__text container--pall">
-          <h0 style="margin-bottom: 1rem;">Find a Diabetology Specialist</h0>
+          <h0 style="margin-bottom: 1rem;">Your Recommended Psychologist:</h0>
         </div>
         
       </div>
@@ -130,9 +130,14 @@
       <script>
       
 var res = {};
+///psychologistRecommendation?phoneNumber=6131230002&type=1&doc=Olivia
+let params = (new URL(document.location)).searchParams;
+let phoneNumber = params.get("phoneNumber");
+let type = params.get("type");
+let chosen_dr = params.get("doc")
 
     //   fetch( 'http://localhost:5000/get_diabetologyList')
-       fetch( '/get_diabetologyList')
+       fetch( '/get_psychologistsregistration')
 
         .then((response) => response.json())
         .then((data) => 
@@ -148,34 +153,42 @@ var res = {};
       
       function populate(res){
       for (var i = 0; i < res.length; i ++){
-          var ava = res[i].Availability; 
-          var name = res[i].Fname + " " + res[i].Mname + " " + res[i].Lname;
-          var loc = res[i].Location1 + " " + res[i].Location2 + "\n" + res[i].City + " " + res[i].Province + " " + res[i].Country + "\n" + res[i].PostalCode;
-          var spe = res[i].Specialization;
-      
-          addCard(name, spe, loc, ava);
+        if (res[i].uuid == chosen_dr){
+            var ava = res[i].Availability; 
+            var name = "Dr. " + res[i].Fname + " " + res[i].Mname + " " + res[i].Lname;
+            var loc = res[i].Location2 + "\n" + res[i].City + " " + res[i].Province + " " + res[i].Country + "\n" + res[i].PostalCode;
+            var spe = res[i].Specialization;
+            addCard(name, spe, loc, ava);
+
+            const myButton = document.getElementById("myButton");
+            console.log(type)
+            if (type == 1) {
+                myButton.setAttribute("href", "/psychologyDepressionQuestionnaire?phoneNumber="+phoneNumber);
+            }
+            else if (type == 2) {
+                myButton.setAttribute("href", "/psychologyAnxietyQuestionnaire?phoneNumber="+phoneNumber);
+            }
+        }
+
       }
     }
-      </script>
+    </script>
+    <section class="appt" style="margin-top: 2rem; margin-bottom: 3rem;"> 
+        <div class="container flex-jc-c">
+            <a id="myButton" href= "/thankyou" class="button appt">Fill in additional questionnaire</a>
+        </div>
+        </div>
+    </section>
 
     <section class="appt" style="margin-top: 2rem; margin-bottom: 3rem;"> 
       <div class="container flex-jc-c">
           <a href="/contact-us" class="button appt">Request An Appointment</a>
         </div>
       </div>
-      
-
     </section>
-
-
-
 
     <footer>
         <%- include('../partials/footer-new') -%>
     </footer>
-
-
 </body>
-
-
 </html>

@@ -8,7 +8,7 @@
   <meta charSet="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Register | E-Hospital</title>
+  <title>Psychologist Registration</title>
   <meta name="author" content="E-Hospital" />
 
   <meta property="og:url" content="register.html" />
@@ -76,30 +76,25 @@
     background: linear-gradient(-135deg, #000000, #747474);
   }
 </style>
-
 <body>
 <%- include('../partials/header') -%>
 
   <div class="container">
-    <div class="title">Patient - Psychologist Questionnaire </div>
+    <div class="title">Psychologist Registration </div>
       <div class="content">
         <form>
           <div class="user-details">
             <div class="input-box">
-              <span class="details">Mobile Number</span>
-              <input name="phoneNumber" type="text" id="phoneNumber" placeholder="Enter Your Mobile Number">
-            </div>
-            <div class="input-box">
-              <span class="details">What is your preferred gender of the psychologist?</span>
+              <span class="details">What is your gender?</span>
               <select name="sex" id="sex">
                 <option value="" disabled selected>Select</option>
                 <option value=1>Male</option>
                 <option value=2>Female</option>
-                <option value=3>No Preference</option>
+                <option value=3>Non Binary</option>
               </select>
             </div>
             <div class="input-box">                       
-              <span class="details">What is your preferred language for therapy sessions?</span>
+              <span class="details">What Language do you prefer to use during therapy sessions?</span>
               <select name="language" id="language">
                 <option value="" disabled selected>Select</option>
                 <option value=1>French</option>
@@ -108,7 +103,7 @@
               </select>
             </div>
             <div class="input-box">
-                <span class="details">What type of treatment setting do you prefer?</span>
+                <span class="details">What type of treatment setting do you offer?</span>
                 <select name="treatment_setting" id="treatment_setting">
                   <option value="" disabled selected>Select</option>
                   <option value=1>In-person therapy</option>
@@ -117,7 +112,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">Are you looking for a therapist who focuses on a specific age group?</span>
+                <span class="details">Do you focus on a specific age group?</span>
                 <select name="age_group" id="age_group">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Children and Adolescents</option>
@@ -126,7 +121,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">What is your primary concern that you want to address with a pscyhologist?</span>
+                <span class="details">What primary concern do you specialize in?</span>
                 <select name="type_of_therapy" id="type_of_therapy">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Depression</option>
@@ -145,7 +140,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">Do you have a preference for a specific type of psychological treatment modality or therapy approach?</span>
+                <span class="details">Do you specialize in a specific type of psychological treatment modality or therapy?</span>
                 <select name="psychological_treatment" id="psychological_treatment">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Acceptance and Commitment Therapy</option>
@@ -155,7 +150,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">What is your preferred time frame for therapy sessions?</span>
+                <span class="details">What is your available time frame for therapy sessions?</span>
                 <select name="time_frame" id="time_frame">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Morning</option>
@@ -164,7 +159,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">How frequently would you like to attend therapy sessions?</span>
+                <span class="details">How frequently do you offer therapy sessions?</span>
                 <select name="frequency" id="frequency">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Weekly</option>
@@ -173,7 +168,7 @@
                 </select>
             </div>
             <div class="input-box">
-                <span class="details">What is your budget for therapy sessions?</span>
+                <span class="details">How much do you charge per session?</span>
                 <select name="cost" id="cost">
                   <option value="" disabled selected>Select</option>
                   <option value=1>Less than $100 per session</option>
@@ -189,13 +184,9 @@
       </div>
     </div>
   </div>  
-
   <script>
 
-    var answers = ['','','','','','','','',''];
-    //const date = new Date( Date.now() );
-
-    function checkAnswer(event) {
+    function saveResults(event) {
       event.preventDefault();
 
       var q1SelectedOption = document.getElementById("sex").value;
@@ -207,54 +198,12 @@
       var q7SelectedOption = document.getElementById("time_frame").value;
       var q8SelectedOption = document.getElementById("frequency").value;
       var q9SelectedOption = document.getElementById("cost").value;
+      
+      let params = (new URL(document.location)).searchParams;
+      let uuid = params.get("uuid");
 
-      const phoneNumber = document.getElementById("phoneNumber").value;
-
-      answers[1] = q1SelectedOption;
-      answers[2] = q2SelectedOption;
-      answers[3] = q3SelectedOption;
-      answers[4] = q4SelectedOption;
-      answers[5] = q5SelectedOption;
-      answers[6] = q6SelectedOption;
-      answers[7] = q7SelectedOption;
-      answers[8] = q8SelectedOption;
-      answers[9] = q9SelectedOption;
-
-    // Define the Information of Dr.s database
-    fetch('/get_psychologistsinfo')
-    .then((response) => response.json())
-    .then((data) =>{   
-        let lastMaxMatchedAttributes = 0;
-        let lastDoctorIndex = 0;
-        for (var i = 0; i < data.length; i++) {
-            // sum all the elements that match here
-
-            let matchedAttributes = 0;
-
-            matchedAttributes += data[i].sex == q1SelectedOption ? 1 : 0;
-            matchedAttributes += data[i].language == q2SelectedOption ? 1 : 0;
-            matchedAttributes += data[i].treatment_setting == q3SelectedOption ? 1 : 0;
-            matchedAttributes += data[i].age_group == q4SelectedOption ? 1 : 0;
-            matchedAttributes += data[i].type_of_therapy == q5SelectedOption ? 1 : 0;
-            matchedAttributes += data[i].psychological_treatment == q6SelectedOption ? 1 : 0;
-            matchedAttributes += data[i].time_frame == q7SelectedOption ? 1 : 0;
-            matchedAttributes += data[i].frequency == q8SelectedOption ? 1 : 0;
-            matchedAttributes += data[i].cost == q9SelectedOption ? 1 : 0;
-            
-            // after all the sums
-
-            if (matchedAttributes > lastMaxMatchedAttributes) {
-                lastDoctorIndex = i;
-                lastMaxMatchedAttributes = matchedAttributes
-            }
-        }
-        
-        var chosen_dr = data[lastDoctorIndex].uuid;
-
-        console.log(chosen_dr);
-
-        const body = {
-            dr_uuid: chosen_dr,
+      const body = {
+            uuid,
             sex: q1SelectedOption,
             language:q2SelectedOption, 
             treatment_setting: q3SelectedOption, 
@@ -264,27 +213,20 @@
             time_frame: q7SelectedOption, 
             frequency: q8SelectedOption, 
             cost: q9SelectedOption,
-            phoneNumber
-        }
-        let params1 = encodeURIComponent(phoneNumber)
-        let params2 = encodeURIComponent(q5SelectedOption)
-        let params3 = encodeURIComponent(chosen_dr)
-        console.log(params2)
-        fetch('/psychologyQuestionnaire', {
+          }
+        //console.log(body)
+        fetch('/psychologistRegistration', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
         })
-        .then(response => window.location.href = "/psychologistRecommendation?phoneNumber="+params1+"&type="+params2+"&doc="+params3)
-
-    });
-    }
-    const submitButton = document.getElementById('submit-button');
-    submitButton.addEventListener('click', checkAnswer);
-    
-
-  </script>
+        .then(response => window.location.href = "/thankyou")
+  }
+  const submitButton = document.getElementById('submit-button');
+  console.log(submitButton)
+  submitButton.addEventListener('click', saveResults);
+</script>
 </body>
 </html>
