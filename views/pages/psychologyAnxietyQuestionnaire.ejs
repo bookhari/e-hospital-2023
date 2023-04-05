@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>E-Hospital | Psychology</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css">
+
+</head>
+<style>
+  select {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  select:focus {
+    border-color: #9b59b6;
+  }
+
+  .spinner {
+    border: 5px solid #9b59b6;
+    border-top-color: #9b59b6;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .black-button {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .black-button input[type="submit"] {
+    background: linear-gradient(-135deg, #747474, rgb(0, 0, 0));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 400px;
+    width: 300px;
+
+  }
+
+  .black-button input[type="submit"]:hover {
+    background: linear-gradient(-135deg, #000000, #747474);
+  }
+</style>
+
+<body>
+<%- include('../partials/header') -%>
+
+
+    <div class="container">
+        <div class="title">ASRS-V1.1: Please answer the questions below, rating yourself on each of the criteria shown using the given options.
+            Answer the questions by considering how you have felt and conducted yourself over the past 6 months. </div>
+        <div class="content">
+            <form>
+                <div class="user-details">
+                  <div class="input-box">                       
+                    <span class="details">How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done? .</span>
+                    <select name="q1" id="q1">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">. How often do you have difficulty getting things in order when you have to do
+                        a task that requires organization?</span>
+                      <select name="q2" id="q2">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Never</option>
+                        <option value=1>Rarely</option>
+                        <option value=2>Sometimes</option>
+                        <option value=3>Often</option>
+                        <option value=4>Very Often</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">. How often do you have problems remembering appointments or obligations?</span>
+                      <select name="q3" id="q3">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Never</option>
+                        <option value=1>Rarely</option>
+                        <option value=2>Sometimes</option>
+                        <option value=3>Often</option>
+                        <option value=4>Very Often</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">When you have a task that requires a lot of thought, how often do you avoid
+                        or delay getting started?</span>
+                      <select name="q4" id="q4">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Never</option>
+                        <option value=1>Rarely</option>
+                        <option value=2>Sometimes</option>
+                        <option value=3>Often</option>
+                        <option value=4>Very Often</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">How often do you fidget or squirm with your hands or feet when you have
+                        to sit down for a long time?</span>
+                      <select name="q5" id="q5">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Never</option>
+                        <option value=1>Rarely</option>
+                        <option value=2>Sometimes</option>
+                        <option value=3>Often</option>
+                        <option value=4>Very Often</option>
+                      </select>
+                  </div>
+
+                  <div class="input-box">
+                      <span class="details">How often do you feel overly active and compelled to do things, like you
+                        were driven by a motor?</span>
+                      <select name="q6" id="q6">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Never</option>
+                        <option value=1>Rarely</option>
+                        <option value=2>Sometimes</option>
+                        <option value=3>Often</option>
+                        <option value=4>Very Often</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">How often do you make careless mistakes when you have to work on a boring or
+                        difficult project?</span>
+                      <select name="q7" id="q7">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Never</option>
+                        <option value=1>Rarely</option>
+                        <option value=2>Sometimes</option>
+                        <option value=3>Often</option>
+                        <option value=4>Very Often</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                      <span class="details">. How often do you have difficulty keeping your attention when you are doing boring
+                        or repetitive work?</span>
+                      <select name="q8" id="q8">
+                        <option value="" disabled selected>Select</option>
+                        <option value=0>Never</option>
+                        <option value=1>Rarely</option>
+                        <option value=2>Sometimes</option>
+                        <option value=3>Often</option>
+                        <option value=4>Very Often</option>
+                      </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">How often do you have difficulty concentrating on what people say to you,
+                        even when they are speaking to you directly?</span>
+                    <select name="q9" id="q9">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">How often do you misplace or have difficulty finding things at home or at work?</span>
+                    <select name="q10" id="q10">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">How often are you distracted by activity or noise around you?</span>
+                    <select name="q11" id="q11">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">. How often do you leave your seat in meetings or other situations in which
+                        you are expected to remain seated?</span>
+                    <select name="q12" id="q12">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">How often do you feel restless or fidgety?</span>
+                    <select name="q13" id="q13">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">How often do you have difficulty unwinding and relaxing when you have time
+                        to yourself?</span>
+                    <select name="q14" id="q14">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">How often do you find yourself talking too much when you are in social situations?</span>
+                    <select name="q15" id="q15">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">When you're in a conversation, how often do you find yourself finishing
+                        the sentences of the people you are talking to, before they can finish
+                        them themselves?</span>
+                    <select name="q16" id="q16">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">How often do you have difficulty waiting your turn in situations when
+                        turn taking is required?</span>
+                    <select name="q17" id="q17">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <span class="details">How often do you interrupt others when they are busy?</span>
+                    <select name="q18" id="q18">
+                      <option value="" disabled selected>Select</option>
+                      <option value=0>Never</option>
+                      <option value=1>Rarely</option>
+                      <option value=2>Sometimes</option>
+                      <option value=3>Often</option>
+                      <option value=4>Very Often</option>
+                    </select>
+                  </div>
+              </div>
+              <div class="button">
+                <input id = "submit-button" type="submit" value="Submit">
+              </div>
+          </form>
+      </div>
+  </div>
+
+
+<script>
+  let params = (new URL(document.location)).searchParams;
+  let phoneNumber = params.get("phoneNumber");
+
+  function sumAnswers(event) {
+    event.preventDefault();
+    
+    var q1SelectedOption = document.getElementById("q1").value;
+    var q2SelectedOption = document.getElementById("q2").value;
+    var q3SelectedOption = document.getElementById("q3").value;
+    var q4SelectedOption = document.getElementById("q4").value;
+    var q5SelectedOption = document.getElementById("q5").value;
+    var q6SelectedOption = document.getElementById("q6").value;
+    var q7SelectedOption = document.getElementById("q7").value;
+    var q8SelectedOption = document.getElementById("q8").value;
+    var q9SelectedOption = document.getElementById("q9").value;
+    var q10SelectedOption = document.getElementById("q10").value;
+    var q11SelectedOption = document.getElementById("q11").value;
+    var q12SelectedOption = document.getElementById("q12").value;
+    var q13SelectedOption = document.getElementById("q13").value;
+    var q14SelectedOption = document.getElementById("q14").value;
+    var q15SelectedOption = document.getElementById("q15").value;
+    var q16SelectedOption = document.getElementById("q16").value;
+    var q17SelectedOption = document.getElementById("q17").value;
+    var q18SelectedOption = document.getElementById("q18").value;
+  
+    var sumTotal = Number(q1SelectedOption) + Number(q2SelectedOption) + Number(q3SelectedOption) + Number(q4SelectedOption) + Number(q5SelectedOption) + Number(q6SelectedOption) + Number(q7SelectedOption) + Number(q8SelectedOption) + Number(q9SelectedOption)+Number(q10SelectedOption) + Number(q11SelectedOption) + Number(q12SelectedOption) + Number(q13SelectedOption) + Number(q14SelectedOption) + Number(q15SelectedOption) + Number(q16SelectedOption) + Number(q17SelectedOption) + Number(q18SelectedOption);
+
+    const body = {
+            result: sumTotal,
+            q1: q1SelectedOption,
+            q2: q2SelectedOption,
+            q3: q3SelectedOption,
+            q4: q4SelectedOption,
+            q5: q5SelectedOption,
+            q6: q6SelectedOption,
+            q7: q7SelectedOption,
+            q8: q8SelectedOption,
+            q9: q9SelectedOption,
+            q10: q10SelectedOption,
+            q11: q11SelectedOption,
+            q12: q12SelectedOption,
+            q13: q13SelectedOption,
+            q14: q14SelectedOption,
+            q15: q15SelectedOption,
+            q16: q16SelectedOption,
+            q17: q17SelectedOption,
+            q18: q18SelectedOption,
+            phoneNumber
+        }
+        //console.log(body)
+        fetch('/psychologyAnxietyQuestionnaire', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        .then(response => window.location.href = "/thankyou")
+  }
+  const submitButton = document.getElementById('submit-button');
+  submitButton.addEventListener('click', sumAnswers);
+  
+</script>
+</body>
+</html>
