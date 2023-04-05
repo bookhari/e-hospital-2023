@@ -1,4 +1,4 @@
-/* TaskName, code started for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
+<!-- /* TaskName, code started for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */ -->
 <!DOCTYPE html>
 <html>
   
@@ -18,43 +18,159 @@
   <meta property="og:locale" content="en_CA" />
   <link href="css/login.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+  <style>
+    table, th, td {
+      border:1px solid black;
+    }
+  </style>
     
   <script>
+    var recordList = [];
+
+    // Run the code when the page finished loading
     $(document).ready(function() {
-  $('#patientForm').submit(function(event) {
-    event.preventDefault(); // Prevent default form submission
-    // Get form data
-    var formData = new FormData(this);
-    // Send AJAX request
-    $.ajax({
-      url: "/recordUpdate",
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(data) {
-        // Handle successful response from server
-        //alert(data.message);
-        console.log(data);
-        if (data.error) {
-          console.log(data.error);
-          alert(JSON.stringify(data.error));
-        } else {
+      // retrived phone number form url
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+  // was "phoneNumber"
+      // Get the patient records
+      $.ajax({
+        url: "/imageRetrieveByPhoneNumber",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber, 
+          recordType: "CT-Scan_Abdomen" // the table name that stores the record
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    });
+    
+   // Display the patient records to the front end that allows doctor selected specific record for diagnose
+   function display(data) {
+      recordList = data;
+      if (recordList.length <= 0) {
+        alert("This patient has no record, please do the X-Ray for the lung.");
+        return;
+      }
+      console.log(recordList);
+      let list = document.getElementById("recordList");
+      // Display each record
+      for (let i = 0; i < recordList.length; ++i) {
+        let tr = document.createElement("tr");
+        let image = document.createElement("td");
+        //let img = document.createElement("img");
+      // Extract the image data from the buffer
+        const imageData = recordList[i].file.buffer;
+
+        // Create a data URL from the image data
+        const dataURL = `data:image/jpeg;base64,${imageData}`;
+
+        // Create an img element and set its src attribute to the data URL
+        const img = document.createElement('img');
+        img.src = dataURL;
+        img.width = 150;
+        img.height = 150;
+        //image.innerHTML = "Will be replace by imagee";
+        image.appendChild(img)
+        let recordDate = document.createElement("td");
+        recordDate.innerHTML = recordList[i].RecordDate;
+        let action = document.createElement("td");
+        let button = document.createElement("input");
+        button.type = "button";
+        button.value = "Diagnose";
+        button.index = i;
+        button.setAttribute("onclick", "predict(this.index)")
+        action.appendChild(button);
+        
+        tr.appendChild(image);
+        tr.appendChild(recordDate);
+        tr.appendChild(action);
+        list.appendChild(tr);
+      }
+    }
+
+    // Send the image to the ML api for the prediction
+    async function predict(index) {
+      console.log(recordList[index]);
+
+      // Prepare submit data
+      const form = new FormData();
+      const base64Response = await fetch(`data:image/jpeg;base64,${recordList[index].file.buffer}`);
+      const blob = await base64Response.blob();
+      form.append('image', blob, recordList[index].file.originalname);
+
+      // Send to the ML API
+      $.ajax({
+        url: "/connectionTesting",
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        data: form,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function(data) {
+          // console.log(data);
+          // data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
+          data.error ? alert(JSON.stringify(data.error)) : null;
+          storePrediction(data, recordList[index]._id);
           console.log(`Succesful response ${JSON.stringify(data)}`);
           console.log(`Message is: ${JSON.stringify(data)}`);
           var st1=JSON.stringify(data);
-          str= st1.replace(/[\[\]""]+/g,'');          
-          console.log(str);        
-          $("#testResult").val(str);
+          str= st1.replace(/[\[\]""]+/g,''); 
+          str2 = str.replace(/[{}()]/g, '').replace(/[\[\]""]+/g,'');
+          console.log(str2);         
+          console.log(str2);        
+          $("#diagnose").val(str2);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
         }
-      },
-      error: function(xhr, textStatus, errorThrown) {
-        // Handle error response from server
-        alert(textStatus + ': ' + errorThrown);
-      }
-    });
-  });
-});
+      });
+    }
+
+    // Store the prediction result to the database
+    function storePrediction(result, id) {
+      console.log(result);
+      
+      // Retrieved phone number and the current date
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      let today = new Date();
+      const offset = today.getTimezoneOffset();
+      today = new Date(today.getTime() - (offset*60*1000)).toISOString();
+
+      // Store to the database
+      $.ajax({
+        url: "/updateDisease",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber,
+          disease: "kidney_stone", // the table name that stores the prediction result
+          date: today,
+          prediction: result.prediction,
+          accuracy: result.accuracy, // can be null if not provided
+          recordType: "CT-Scan_Abdomen", // can be null if no record is used for the ML prediction
+          recordId: id // can be null if no record is used for the ML prediction
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    }
   </script>
   
   <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
@@ -63,82 +179,43 @@
 </head>
 <body>
 
-  <div class="container">
- 
-	<form id="patientForm" method="post" action="/recordUpdate" enctype="multipart/form-data"> 
-    
-    <!-- <label for="common-diseases-diagnostics">Comman Disease Diagnostic Form:</label><br><br>
-    <input type="common-diseases-diagnostics" value="Comman Disease Diagnostic Form"><br><br> -->
-    <div class="header">
-      <!-- <img src="https://softwaremeets.com/wp-content/uploads/cf7_software_uploads/1608721076-eHospital-Logo.png" alt="Logo">  onsubmit="return false" -->
-      <h1>Kidney</h1>
-      <h2>Diagnostic Form</h2>
-    </div>
-
-    <div class="header2">
-      <h3>Patient's Information</h3>
-     
-    </div>
-
-		<label for="firstName">First Name:</label>
-		<input type="text" id="firstName" name="firstName" required><br><br>
-
-		<label for="lastName">Last Name:</label>
-		<input type="text" id="lastName" name="lastName" required><br><br>
-
-		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" required><br><br>
-
-		<label for="diseaseType">Disease Type:</label>
-		<select id="diseaseType" name="diseaseType" required>
-			<option value="">-- Select Disease Type --</option>
-			<option value="kidney-stones">Kidney Stones</option>
-			<option value="TBD">TBD</option>
-		</select><br><br>
-
-		<label for="testType">Test Type:</label>
-		<select id="testType" name="testType" required>
-			<option value="">-- Select Test Type --</option>
-			<option value="X-ray">X-ray</option>
-			<option value="MRI">MRI</option>
-			<option value="CT-scan">CT-scan</option>
-		</select><br><br>
-
-		<label for="date">Date:</label>
-		<input type="date" id="date" name="date" required><br><br>
-
-		<label for="image">Upload Image:</label>
-		<input type="file" id="image" name="image" required><br><br>
-    <label for="testResult">Test Result:</label>
-		<input type="text" id="testResult" name="testResult"  disabled="disabled" required><br><br>
-    
-    <!-- <div class="output"> -->
-    <!-- output result goes here -->
-    <!-- </div> -->
-    <input type="submit" value="Submit">
-  </form>
+  <div class="header">
+   
+    <h1>kidney Stones Diagnostics</h1>
+   
   </div>
-  
-<!-- <script type="text/javascript">
-  var frm = $('#patientForm');
-  frm.submit(function (e) {
-      e.preventDefault();
-      $.ajax({
-          type: frm.attr('method'),
-          url: frm.attr('action'),
-          data: frm.serialize(),
-          success: function (data) {
-              console.log('Submission was successful.');
-              console.log(data);
-          },
-          error: function (data) {
-              console.log('An error occurred.');
-              console.log(data);
-          },
-      });
-  });
-</script> -->
+
+  <div class="header2">
+    <h3>Patient's Information</h3>
+   
+  </div>
+  <div class="container" style="padding-top: 40px;">
+    <table id="recordList" style="width:100%">
+      <tr>
+        <th>Record</th>
+        <th>Record Date</th>
+        <th>Action</th>
+      </tr>
+
+    </table>
+  </div>
   <div> 
+  
+    <div class="outer">
+      <!-- <button class="submitBtn" onclick="submit()">Show the result</button> -->
+      <div class="result-box">
+        <label for="diagnose">Test Result:</label>
+        <br> 
+        <input type="text" id="diagnose" name="diagnose" placeholder="Result is here" \
+        style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 100%; font-size: 15px; font-weight: 500;
+        color: #ae2727;
+        animation: fadeIn 1s ease-in;box-sizing: border-box; 
+         margin-top: 10px;" disabled="disabled" required>
+       </div>
+            </form>
+          </div>
+      </div>
+
     <footer>
   <%- include('../partials/footer-new') -%>
   
@@ -148,4 +225,5 @@
 
 </body>
 </html>
-/* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 */
+
+<!-- /* TaskName code Ended for adding route to pagename (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Med 2023 */ -->

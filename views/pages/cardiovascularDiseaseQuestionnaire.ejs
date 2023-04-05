@@ -1,191 +1,430 @@
-
 <!DOCTYPE html>
-<html lang="en">     
-  <header>
-    <%- include('../partials/header'); %>
-  </header>   
+<html lang="en">
+
+<head>
+  <title>Patient Information Form</title>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/login.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <style>
+    /* Colors */
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #e74c3c;
+      --text-color: #333;
+      --background-color: #f2f2f2;
+    }
+
+    /* Layout */
+    /* body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      font-family: sans-serif;
+    } */
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .container:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      background-image: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+      opacity: 0.7;
+      border-radius: 10px;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .container:hover:before {
+      opacity: 0.9;
+    }
+
+    .title {
+      font-size: 36px;
+      font-weight: bold;
+      color: black;
+      text-align: center;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+
+    }
+
+    th {
+      background-color: var(--primary-color);
+      color: #fff;
+
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #e6e6e6;
+    }
+            
+    /* input[type="text"] {
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } */
+    .form-group {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .form-group label {
+    flex-basis: 200px;
+    margin-right: 20px;
+  }
+
+  .form-group input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .submit-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .submit-button:hover {
+    background-color: #3e8e41;
+  }
+  </style>
+</head>
+<header>
+  <%- include('../partials/header'); %>
+</header>
 
 <body>
   <div id="container">
-    <h4 id='header_font'>Cardiovascular Disease test questions </h4>
-    <div id="q_items">
-      <form class="contact-form" role="form">
-        <div id="inp_items">
-            <label for="Ages">Ages (Please input your ages in days):</label><br>
-            <input type="number" id="Ages" name="Ages"><br>
-            <label for="Height">Height (Please input your height in cm):</label><br>
-            <input type="number" id="Height" name="Height"><br>
-            <label for="Weight">Weight (Please input your weight in kg):</label><br>
-            <input type="number" id="Weight" name="Weight"><br>
-            <!--上面为输入值--> 
-            <!-- it is input style -->
+
+    <div class="container">
+      <div class="title">Cardiovascular Questioner </div>
+      <div class="content">
+        <form id="form">
+          <div class="spinner" style="display: none;"></div>
+        </form>
+        <br /><br />
+
+        <table id="myTable">
+          <caption>Patient Record</caption>
+          <thead>
+            <tr>
+              <th>Age</th>
+              <th>BloodGroup</th>
+              <th>Gender</th>
+              <th>Height</th>
+              <th>weight</th>
+            </tr>
+          </thead>
+          <tbody id="cardioDATA">
+          </tbody>
+        </table>
+        <!-- <form id="myForm">
+          <label for="input1">Systolic Blood Pressure :</label>
+          <input type="text" id="input1" name="input1"><br>
+
+          <label for="input2">Diastolic Blood Pressure :</label>
+          <input type="text" id="input2" name="input2"><br>
+
+          <label for="input3"> Active:</label>
+          <input type="text" id="input3" name="input3"><br>
+
+          <label for="input4">Alchiolic :</label>
+          <input type="text" id="input4" name="input4"><br>
+
+          <label for="input5"> cholesterol :</label>
+          <input type="text" id="input5" name="input5"><br>
+
+          <label for="input6"> Glucose</label>
+          <input type="text" id="input6" name="input6"><br>
+
+          <label for="input6"> Smoke </label>
+          <input type="text" id="input7" name="input7"><br>
+
+          <input type="submit" value="Submit">
+        </form> -->
+        <form id="myForm">
           <div class="form-group">
-              <label for="exampleFormControlSelect1">Please tell us your Gender: </label>
-              <select class="form-control" id="gender" name="gender">
-                <option value="1">Female</option>
-                <option value="2">Male</option>
-              </select>
+            <label for="input1">Systolic Blood Pressure:</label>
+            <input type="text" id="input1" name="input1" pattern="[0-9]*" inputmode="numeric">
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Please select whether you drink alcohol or not:  </label>
-            <select class="form-control" id="alcohol" name="alcohol">
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
-          </div>        
         
-        </div>
           <div class="form-group">
-            <label for="exampleFormControlSelect1">Please select whether you smoke or not: </label>
-            <select class="form-control" id="smoke" name="smoke">
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
+            <label for="input2">Diastolic Blood Pressure:</label>
+            <input type="text" id="input2" name="input2" pattern="[0-9]*" inputmode="numeric">
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Please select whether you active or not: </label>
-            <select class="form-control" id="active" name="active">
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
+        
+          <!-- <div class="form-group">
+            <label for="input3">Active:</label>
+            <input type="text" id="input3" name="input3" pattern="[0-9]*" inputmode="numeric">
           </div>
+        
           <div class="form-group">
-              <label for="exampleFormControlSelect1">Please select your most recent glucose status:</label>
-              <select class="form-control" id="gluc" name="gluc">
-                <option value="1">normal</option>
-                <option value="2">above normal</option>
-                <option value="3">well above normal</option>
-              </select>
-          </div> 
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Please select your most recent Cholesterol status:</label>
-            <select class="form-control" id="Cholesterol" name="cholesterol">
-              <option value="1">normal</option>
-              <option value="2">above normal</option>
-              <option value="3">well above normal</option>
-            </select>
+            <label for="input4">Alcoholic:</label>
+            <input type="text" id="input4" name="input4" pattern="[0-9]*" inputmode="numeric">
           </div>
+        
+          <div class="form-group">
+            <label for="input5">Cholesterol:</label>
+            <input type="text" id="input5" name="input5" pattern="[0-9]*" inputmode="numeric">
+          </div>
+        
+          <div class="form-group">
+            <label for="input6">Glucose:</label>
+            <input type="text" id="input6" name="input6" pattern="[0-9]*" inputmode="numeric">
+          </div>
+        
+          <div class="form-group">
+            <label for="input7">Smoke:</label>
+            <input type="text" id="input7" name="input7" pattern="[0-9]*" inputmode="numeric">
+          </div> -->
+        
+          <!-- <input type="submit" value="Submit"> -->
+          <button type="submit" class="submit-button">Submit</button>
 
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Systolic blood pressure</label>
-            <select class="form-control" id="Systolic blood pressure" name="systolicBloodPressure">
-              <option>90</option>
-              <option>95</option>
-              <option>100</option>
-              <option>105</option>
-              <option>110</option>
-              <option>115</option>
-              <option>120</option>
-              <option>125</option>
-              <option>130</option>
-              <option>135</option>
-              <option>140</option>
-              <option>145</option>
-              <option>150</option>
-              <option>155</option>
-              <option>160</option>
-              <option>165</option>
-              <option>170</option>
-            </select>
-          </div> 
+        </form>
 
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Diastolic blood pressure</label>
-            <select class="form-control" id="Diastolic blood pressure" name="diastolicBloodPressure">
-              <option>50</option>
-              <option>60</option>
-              <option>70</option>
-              <option>80</option>
-              <option>90</option>
-              <option>100</option>
-              <option>110</option>
-              <option>120</option>
-              <option>130</option>
-              <option>140</option>
-              <option>150</option>
-              <option>160</option>
-            </select>
-          </div> 
-          <div id="btn_ft">
-            <button type="submit" id="btn_l" class="btn btn-primary">submit</button>
-            <!-- <button type="submit" id="btn_r" class="btn btn-primary">refresh</button> -->
-          </div>
-        </div>
-      </form>
+        
+        <br />
+        <p>
+          <span style="color: black; font-weight: bold; font-size: larger; text-align: left;">Result :</span>
+        <p id="log" style="
+        color:tomato; 
+        font-weight: bold;
+        font-size: medium;
+        text-align: left;">
+          Result
+        </p>
+      </div>
     </div>
-  </div>  
-  <footer>
-    <%- include('../partials/footer-new'); %>
-  </footer>
+  </div>
+
 </body>
 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-<!-- <script src="/jquery-3.1.1.min.js" type="application/json"></script> -->
-<!-- <script src="/axios.min.js" type="application/json"></script> -->
 <script>
-  /**
- * Retrieves input data from a form and returns it as a JSON object.
- * @param  {HTMLFormControlsCollection} elements  the form elements
- * @return {Object}                               form data as an object literal
- */
-var data_medical;
-const formToJSON = (elements) =>
-  [].reduce.call(
-    elements,
-    (data, element) => {
-      data[element.name] = element.value;
-      return data;
-    },
-    {}
-  );
+  let records = [];
+  document.getElementById("log").innerHTML = ``;
 
-const handleFormSubmit = (event) => {
-  // Stop the form from submitting since we’re handling that with AJAX.
-  event.preventDefault();
-
-  // Call our function to get the form data.
-  data_medical = formToJSON(form.elements);
-  //console.log(data);
-  jump(data_medical);
-};
-
-
-const form = document.getElementsByClassName('contact-form')[0];
-form.addEventListener('submit', handleFormSubmit);
-
-/*将表单数据格式转换*/
-
-function jump(data_medical){
-    /*var search_keyword=document.getElementById("btn_l").value;*/
-    axios.post('https://internal-medicine-api-deploy.herokuapp.com/data_generate', {
-      // 给后端传数据 search是button接收的字符 你根据数据格式调整一些再
-      // 也可以增加字段 key-value这种 testtxt就是我加的
-        age:data_medical.Ages, height: data_medical.Height, weight: data_medical.Weight, active: data_medical.active,alco:data_medical.alcohol,
-        cholesterol:data_medical.cholesterol,ap_lo:data_medical.diastolicBloodPressure, gender: data_medical.gender, 
-        gluc: data_medical.gluc, smoke: data_medical.smoke,ap_hi:data_medical.systolicBloodPressure
-
-        /*search: search_keyword*/
-    })
-    .then(function (response) {
-      
-        var predata = response.data.resultdata;
-        if (predata) {
-          alert('success');
-          // Need change the front end local url to cloud when deploy
-          var url = new URL("http://www.e-hospital.ca/cardiovascularDiseaseQuestionresult");
-          url.searchParams.append('result', predata);
-          window.location.replace(url);
-        }
-        
-        
-       
-    })
-    .catch(function (error) {
-        alert("Error!");
+  $(document).ready(function () {
+    // retrived phone number form url
+    let params = (new URL(document.location)).searchParams;
+    let phoneNumber = params.get("phoneNumber");
+    // was "phoneNumber"
+    // Get the patient records
+    $.ajax({
+      url: "/get_patientBasicHealthInfo",
+      type: 'POST',
+      data: {
+        phoneNumber: phoneNumber,
+      },
+      success: function (data) {
+        records = data;
+        data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+      },
+      error: function (xhr, textStatus, errorThrown) {
+        // Handle error response from server
+        alert(textStatus + ': ' + errorThrown);
+      }
     });
-}
-</script>  
+  });
+
+
+  // Display the patient records to the front end that allows doctor selected specific record for diagnose
+  function display(data) {
+    recordList = data;
+    if (recordList.length <= 0) {
+      alert("This patient has no record");
+      return;
+    }
+    console.log(recordList);
+    const table = document.getElementById("cardioDATA");
+
+    for (let i = 0; i < recordList.length; i++) {
+      const row = table.insertRow();
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      const cell3 = row.insertCell(2);
+      const cell4 = row.insertCell(3);
+      const cell5 = row.insertCell(4);
+
+      cell1.innerHTML = JSON.stringify(recordList[i].Age);
+      cell2.innerHTML = JSON.stringify(recordList[i].BloodGroup);
+      cell3.innerHTML = JSON.stringify(recordList[i].Gender);
+      cell4.innerHTML = JSON.stringify(recordList[i].height);
+      cell5.innerHTML = JSON.stringify(recordList[i].weight);
+
+    }
+  }
+
+  const form = document.getElementById('myForm');
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault(); // prevent the form from submitting normally
+
+    const input1Value = document.getElementById('input1').value;
+    const input2Value = document.getElementById('input2').value;
+    // const input3Value = document.getElementById('input3').value;
+    // const input4Value = document.getElementById('input4').value;
+    // const input5Value = document.getElementById('input5').value;
+    // const input6Value = document.getElementById('input6').value;
+    // const input7Value = document.getElementById('input7').value;
+
+
+    const requestBody = {
+      age: records.success[0].Age,
+      height: records.success[0].height,
+      weight: records.success[0].weight,
+      // active: input3Value,
+      // alco: input4Value,
+      // cholesterol: input5Value,
+      active: "1",
+      alco: "1",
+      cholesterol: "60",
+      ap_lo: input2Value,
+      gender: records.success[0].Gender === "Female" ? "1" : "0",
+      // gluc: input6Value,
+      // smoke: input7Value,
+      gluc: "100",
+      smoke: "1",
+      ap_hi: input1Value,
+    };
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    //Test data
+    // var raw = JSON.stringify({
+    //   "age": "50",
+    //   "height": "168",
+    //   "weight": "80",
+    //   "active": "3",
+    //   "alco": "4",
+    //   "cholesterol": "5",
+    //   "ap_lo": "2",
+    //   "gender": "1",
+    //   "gluc": "5",
+    //   "smoke": "7",
+    //   "ap_hi": "1"
+    // });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      // body: raw,
+      body: JSON.stringify(requestBody),
+      redirect: 'follow'
+    };
+    // document.getElementById("log").innerHTML = JSON.stringify(requestBody);;
+
+
+    fetch("https://internal-medicine-api-deploy.herokuapp.com/data_generate", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        // console.log(result)
+        let ouput = JSON.parse(result);
+        alert(ouput.status)
+        if (ouput?.resultdata === "1") {
+          document.getElementById("log").innerHTML = "Our test result is that you have the possibility of cardiovascular disease, it is recommended that you go to the hospital for further examination.";
+        } else if (ouput?.resultdata === "0") {
+          document.getElementById("log").innerHTML = "The result of our test is that you may not suffer from cardiovascular disease. If you have other symptoms, it is recommended that you go to the hospital for further examination.";
+        }
+        storePrediction(ouput);
+
+      })
+      .catch(error => {
+        console.log('error', error)
+        alert("error")
+        document.getElementById("log").innerHTML = JSON.stringify(error);
+      });
+
+  });
+      // Store the prediction result to the database
+      function storePrediction(result) {
+      console.log(result);
+      
+      // Retrieved phone number and the current date
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      let today = new Date();
+      const offset = today.getTimezoneOffset();
+      today = new Date(today.getTime() - (offset*60*1000)).toISOString();
+      // Store to the database
+      $.ajax({
+        url: "/updateDisease",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber,
+          disease: "cardiovascular", // the table name that stores the prediction result
+          date: today,
+          prediction: result.resultdata,
+          accuracy: result?.accuracy, // can be null if not provided
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    }
+
+    // Api request body:
+    // {"age":"-1","height":"-1","weight":"-1","active":"1","alco":"1","cholesterol":"1","ap_lo":"50","gender":"1","gluc":"1","smoke":"1","ap_hi":"90"}
+
+</script>
 
 </html>

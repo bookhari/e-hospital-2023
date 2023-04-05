@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Diagnose MS</title>
+        <style>
+            .c{
+                padding :300px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <%- include('../partials/header')-%>
+        </header>
+
+
+        <div class= 'c'>
+            <p><h1>Multiple Sclerosis</h1></p>
+            <br>
+            <br>
+            <p>Multiple sclerosis (MS) is a potentially disabling disease of the brain and spinal cord (central nervous system).</p>
+            
+            <br>
+            <p>In MS, the immune system attacks the protective sheath (myelin) that covers nerve fibers and causes communication problems between your brain and the rest of your body. Eventually, the disease can cause permanent damage or deterioration of the nerve fibers. </p>
+            
+            <br>
+            <p> Signs and symptoms of MS vary widely between patients and depend on the location and severity of nerve fiber damage in the central nevous system. Some people with severe MS may lose the ability to walk independently or ambulate at all. Other individuals may experience long periods of remission without any new symptoms depending on the type of MS they have.</p>
+            
+            <br>
+            <br>
+            <button onclick= redirect_url()>
+             <h1>Start Now </h1>  
+            </button> 
+            <script>
+                function redirect_url(){
+                    location.href= 'https://diagnosems.herokuapp.com/'
+                }
+            </script>
+        </div>
+    
+       <footer>
+        <%- include('../partials/footer-new')-%>
+       </footer> 
+    </body>
+
+</html>
