@@ -501,6 +501,12 @@ app.get('/specialty', (req, res) => {
     error: errorMessage
   });
 })
+app.get('/Oncology', (req, res) => {
+  errorMessage = '';
+  res.render("pages/Oncology", {
+    error: errorMessage
+  });
+});
 app.get('/patientLogin', (req, res) => {
   errorMessage = '';
   res.render("pages/patientLogin", {
