@@ -10,6 +10,11 @@
   <title>E-Hospital</title>
   <meta name="author" content="E-Hospital" />
   <link href="css/services.css" rel="stylesheet" type="text/css">
+  <script>
+    function redirectToKidney() {
+      window.location.href = 'https://mlmodel2.herokuapp.com/';
+    }
+    </script>
 
 </head>
 
@@ -55,15 +60,26 @@
       <p class="pservices">Add your description</p><br>
       <center><a class="button" href="/heartDiseasePrediction"
           style="color: rgb(255, 255, 255); text-decoration: none;">Heart Disease Prediction</a></center>
-    </div>
+      </div>
+
+      <!--Group 5 -Speciality Page: Respiratory Medicine-->
+      <div class="card1">
+        <img class="imgservices" src="/images/respiratory.jpeg" alt="" />
+        <h1 class="textheading">Group 5 Speciality Page</h1>
+        <p class="pservices">Respiratory Medicine</p><br>
+        <center><a class="button" href="/respiratoryMedicine"
+          style="color: rgb(255, 255, 255); text-decoration: none;">Respiratory Medicine Disease Prediction</a></center>
+      </div>
+      <!--Group 5 -Speciality Page: Urology-->
+    
     
 
       <div class="card1">
-        <img class="imgservices" src="http://media.npr.org/assets/news/2009/10/27/facebook1_sq-17f6f5e06d5742d8c53576f7c13d5cf7158202a9.jpg?s=16" alt="" />
-        <h1 class="textheading">Group 5</h1>
-        <p class="pservices">Kidney Diseasse Prediction</p><br>
-        <center><a class="button" href="/kidney"
-          style="color: rgb(255, 255, 255); text-decoration: none;">Kidney Diseasse Prediction</a></center>
+        <img class="imgservices" src="/images/urology.jpeg" alt="" />
+        <h1 class="textheading">Group 5 Speciality Page</h1>
+        <p class="pservices">Urology</p><br>
+        <center><a class="button"  onclick="redirectToKidney()"
+          style="color: rgb(255, 255, 255); text-decoration: none;">Chronic Kidney Disease Prediction</a></center>
       </div>
 
 
