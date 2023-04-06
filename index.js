@@ -118,6 +118,35 @@ app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
 
+
+app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
+
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    const MongoResult = await imageRetrieveByPatientId(patient_id, recordType);
+    res.send(MongoResult);
+  });
+})
+
 app.get('/arrhythmia', (req, res) => {
   res.render("pages/ecg-ml");
 })
@@ -1532,7 +1561,33 @@ auth:{
   });
 
 
+app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    const MongoResult = await imageRetrieveByPatientId(patient_id, recordType);
+    res.send(MongoResult);
+  });
+})
 
 // Lab Registration
 /* Lab Registration webpage with email Notification and connection with db, (Sayyed Hossein Sadat Hosseini, Mohammad Rezaei, AliReza SabzehParvar) GroupNumber, Meidcal Innovation and Design, Winter-2023 */

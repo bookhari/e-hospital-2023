@@ -85,6 +85,7 @@
         let button = document.createElement("input");
         button.type = "button";
         button.value = "Diagnose";
+       // button.location = "https://pneumonia-ml-e90u-main-fzuesh63iq-wm.a.run.app/"
         button.index = i;
         button.setAttribute("onclick", "predict(this.index)")
         action.appendChild(button);
@@ -98,7 +99,9 @@
 
     // Send the image to the ML api for the prediction
     async function predict(index) {
+
       console.log(recordList[index]);
+      
 
       // Prepare submit data
       const form = new FormData();
@@ -171,6 +174,7 @@
       });
     }
   </script>
+
   
   <!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
   <%- include('../partials/header') -%>
@@ -198,7 +202,23 @@
     </table>
   </div>
   <div> 
-
+    <div>
+      <br>
+      <br>
+    <style>
+      div{
+        text-align: center;
+      }
+    </style>
+    <button style = "background-color: dodgerblue; color: aliceblue;" onclick= redirect_url()>
+      Click here for prediction  
+     </button> 
+     <script>
+         function redirect_url(){
+             location.href= 'https://pneumonia-ml-e90u-main-fzuesh63iq-wm.a.run.app'
+         }
+     </script>
+      </div>
     <div class="outer">
       <!-- <button class="submitBtn" onclick="submit()">Show the result</button> -->
       <div class="result-box">
@@ -213,6 +233,13 @@
             </form>
           </div>
       </div>
+
+      <div>
+        
+
+         <div>
+          
+         </div>
     <footer>
   <%- include('../partials/footer-new') -%>
   
