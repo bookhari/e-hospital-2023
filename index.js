@@ -114,6 +114,12 @@ app.get('/pneumoniahome', (req, res) => {
 app.get('/heartdiseasefrontend', (req, res) => {
   res.render("pages/heartdiseasefrontend");
 })
+app.get('/CoronaryArteryDisease', (req, res) => {
+  res.render("pages/CoronaryArteryDisease");
+})
+app.get('/heartDisease_prediction', (req, res) => {
+  res.render("pages/heartDisease_prediction");
+})
 app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
