@@ -1,4 +1,4 @@
-<!--Group 2 breast cancer tumor classification; Jesse and Charlie BMG5111-->
+<!--Group 2 juvenile myopia prediction; Jesse and Charlie BMG5111-->
 <!DOCTYPE html>
 <html>
   
@@ -26,9 +26,7 @@
   </style>
     
   <script>
-    // Run the code when the page finished loading
-    //$(document).ready(function() {
-     function doSomething(){   
+     function generate(){   
       let phoneNumber = document.getElementById('phoneID').value;
       // Get the patient records
       $.ajax({
@@ -55,7 +53,6 @@
         
       });
     };
-    //});
 
     //Takes the information of the patient and stores it as a list
     function convert(data) {
@@ -64,9 +61,9 @@
             alert("No data received");
             return;
         } else {
-            console.log(record);
+            //console.log(record);
             myList = Object.values(record);
-            console.log(myList);
+            //console.log(myList);
             createTableFromDict(record);
             return(myList);
         }
@@ -77,7 +74,7 @@
     function predict(data) {
         let announce;
         const finalInput = document.getElementById("diagnose");
-        if (bc_diagnose(myList) === 1) {
+        if (jm_risk(myList) === 1) {
             announce = "Patient is at risk of developing myopia";
         } else {
             announce = "Patient is not at risk of developing myopia";
@@ -122,7 +119,7 @@
         //container.appendChild(table)
     }
     //decision tree prediciton model 0=benign, 1=malignant
-    function bc_diagnose(ins) {
+    function jm_risk(ins) {
         if (ins[6] <= 0.049) {
             if (ins[4] <= 694.6) {
                 if (ins[6] <= 0.045) {
@@ -212,14 +209,14 @@
           phoneNumber: document.getElementById('phoneID').value,
           disease: "juvenile_myopia", 
           date: today,
-          prediction: bc_diagnose(myList),
+          prediction: jm_risk(myList),
           accuracy: null,
           recordType: "eye_test", 
           recordId: 2,
         },
         success: function(data) {
           // console.log(data);
-          const prediction = bc_diagnose(myList);
+          const prediction = jm_risk(myList);
           const recordDate = today;
           tableFill(prediction, recordDate);
           data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
@@ -270,7 +267,7 @@
             <br> 
             <input type="text" id="phoneID" placeholder="Phone Number" style="border: 2px solid #ccc; border-radius: 4px;
             color: black; animation: fadeIn 1s ease-in; box-sizing: border-box;">
-            <button onclick="doSomething()">Predict</button>
+            <button onclick="generate()">Predict</button>
         </div>
     </div>
     </div>

@@ -26,9 +26,7 @@
   </style>
     
   <script>
-    // Run the code when the page finished loading
-    //$(document).ready(function() {
-     function doSomething(){   
+     function generate(){   
       let phoneNumber = document.getElementById('phoneID').value;
       // Get the patient records
       $.ajax({
@@ -56,7 +54,6 @@
         
       });
     };
-    //});
 
     //Takes the information of the patient and stores it as a list
     function convert(data) {
@@ -65,16 +62,14 @@
             alert("No data received");
             return;
         } else {
-            console.log(record);
             myList = Object.values(record);
-            console.log(myList);
             createTableFromDict(record);
             return(myList);
         }
 
     }
 
-//runs the model with the selected patient's information
+    //runs the model with the selected patient's information
     function predict(data) {
         let announce;
         const finalInput = document.getElementById("diagnose");
@@ -270,7 +265,7 @@
             <br> 
             <input type="text" id="phoneID" placeholder="Phone Number" style="border: 2px solid #ccc; border-radius: 4px;
             color: black; animation: fadeIn 1s ease-in; box-sizing: border-box;">
-            <button onclick="doSomething()">Predict</button>
+            <button onclick="generate()">Predict</button>
         </div>
     </div>
     </div>
