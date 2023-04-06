@@ -74,6 +74,7 @@
     function predict(data) {
         let announce;
         const finalInput = document.getElementById("diagnose");
+        console.log(jm_risk(myList));
         if (jm_risk(myList) === 1) {
             announce = "Patient is at risk of developing myopia";
         } else {
@@ -120,80 +121,58 @@
     }
     //decision tree prediciton model 0=benign, 1=malignant
     function jm_risk(ins) {
-        if (ins[6] <= 0.049) {
-            if (ins[4] <= 694.6) {
-                if (ins[6] <= 0.045) {
-                    if (ins[2] <= 22.455) {
+        if (ins[1] <= 0.667) {
+            if (ins[1] <= 0.285) {
+                if (ins[2] <= 23.59) {
                     return 1;
-                } else {
-                    if (ins[2] <= 22.575) {
-                    return 0;
-                } else {
-                     return 1;
+                }
+                else {
+                    if (ins[3] <= 3.69) {
+                        return 0;
+                    }
+                    return 1;
                 }
             }
-        } else {
-            if (ins[2] <= 24.71) {
-                return 1;
-            } else {
+            else{
+                if (ins[6] <= 19.773){
+                    if (ins[7] <= 0.072){
+                        return 0;
+                    }
+                    return 1;
+                }         
+                else {
+                    if (ins[1] <= 0.294) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            }
+        }
+        else{
+            if (ins[10] <= 1.714){
+                if (ins[5] <= 14.724){
+                    return 1;
+                }
+                else {
+                    if (ins[9] <= 0.5) {
+                        return 0;
+                    }
+                    return 1;
+                }
+            }
+            else{
+                if (ins[1] <= 0.723){
+                    if (ins[3] <= 3.616){
+                        return 0;
+                    }
+                    return 1;
+                }
                 return 0;
             }
         }
-            } else {
-                if (ins[1] <= 16.08) {
-                    return 0;
-                } else {
-                    if (ins[2] <= 19.83) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }
-            }
-            } else {
-                if (ins[2] <= 14.16) {
-                    if (ins[7] <= 0.174) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                } else {
-                    if (ins[3] <= 88.37) {
-                        if (ins[5] <= 0.108) {
-                            return 1;
-                        } else {
-                            if (ins[7] <= 0.107) {
-                                return 1;
-                            } else {
-                                return 0;
-                            }
-                        }
-                    } else {
-                        if (ins[2] <= 16.235) {
-                            if (ins[8] <= 0.075) {
-                                if (ins[1] <= 14.22) {
-                                    return 0;
-                                } else {
-                                    return 1;
-                                }
-                            } else {
-                                return 0;
-                            }
-                        } else {
-                            if (ins[5] < 0.088) {
-                                if (ins[7] <= 0.125) {
-                                    return 0;
-                                } else {
-                                    return 1;
-                                }
-                            } else {
-                                return 0;
-                            }
-                        }
-                    }
-                }           
-            }
     }
+
+
 
     // Store the prediction result to the database
     function storePrediction() {
