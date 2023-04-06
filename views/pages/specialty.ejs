@@ -1,49 +1,82 @@
 <!DOCTYPE html>
 <script>
-    window.onload=function(){
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    window.onload=function(){;
         //document.querySelector("#download").addEventListener('click', generateCSV);
         const forms = document.querySelector('form');
         let selected = [];
         forms.addEventListener('change', event => {
             valueGather();
-            // const checked = document.querySelectorAll('input[type="number"]');
-            // selected = Array.from(checked).map(x => x.value);
-            // console.log(selected);
         });
     }
-    // $(document).ready(function() {
-    //     $('#symptom-form').submit(function(event) {
-    //         event.preventDefault();
 
-    //         var dataForm = new FormData(this);
+    const express = require('express');
+    const bodyParser = require('body-parser');
+    const db = require('./db');
 
-    //         $.ajax({
-    //             url: "recordUpdate",
-    //             type: 'Post',
-    //             data: dataForm,
-    //             dataType: 'json',
-    //             processData: false,
-    //             contentType: false,
-    //             success: function(data) {
-    //                 console.log(data);
-    //                 if(data.error) {
-    //                     console.log(data.error);
-    //                     alert(JSON.stringify(data.error));
-    //                 } else {
-    //                     console.log("Successful response ${JSON.stringify(data)}");
-    //                     console.log('Message is: ${data.result}');
-    //                     $("#testResul").val(data.result);
-    //                 }
-    //             },
-    //             error: function(xhr, testStatus, errorThrown) {
-    //                 alert(testStatus + ': '+ errorThrown)
-    //             }
-    //         });
-    //     })
-    // });
+    const app = express();
+    const port = 3000;
 
-     function yell() {
+    app.use(bodyParser.urlencoded({ extended: false }));
+
+    app.post('/update_tumorRecord', (req, res) => {
+        const { email, firstName, lastName, radius, texture, perimeter, area, smoothness, compactness, concavity, concavePoints, symmetry, fractalDimension, date, prediction } = req.body;
+
+        db.query('INSERT INTO tumor_records (email, firstName, lastName, radius, texture, perimeter, area, smoothness, compactness, concavity, concavePoints, symmetry, fractalDimension, date, prediction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+            [email, firstName, lastName, radius, texture, perimeter, area, smoothness, compactness, concavity, concavePoints, symmetry, fractalDimension, date, prediction], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.render('error', { message: 'An error occurred while updating the tumor record.' });
+                } else {
+                    console.log(`New tumor record added with ID: ${result.insertId}`);
+                }
+            }
+        );
+    });
+
+    app.get('/tumorRecords', (req, res) => {
+        db.query('SELECT * FROM tumor_records', (err, results) => {
+            if (err) {
+                console.log(err);
+                res.render('error', { message: 'An error occurred while retrieving tumor records.' });
+            } else {
+                res.render('tumorRecords', { records: results });
+            }
+        });
+    });
+
+    app.listen(port, () => {
+        console.log(`App listening on port ${port}`);
+    });
+    
+    const form = document.getElementById('symptom-form');
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+    // Get the patient ID and password from the form
+        const id = document.getElementById('id').value;
+        const password = document.getElementById('password').value;
+
+    // Call the API to get the tumor record for the patient
+        const response = await fetch('/get_tumorRecord', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, password })
+        });
+
+    // Extract the tumor record from the API response
+        const data = await response.json();
+        const tumorRecord = data.result[0];
+
+    // Populate the input fields with the tumor record values
+        document.getElementById('radius').value = tumorRecord.radius;
+        document.getElementById('texture').value = tumorRecord.texture;
+    });
+
+
+    function yell() {
         valueGather();
         alert(bc_diagnose(selected));
      }  
@@ -58,6 +91,7 @@
         console.log(selected);
     }
 
+    //Decision tree for malignant vs. benign decision.
     function bc_diagnose(ins) {
         if (ins[10] <= 0.049) {
             if (ins[6] <= 694.6) {
@@ -201,7 +235,7 @@
         border: solid black;
         }
 
-        #symptom{
+        .symptom{
             width: 90px;
             background-color:rgb(235, 231, 231);
             border: solid 2px black;
@@ -247,68 +281,48 @@
         justify-content: center;
         align-items: center;
         padding: 10px;">
-            <form method="" action=""  id="symptom-form">
-                <label for="symptom1">Email</label>
-                <input type="text" name='email' id="symptom"><br>
-                <label for="symptom1">First Name</label>
-                <input type="text" name='fName' id="symptom"><br>
-                <label for="symptom1">Last Name</label>
-                <input type="text" name='lName' id="symptom"><br>
+            <form method="POST" action="/update_tumorRecord" id="symptom-form">
+                <label for="phone">Phone #</label>
+                <input type="text" name='phone' id="phone" class="symptom"><br>
+    
+                <label for="email">Email</label>
+                <input type="text" name='email' id="email" class="symptom"><br>
+                <label for="firstName">First Name</label>
+                <input type="text" name='firstName' id="firstName" class="symptom"><br>
+                <label for="lastName">Last Name</label>
+                <input type="text" name='lastName' id="lastName" class="symptom"><br>
 
-                <label for="symptom1">Radius</label>
-                <input type="number" name="symptom1" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="radius">Radius</label>
+                <input type="number" name="radius" step= "0.000001" min="0" id="radius" class="symptom" value="0"><br>
 
-                <label for="symptom1">Texture</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
-                <label for="symptom1">Perimeter</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
-                <label for="symptom1">Area</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
-                <label for="symptom1">Smoothness</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
-                <label for="symptom1">Compactness</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
-                <label for="symptom1">Concavity</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
-                <label for="symptom1">Concave Points</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
-                <label for="symptom1">Symmetry</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
-                <label for="symptom1">Fractal Dimension</label>
-                <input type="number" name="symptom" step= "0.000001" min="0" id="symptom" value="0"><br>
+                <label for="texture">Texture</label>
+                <input type="number" name="texture" step= "0.000001" min="0" id="texture" class="symptom" value="0"><br>
+                <label for="perimeter">Perimeter</label>
+                <input type="number" name="perimeter" step= "0.000001" min="0" id="perimeter" class="symptom" value="0"><br>
+                <label for="area">Area</label>
+                <input type="number" name="area" step= "0.000001" min="0" id="area" class="symptom" value="0"><br>
+                <label for="smoothness">Smoothness</label>
+                <input type="number" name="smoothness" step= "0.000001" min="0" id="smoothness" class="symptom" value="0"><br>
+                <label for="compactness">Compactness</label>
+                <input type="number" name="compactness" step= "0.000001" min="0" id="compactness" class="symptom" value="0"><br>
+                <label for="concavity">Concavity</label>
+                <input type="number" name="concavity" step= "0.000001" min="0" id="concavity" class="symptom" value="0"><br>
+                <label for="concave_points">Concave Points</label>
+                <input type="number" name="concave_points" step= "0.000001" min="0" id="concave_points" class="symptom" value="0"><br>
+                <label for="symmetry">Symmetry</label>
+                <input type="number" name="symmetry" step= "0.000001" min="0" id="symmetry" class="symptom" value="0"><br>
+                <label for="fractal_dimension">Fractal Dimension</label>
+                <input type="number" name="fractal_dimension" step= "0.000001" min="0" id="fractal_dimension" class="symptom" value="0"><br>
                 <label for="record">Date</label>
-                <input type="date" name="recDate" id="symptom">
+                <input type="date" name="record" id="record" class="symptom">
                 
                 
-                
-                <!-- <input type="checkbox" name="symptom2" id="symptom2" value="Sneeze">
-                <label for="symptom2">Sneeze</label><br>
-                <input type="checkbox" name="symptom3" id="symptom3" value="Dry Eyes">
-                <label for="symptom3">Dry Eyes</label><br>
-                <input type="checkbox" name="symptom4" id="symptom4" value="Sweating">
-                <label for="symptom4">Sweating</label><br>
-                <input type="checkbox" name="symptom5" id="symptom5" value="Vomitting">
-                <label for="symptom5">Vomitting</label><br>
-                <input type="checkbox" name="symptom6" id="symptom6" value="Muscle Pain">
-                <label for="symptom6">Muscle Pain</label><br>
-                <input type="checkbox" name="other" id="other" value="Other">
-                <label for="other">Other</label>
-                <input type="text" id="otherValue" name="other" style="border: 3px solid red"/><br> -->
                 <div id="download">
                     <input type="submit" id="download-btn" onclick="valueGather()">
                     <input type="button" id="download-btn" value="Reset" onclick="valueClear()">
                 </div>
             </form>
-            <button onclick="yell()">Calculate</button>
-        </div>
-        <div class="row"  style="margin: auto;
-        float: right;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 20%;
-        border: 3px solid red;
-        padding: 100px;">
+            <button onclick="yell()">Predict</button>
         </div>
       </div>
 
