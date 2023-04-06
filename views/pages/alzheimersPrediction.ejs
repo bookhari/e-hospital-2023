@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-CA">
-<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<html lang="en">
 
 <head>
+  <title>Patient Information Form</title>
   <meta charSet="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Services | Alzheimers Prediction</title>
+  <title>Register | E-Hospital</title>
   <meta name="author" content="E-Hospital" />
 
   <meta property="og:url" content="register.html" />
@@ -17,288 +15,291 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
   <meta property="og:locale" content="en_CA" />
-  <link rel="stylesheet" href="/css/style-starter.css">
-  <link rel="stylesheet" href="/css/patients.css">
   <link href="css/login.css" rel="stylesheet" type="text/css">
-
-
-</head>
-<style>
-  select {
-    height: 45px;
-    width: 100%;
-    outline: none;
-    font-size: 16px;
-    border-radius: 5px;
-    padding-left: 15px;
-    border: 1px solid #ccc;
-    border-bottom-width: 2px;
-    transition: all 0.3s ease;
-  }
-
-  select:focus {
-    border-color: #9b59b6;
-  }
-
-  .spinner {
-    border: 5px solid #9b59b6;
-    border-top-color: #9b59b6;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <style>
+    /* Colors */
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #e74c3c;
+      --text-color: #333;
+      --background-color: #f2f2f2;
     }
-  }
 
-  .black-button {
+    /* Layout */
+    /* body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      font-family: sans-serif;
+    } */
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .container:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      background-image: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+      opacity: 0.7;
+      border-radius: 10px;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .container:hover:before {
+      opacity: 0.9;
+    }
+
+    .title {
+      font-size: 36px;
+      font-weight: bold;
+      color: black;
+      text-align: center;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+
+    }
+
+    th {
+      background-color: var(--primary-color);
+      color: #fff;
+
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #e6e6e6;
+    }
+            
+    /* input[type="text"] {
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } */
+    .form-group {
+    margin-bottom: 10px;
     display: flex;
-    justify-content: center;
-
+    flex-direction: row;
+    align-items: center;
   }
 
-  .black-button input[type="submit"] {
-    background: linear-gradient(-135deg, #747474, rgb(0, 0, 0));
-    color: white;
-    border: none;
+  .form-group label {
+    flex-basis: 200px;
+    margin-right: 20px;
+  }
+
+  .form-group input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .submit-button {
     padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 16px;
-    max-width: 400px;
-    width: 300px;
-
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
   }
 
-  .black-button input[type="submit"]:hover {
-    background: linear-gradient(-135deg, #000000, #747474);
+  .submit-button:hover {
+    background-color: #3e8e41;
   }
-</style>
+  </style>
+</head>
+<header>
+  <%- include('../partials/header'); %>
+</header>
 
+<body>
+  <div id="container">
 
+    <div class="container">
+      <div class="title">Alzheimer's Prediction </div>
+      <div class="content">
+        <form id="form">
+          <div class="spinner" style="display: none;"></div>
+        </form>
+        <br /><br />
 
-<%- include('../partials/header') -%>
+        <table id="myTable">
+          <caption>Patient Record</caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Visit</th>
+              <th>MR Delay</th>
+              <th>MF</th>
+              <th>Age</th>
+              <th>EDUC</th>
+              <th>SES</th>
+              <th>MMSE</th>
+              <th>CDR</th>
+              <th>eTIV</th>
+              <th>nWBV</th>
+              <th>ASF</th>
+              <th>RecordDate</th>
+            </tr>
+          </thead>
+          <tbody id="cardioDATA">
+          </tbody>
+        </table>
 
-  <div class="container">
-    <div class="title">Alzheimers Prediction</div>
-    <p id="log" style="
-    color:tomato; 
-    font-weight: bold;
-    font-size: larger;
-    text-align: left;">
-      Result
-    </p>
-    <div class="content">
-
-      <form id="form">
-        <div class="user-details">
-
-          <div class="input-box">
-            <span class="details">Age</span>
-            <input 
-              type="number" 
-              oninput="clearResult()"
-              id="age" 
-              name="age" 
-              placeholder="Enter your age" 
-              maxlength="3" 
-              min="0" max="120"
-              required
-              title="Please enter numbers only" 
-            >
-          </div>
-          <div class="input-box">
-            <span class="details">Gender</span>
-            <select name="gender" id="gender"  onchange="clearResult()" required>
-              <option value="" disabled selected>Select</option>
-              <option value=1>Male</option>
-              <option value=0>female</option>
-            </select>
-          </div>
-
-          <div class="input-box">
-            <span class="details">Visit</span>
-            <input 
-              type="number" 
-              step="any"
-              oninput="clearResult()"              
-              name="VST" 
-              id="VST" 
-              placeholder="Visit Order" 
-              maxlength="3"
-              title="Please enter numbers only" 
-              required
-            >
-          </div>
-          <div class="input-box">
-            <span class="details">MR Delay</span>
-            <input 
-            type="number" 
-            step="any"
-            oninput="clearResult()"               
-            name="MRD" 
-            id="MRD" 
-            placeholder="Enter MR Delay Time" 
-            maxlength="3"
-            title="Please enter numbers only" 
-            required
-          >
-          </div>
-          <div class="input-box">
-            <span class="details">Hand</span>
-            <input 
-              type="number" 
-              step="any"
-              oninput="clearResult()"                 
-              name="HND" 
-              id="HND" 
-              placeholder="Enter Hand value" 
-              maxlength="3"
-              title="Please enter numbers only"
-              required 
-            >
-          </div>
-          <div class="input-box">
-            <span class="details">EDUC</span>
-            <input 
-              type="number" 
-              step="any"
-              oninput="clearResult()"                 
-              name="EDUC" 
-              id="EDUC" 
-              placeholder="Enter Years of Education value" 
-              maxlength="3"
-              title="Please enter numbers only" 
-              required
-            >
-          </div>
-
-          <div class="input-box">
-            <span class="details">SES</span>
-            <input 
-              type="number" 
-              step="any"
-              oninput="clearResult()"                
-              name="SES" 
-              id="SES" 
-              placeholder="Enter Socioeconomic Status value" 
-              maxlength="3"
-              title="Please enter numbers only" 
-              required
-            >
-          </div>
-          <div class="input-box">
-            <span class="details">MMSE</span>
-            <input 
-            type="number" 
-            step="any"
-            oninput="clearResult()"               
-            name="MMSE" 
-            id="MMSE" 
-            placeholder="Enter Mini-Mental State Examination" 
-            maxlength="3" 
-            required
-            title="Please enter numbers only" >
-          </div>
-          <div class="input-box">
-            <span class="details">CDR</span>
-            <input 
-            type="number" 
-            step="any"
-            oninput="clearResult()"       
-            name="CDR" id="CDR" placeholder="Enter Clinical Dementia Rating" maxlength="3"required
-            title="Please enter numbers only" >
-          </div>
-          <div class="input-box">
-            <span class="details">eTIV</span>
-            <input 
-            type="number" 
-            step="any"
-            oninput="clearResult()"                   name="eTIV" id="eTIV" placeholder="Estimated total intracranial volume"maxlength="3" required
-            title="Please enter numbers only" >
-          </div>
-
-          <div class="input-box">
-            <span class="details">nWBV</span>
-            <input 
-            type="number" 
-            step="any"
-            oninput="clearResult()"       
-            name="nWBV" 
-            id="nWBV" placeholder="Enter Normalize Whole Brain Volume" 
-            maxlength="3" required
-            title="Please enter numbers only" >
-          </div>
-          <div class="input-box">
-            <span class="details">ASF</span>
-            <input 
-            type="number" 
-            step="any"
-            oninput="clearResult()"                   
-            name="ASF" 
-            id="ASF" 
-            placeholder="Enter Atlas Scaling Factor" 
-            maxlength="3"
-            required
-            title="Please enter numbers only" >
-          </div>
-
-
-        </div>
-        <div class="spinner" style="display: none;"></div>
-
-        <div class="black-button">
-          <input type="submit" value="Predict">
-        </div>
-      </form>
+         
+        <br />
+        <p>
+        <span style="color: black; font-weight: bold; font-size: larger; text-align: left;">Result :</span>
+        <p id="log" style="
+        color:tomato; 
+        font-weight: bold;
+        font-size: medium;
+        text-align: left;">
+          Result
+        </p>
+        <p>
+          <span style="color: black; font-weight: bold; font-size: larger; text-align: left;">Percentage :</span>
+          <p id="percentage" style="
+          color:tomato; 
+          font-weight: bold;
+          font-size: medium;
+          text-align: left;">
+            Result
+          </p>
+      </div>
     </div>
   </div>
 
+</body>
 
-  <script>
-    document.getElementById("log").innerHTML = ``;
-    const spinner = document.querySelector('.spinner');
+<script>
+  let records = [];
+  document.getElementById("log").innerHTML = ``;
+  document.getElementById("percentage").innerHTML = ``;
 
-    function logSubmit(event) {
-      event.preventDefault();
-      document.getElementById("log").innerHTML = ``;
-
-      const data = {
-        age: parseInt(document.getElementById("age").value),
-        gender: parseInt(document.getElementById("gender").value),
-        VST: parseInt(document.getElementById("VST")?.value),
-        MRD: parseInt(document.getElementById("MRD").value),
-        HND: parseInt(document.getElementById("HND").value),
-        EDUC: parseInt(document.getElementById("EDUC").value),
-        SES: parseInt(document.getElementById("SES").value),
-        MMSE: parseInt(document.getElementById("MMSE").value),
-        CDR: parseInt(document.getElementById("CDR").value),
-        eTIV: parseInt(document.getElementById("eTIV").value),
-        nWBV: parseInt(document.getElementById("nWBV").value),
-        ASF: parseInt(document.getElementById("ASF").value),
-
+  $(document).ready(function () {
+    // retrived phone number form url
+    let params = (new URL(document.location)).searchParams;
+    let phoneNumber = params.get("phoneNumber");
+    // was "phoneNumber"
+    // Get the patient records
+    $.ajax({
+      url: "/healthTestRetrieveByPhoneNumber",
+      type: 'POST',
+      data: {
+        phoneNumber: phoneNumber,
+        recordType : "mri_alzheimer"  // the table name that stores the record
+      },
+      success: function (data) {
+        records = data;
+        data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+      },
+      error: function (xhr, textStatus, errorThrown) {
+        // Handle error response from server
+        alert(textStatus + ': ' + errorThrown);
       }
+    });
+  });
+
+
+  // Display the patient records to the front end that allows doctor selected specific record for diagnose
+  function display(data) {
+    recordList = data;
+    if (recordList.length <= 0) {
+      alert("This patient has no record");
+      return;
+    }
+    console.log(recordList);
+    const table = document.getElementById("cardioDATA");
+
+    for (let i = 0; i < recordList.length; i++) {
+      const row = table.insertRow();
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      const cell3 = row.insertCell(2);
+      const cell4 = row.insertCell(3);
+      const cell5 = row.insertCell(4);
+      const cell6 = row.insertCell(5);
+      const cell7 = row.insertCell(6);
+      const cell8 = row.insertCell(7);
+      const cell9 = row.insertCell(8);
+      const cell10 = row.insertCell(9);
+      const cell11 = row.insertCell(10);
+      const cell12 = row.insertCell(11);
+      const cell13 = row.insertCell(12);
+
+      cell1.innerHTML = JSON.stringify(recordList[i].id);
+      cell2.innerHTML = JSON.stringify(recordList[i].Visit);
+      cell3.innerHTML = JSON.stringify(recordList[i].MR_Delay);
+      cell4.innerHTML = JSON.stringify(recordList[i].MF);
+      cell5.innerHTML = JSON.stringify(recordList[i].Age);
+      cell6.innerHTML = JSON.stringify(recordList[i].EDUC);
+      cell7.innerHTML = JSON.stringify(recordList[i].SES);
+      cell8.innerHTML = JSON.stringify(recordList[i].MMSE);
+      cell9.innerHTML = JSON.stringify(recordList[i].CDR);
+      cell10.innerHTML = JSON.stringify(recordList[i].eTIV);      
+      cell11.innerHTML = JSON.stringify(recordList[i].nWBV);
+      cell12.innerHTML = JSON.stringify(recordList[i].ASF);
+      cell13.innerHTML = JSON.stringify(recordList[i].RecordDate);
+    }
+    logSubmit();
+  }
+
+
+
+    function logSubmit() {
+      document.getElementById("log").innerHTML = ``;
+      document.getElementById("percentage").innerHTML = ``;
 
       let base_url = 'https://alzheimer-api.herokuapp.com/predict';
-      spinner.style.display = 'block'; // show the spinner
 
       const requestBody = 
         {
-          "Visit":data.VST,
-          "MR_Delay":data.MRD,
-          "M_F":data.gender,
-          "Age":data.age,
-          "EDUC":data.EDUC,
-          "SES":data.SES,
-          "MMSE":data.MMSE,
-          "CDR":data.CDR,
-          "eTIV":data.eTIV,
-          "nWBV":data.nWBV,
-          "ASF":data.ASF
+          "Visit":records?.success[0]?.Visit,
+          "MR_Delay":records?.success[0]?.Visit,
+          "M_F":records?.success[0]?.MR_Delay,
+          "Age":records?.success[0]?.Age,
+          "EDUC":records?.success[0]?.EDUC,
+          "SES":records?.success[0]?.SES,
+          "MMSE":records?.success[0]?.MMSE,
+          "CDR":records?.success[0]?.CDR,
+          "eTIV":records?.success[0]?.eTIV,
+          "nWBV":records?.success[0]?.nWBV,
+          "ASF":records?.success[0]?.ASF
       }
       // Test body
       // const requestBody = {
@@ -326,31 +327,66 @@
 
         .then(response => response.json())
         .then(data => {
+          alert("Success")
           if (data?.prediction === 'Demented!') {
             document.getElementById("log").innerHTML = `You probably have - alzheimer's`;
-            spinner.style.display = 'none'; // hide the spinner
+            document.getElementById("percentage").innerHTML =` ${data?.percentage} % `;
 
 
           } else if (data?.prediction === 'Nondemented!') {
             document.getElementById("log").innerHTML = `You are healthy - No alzheimer's`;
-            spinner.style.display = 'none'; // hide the spinner
+            document.getElementById("percentage").innerHTML =` ${data?.percentage} % `;
           }
+          storePrediction(data);
 
         })
         .catch(error => {
+          alert("failed")
           document.getElementById("log").innerHTML = `Please try again later :  ${error}`;
-          spinner.style.display = 'none'; // hide the spinner
 
         });
 
+      }
 
+
+
+      // Store the prediction result to the database
+      function storePrediction(result) {
+      console.log(result);
+    
+      // Retrieved phone number and the current date
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      let today = new Date();
+      const offset = today.getTimezoneOffset();
+      today = new Date(today.getTime() - (offset*60*1000)).toISOString();
+      // Store to the database
+      $.ajax({
+        url: "/updateDisease",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber,
+          disease: "alzheimer", // the table name that stores the prediction result
+          date: records?.success[0]?.RecordDate ?? today,
+          prediction: result?.prediction,
+          accuracy: result?.percentage, // can be null if not provided
+          recordType: 'mri_alzheimer',
+          recordId: 1,
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : alert(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
     }
-    function clearResult() {
-      // To clear result
-      document.getElementById("log").innerHTML = ``;
-    }
-    const form = document.getElementById('form');
-    form.addEventListener('submit', logSubmit);
-  </script>
+
+    // Api request body:
+    // {"age":"-1","height":"-1","weight":"-1","active":"1","alco":"1","cholesterol":"1","ap_lo":"50","gender":"1","gluc":"1","smoke":"1","ap_hi":"90"}
+
+</script>
 
 </html>

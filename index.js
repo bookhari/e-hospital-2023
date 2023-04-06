@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.render("pages/index");
 })
+
 app.get('/pneumoniahome', (req, res) => {
   res.render("pages/index");
 })
@@ -95,7 +96,39 @@ const storage = multer.diskStorage({
 });
 
 
-app.get('/respiratoryMedicine2', (req, res) => {
+/* TaskName -Speciality Page: Urology
+ (Front-end - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
+ (Machine learning - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
+*/
+app.get('/urology', (req, res) => {
+  res.redirect(' https://mlmodel2.herokuapp.com/');
+})
+
+/* TaskName -Alzheimers Detecction
+
+ (Parisa) - Team8, Course-BMG5111
+
+*/
+
+app.get('/AlzheimerMRIDetection', (req, res) => {
+
+  res.render("pages/AlzheimerMRIDetection");
+})
+
+// Hamza Khan Team for Specialities Page
+app.get('/specialities', (req, res) => {
+  res.render("pages/specialities");
+})
+//// Hamza Khan Team for Specialities Page
+
+/*--------------------------------------------
+TaskName -Speciality Page: Respiratory Medicine
+ (Front-end - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
+ (Machine learning - Manorama Upadhyay, Akhil Yengal, Bhavya Vakharia) 
+*/
+
+
+app.get('/respiratoryMedicine', (req, res) => {
   res.render('pages/respiratoryMedicine', { message: '', prediction: '' });
 });
 
@@ -128,13 +161,61 @@ app.post('/predict', upload.single('file'), (req, res) => {
     });
 });
 
+/*--------------------------------------------
+End of Group 5 tasks for Speciality Pages 
+1. Urology 2. Respiratory Medicine
+*/
 
+// Hamza Khan Team for Specialities Page
+app.get('/specialities', (req, res) => {
+  res.render("pages/specialities");
+})
+//// Hamza Khan Team for Specialities Page
+
+app.get('/pneumoniahome', (req, res) => {
+  res.render("pages/index");
+})
+app.get('/heartdiseasefrontend', (req, res) => {
+  res.render("pages/heartdiseasefrontend");
+})
 app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
 })
 
+
 app.get('/ecg', (req, res) => {
-  res.render("pages/ecg-ml");
+
+
+app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
+
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    const MongoResult = await imageRetrieveByPatientId(patient_id, recordType);
+    res.send(MongoResult);
+  });
+})
+
+app.get('/arrhythmia', (req, res) => {
+res.render("pages/ecg-ml");
 })
 
 app.get('/services', (req, res) => {
@@ -320,6 +401,18 @@ app.get('/specialty', (req, res) => {
     error: errorMessage
   });
 })
+app.get('/Oncology', (req, res) => {
+  errorMessage = '';
+  res.render("pages/Oncology", {
+    error: errorMessage
+  });
+});
+app.get('/Ophthalmology', (req, res) => {
+  errorMessage = '';
+  res.render("pages/Ophthalmology", {
+    error: errorMessage
+  });
+});
 app.get('/patientLogin', (req, res) => {
   errorMessage = '';
   res.render("pages/patientLogin", {
@@ -965,6 +1058,93 @@ app.post('/Hospital', (req, res) => {
   })
 })
 
+app.post('/update_tumorRecord', (req, res) => {
+  if (!req.body) {
+    res.send({error:"Missing request body."});
+    return;
+  }
+  const email = req.body.email;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+
+  // Checkout the patient profile
+  if (!email || !firstName || !lastName) {
+    res.send({error:"Missing patient email, first name, or last name."});
+    return;
+  }
+  var pid = 0;
+  sql = `SELECT id FROM patients_registration WHERE EmailId = "${email}" AND FName = "${firstName}" AND LName = "${lastName}"`;
+  console.log(sql);
+  conn.query(sql, (error, result) => {
+    if (error) {
+      res.send({"MySQL_Error": error});
+      return;
+    }
+    if (result.length == 0) {
+      res.send({error:"No patient matched in database."});
+      return;
+    } else if (result.length > 1) {
+      res.send({error:"Duplicate patient profile matched."});
+      return;
+    } else if (result.length < 0) {
+      res.send({error:"Invalid index on the backend."});
+      return;
+    }
+    pid = result[0].id;
+
+    // Check Record existed
+    const radius = req.body.radius;
+    const texture = req.body.texture;
+    const perimeter = req.body.perimeter;
+    const area = req.body.area;
+    const smoothness = req.body.smoothness;
+    const compactness = req.body.compactness;
+    const concavity = req.body.concavity;
+    const concavePoints = req.body.concavePoints;
+    const symmetry = req.body.symmetry;
+    const fractalDimension = req.body.fractalDimension;
+    const date = req.body.date;
+    const prediction = req.body.prediction;
+
+    if (!radius || !texture || !perimeter || !area || !smoothness || !compactness || !concavity || !concavePoints || !symmetry || !fractalDimension || !date || !prediction) {
+      res.send({error: "Missing patient record or date."});
+      return;
+    }
+
+    sql = `INSERT INTO tumor (patient_id, radius, texture, perimeter, area, smoothness, compactness, concavity, concavePoints, symmetry, fractalDimension, recordDate, prediction)
+    VALUES (${pid}, ${radius}, ${texture}, ${perimeter}, ${area}, ${smoothness}, ${compactness}, ${concavity}, ${concavePoints}, ${symmetry}, ${fractalDimension}, "${date}", "${prediction}")`;
+    console.log(sql);
+    conn.query(sql, (error, result) => {
+      if (error) {
+        res.send({"MySQL_Error": error});
+        return;
+      }
+      if (result.affectedRows == 1) {
+        res.send({success:"Tumor Record update success."});
+        return;
+      } else {
+        res.send({error:"Something goes wrong in the database."});
+      }
+    })
+  })
+})
+
+app.post('/get_tumorRecord', (req, res) => {
+  if (!req.body) {
+    res.send({error:"Missing request body."});
+    return;
+  }
+  const uuid = req.body.id;
+  const password = req.body.password;
+  sql = `SELECT radius, texture, perimeter, area, smoothness, compactness, concavity, concavePoints, symmetry, fractalDimension, recordDate, prediction 
+  FROM tumor JOIN patients_registration ON tumor.patient_id = patients_registration.id 
+  WHERE uuid = "${uuid}" AND PASSWORD = "${password}" AND verification = 1`;
+  conn.query(sql,(error, result) => {
+      if (error) throw error
+      res.send({result: result});
+  })
+})
+
 const nodemailer = require("nodemailer");
 
 
@@ -978,7 +1158,33 @@ var transporter = nodemailer.createTransport({
 });
 
 
+app.post('/imageRetrieveByPhoneNumber', async (req,res) => {
+  const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"
+  const recordType = req.body.recordType; // the record type, e.g. "X-Ray", this represents the collection in the database (case sensitive)
 
+  // Check patient identity
+  if (!phoneNumber) {
+    res.send({error:"Missing patient phone number"});
+    return;
+  }
+  var patient_id = 0;
+  sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+  // console.log(sql);
+  conn.query(sql, async (error, result) => {
+    if (error) {
+      res.send({error:"No patient matched in database."});
+      return;
+    }
+    if (result.length != 1) {
+      res.send({error:"Something wrong in MySQL."});
+      return;
+    }
+    patient_id = result[0].id;
+
+    const MongoResult = await imageRetrieveByPatientId(patient_id, recordType);
+    res.send(MongoResult);
+  });
+})
 
 // Lab Registration
 
