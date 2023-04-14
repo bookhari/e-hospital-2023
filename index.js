@@ -111,8 +111,14 @@ app.get('/specialities', (req, res) => {
 app.get('/pneumoniahome', (req, res) => {
   res.render("pages/index");
 })
+/* TaskName -Specilaities Page for Cardiology
+ (Venkata Haritha Kompella,Sukanya Kollipara, Swathi Murali) - Group 10, Course-BMG5111, 1 year-2 term
+*/
 app.get('/heartdiseasefrontend', (req, res) => {
   res.render("pages/heartdiseasefrontend");
+})
+app.get('/CoronaryArteryDisease', (req, res) => {
+  res.render("pages/CoronaryArteryDisease");
 })
 app.get('/pneumonia', (req, res) => {
   res.render("pages/pneumonia");
