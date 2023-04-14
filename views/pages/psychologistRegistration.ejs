@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Psychologist Registration</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link rel="stylesheet" href="/css/style-starter.css">
+  <link rel="stylesheet" href="/css/patients.css">
+
+</head>
+<style>
+  select {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  select:focus {
+    border-color: #9b59b6;
+  }
+
+  .spinner {
+    border: 5px solid #9b59b6;
+    border-top-color: #9b59b6;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .black-button {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .black-button input[type="submit"] {
+    background: linear-gradient(-135deg, #747474, rgb(0, 0, 0));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 400px;
+    width: 300px;
+
+  }
+
+  .black-button input[type="submit"]:hover {
+    background: linear-gradient(-135deg, #000000, #747474);
+  }
+</style>
+<body>
+<%- include('../partials/header') -%>
+
+  <div class="container">
+    <div class="title">Psychologist Registration </div>
+      <div class="content">
+        <form>
+          <div class="user-details">
+            <div class="input-box">
+              <span class="details">What is your gender?</span>
+              <select name="sex" id="sex">
+                <option value="" disabled selected>Select</option>
+                <option value=1>Male</option>
+                <option value=2>Female</option>
+                <option value=3>Non Binary</option>
+              </select>
+            </div>
+            <div class="input-box">                       
+              <span class="details">What Language do you prefer to use during therapy sessions?</span>
+              <select name="language" id="language">
+                <option value="" disabled selected>Select</option>
+                <option value=1>French</option>
+                <option value=2>English</option>
+                <option value=3>No Preference</option>
+              </select>
+            </div>
+            <div class="input-box">
+                <span class="details">What type of treatment setting do you offer?</span>
+                <select name="treatment_setting" id="treatment_setting">
+                  <option value="" disabled selected>Select</option>
+                  <option value=1>In-person therapy</option>
+                  <option value=2>Online therapy</option>
+                  <option value=3>Hybrid (a mix of in-person and online)</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">Do you focus on a specific age group?</span>
+                <select name="age_group" id="age_group">
+                  <option value="" disabled selected>Select</option>
+                  <option value=1>Children and Adolescents</option>
+                  <option value=2>Adults</option>
+                  <option value=3>Seniors</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">What primary concern do you specialize in?</span>
+                <select name="type_of_therapy" id="type_of_therapy">
+                  <option value="" disabled selected>Select</option>
+                  <option value=1>Depression</option>
+                  <option value=2>Anxiety</option>
+                  <option value=3>Adoption</option>
+                  <option value=4>Anger Management</option>
+                  <option value=5>Bullying</option>
+                  <option value=6>Emotion Regulation</option>
+                  <option value=7>Eating Disorders</option>
+                  <option value=8>Schizophrenia</option>
+                  <option value=9>ADHD Assessment</option>
+                  <option value=10>Addiction</option>
+                  <option value=11>Phobias</option>
+                  <option value=12>Retirement</option>
+                  <option value=13>Separation/Divorce</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">Do you specialize in a specific type of psychological treatment modality or therapy?</span>
+                <select name="psychological_treatment" id="psychological_treatment">
+                  <option value="" disabled selected>Select</option>
+                  <option value=1>Acceptance and Commitment Therapy</option>
+                  <option value=2>Hypnosis</option>
+                  <option value=3>Cognitive/Behavioural Therapy</option>
+                  <option value=4>Solution-Focused Therapy</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">What is your available time frame for therapy sessions?</span>
+                <select name="time_frame" id="time_frame">
+                  <option value="" disabled selected>Select</option>
+                  <option value=1>Morning</option>
+                  <option value=2>Afternoon</option>
+                  <option value=3>Evening</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">How frequently do you offer therapy sessions?</span>
+                <select name="frequency" id="frequency">
+                  <option value="" disabled selected>Select</option>
+                  <option value=1>Weekly</option>
+                  <option value=2>Bi-weekly</option>
+                  <option value=3>Monthly</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <span class="details">How much do you charge per session?</span>
+                <select name="cost" id="cost">
+                  <option value="" disabled selected>Select</option>
+                  <option value=1>Less than $100 per session</option>
+                  <option value=2>$100-$150 per session</option>
+                  <option value=3>More than $150 per session</option>
+                </select>
+            </div>
+          </div>
+          <div class="button">
+              <input id = "submit-button" type="submit" value="Submit">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>  
+  <script>
+
+    function saveResults(event) {
+      event.preventDefault();
+
+      var q1SelectedOption = document.getElementById("sex").value;
+      var q2SelectedOption = document.getElementById("language").value;
+      var q3SelectedOption = document.getElementById("treatment_setting").value;
+      var q4SelectedOption = document.getElementById("age_group").value;
+      var q5SelectedOption = document.getElementById("type_of_therapy").value;
+      var q6SelectedOption = document.getElementById("psychological_treatment").value;
+      var q7SelectedOption = document.getElementById("time_frame").value;
+      var q8SelectedOption = document.getElementById("frequency").value;
+      var q9SelectedOption = document.getElementById("cost").value;
+      
+      let params = (new URL(document.location)).searchParams;
+      let uuid = params.get("uuid");
+
+      const body = {
+            uuid,
+            sex: q1SelectedOption,
+            language:q2SelectedOption, 
+            treatment_setting: q3SelectedOption, 
+            age_group: q4SelectedOption, 
+            type_of_therapy: q5SelectedOption, 
+            psychological_treatment: q6SelectedOption, 
+            time_frame: q7SelectedOption, 
+            frequency: q8SelectedOption, 
+            cost: q9SelectedOption,
+          }
+        //console.log(body)
+        fetch('/psychologistRegistration', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        .then(response => window.location.href = "/thankyou")
+  }
+  const submitButton = document.getElementById('submit-button');
+  console.log(submitButton)
+  submitButton.addEventListener('click', saveResults);
+</script>
+</body>
+</html>

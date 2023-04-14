@@ -1,0 +1,249 @@
+<!-- Diabetology, code started for accessing patient information and getting ML Results (doctor) (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group 1, Course-BMG5111, Winter 2023 -->
+
+<!DOCTYPE html>
+<html lang="en-CA">
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/diabetesmlfrontend.css" rel="stylesheet" type="text/css">
+
+  <link href="css/login.css" rel="stylesheet" type="text/css"> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+  <style>
+ 
+    /* Set styles for the table */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+
+    .hscroll {
+      overflow-x: auto; /* Horizontal scrolling */
+    }
+
+    /* Set styles for the table header */
+    th {
+      background-color: #2f4052;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px 15px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    /* Set styles for the table rows */
+    tr {
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Set styles for the table cells */
+    td {
+      padding: 10px 15px;
+      font-size: 16px; /* increase font size */
+    }
+
+    /* Set hover styles for the table rows */
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+    .outer{
+      margin: 60px 10rem 0;
+    }
+
+    table, th, td {
+      border:1px solid black;
+    }
+    </style>
+    
+  <script>
+    var recordList = [];
+
+    // Run the code when the page finished loading
+    $(document).ready(function() {
+      // retrived phone number form url
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      console.log(phoneNumber)
+
+      // Get the patient records
+      $.ajax({
+        url: "/DiabetologyPatients",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber, 
+          recordType: "diabetes" // the table name that stores the record
+        },
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    });
+    
+    // Display the patient records to the front end that allows doctor selected specific record for diagnose
+    function display(data) {
+      recordList = data;
+      if (recordList.length <= 0) {
+        alert("This patient has no record.");
+        return;
+      }
+      console.log(recordList);
+      let list = document.getElementById("recordList");
+      // Display each record
+      for (let i = 0; i < recordList.length; ++i) {
+        let tr = document.createElement("tr");
+        //let image = document.createElement("td");
+        //image.innerHTML = "Will be replace by image";
+        let recordDate = document.createElement("td");
+        recordDate.innerHTML = new Date(recordList[i].date);       
+        let Sex = document.createElement("td");
+            Sex.innerHTML = recordList[i].Sex;
+        console.log(recordList[i].Sex)
+        if (recordList[i].Sex == 1) {
+            Sex.innerHTML = "Female";
+        }
+        else {
+            Sex.innerHTML = "Male";
+        }
+        let Age = document.createElement("td");
+            Age.innerHTML = recordList[i].Age;
+        let BMI = document.createElement("td");
+            BMI.innerHTML = recordList[i].BMI;  
+        let SkinThickness = document.createElement("td");
+            SkinThickness.innerHTML = recordList[i].SkinThickness;     
+        let Glucose = document.createElement("td");
+            Glucose.innerHTML = recordList[i].Glucose;
+        let BloodPressure = document.createElement("td");
+            BloodPressure.innerHTML = recordList[i].BloodPressure;
+        let Insulin = document.createElement("td");
+            Insulin.innerHTML = recordList[i].Insulin;
+        let DiabetesPedigreeFunction = document.createElement("td");
+            DiabetesPedigreeFunction.innerHTML = recordList[i].DiabetesPedigreeFunction;
+        let Pregnancies = document.createElement("td");
+            Pregnancies.innerHTML = recordList[i].Pregnancies;
+        let ML_result = document.createElement("td");
+            ML_result.innerHTML = recordList[i].ML_result;
+
+        
+        tr.appendChild(recordDate);
+        tr.appendChild(Sex);
+        tr.appendChild(Age);
+        tr.appendChild(BMI);
+        tr.appendChild(SkinThickness);
+        tr.appendChild(Glucose);
+        tr.appendChild(BloodPressure);
+        tr.appendChild(Insulin);
+        tr.appendChild(DiabetesPedigreeFunction);
+        tr.appendChild(Pregnancies);
+        tr.appendChild(ML_result);
+        list.appendChild(tr);
+      }
+    }
+    
+    // Send the image to the ML api for the prediction
+      async function predict(index) {
+      console.log(recordList[index]);
+
+      // Prepare submit data
+      const form = new FormData();
+      const base64Response = await fetch(`data:image/jpeg;base64,${recordList[index].file.buffer}`);
+      const blob = await base64Response.blob();
+      form.append('image', blob, recordList[index].file.originalname);
+
+      // Send to the ML API
+      $.ajax({
+        url: "/connectionTesting",
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        data: form,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function(data) {
+          // console.log(data);
+          data.error ? alert(JSON.stringify(data.error)) : alert(JSON.stringify(data));
+          storePrediction(data, recordList[index]._id);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    }
+
+    // Store the prediction result to the database
+    function storePrediction(result, id) {
+      console.log(result);
+      
+      // Retrieved phone number and the current date
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+      let today = new Date();
+      const offset = today.getTimezoneOffset();
+      today = new Date(today.getTime() - (offset*60*1000)).toISOString();
+
+
+    }
+  </script>
+  
+ <!-- <link href="/css/Pneumonia-diagnostics.css" rel="stylesheet" > -->
+
+</head>
+<header>
+  <%- include('../partials/header') -%>
+</header>
+  <div class="container hscroll">
+
+    <div class="title">Patient Record</div>
+    <table id="recordList" class="center" style="margin-top:50px; width:50%; margin-bottom:50px;margin-left: auto;margin-right: auto;">
+      <tr>
+        <th>Record Date</th>
+        <th>Sex</th>
+        <th>Age</th>
+        <th>Body Mass Index</th>
+        <th>Skin Thickness (mm)</th>
+        <th>Glucose Measurement (mg/dL)</th>
+        <th>Diastolic Blood Pressure (mm/Hg)</th>
+        <th>Insulin (U/mL)</th>
+        <th>Diabetes Pedigree Function</th>
+        <th>Number of Pregnancies</th>
+        <th>Prediction Results</th>
+
+
+
+      </tr>
+
+    </table>
+  </div>
+  <div> 
+    <footer>
+  <%- include('../partials/footer-new') -%>
+  
+  </footer>
+  </div> 
+
+</html>
+
+<!-- Diabetology, code ended for accessing patient information and getting ML Results (doctor) (Jennifer Rovt, Ramis Ileri, Sridhanussh Srinivasan) Group 1, Course-BMG5111, Winter 2023 -->

@@ -1,85 +1,157 @@
-<html>
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
-<style>
-.dropbtn {
-  background-color: grey;
-  color: white;
-  padding: 14px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.dropbtn:hover {
-  background-color: brown;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 140px;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown a:hover {
-   background-color: #ddd;
- }
-
-.show {
-  display: block;
-}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lab Test Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
 </head>
 <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $.get("/get_availableLabs", function(data) {
+          // populate lab list
+          var labList = $("#labList");
+          labList.empty();
+          for (var i = 0; i < data.length; i++) {
+            var lab = data[i];
+            labList.append(`<option value="${lab.uuid}">${lab.Lab_Name} - ${lab.City}, ${lab.Province}</option>`);
+          }
+  
+          // show form
+          $("#labTestForm").show();
+        });
+  
+        $("#labList").change(function() {
+          var labUuid = $(this).val();
+          $.post("/get_appointmentList", { id: labUuid }, function(data) {
+            // populate appointment slots
+            var slotList = $("#slotList");
+            slotList.empty();
+            for (var i = 0; i < data.length; i++) {
+              var appointment = data[i];
+              slotList.append(`<option value="${appointment.slot}">${appointment.appointmentDate} - ${appointment.slot}</option>`);
+            }
+          });
+        });
+  
+        $("#scheduleBtn").click(function() {
+          var labUuid = $("#labList").val();
+          var patientUuid = $("#patientUuid").val();
+          var patientPassword = $("#patientPassword").val();
+          var date = $("#date").val();
+          var slot = $("#slotList").val();
+        
+  
+          $.post("/update_appointment", { lab_id: labUuid, id: patientUuid, password: patientPassword, date: date, slot: slot }, function(data) {
+            if (data.success) {
+              alert(data.success);
+              $("#labTestForm").hide();
+            } else {
+              alert(data.error);
+            }
+          });
+        });
+      });
+    </script>
+    <script>
+      function scheduleAppointment() {
+        const labSelect = document.getElementById('labList');
+        const dateSelect = document.getElementById('appointmentDate');
+        const slotSelect = document.getElementById('appointmentSlot');
+        const patientid = document.getElementById('patientUuid'); 
+        const patientpassword = document.getElementById('patientPassword');     
+        console.log(labSelect.value)
+        if (labSelect.value && dateSelect.value && slotSelect.value) {
+          
+  
+                          fetch('/update_appointment', {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({
+                                  lab_id: labSelect.value,
+                                  id: patientid.value,
+                                  password: patientpassword.value,
+                                  date: dateSelect.value,
+                                  slot: slotSelect.value
+                              })
+                          }).then(response => response.json())
+                            .then(data => {
+                                if (data.error) {
+                                    console.log(data.error);
+                                    // Display error message to user
+                                } else {
+                                    console.log(data.success);
+                                    // Display success message to user
+                                    // Refresh appointment schedule
+                                    //fetchAppointmentSchedule(selectedLab.uuid);
+                                    //appointment successful
+                                }
+                            })
+                            .catch(error => console.log(error));}}
+                          </script> 
+                          
+  <body>
+      <div class="columns is-mobile is-centered">
+        <div class="column is-one-third">
+          <div class="box">
+            <h1 class="title is-4 has-text-centered mb-4">Book an Appointment</h1>
+            <div class="field">
+              <div class="field">
+                <label class="label">Select a Lab Test:</label>
+                <div class="control">
+                  <div class="select">
+                    <select id="labList">
+                    </select>
+                  </div>
+                </div>
+              </div>
+            <div class="field">
+              <label class="label">Patient UUID:</label>
+              <div class="control">
+                <input class="input" type="text" id="patientUuid">
+              </div>
+            </div>
+            <div class="field">
+                <label class="label">Patient Password:</label>
+                <div class="control">
+                  <input class="input" type="password" id="patientPassword" name="password" placeholder="Enter your password" required>
+              </div>
+            </div>
+<label class="label">Appointment Date:</label>
+<div class="control">
+  <input class="input" type="date" id="appointmentDate" name="appointmentDate" required>
+</div>
 
-
-<div class="dropdown">
-  <button onclick="labtestList()" class="dropbtn">LAB TEST</button>
-  <div id="myDropdown1" class="dropdown-content">
-    <a href="./vitaminform" onclick="Vitamintest()">Vitamin test</a>
-    <a href="./lipidform" onclick="LipidProfile()">Lipid Profile</a>
-    <a href="./uform" onclick="Urinalysis()">Urinalysis</a>
-    <a href="./bmpform" onclick="BasicMetabolicPanel()">Basic Metabolic Panel</a>
-    <a href="./cmpform" onclick="ComprehensiveMetabolicPanel()">Comprehensive Metabolic Panel</a>
-<a href="./cbcform" onclick="CompleteBloodCount()">Complete Blood Count </a>
-<a href="./thyroidform" onclick="ThyroidTest()">Thyroid Test</a>
-
+<label class="label">Select an appointment slot:</label>
+<div class="control">
+  <div class="select">
+    <select id="appointmentSlot" name="appointmentSlot" required>
+      <option value="" selected disabled>Select a Time Slot</option>
+      <option value="1">10:00 AM - 11:00 AM</option>
+      <option value="2">11:00 AM - 12:00 PM</option>
+      <option value="3">12:00 PM - 01:00 PM</option>
+      <option value="4">01:00 PM - 02:00 PM</option>
+      <option value="5">02:00 PM - 03:00 PM</option>
+      <option value="6">03:00 PM - 04:00 PM</option>
+      <option value="7">04:00 PM - 05:00 PM</option>
+      <option value="8">05:00 PM - 06:00 PM</option>
+      <option value="9">06:00 PM - 07:00 PM</option>
+    </select>
   </div>
 </div>
 
-<script>
-/* methods to hide and show the dropdown content */
-function labtestList() {
-  document.getElementById("myDropdown1").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
-</script>
-
-</body>
+<div class="field is-grouped">
+  <div class="control">
+    <button class="button is-link" id="submitBtn" onclick="scheduleAppointment()">Submit</button>
+  </div>
+</div>
 </html>
+

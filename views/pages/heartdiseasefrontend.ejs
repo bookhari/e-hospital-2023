@@ -21,7 +21,8 @@
 
 
 </head>
-<header <%- include('../partials/header') -%>
+<header>
+<%- include('../partials/header') -%>
 </header>
 <div class="container">
   <div class="title">Heart disease prediction form</div>
@@ -195,6 +196,9 @@
       <div class="button">
         <input type="submit" value="Check for Heart Disease">
       </div>
+      <div class="button">
+        <input type="submit" value="Check for Coronary Artery Disease" onclick="Redirect();"/>
+      </div>
     </form>
   </div>
   <footer>
@@ -203,10 +207,16 @@
     </footer>
 </div>
 <script>
+  //let records = [];
   document.getElementById("log").innerHTML = ``;
   const spinner = document.querySelector('.spinner');
 
+  
 
+  function Redirect()
+  {
+    window.location = "http://www.e-hospital.ca/CoronaryArteryDisease"
+  }
 
   function logSubmit(event) {
     event.preventDefault();
@@ -278,10 +288,9 @@
           document.getElementById("log").innerHTML = `No Heart Disease`;
           spinner.style.display = 'none'; // hide the spinner
         }
-
       })
       .catch(error => {
-        document.getElementById("log").innerHTML = `Please try again later`;
+        document.getElementById("log").innerHTML = `Please try again later:${error}`;
         // document.getElementById("log").innerHTML = `ERROR: ${error}`;
         spinner.style.display = 'none'; // hide the spinner
 
@@ -293,6 +302,7 @@
   }
   const form = document.getElementById('form');
   form.addEventListener('submit', logSubmit);
+  
 </script>
 
 </html>

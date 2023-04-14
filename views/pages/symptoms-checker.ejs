@@ -1,3 +1,4 @@
+<!-- TaskName, code started for symptoms checker (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 -->
 <!DOCTYPE html>
     <html lang="en">
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -15,12 +16,491 @@
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
         <meta property="og:locale" content="en_CA" />
+        <!-- CSS -->
+        <link rel="stylesheet" href="css/symptoms-checker.css">
     </head>
     <body>
         <%- include('../partials/header') -%>
-        <center style="padding-top: 100px;"><h1>Work in progress</h1></center>
+        <center><h1 style="padding-top: 100px;padding-bottom: 20px;"><b>Symptom Checker</b></h1></center>
+        <center><h4>Tell us about your self and your conditions for treatments plan suggestion.</h4></p1></center><p1>
+        <div class="symptom-checker-body">
+            <!-- Multistep form -->
+            <form id="msform" action="/get_symptoms_checker" method="get">
+                <!-- Progressbar -->
+                <ul style="text-align: center;" id="progressbar">
+                    <li class="active">Info</li>
+                    <li>Symptoms</li>
+                    <li>Prediction</li>
+                    <li>Suggestion</li>
+                </ul>
+                 <!-- Fieldsets -->
+                <fieldset>
+                    <center><h2>General information</h2></center><br>
+                    <!-- <label style="text-align: left;" for="fname">First name</label>
+                    <input type="text" id="fname" name="firstname" placeholder="Your first name..">
+                    
+                    <label for="lname">Last name</label>
+                    <input type="text" id="lname" name="lastname" placeholder="Your last name.." > -->
+
+                    <h3>What is your gender?</h3>
+                    <div class="radio-gender">
+                        <article class="genderbox">
+                            <input type="radio" id="male" name="gendergroup">
+                            <div>
+                                <span>
+                                    Male
+                                </span>
+                            </div>
+                        </article>
+                        <article class="genderbox">
+                            <input type="radio" id="female" name="gendergroup">
+                            <div>
+                                <span>
+                                    Female
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                    <br>
+                    
+                    <h3 style="padding-bottom: 40px; padding-top: 80px;">How old are you?</h3>
+                    <div class="slidecontainer">
+                        <input type="range" min="18" max="100" value="30" class="sliderage" id="myRange">
+                        <center><p>Age: <span id="demo"></span></p></center>
+                    </div>
+                    <!-- <label>Age</label>
+                    <input type="number" min="18" max="120" placeholder="Age" required> -->
+                    <!-- <label for="birthday">Date of birth</label>
+                    <input type="date" id="birthday" name="birthday" > -->
+                    <!-- <label for="phone">Phone number</label>
+                    <input type="tel" id="phone" placeholder="Your phone number.." pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"> -->
+                    <input type="button" name="next" class="next action-button" value="Next" style="float: right;">
+                </fieldset>
+                <fieldset>
+                    <center><h2>What is your symptoms?</h2></center>
+                        <div id="checkbox-parent" style="padding-top: 10px; padding-left: 40px;">
+                            <article class="symptombox">
+                                <input type="checkbox" id="cough">
+                                <div>
+                                    <span>
+                                        Cough
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="headache">
+                                <div>
+                                    <span>
+                                        Headache
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="fever">
+                                <div>
+                                    <span>
+                                        Fever
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="sore throat">
+                                <div>
+                                    <span>
+                                        Sore throat
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="nasal congestion">
+                                <div>
+                                    <span>
+                                        Nasal congestion
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="chest pain">
+                                <div>
+                                    <span>
+                                        Chest pain
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="back pain">
+                                <div>
+                                    <span>
+                                        Back pain
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="ear pain">
+                                <div>
+                                    <span>
+                                        Ear pain
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="difficulty in swallowing">
+                                <div>
+                                    <span>
+                                        Difficulty in swallowing
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="hurt to breath">
+                                <div>
+                                    <span>
+                                        Hurt to breath
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="dimissing hearing">
+                                <div>
+                                    <span>
+                                        Dimissing hearing
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="shortness of breath">
+                                <div>
+                                    <span>
+                                        Shortness of breath
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="difficult breathing">
+                                <div>
+                                    <span>
+                                        Difficult breathing
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="dizziness">
+                                <div>
+                                    <span>
+                                        Dizziness
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="nausea">
+                                <div>
+                                    <span>
+                                        Nausea
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="ached">
+                                <div>
+                                    <span>
+                                        Ached
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="itchy eyelid">
+                                <div>
+                                    <span>
+                                        Itchy eyelid
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="vomitting">
+                                <div>
+                                    <span>
+                                        Vomitting
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="side pain">
+                                <div>
+                                    <span>
+                                        Side pain
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="facial pain">
+                                <div>
+                                    <span>
+                                        Facial pain
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="abdominal pain">
+                                <div>
+                                    <span>
+                                        Abdominal pain
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="blood in urine">
+                                <div>
+                                    <span>
+                                        Blood in urine
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="wheezing">
+                                <div>
+                                    <span>
+                                        Wheezing
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="symptombox">
+                                <input type="checkbox" id="neck pain">
+                                <div>
+                                    <span>
+                                        Neck pain
+                                    </span>
+                                </div>
+                            </article>
+                            
+                        </div>
+                    <input type="next" name="next" class="next action-button" value="Next" style="float: right">    
+                    <input type="button" name="previous" class="previous action-button" value="Previous" style="float:right">
+                    
+                </fieldset>
+                <fieldset>
+                    <center><h2 style="padding-bottom: 10px;">Prediction</h2></center><br>
+                    <h3>Submit your selected symptoms?</h3>
+                    <input type="submit" name="submit" class="submit action-button" value="Submit" style="float:left"><br>
+                    <br>
+                    <center><h3 style="padding-top: 20px;">Result</h3></center><br>
+                    
+                    <table class="disease">
+                    </table>
+                    <input type="button" name="next" class="next action-button" value="Next" style="float: right">
+                    <input type="button" name="previous" class="previous action-button" value="Previous" style="float: right">
+                    
+                </fieldset>
+                <fieldset>
+                    <center><h2>Suggestion</h2></center><br>
+                    <center><h3><a href="\patientRegister"style="color: blue;">Make an appointement</a></h3></center><br>
+                    <button class="action-button" onclick="window.location.reload()" style="float: right">Finish</button>
+                    <input type="button" name="previous" class="previous action-button" value="Previous" style="float: right">
+                    
+                </fieldset>
+            </form>    
+        </div>
+        
+
+        
         <footer>
             <%- include('../partials/footer-new') -%>
         </footer>
     </body>
+    <!-- jQuery -->
+        <script src="http://thecodeplayer.com/uploads/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <!-- jQuery easing plugin -->
+        <script src="http://thecodeplayer.com/uploads/js/jquery.easing.min.js" type="text/javascript"></script>
+
+    <!-- JavaScript -->
+    <script>
+    var current_fs, next_fs, previous_fs;
+    var left, opacity, scale;
+    var animating;
+    
+    // Next button funtion
+    $(".next").click(function(){
+	    if(animating) return false;
+	    animating = true;
+	
+	    current_fs = $(this).parent();
+	    next_fs = $(this).parent().next();
+	
+	    //activate next step on progressbar using the index of next_fs
+	    $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+	
+	    //show the next fieldset
+	    next_fs.show(); 
+	    //hide the current fieldset with style
+	    current_fs.animate({opacity: 0}, {
+		    step: function(now, mx) {
+			    //as the opacity of current_fs reduces to 0 - stored in "now"
+			    //1. scale current_fs down to 80%
+			    scale = 1 - (1 - now) * 0.2;
+			    //2. bring next_fs from the right(50%)
+			    left = (now * 50)+"%";
+			    //3. increase opacity of next_fs to 1 as it moves in
+			    opacity = 1 - now;
+			    current_fs.css({'transform': 'scale('+scale+')'});
+			    next_fs.css({'left': left, 'opacity': opacity});
+		    }, 
+		    duration: 800, 
+		    complete: function(){
+			    current_fs.hide();
+			    animating = false;
+		    }, 
+		    //this comes from the custom easing plugin
+		    easing: 'easeInOutBack'
+	    });
+    });
+
+    // Previous button fuction
+    $(".previous").click(function(){
+	    if(animating) return false;
+	    animating = true;
+	
+	    current_fs = $(this).parent();
+	    previous_fs = $(this).parent().prev();
+	
+	    //de-activate current step on progressbar
+	    $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+	
+	    //show the previous fieldset
+	    previous_fs.show(); 
+	    //hide the current fieldset with style
+	    current_fs.animate({opacity: 0}, {
+		    step: function(now, mx) {
+			    //as the opacity of current_fs reduces to 0 - stored in "now"
+			    //1. scale previous_fs from 80% to 100%
+			    scale = 0.8 + (1 - now) * 0.2;
+			    //2. take current_fs to the right(50%) - from 0%
+			    left = ((1-now) * 50)+"%";
+			    //3. increase opacity of previous_fs to 1 as it moves in
+			    opacity = 1 - now;
+			    current_fs.css({'left': left});
+			    previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+		    }, 
+		    duration: 800, 
+		        complete: function(){
+			    current_fs.hide();
+			    animating = false;
+		    }, 
+		    //this comes from the custom easing plugin
+		    easing: 'easeInOutBack'
+	    });
+    });
+    // Age slider bar 
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+    output.innerHTML = this.value;
+    }
+    // Get symptoms check box
+    function getcheckbox(){
+        return $('#checkbox-parent')
+            .find('input:checked').filter((index, elem) => {
+                return elem.checked;
+            }).toArray().map((elem) => {
+                return elem.id.toLowerCase();
+            });
+    }
+    
+    // Submit buttton fuction
+    $("#msform").submit(function(){
+        event.preventDefault(); // Prevent default form submission
+    // Get form data
+    var formData = new FormData(this);
+    // Send AJAX request
+    $.ajax({
+      url: "/get_symptoms_checker",
+      type: 'GET',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        // Handle successful response from server
+        //alert(data.message);
+        console.log(data);
+        if (data.error) {
+          console.log(data.error);
+          alert(JSON.stringify(data.error));
+        } else {
+          console.log(`Succesful response ${JSON.stringify(data)}`);
+          console.log(data)
+          console.log(`Message is: ${JSON.stringify(data)}`);
+          
+          // Create array for symptoms checkbox   
+          let selectedSymptoms = getcheckbox();
+          // Reset the result table when submitting new symptoms   
+          data.success.forEach((elem) => {
+          $(".disease tr").remove(); 
+          })
+        
+          var predict = []; // Create array for predict disease
+          var counts = {}; 
+          var countsSorted = {}; //Create array for predict disease sorted
+          var percentage = []; //Create array for matching precentage of a disease
+          // Looping for diseases related to the chosen symptoms 
+          data.success.forEach((elem1) => {
+            selectedSymptoms.forEach((elem2)=>{
+                if (elem1.symptoms.toLowerCase().includes(elem2) == true) {
+                    predict.push(elem1.disease);
+                }
+            });
+          });
+          // Ranking the diseases based on the number of matching symptoms
+          predict.forEach((elm) => {
+            counts[elm] = counts[elm] ? (counts[elm] + 1) : 1;
+          });
+          countsSorted = Object.entries(counts).sort(([_, a], [__, b]) => b - a);
+          // Calculate the percentage matching of each diseases
+          countsSorted.forEach((elem1) => {
+            data.success.forEach((elem2) => {
+                if (elem1[0] == elem2.disease){
+                    const arr = JSON.parse(elem2.symptoms.replaceAll("'",'"'))
+                    percentage.push(Math.round((elem1[1]/arr.length)*100))
+                }
+            })
+          
+          })
+
+          // Show percentage bar graph fuction
+          function percentagebar(i){
+            var elem = document.getElementById(`percentagebar${i}`);
+            elem.style.width = percentage[i]+"%";
+            if (percentage[i]<24){
+                elem.style.backgroundColor = "lightgreen";
+            } else if(percentage[i]<49){
+                elem.style.backgroundColor = "yellow";
+            } else if(percentage[i]<74){
+                elem.style.backgroundColor = "orange";
+            } else {
+                elem.style.backgroundColor = "red";
+            }
+          }
+          // Injecting result to a table
+          for (let i=0;i<countsSorted.length;i++){
+            const elem = countsSorted[i];
+            const percent = percentage[i];
+            $(".disease").append(
+                `<tr>
+                    <td  class=diseasecol><p>${elem[0]}</p></td>
+                    <td class=percentagecol><div class="percentagebar" id="percentagebar${i}">${percent}%</td><div>
+                    
+                </tr>`)
+            percentagebar(i);
+          }
+        
+
+        }
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        // Handle error response from server
+        alert(textStatus + ': ' + errorThrown);
+      }
+    });
+    })
+    </script>
 </html>
+<!-- TaskName, code ended for symptoms checker (Ahmed Abdelrahman, Omar Abdelrahman, Khanh Dat Truong) GroupNumber, BMG5109 Medical Systems Innovation, 2023 -->

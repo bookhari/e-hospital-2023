@@ -12,19 +12,103 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_CA" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  
-  <%- include('../partials/header') -%>
-  <!-- Fetching  API Request -->
-  <script>
-    function sendData() {
-      let form = document.getElementById('myForm');
 
-      
-      let formData = new FormData(form);
-      console.log(formData)
+  <style>
+    table, th, td {
+      border:1px solid black;
+    }
+  </style>
+
+  <!-- TaskName -AlzheimersDiagnostics
+ (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101 -->
+
+ <script>
+    var recordList = [];
+
+    // Run the code when the page finished loading
+    $(document).ready(function() {
+      // retrived phone number form url
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+  // was "phoneNumber"
+      // Get the patient records
+      $.ajax({
+        url: "/imageRetrieveByPhoneNumber",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber, 
+          recordType: "MRI_Brain" // the table name that stores the record
+        },
+        success: function(data) {
+          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    });
+    
+        // Display the patient records to the front end that allows doctor selected specific record for diagnose
+        function display(data) {
+      recordList = data;
+      if (recordList.length <= 0) {
+        alert("This patient has no record, please do the X-Ray for the lung.");
+        return;
+      }
+      console.log(recordList);
+      let list = document.getElementById("recordList");
+      // Display each record
+      for (let i = 0; i < recordList.length; ++i) {
+        let tr = document.createElement("tr");
+        let image = document.createElement("td");
+        //let img = document.createElement("img");
+      // Extract the image data from the buffer
+        const imageData = recordList[i].file.buffer;
+
+        // Create a data URL from the image data
+        const dataURL = `data:image/jpeg;base64,${imageData}`;
+
+        // Create an img element and set its src attribute to the data URL
+        const img = document.createElement('img');
+        img.src = dataURL;
+        img.width = 150;
+        img.height = 150;
+        //image.innerHTML = "Will be replace by imagee";
+        image.appendChild(img)
+        let recordDate = document.createElement("td");
+        recordDate.innerHTML = recordList[i].RecordDate;
+        let action = document.createElement("td");
+        let button = document.createElement("input");
+        button.type = "button";
+        button.value = "Diagnose";
+        button.index = i;
+        button.setAttribute("onclick", "predict(this.index)")
+        action.appendChild(button);
+        
+        tr.appendChild(image);
+        tr.appendChild(recordDate);
+        tr.appendChild(action);
+        list.appendChild(tr);
+      }
+    }
+
+    // Send the image to the ML api for the prediction
+
+    async function predict(index) {
+      console.log(recordList[index]);
+    
+      // Prepare to send the data to the api
+
+      const form = new FormData();
+      console.log(form)
+      const base64Response = await fetch(`data:image/jpeg;base64,${recordList[index].file.buffer}`);
+      const blob = await base64Response.blob();
+      form.append('image', blob, recordList[index].file.originalname);
+
       fetch('https://ad-classification.herokuapp.com/classify_image_ad', {
           method: 'POST',
-          body: formData
+          body: form
         })
         .then(response => {
           if (response.ok) {
@@ -35,7 +119,7 @@
         .then(text => {
           console.log('Success:', text);
           let result = JSON.parse(text)
-          let resultInput = document.getElementById('testResult');
+          let resultInput = document.getElementById('diagnose');
           resultInput.value = result.text;
         })
         .catch(error => {
@@ -45,253 +129,53 @@
   </script>
 </head>
 
-<body>
-    <div class="container">
-      <div class="content">
-        <div class="top"></div>
-        <form id="myForm">
-          <div class="patient-details">
-              <div class="input-box">
-                <span class="details">First Name</span>
-                <input type="text" name="firstName" placeholder="Enter the patient's first name." required pattern="[A-Za-z]+" title="Please enter only letters." required>
-              </div>
-              <div class="input-box">
-                <span class="details">Last Name</span>
-                <input type="text" name="lastName" placeholder="Enter the patient's last name." required pattern="[A-Za-z]+" title="Please enter only letters." required>
-              </div>
-              <div class="input-box">
-                <span class="details">User's Email</span>
-                <input type="text" name="email" placeholder="Enter the user's Email." required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"title="Please enter your email address." required>
-              </div>
-              <div class="input-box">
-                <span class="details">User's Password</span>
-                <input type="text" name="password" placeholder="Enter the user's password." required pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?])[A-Za-z\d@$!%*?]{8,}$" title="Please enter your email address.">
-              </div>
-              <div class="input-box">
-                <span class="details">Test Date</span>
-                <input type="date" name="date" min="2021-01-01" max="2023-12-31" required>
-              </div>
-              <div class="input-box" id="testType">
-                <span class="details">Diagnostic Test</span>
-                <div class="custom-select">
-                    <select name="testType">
-                        <option value="">Select diagnostic test.</option>
-                        <option value="MRI">MRI Scan</option>
-                    </select>
-                </div>
-              </div>
-              <div class="input-box">
-                <span class="details">Upload Image</span>
-                <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" required id="uploadFile">
-                <button class="submit-button" type="button" onclick="sendData()">Submit</button>
-              </div>
-              <div class="result-box">
-                <br>
-                <input type="text" id="testResult" name="testResult" placeholder="Check test result here" \
-                  style="padding: 6px 10px;  width: 100%; font-size: 30px; font-weight: 500;
-                  color: #000000;
-                  animation: fadeIn 2s ease-in;box-sizing: border-box; 
-                  margin-top: 0px; margin-bottom: 12px;" disabled="disabled" required>
-              </div>   
-          </div>        
-        </form>
-      </div>
-    <%- include('../partials/footer-new') -%>  
+<%- include('../partials/header') -%>
 
+</head>
+<body>
+  <div class="header">
+ 
+    <h1>Alzheimer's Diagnostics</h1>
+ 
+  </div>
+
+<div class="header2">
+  <h3>Patient's Information</h3>
+ 
+</div>
+<div class="container" style="padding-top: 40px;">
+  <table id="recordList" style="width:100%">
+    <tr>
+      <th>Record</th>
+      <th>Record Date</th>
+      <th>Action</th>
+    </tr>
+
+  </table>
+</div>
+
+<div> 
+
+  <div class="outer">
+    <!-- <button class="submitBtn" onclick="submit()">Show the result</button> -->
+    <div class="result-box">
+      <label for="diagnose">Test Result:</label>
+      <br> 
+      <input type="text" id="diagnose" name="diagnose" placeholder="Result is here" \
+      style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 100%; font-size: 15px; font-weight: 500;
+      color: #ae2727;
+      animation: fadeIn 1s ease-in;box-sizing: border-box; 
+       margin-top: 10px;" disabled="disabled" required>
+     </div>
+          </form>
+        </div>
     </div>
-    <!-- <br><br> -->
+  <footer>
+<%- include('../partials/footer-new') -%>
+
+</footer>
+</div> 
+
+
 </body>
 </html>
-
-<style> 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-body {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
-
-.container {
-  max-width: 1100px;
-  height: 115%;
-  width: 100%;
-  position: relative;
-  top:15%;
-  background-color: #ececec;
-  background-size: cover;
-  background-position: center;
-  padding: 30px 30px;
-  border-radius: 5px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-  
-}
-
-.content-wrap {
-  padding-bottom: 20px;    /* Footer height */
-}
-
-.container .top {
-    font-size: 35px;
-    font-weight: 500;
-    height: 300px;
-    position: relative;
-    background-image: url('https://healthimaging.com/sites/default/files/2018-05/mribrainhitn_0_0.png');  /*Reference the image */
-    color: white;
-    background-size: cover;
-    background-position: center;
-
-
-}
-
-.container .top::after {
-    content: "Patient Form for Alzheimer's Diagnosis";
-    color: #000;
-    align-content: center;
-    position: absolute;
-    top: 320px;
-    left: 21%;
-    height: 3px;
-    
-}
-
-.content form .patient-details {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 60px 0 12px 0;
-}
-
-form .patient-details .input-box {
-    margin-bottom: 15px;
-    width: calc(100% / 2 - 20px);
-}
-
-.custom-select {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  height: 48px;
-}
-
-.custom-select select {
-  width: 100%;
-  height: 100%;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  appearance: none;
-  
-}
-
-.custom-select:after {
-  
-  position: relative;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  font-size: 16px;
-}
-
-.custom-select option {
-  font-size: 16px;
-}
-
-.input-box {
-    width: 100%;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-
-.input-box .details {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 10px;
-    color: rgb(0, 0, 0);
-}
-
-.input-box input[type="text"],
-.input-box input[type="date"],
-.input-box textarea {
-  
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 14px;
-    border: none;
-    border: 1px solid gray;
-}
-
-.input-box textarea {
-    resize: none;
-    min-height: 100px;
-}
-
-.submit-button {
- 
-    border: 0;
-    line-height: 2.5;
-    padding: 0 25px;
-    font-size: 14px;
-    text-align: center;
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
-    border-radius: 6px;
-    background-color: rgb(35, 120, 240);
-  
-    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6), inset -2px -2px 3px rgba(0, 0, 0, 0.6);
-}
-
-.submit-button:hover {
-    background-color: rgb(48, 167, 48);
-}
-
-.submit-button:active {
-    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6), inset 2px 2px 3px rgba(0, 0, 0, 0.6);
-}
-
-.result-box {
-    width: 100%;
-    position: relative;
-    margin-top: 10px;
-    margin-bottom: 100px;
-    background-color: #ffffff;
-    border: 1px solid #e1e1e1;
-    border-radius: 10px;
-    text-align: left;
-    }
-    .result-text {
-      font-size: 20px;
-      font-weight: 500;
-      color: #2c3e50;
-
-    }
-    .result {
-      font-size: 30px;
-      font-weight: 500;
-      color: #000000;
-      margin-top: 10px;
-      animation: fadeIn 3s ease-in;
-    }
-
-/* .new_footer_top {
-  position: relative;
-  left:0;
-  bottom: 0;
-  right: 0;
-  width: -200%;
-} */
-
-</style>

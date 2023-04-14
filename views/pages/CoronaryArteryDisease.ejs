@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<!-- Mirrored from e-hospital.godaddysites.com/register by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Nov 2022 05:04:01 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coronary Artery Disease</title>
+  <meta name="author" content="E-Hospital" />
+
+  <meta property="og:url" content="register.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://img1.wsimg.com/isteam/stock/Ddj9aVd" />
+  <meta property="og:locale" content="en_CA" />
+  <link href="css/heartdiseasefrontend.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<header>
+ <%- include('../partials/header') -%>
+</header>
+<div class="container">
+  <div class="title">Coronary Artery npDisease prediction form</div>
+  <p id="log" style="
+    color:tomato; 
+    font-weight: bold;
+    font-size: larger;
+    text-align: left;">
+    Result
+  </p>
+  <div class="content">
+
+    <form id="form">
+      <div class="user-details">
+        <div class="input-box">
+
+          <span class="details">Systolic Blood Pressure</span>
+
+          <input name="name" type="number" id="sysBP" value="" placeholder="Enter your systolic blood pressure"
+            oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+            maxlength="3" title="Please enter numbers only" min="0" max="300" step ="0.1" >
+
+        </div>
+
+        <div class="input-box">
+
+            <span class="details">Glucose</span>
+  
+            <input name="name" type="number" id="glucose" value="" placeholder="Enter your Glucose Level"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              maxlength="3" title="Please enter numbers only" min="0" max="700" step="0.1" >
+  
+          </div>
+          <div class="input-box">
+
+            <span class="details">Age</span>
+  
+            <input name="name" type="number" id="age" value="" placeholder="Enter your Age"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              maxlength="3" title="Please enter numbers only" min="0" max="120" >
+  
+          </div>
+
+          <div class="input-box">
+
+            <span class="details">Cigaretes Per Day</span>
+  
+            <input name="name" type="number" id="cigsPerDay" value="" placeholder="Enter the consumption of Cigaretes Per Day"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              maxlength="3" title="Please enter numbers only" min="0" max="50" step="'0.1" >
+  
+          </div>
+
+        <div class="input-box">
+
+          <span class="details">Cholestral</span>
+
+          <input name="Cholestral" type="number" id="totChol" placeholder="Enter your Cholestral Level"
+            oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+            maxlength="3" title="Please enter numbers only" min="0" max="250" step="0.1">
+
+        </div>
+        <div class="input-box">
+
+            <span class="details">Diastolic Blood Pressure</span>
+  
+            <input name="name" type="number" id="diaBP" value="" placeholder="Enter your Diastolic Blood Pressure"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); clearResult()"
+              maxlength="3" title="Please enter numbers only" min="0" max="150" step="0.1">
+  
+          </div>
+        <div class="input-box">
+
+          <span class="details">Hypertensive</span>
+
+          <select class="dropdown" name="prevalentHyp" id="prevalentHyp"  onchange="clearResult()">
+
+            <option value="" selected disabled hidden>Are you Hypertensive</option>
+
+            <option value=0>No</option>
+
+            <option value=1>Yes</option>
+
+          </select>
+
+        </div>
+
+        <div class="input-box">
+
+          <span class="details">Gender</span>
+
+          <select class="dropdown" name="male" id="male"  onchange="clearResult()">
+
+            <option value="" selected disabled hidden>Choose Gender</option>
+
+            <option value=0>Female</option>
+
+            <option value=1>Male</option>
+          </select>
+
+        </div>
+
+        <div class="input-box">
+
+          <span class="details">Blood Pressure Medication</span>
+
+          <select class="dropdown" name="BPMeds" id="BPMeds" >
+
+            <option value="" selected disabled hidden onchange="clearResult()">Are you taking Blood Pressure Medication</option>
+
+            <option value=0>No</option>
+
+            <option value=1>Yes</option>
+
+          </select>
+
+        </div>
+        <div class="input-box">
+
+          <span class="details">Diabetes</span>
+
+          <select class="dropdown" name="diabetes" id="diabetes"  onchange="clearResult()">
+
+            <option value="" selected disabled hidden>Are you having diabetes?</option>
+
+            <option value=0>No</option>
+
+            <option value=1>Yes</option>
+          </select>
+
+        </div>
+      </div>
+      <div class="spinner" style="display: none;"></div>
+
+      <div class="button">
+        <input type="submit" value="Check for Coronary Artery Disease">
+      </div>
+    </form>
+  </div>
+  <footer>
+    <%- include('../partials/footer-new') -%>
+    
+    </footer>
+</div>
+<script>
+  document.getElementById("log").innerHTML = ``;
+  const spinner = document.querySelector('.spinner');
+
+
+  function logSubmit(event) {
+    event.preventDefault();
+    document.getElementById("log").innerHTML = ``;
+
+    const data = {
+      sysBP: parseInt(document.getElementById("sysBP")?.value),
+      glucose: parseInt(document.getElementById("glucose")?.value),
+      age: parseInt(document.getElementById("age")?.value),
+      cigsPerDay: parseInt(document.getElementById("cigsPerDay")?.value),
+      totChol: parseInt(document.getElementById("totChol")?.value),
+      diaBP: parseInt(document.getElementById("diaBP")?.value),
+      prevalentHyp: parseInt(document.getElementById("prevalentHyp")?.value),
+      male: parseInt(document.getElementById("male")?.value),
+      BPMeds: parseInt(document.getElementById("BPMeds")?.value),
+      diabetes: parseInt(document.getElementById("diabetes")?.value),
+    }
+    
+    let base_url = 'https://swathi2.herokuapp.com/predict';
+    //debugger
+    //document.getElementById("log").innerHTML = `ERROR: ${error}`;
+    spinner.style.display = 'block'; // show the spinner
+    
+
+    const requestBody = {
+      "sysBP": data?.sysBP,
+      "glucose": data?.glucose,
+      "age": data?.age,
+      "cigsPerDay": data?.cigsPerDay,
+      "totChol": data?.totChol,
+      "diaBP": data?.diaBP,
+      "prevalentHyp": data?.prevalentHyp,
+      "male": data?.male,
+      "BPMeds": data?.BPMeds,
+      "diabetes": data?.diabetes
+    }
+
+    fetch(base_url, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody),
+
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data?.prediction === 'Coronary Artery Disease') {
+          document.getElementById("log").innerHTML = `Coronary Artery Disease`;
+          spinner.style.display = 'none'; // hide the spinner
+
+
+        } else if (data?.prediction === 'No Coronary Artery Disease') {
+          document.getElementById("log").innerHTML = `No Coronary Artery Disease`;
+          spinner.style.display = 'none'; // hide the spinner
+        }
+
+      })
+      .catch(error => {
+        document.getElementById("log").innerHTML = `Please try again later`;
+        document.getElementById("log").innerHTML = `ERROR: ${error}`;
+        spinner.style.display = 'none'; // hide the spinner
+
+      });
+  }
+  function clearResult() {
+    // To clear result
+    document.getElementById("log").innerHTML = ``;
+  }
+  const form = document.getElementById('form');
+  form.addEventListener('submit', logSubmit);
+</script>
+
+</html>
