@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charSet="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>Brain Tumor Diagnostic's | E-Hospital</title>
+  <meta name="author" content="E-Hospital" />
+  <meta property="og:url" content="BrainTumorDiagnostics.html" />
+  <meta property="og:site_name" content="E-Hospital" />
+  <meta property="og:title" content="Brain Tumor Diagnostics | E-Hospital" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_CA" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+  <style>
+    table, th, td {
+      border:1px solid black;
+    }
+  </style>
+
+  <!-- TaskName -Brain Tumor Diagnostics
+ (Prateek Walia, Shrey, Advaith) - Group9, Course-BMG5101 -->
+
+ <script>
+    var recordList = [];
+
+    // Run the code when the page finished loading
+    $(document).ready(function() {
+      // retrived phone number form url
+      let params = (new URL(document.location)).searchParams;
+      let phoneNumber = params.get("phoneNumber");
+  // was "phoneNumber"
+      // Get the patient records
+      $.ajax({
+        url: "/imageRetrieveByPhoneNumber",
+        type: 'POST',
+        data: {
+          phoneNumber: phoneNumber, 
+          recordType: "MRI_Brain" // the table name that stores the record
+        },
+        success: function(data) {
+          data.error ? alert(JSON.stringify(data.error)) : display(data.success);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle error response from server
+          alert(textStatus + ': ' + errorThrown);
+        }
+      });
+    });
+    
+        // Display the patient records to the front end that allows doctor selected specific record for diagnose
+        function display(data) {
+      recordList = data;
+      if (recordList.length <= 0) {
+        alert("This patient has no record, please do the X-Ray for the lung.");
+        return;
+      }
+      console.log(recordList);
+      let list = document.getElementById("recordList");
+      // Display each record
+      for (let i = 0; i < recordList.length; ++i) {
+        let tr = document.createElement("tr");
+        let image = document.createElement("td");
+        //let img = document.createElement("img");
+      // Extract the image data from the buffer
+        const imageData = recordList[i].file.buffer;
+
+        // Create a data URL from the image data
+        const dataURL = `data:image/jpeg;base64,${imageData}`;
+
+        // Create an img element and set its src attribute to the data URL
+        const img = document.createElement('img');
+        img.src = dataURL;
+        img.width = 150;
+        img.height = 150;
+        //image.innerHTML = "Will be replace by imagee";
+        image.appendChild(img)
+        let recordDate = document.createElement("td");
+        recordDate.innerHTML = recordList[i].RecordDate;
+        let action = document.createElement("td");
+        let button = document.createElement("input");
+        button.type = "button";
+        button.value = "Diagnose";
+        button.index = i;
+        button.setAttribute("onclick", "predict(this.index)")
+        action.appendChild(button);
+        
+        tr.appendChild(image);
+        tr.appendChild(recordDate);
+        tr.appendChild(action);
+        list.appendChild(tr);
+      }
+    }
+
+    // Send the image to the ML api for the prediction
+
+    async function predict(index) {
+      console.log(recordList[index]);
+    
+      // Prepare to send the data to the api
+
+      const form = new FormData();
+      console.log(form)
+      const base64Response = await fetch(`data:image/jpeg;base64,${recordList[index].file.buffer}`);
+      const blob = await base64Response.blob();
+      form.append('image', blob, recordList[index].file.originalname);
+
+      fetch('https://braintumor-classification.herokuapp.com/classify_brain_tumor', {
+          method: 'POST',
+          body: form
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.text(); // read response body as text
+          }
+          throw new Error('Network did not respond.');
+        })
+        .then(text => {
+          console.log('Success:', text);
+          let result = JSON.parse(text)
+          let resultInput = document.getElementById('diagnose');
+          resultInput.value = result.text;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+</head>
+
+<%- include('../partials/header') -%>
+
+</head>
+<body>
+  <div class="header">
+ 
+    <h1>Brain Tumor Diagnostics</h1>
+ 
+  </div>
+
+<div class="header2">
+  <h3>Patient's Information</h3>
+ 
+</div>
+<div class="container" style="padding-top: 40px;">
+  <table id="recordList" style="width:100%">
+    <tr>
+      <th>Record</th>
+      <th>Record Date</th>
+      <th>Action</th>
+    </tr>
+
+  </table>
+</div>
+
+<div> 
+
+  <div class="outer">
+    <!-- <button class="submitBtn" onclick="submit()">Show the result</button> -->
+    <div class="result-box">
+      <label for="diagnose">Test Result:</label>
+      <br> 
+      <input type="text" id="diagnose" name="diagnose" placeholder="Result is here" \
+      style="border: 2px solid #ccc; border-radius: 4px; padding: 10px 10px;  width: 100%; font-size: 15px; font-weight: 500;
+      color: #ae2727;
+      animation: fadeIn 1s ease-in;box-sizing: border-box; 
+       margin-top: 10px;" disabled="disabled" required>
+     </div>
+          </form>
+        </div>
+    </div>
+  <footer>
+<%- include('../partials/footer-new') -%>
+
+</footer>
+</div> 
+
+
+</body>
+</html>

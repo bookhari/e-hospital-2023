@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <%- include('../partials/header') -%>
+        <meta charSet="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Alzheimer's Detection using MRI Images| E-Hospital</title>
+        <meta name="author" content="E-Hospital" />
+        <meta property="og:url" content="AlzheimerMRIDetection.html" />
+        <meta property="og:site_name" content="E-Hospital" />
+        <meta property="og:title" content="Alzheimer's Detection using MRI Images | E-Hospital" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_CA" />
+        <script src="my API"></script>
+        <style> 
+          .spinner {
+              border: 16px solid #f3f3f3;
+              /* Light grey */
+              border-top: 16px solid #3498db;
+              /* Blue */
+              border-radius: 50%;
+              margin-left: 50%;
+              width: 120px;
+              height: 120px;
+              align-items: center;
+              justify-content: center;
+
+              animation: spin 2s linear infinite;
+          }
+
+          @keyframes spin {
+              0% {
+                  transform: rotate(0deg);
+              }
+
+              100% {
+                  transform: rotate(360deg);
+              }
+          }
+        </style>
+</head>      
+
+
+
+
+
+
+
+
+<br>
+
+<body>
+  <header>
+      <%- include('../partials/header') -%>
+  </header>
+  <main>
+      <div class="container">
+          <div class="row">
+             
+                  <h1>Alzheimer's Detection using MRI Images</h1>
+                  <br>
+                  <br><br><br>
+<h4>Why Alzheimer's Detection is Important?</h4>
+<br><br>
+<div id="project statement">
+<p>
+Alzheimer's disease is a progressive neurodegenerative disorder that affects the brain,<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Brain-ALZH.png" alt="AlzheimerTree" width="80%" style="width: 42%; float: right;" />
+causing problems with memory, thinking, and behavior. It typically starts with mild memory loss that
+worsens over time. The exact cause of Alzheimer's disease is not fully understood, but
+it is believed to involve a combination of genetic, environmental, and lifestyle factors.
+The disease is characterized by the accumulation of abnormal protein deposits in the brain,
+which interfere with the normal functioning of brain cells and ultimately lead to their
+death. Detecting Alzheimer's disease early is important because it allows for early
+intervention and treatment. Early detection of Alzheimer's disease can be challenging,
+as the symptoms can be subtle and may be mistaken for normal aging or other conditions.
+However, there are several screening tests and assessments that can help diagnose Alzheimer's
+disease, including cognitive tests, brain imaging, and blood tests. Using E-Hospital
+services, different levels of Alzheimer's can be detected based on MRI images.
+
+
+<br />
+</p>
+</div>
+                  <form id = my-form>
+                      <div id="upload-form">
+                      <br>
+                      <div class="input-box">
+                          <span class="details">Email Address</span>
+                          <input type="text" name="email" placeholder="Enter Email Address" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"title="Please Enter Email Address">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Symptoms</span>
+                            <textarea name="symptoms" placeholder="Enter your symptoms" required></textarea>
+                          </div>                          
+                        <div class="input-box">
+                            <span class="details">Symptom Onset</span>
+                            <input type="date" name="symptom-onset" required>
+                          </div>                          
+                        <div class="input-box">
+                            <span class="details">Medical History</span>
+                            <textarea name="medical-history" placeholder="Enter any head injuries or medical conditions that could affect your memory" required></textarea>
+                          </div>
+                          <div class="input-box">
+                            <span class="details">Daily Activities</span>
+                            <textarea name="adl" placeholder="Enter any difficulties you've had with activities of daily living" required></textarea>
+                          </div>
+                          <div class="input-box">
+                            <span class="details">Medications</span>
+                            <textarea name="medications" placeholder="Enter any medications you're taking that could affect your memory or cognition" required></textarea>
+                          </div>                          
+                        <div class="input-box">
+                            <span class="details">Date of MRI Scanning</span>
+                            <input type="date" name="date" min="2021-01-01" max="2023-12-31" required>
+                        </div> 
+                        <div class="input-box" id="History">
+                            <span class="details">Family Alzheimer History</span>
+                            <div class="custom-select">
+                                <select name="HistoryType">
+                                    <option value="">Select Answere</option>
+                                    <option value="WithHistory">Yes</option>
+                                    <option value="NoHistory">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                      
+                          <label for="Upload_Image">Upload MRI Image:</label>
+                          <input type="file" class="form-control-file" id="Upload_Image" name="Upload_Image" accept=".jpg">
+                      </div>
+                      <button onclick="button_pressed()" id="submitted" type="submit" class="btn btn-primary"
+                          style="background-color: black; color: white;">Upload</button>
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+              </form>
+                  <br>
+                  <div id="spinner" class="spinner" style="display:none;"></div>
+                  <br>
+                  <div id="plot"></div>
+              </div>
+          </div>
+      </div>
+  </main>
+</body>
+<div>
+  <footer>
+  <%- include('../partials/footer-new') -%>      
+  </footer>
+</div>
+
+
+
+<style> 
+
+  footer {
+    width: 100%; /* Set the width to 100% to cover the entire page */
+    position: relative; /* Position the footer as a fixed element */
+    bottom: 0; /* Position the footer at the bottom of the page */
+    left: 0; /* Position the footer to the left of the page */
+  }
+
+    .container1 {
+      max-width: 1100px;
+      height: 110%;
+      width: 100%;
+      position: relative;
+      top:13%;
+      background-color: #ececec;
+      background-size: cover;
+      background-position: center;
+      padding: 25px 30px;
+      border-radius: 5px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .container1 .title {
+      font-size: 35px;
+      font-weight: 500;
+      height: 65px;
+      position: relative;
+      color: white;
+      background-size: cover;
+      background-position: center;
+  
+  }
+  
+  .container1 .title::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 75px;
+      bottom: 0;
+      height: 3px;
+      width: 1035px;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #71b7e6, #9b59b6);
+  }
+  
+  .content1 form .user-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 30px 0 12px 0;
+}
+
+.content1 form .user-details > * {
+  flex-basis: 33.33%;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+
+  
+  form .user-details .input-box {
+      margin-bottom: 15px;
+  }
+  
+  .custom-select {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 60px;
+  }
+  
+  .custom-select select {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    appearance: none;
+    
+  }
+  
+  
+  .custom-select:after {
+    
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 16px;
+  }
+  
+  .custom-select option {
+    font-size: 16px;
+  }
+  .input-box {
+      width: 100%;
+      background-color: rgb(43, 43, 50);
+      padding: 20px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      border: 1px solid rgba(211, 211, 211, 0.626);
+      border-radius: 5px;
+  }
+  
+  .input-box .details {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+      color: white;
+  }
+  
+  .input-box input[type="text"],
+  .input-box input[type="date"],
+  .input-box textarea {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      font-size: 14px;
+      border: none;
+      border-bottom: 1px solid gray;
+  }
+  
+  .input-box textarea {
+      resize: none;
+      min-height: 100px;
+  }
+  
+  .submit-button {
+      width: 300% ;
+      right: 320px ;
+      padding: 10px;
+      position: relative;
+      box-sizing: border-box;
+      background-color:rgb(43, 43, 50);
+      color: white;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 30px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+  }
+  
+  
+  .submit-button:hover {
+      background-color: darkgreen;
+  }
+  .result-box {
+      width: 100%;
+      padding: 10px;
+      position: relative;
+      margin-top: 0px;
+      background-color: #292525;
+      border: 1px solid #373333;
+      border-radius: 10px;
+        text-align: left;
+      }
+      .result-text {
+        font-size: 20px;
+        font-weight: 500;
+        color: #2c3e50;
+      }
+      .result {
+        font-size: 30px;
+        font-weight: 500;
+        color: #27ae60;
+        margin-top: 20px;
+        animation: fadeIn 1s ease-in;
+      }
+  
+  </style>
+  

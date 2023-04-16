@@ -120,8 +120,68 @@ body {
                         </tr>
                         <tr>
                             <td><button><a href="diagnostic-depart?id=<%= entry.id %>">Run Diagonostics</a></button></td>
-                            
                         </tr>
+                        <tr>
+                            <td><button><a href="ECG-Doctor?id=<%= entry.id %>">Run ECG Diagonostics</a></button></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="MS-Doctor?id=<%= entry.id %>">Run MS Diagonostics</a></button></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="Pneumonia-diagnostics?phoneNumber=<%= entry.MobileNumber %>">Run Pneumonia Diagonostics</a></button></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="kidney-diagnostic?phoneNumber=<%= entry.MobileNumber %>">Run Kidney Stones Diagonostics</a></button></td>
+
+                        </tr>
+                        <tr>
+                            <td><button><a href="Breast-Diagnostic?phoneNumber=<%= entry.MobileNumber %>">Run Breast Diagnostic</a></button></td>
+                        </tr>
+                        <tr>
+                            <td><button><a href="liver2?id=<%= entry.id %>">Run Liver Diagnostics</a></button></td>
+                        </tr>
+
+                        
+                        <!--AlzheimersDiagnostics and BrainTumorDiagnostics (Prateek Walia, Shrey, Advaith, Group 9, BMG 5109)-->
+                        <tr>
+                            <td><button><a href="AlzheimersDiagnostics?phoneNumber=<%= entry.MobileNumber %>">Run Alzheimers Diagnostics</a></button></td>
+                        </tr>
+
+                        <tr>
+                            <td><button><a href="BrainTumorDiagnostics?phoneNumber=<%= entry.MobileNumber %>">Run Brain Tumor Diagonostics</a></button></td>
+                        </tr>
+                        
+                        <!--AlzheimersDiagnostics and BrainTumorDiagnostics (Prateek Walia, Shrey, Advaith, Group 9, BMG 5109)-->
+
+
+
+                        <!-- Heart Disease Prediction - Ram, Hoaming -->
+                        <tr>
+                            <td><button><a href="heartDiseasePrediction?id=<%= entry.id %>">Heart Disease Prediction</a></button></td>
+                        </tr>
+                        
+                        <tr>
+                            <td><button><a href="brain?phoneNumber=<%= entry.MobileNumber %>">Brain Diagonostics</a></button></td>
+                        </tr>
+                        <!-- Gastro Prediction - Ram -->
+                        <tr>
+                            <td><button><a href="gastroImagePrediction?phoneNumber=<%= entry.MobileNumber %>">Gastro Image Diagnosis</a></button></td>
+                        </tr>
+                        <!-- Cardiovascular questioner -->
+                        <tr>
+                            <td><button><a href="cardiovascularDiseaseQuestionnaire?phoneNumber=<%= entry.MobileNumber %>">Cardiovascular questioner</a></button></td>
+                        </tr>
+                        <!-- Diabetology Patient-->
+                        <tr>
+                            <td><button><a href="DiabetologyPatients?phoneNumber=<%= entry.MobileNumber %>">Diabetology Diagnostics</a></button></td>
+                        </tr>
+          
+                        <!--Psychology Diagnosis Start(Alexis, Parisa, Group 8, BMG 5111)-->
+                        <tr>
+                            <td><button><a href="psychologyDiagnosis?phoneNumber=<%= entry.MobileNumber %>">Run Psychology Diagnostics</a></button></td>
+                        </tr>
+                        <!--Psychology Diagnosis End(Alexis, Parisa, Group 8, BMG 5111)-->
+
                     </tbody>
                     <% }) %> 
                 </table>
