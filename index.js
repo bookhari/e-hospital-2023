@@ -2245,6 +2245,62 @@ function removeKey(result, key) {
   return result;
 }
 
+/*Real time Hear Disease Prediction API to save the attributes onto the database"*/
+app.post('/updateAttributes', (req, res) => {
+  const phoneNumber=req.body.phoneNumber;
+  const cp = req.body.cp; // 
+  const trestbps = req.body.trestbps; // 
+  const chol = req.body.chol; // 
+  const fbs = req.body.fbs; // 
+  const restecg = req.body.restecg; // 
+  const thalach = req.body.thalach; //
+  const exang = req.body.exang; // 
+  const oldpeak = req.body.oldpeak; // 
+  const slope = req.body.slope; // 
+  const ca = req.body.ca; // 
+  const thal = req.body.thal; //
+  const RecordDate= req.body.RecordDate;
+ console.log(RecordDate);
+ //console.log(req.body);
+
+ if (!phoneNumber) {
+   res.send({error:"Missing patient"});
+   return;
+ }
+
+ var patient_id = 0;
+ sql = `SELECT id FROM patients_registration WHERE MobileNumber = "${phoneNumber}"`;
+ // console.log(sql);
+ conn.query(sql, async (error, result) => {
+   if (error) {
+     res.send({error:"Something wrong in MySQL1"});
+     console.log(error);
+     return;
+   }
+   if (result.length != 1) {
+     res.send({error:"No patient matched in database."});
+     return;
+   }
+   patient_id = result[0].id;
+
+   let sql = `INSERT into realtimetest_heart_disease(patient_id, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal, RecordDate) 
+   VALUES (${patient_id}, ${cp}, ${trestbps}, ${chol}, ${fbs}, ${restecg}, ${thalach}, ${exang}, ${oldpeak}, ${slope}, ${ca}, ${thal}, ${RecordDate})`;
+   if(!RecordDate.includes(`"`)){
+     sql = `INSERT into realtimetest_heart_disease(patient_id, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal, RecordDate)
+     VALUES (${patient_id}, ${cp}, ${trestbps}, ${chol}, ${fbs}, ${restecg}, ${thalach}, ${exang}, ${oldpeak}, ${slope}, ${ca}, ${thal}, "${RecordDate}")`;
+   }
+   console.log(sql);
+   conn.query(sql,async (error, result) => {
+     if (error) {
+       res.send({error:"Something wrong in MySQL2"});
+       console.log(error);
+       return;
+     }
+     res.send({success: "Submit success."});
+   });
+ });
+});
+
 /**
  * This is the function that updates a single file (image) to the patient record in MongoDB.
  * @ param {*} patient_id Existed id from the table "patients_registration" under MySQL database.
